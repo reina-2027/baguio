@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>청소년부</title>
+<title>바기오 청소년부</title>
 
 <!-- PWA 및 모바일 홈 화면 아이콘 연동 (icon.png 직접 연결) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="청소년부">
+<meta name="apple-mobile-web-app-title" content="바기오 청소년부">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
 <link rel="manifest" href="manifest.json">
@@ -86,17 +86,23 @@
   nav.tabs button {
     flex: 0 0 auto; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer;
   }
-  nav.tabs button.active { background: var(--sky); border-color: var(--sky); color: #fff; }
+  nav.tabs button[data-tab="feed"].active { background: #F4B8A5; border-color: #F4B8A5; color: var(--text); }
+  nav.tabs button[data-tab="prep-schedule"].active { background: #F6E3B4; border-color: #F6E3B4; color: var(--text); }
+  nav.tabs button[data-tab="participants"].active { background: #E8BAC6; border-color: #E8BAC6; color: var(--text); }
+  nav.tabs button[data-tab="teachers"].active { background: #C3D8C4; border-color: #C3D8C4; color: var(--text); }
+  nav.tabs button[data-tab="flights"].active { background: #BDD5EA; border-color: #BDD5EA; color: var(--text); }
+  nav.tabs button[data-tab="schedule"].active { background: #E2C275; border-color: #E2C275; color: var(--text); }
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
   section.panel { display: none; }
   section.panel.active { display: block; }
   .card { position:relative; background: var(--card); border: none; box-shadow: 0 3px 16px rgba(28,56,61,0.07); border-radius: 16px; padding: 18px 16px 16px; margin-bottom: 14px; overflow:hidden; }
   .card::before { content:""; position:absolute; top:0; left:0; right:0; height:4px; background: var(--sky); }
-  #panel-schedule .card::before { background: var(--sun); }
-  #panel-prep-schedule .card::before { background: var(--bloom); }
-  #panel-flights .card::before { background: var(--sky); }
-  #panel-feed .card::before { background: var(--bloom); }
-  #panel-teachers .card::before { background: var(--ok); }
+  #panel-feed .card::before { background: #F4B8A5; }
+  #panel-prep-schedule .card::before { background: #F6E3B4; }
+  #panel-participants .card::before { background: #E8BAC6; }
+  #panel-teachers .card::before { background: #C3D8C4; }
+  #panel-flights .card::before { background: #BDD5EA; }
+  #panel-schedule .card::before { background: #E2C275; }
   #panel-assign .card::before { background: var(--assign-yellow); }
   .card h2 { margin: 0 0 12px; font-size: 1.02rem; font-weight: 800; }
   .row-list { display:flex; flex-direction:column; gap:8px; }
@@ -107,7 +113,7 @@
   .role-check { display:flex; align-items:center; gap:6px; font-size:0.85rem; cursor:pointer; padding:3px 0; }
   .role-check input[type="checkbox"] { flex-shrink:0; margin:0; }
   .role-check span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text); }
-  .chip-row { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-row { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .chip { font-size:0.76rem; padding:4px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--card); font-weight:600; }
   .chip.ok { background: var(--sky); color:#fff; border-color:var(--sky); }
   .item .name { font-weight: 700; }
@@ -188,12 +194,11 @@
 
 <nav class="tabs">
   <button data-tab="feed" class="active">공지</button>
-  <button data-tab="participants">학생</button>
-  <button data-tab="assign">배정</button>
-  <button data-tab="schedule">선교일정</button>
   <button data-tab="prep-schedule">준비일정</button>
-  <button data-tab="flights">항공권</button>
+  <button data-tab="participants">학생</button>
   <button data-tab="teachers">교사</button>
+  <button data-tab="flights">항공권</button>
+  <button data-tab="schedule">선교일정</button>
 </nav>
 
 <main>
@@ -844,12 +849,14 @@ function renderParticipants() {
             <div class="name-row">
               <span class="avatar-placeholder">${escapeHtml(p.grade || '-')}</span>
               <div>
-                <div>
-                  <span class="name">${escapeHtml(p.name)}</span>
-                  <span class="meta"> · ${escapeHtml(p.gender || '성별 미정')}</span>
-                </div>
-                <div class="chip-row" style="margin-top:6px;">
-                  ${(p.roles && p.roles.length) ? p.roles.map(r => `<span class="chip ok">${escapeHtml(r)}</span>`).join('') : '<span class="meta" style="font-size:0.8rem;">담당내용 없음</span>'}
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <div>
+                    <span class="name">${escapeHtml(p.name)}</span>
+                    <span class="meta"> · ${escapeHtml(p.gender || '성별 미정')}</span>
+                  </div>
+                  <div class="chip-row">
+                    ${(p.roles && p.roles.length) ? p.roles.map(r => `<span class="chip ok">${escapeHtml(r)}</span>`).join('') : '<span class="meta" style="font-size:0.8rem;">담당내용 없음</span>'}
+                  </div>
                 </div>
                 <div class="chip-row" style="margin-top:6px;">
                   <span class="chip">🛏️ 방: ${escapeHtml(assign.room || '미배정')}</span>
@@ -857,8 +864,8 @@ function renderParticipants() {
                 </div>
               </div>
             </div>
-            ${canEdit ? `<div><button class="edit-btn" onclick="startEditParticipant('${p.id}')">수정</button><button class="del-btn" onclick="removeParticipant('${p.id}')">삭제</button></div>` : ''}
           </div>
+          ${canEdit ? `<div style="text-align:right; margin-top:8px;"><button class="edit-btn" onclick="startEditParticipant('${p.id}')">수정</button><button class="del-btn" onclick="removeParticipant('${p.id}')">삭제</button></div>` : ''}
         </div>
       `;
     }).join('');
@@ -945,13 +952,13 @@ function renderTeachers() {
       return `
       <div class="item">
         <div class="top">
-          <div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span class="name">${escapeHtml(t.name)}</span>
+            ${(t.roles && t.roles.length) ? `<div class="chip-row">${t.roles.map(r => `<span class="chip ok">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
           </div>
-          ${canEdit ? `<div><button class="edit-btn" onclick="startEditTeacher('${t.id}')">수정</button><button class="del-btn" onclick="removeTeacher('${t.id}')">삭제</button></div>` : ''}
         </div>
-        ${(t.roles && t.roles.length) ? `<div class="chip-row" style="margin-top:6px;">${t.roles.map(r => `<span class="chip ok">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
         <div class="meta" style="margin-top:6px;">🌱 담당 학생 (${kids.length}명): ${kids.length ? kids.map(k => escapeHtml(k.name)).join(', ') : '없음'}</div>
+        ${canEdit ? `<div style="text-align:right; margin-top:8px;"><button class="edit-btn" onclick="startEditTeacher('${t.id}')">수정</button><button class="del-btn" onclick="removeTeacher('${t.id}')">삭제</button></div>` : ''}
       </div>
     `;
     }).join('');
