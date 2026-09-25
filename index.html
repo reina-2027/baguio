@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>바기오 청소년부</title>
 
-<!-- PWA 및 모바일 홈 화면 아이콘 연동 (icon.png 직접 연결) -->
+<!-- PWA 및 모바일 홈 화면 아이콘 연동 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="바기오 청소년부">
@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- Firebase SDK 추가 (Compat 버전) -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -42,6 +42,10 @@
     --ok: #4f8858;
     --warn: #c97a4a;
     --pending: #b99248;
+    --badge-carry: #E3F2FD;
+    --badge-carry-text: #1565C0;
+    --badge-check: #FFF3E0;
+    --badge-check-text: #E65100;
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -92,6 +96,9 @@
   nav.tabs button[data-tab="teachers"].active { background: #C3D8C4; border-color: #C3D8C4; color: var(--text); }
   nav.tabs button[data-tab="flights"].active { background: #BDD5EA; border-color: #BDD5EA; color: var(--text); }
   nav.tabs button[data-tab="schedule"].active { background: #E2C275; border-color: #E2C275; color: var(--text); }
+  nav.tabs button[data-tab="personal-supplies"].active { background: #D2E0FB; border-color: #D2E0FB; color: var(--text); }
+  nav.tabs button[data-tab="shared-supplies"].active { background: #E8D5C4; border-color: #E8D5C4; color: var(--text); }
+
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
   section.panel { display: none; }
   section.panel.active { display: block; }
@@ -104,6 +111,9 @@
   #panel-flights .card::before { background: #BDD5EA; }
   #panel-schedule .card::before { background: #E2C275; }
   #panel-assign .card::before { background: var(--assign-yellow); }
+  #panel-personal-supplies .card::before { background: #D2E0FB; }
+  #panel-shared-supplies .card::before { background: #E8D5C4; }
+
   .card h2 { margin: 0 0 12px; font-size: 1.02rem; font-weight: 800; }
   .row-list { display:flex; flex-direction:column; gap:8px; }
   .item { border: 1px solid var(--border); border-radius: 12px; padding: 11px 13px; background: var(--bg); }
@@ -135,14 +145,13 @@
   button.primary { background: var(--accent); color:#fff; border:none; border-radius:11px; padding:10px 16px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
   button.secondary { background: var(--card); color: var(--sky); border:1.5px solid var(--sky); border-radius:11px; padding:10px 16px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
   .day-block { margin-bottom: 12px; }
-  .day-block .day-title { font-weight:700; margin-bottom:4px; }
+  .day-block .day-title { font-weight:700; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center; }
   .post { border-bottom: 1px solid var(--border); padding: 12px 0; }
   .post:last-child { border-bottom: none; }
   .post .author { font-weight:700; font-size:0.88rem; }
   .post .date { color: var(--muted); font-size:0.76rem; margin-left:6px; }
   .post .text { margin-top:4px; font-size:0.92rem; white-space: pre-wrap; }
   .empty { color: var(--muted); font-size:0.88rem; text-align:center; padding: 18px 0; }
-  .readonly-note { font-size:0.78rem; color: var(--muted); margin-top:10px; }
   .save-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: var(--card); border-top:1px solid var(--border); box-shadow: 0 -3px 12px rgba(28,56,61,0.1); display:none; justify-content: space-between; align-items: center; z-index: 1000; }
   .save-bar.show { display:flex; }
   .save-bar span { font-size:0.85rem; font-weight: 700; color: var(--accent); }
@@ -166,7 +175,7 @@
   .boarding-pass .bp-detail-label { font-size:0.72rem; color:var(--muted); }
   .boarding-pass .bp-detail-value { font-size:0.9rem; font-weight:700; margin-top:1px; }
   .timeline { margin-top:8px; padding-left:2px; }
-  .timeline-row { display:flex; gap:10px; padding:6px 0; border-left:2px solid var(--border); padding-left:12px; margin-left:4px; position:relative; }
+  .timeline-row { display:flex; flex-direction:column; gap:6px; padding:8px 0; border-left:2px solid var(--border); padding-left:12px; margin-left:4px; position:relative; }
   .timeline-row::before { content:""; position:absolute; left:-6px; top:11px; width:9px; height:9px; border-radius:50%; background:var(--sun); }
   .timeline-row .tl-time { font-weight:700; font-size:0.84rem; min-width:64px; color:var(--sun); flex-shrink:0; }
   .timeline-row .tl-activity { font-size:0.9rem; }
@@ -177,6 +186,33 @@
   .date-parts input.dp-y { width:4.2em; }
   .date-parts input.dp-m, .date-parts input.dp-d { width:2.6em; }
   .date-parts select.dp-ampm { width:4.4em; flex-shrink:0; }
+
+  /* 준비물 체크리스트 전용 스타일 */
+  .select-wrapper { position: relative; }
+  .select-wrapper select {
+    width: 100%; padding: 12px 14px; font-size: 15px; font-weight: 600; border-radius: 10px; border: 1.5px solid var(--accent); background-color: #FFF; color: var(--accent); outline: none; appearance: none; cursor: pointer;
+  }
+  .select-wrapper::after {
+    content: '▼'; font-size: 10px; color: var(--accent); position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none;
+  }
+  .progress-section { margin-top: 8px; }
+  .progress-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .progress-bar-bg { width: 100%; height: 10px; background-color: #EFECE6; border-radius: 5px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; width: 0%; background-color: var(--accent); border-radius: 5px; transition: width 0.3s ease; }
+  .category-title { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .item-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .item-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px dashed var(--border); cursor: pointer; }
+  .item-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .item-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .custom-checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #CCC; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+  .item-row.checked .custom-checkbox { background-color: var(--accent); border-color: var(--accent); }
+  .custom-checkbox::after { content: '✓'; color: white; font-size: 13px; font-weight: bold; display: none; }
+  .item-row.checked .custom-checkbox::after { display: block; }
+  .item-name { font-size: 14px; color: var(--text); transition: color 0.2s; }
+  .item-row.checked .item-name { text-decoration: line-through; color: var(--muted); }
+  .badge-carry { background-color: var(--badge-carry); color: var(--badge-carry-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+  .badge-check { background-color: var(--badge-check); color: var(--badge-check-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+  .badge-none { background-color: var(--bg2); color: var(--muted); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -199,14 +235,16 @@
   <button data-tab="teachers">교사</button>
   <button data-tab="flights">항공권</button>
   <button data-tab="schedule">선교일정</button>
+  <button data-tab="personal-supplies">개인준비물</button>
+  <button data-tab="shared-supplies">공용준비물</button>
 </nav>
 
 <main>
 
+  <!-- 1. 학생 탭 -->
   <section class="panel" id="panel-participants">
     <div class="card">
       <h2>🌱 학생 명단</h2>
-      <!-- 🔎 이름, 성별, 학년, 담당, 방, 교사, 차량 검색 지원 -->
       <input id="p-search-teacher" placeholder="이름, 성별, 학년, 담당, 방, 교사, 차량 검색" oninput="renderParticipants()" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:0.9rem; font-family:inherit; margin-bottom:10px;" />
       <div class="row-list" id="participant-list"></div>
       
@@ -251,10 +289,10 @@
           <button class="secondary" id="p-cancel-btn" style="display:none;" onclick="cancelParticipantEdit()">취소</button>
         </div>
       </div>
-      <div class="readonly-note" id="participant-readonly-note">현재 보기 모드입니다.</div>
     </div>
   </section>
 
+  <!-- 2. 선교일정 탭 -->
   <section class="panel" id="panel-schedule">
     <div class="card">
       <h2>🗓️ 선교 일정</h2>
@@ -288,10 +326,10 @@
           <button class="secondary" id="s-cancel-btn" style="display:none;" onclick="cancelScheduleEdit()">취소</button>
         </div>
       </div>
-      <div class="readonly-note" id="schedule-readonly-note">현재 보기 모드입니다.</div>
     </div>
   </section>
 
+  <!-- 3. 준비일정 탭 -->
   <section class="panel" id="panel-prep-schedule">
     <div class="card">
       <h2>📋 준비 일정</h2>
@@ -318,9 +356,9 @@
               <input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="ps-item-minute" /><span>분</span>
             </div>
           </div>
-          <div><label>활동 내용</label><input id="ps-item-activity" placeholder="예: 준비 모임" /></div>
+          <div><label>장소</label><input id="ps-item-place" placeholder="예: 본당 / 연습실" /></div>
         </div>
-        <div><label>장소</label><input id="ps-item-place" placeholder="예: 본당 / 연습실" /></div>
+        <div><label>활동 내용</label><input id="ps-item-activity" placeholder="예: 준비 모임" /></div>
         <div>
           <label>분류</label>
           <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:4px;">
@@ -338,10 +376,10 @@
           <button class="secondary" id="ps-cancel-btn" style="display:none;" onclick="cancelPrepScheduleEdit()">취소</button>
         </div>
       </div>
-      <div class="readonly-note" id="prep-schedule-readonly-note">현재 보기 모드입니다.</div>
     </div>
   </section>
 
+  <!-- 4. 항공권 탭 -->
   <section class="panel" id="panel-flights">
     <div class="card">
       <h2>🎫 항공권 정보</h2>
@@ -421,10 +459,10 @@
           <button class="secondary" id="fi-cancel-btn" style="display:none;" onclick="cancelFlightEdit()">취소</button>
         </div>
       </div>
-      <div class="readonly-note" id="flightinfo-readonly-note">현재 보기 모드입니다.</div>
     </div>
   </section>
 
+  <!-- 5. 공지 탭 -->
   <section class="panel active" id="panel-feed">
     <div class="card">
       <h2>📢 공지</h2>
@@ -433,7 +471,7 @@
         <div><label>작성자</label><select id="post-author"><option value="">작성자 선택</option></select></div>
         <div><label>제목</label><input id="post-title" placeholder="예: 준비모임 안내" /></div>
         <div class="grid">
-          <div><label>날짜</label><input type="date" id="post-date" /></div>
+          <div><label>날짜 (비워두면 자동입력)</label><input type="date" id="post-date" /></div>
           <div><label>장소</label><input id="post-place" placeholder="예: 본당" /></div>
         </div>
         <div><label>내용</label><textarea id="post-text" placeholder="공지 내용을 입력해주세요"></textarea></div>
@@ -441,11 +479,11 @@
           <button class="primary" onclick="addPost()">공지 등록</button>
         </div>
       </div>
-      <div class="readonly-note" id="feed-readonly-note">현재 보기 모드입니다.</div>
       <div id="feed-list" style="margin-top:12px;"></div>
     </div>
   </section>
 
+  <!-- 6. 교사 탭 -->
   <section class="panel" id="panel-teachers">
     <div class="card">
       <h2>🌳 교사 명단</h2>
@@ -477,40 +515,144 @@
           <button class="secondary" id="t-cancel-btn" style="display:none;" onclick="cancelTeacherEdit()">취소</button>
         </div>
       </div>
-      <div class="readonly-note" id="teacher-readonly-note">현재 보기 모드입니다.</div>
     </div>
   </section>
 
-  <section class="panel" id="panel-assign">
+  <!-- 7. 개인준비물 탭 -->
+  <section class="panel" id="panel-personal-supplies">
     <div class="card">
-      <h2>🛏️ 방 배정</h2>
-      <div id="rooms-list"></div>
-      <div class="add-form" id="rooms-form" style="display:none;">
-        <input type="hidden" id="rooms-edit-id" value="" />
-        <div><label>방 이름 (교사 이름 포함 권장)</label><input id="rooms-name" placeholder="예: 홍길동 선생님 방 (201호)" /></div>
-        <div style="display:flex; gap:8px; margin-top:8px;">
-          <button class="primary" id="rooms-submit-btn" onclick="saveGroup('rooms')">방 추가</button>
-          <button class="secondary" id="rooms-cancel-btn" style="display:none;" onclick="cancelGroupEdit('rooms')">취소</button>
+      <h2>🧳 개인 준비물 체크</h2>
+      
+      <!-- 🌤️ 바기오 1월 날씨 & 옷차림 안내 (독립된 알림 상자) -->
+      <div style="background:#FEF7E0; padding:12px 14px; border-radius:12px; font-size:0.82rem; margin-bottom:10px; border:1px solid #F2E3B6;">
+        <div style="font-weight:800; color:#B99248; margin-bottom:6px; font-size:0.88rem;">🌤️ 바기오 1월 날씨 & 추천 옷차림 안내</div>
+        <div style="display:flex; flex-direction:column; gap:4px; color:var(--text);">
+          <div>• <b>날씨 특성</b>: 해발 1,500m 고지대로 1월은 건기이며 서늘하고 쾌적합니다. (낮 20~23℃ / 아침·밤 11~14℃)</div>
+          <div>• <b>옷차림 안내</b>: 낮에는 활동하기 좋은 날씨(반팔/얇은 긴팔), 아침·저녁 및 밤에는 한국 가을~초겨울처럼 쌀쌀합니다.</div>
+          <div>• <b>필수 준비</b>: <b>경량패딩, 바람막이, 후드집업, 가디건</b> 등 겉옷 필수 (실내 난방이 없으므로 따뜻한 잠옷 필수)</div>
         </div>
       </div>
-      <div class="readonly-note" id="rooms-readonly-note">현재 보기 모드입니다.</div>
+
+      <!-- ✈️ 진에어 수하물 & 기내/위탁 반입 상세 규정 안내 (수하물 전용 상자) -->
+      <div style="background:var(--sky-soft); padding:12px 14px; border-radius:12px; font-size:0.82rem; margin-bottom:14px; border:1px solid var(--border);">
+        <div style="font-weight:800; color:var(--sky); margin-bottom:6px; font-size:0.88rem;">✈️ 진에어 수하물 & 기내 반입 규정 안내</div>
+        <div style="display:flex; flex-direction:column; gap:4px; color:var(--text);">
+          <div>• <b>기내 수하물</b>: 1인당 <b>10kg 이하 1개</b> (가로·세로·높이 합 115cm 이내) + 개인 소지품 1개</div>
+          <div>• <b>위탁 수하물</b>: 1인당 <b>15kg 이하 1개</b> (무료 제공, 가로·세로·높이 합 203cm 이내)</div>
+          <div style="color:#1565C0; font-weight:700; margin-top:2px;">🧪 <b>기내 액체류 규정</b>: 용기당 <b>100ml 이하</b> (총 1L 이하 투명 지퍼백 1개에 봉입 시만 허용)</div>
+          <div style="color:#C62828; font-weight:700; margin-top:2px;">🚫 <b>기내 반입 금지 (위탁 처리)</b>: 칼, 가위, 손톱깎이, 커터칼, 뾰족한 도구, 100ml 초과 액체/스프레이류</div>
+          <div style="color:var(--accent); font-weight:700; margin-top:2px;">⚠️ <b>위탁 수하물 금지 (기내 지참)</b>: 보조배터리, 전자담배, 라이터/성냥, 여권, 귀중품/고가품</div>
+        </div>
+      </div>
+
+      <!-- 학생 & 교사 통합 검색 및 선택 -->
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+        <input id="studentSearchInput" placeholder="🔍 학생 또는 교사 이름 검색..." oninput="syncPersonalChecklistDropdown()" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:0.9rem; font-family:inherit;" />
+        <div class="select-wrapper">
+          <select id="studentChecklistSelect" onchange="renderPersonalChecklist()">
+            <!-- 학생 및 교사 목록이 동적으로 동기화됩니다 -->
+          </select>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-info">
+          <span id="personalProgressText">준비 진행률</span>
+          <span id="personalProgressPercent" style="color: var(--accent);">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="personalProgressBar"></div>
+        </div>
+      </div>
     </div>
+
+    <div id="personalChecklistContainer"></div>
+
+    <!-- 관리자 모드 전용: 준비물 항목 및 카테고리 추가 폼 -->
+    <div class="card" id="personal-admin-form-card" style="display:none;">
+      <h2>➕ 개인 준비물 항목/카테고리 추가 (관리자)</h2>
+      <div class="add-form" style="margin-top:0; padding-top:0; border-top:none;">
+        <div>
+          <label>카테고리명 (직접 입력하거나 기존 목록 선택)</label>
+          <input id="ps-add-cat" placeholder="예: 📄 필수 서류 & 환전" list="cat-suggestions" />
+          <datalist id="cat-suggestions">
+            <option value="📄 필수 서류 & 환전"></option>
+            <option value="👕 의류 & 잡화 (고지대 날씨 대비)"></option>
+            <option value="🧴 세면 & 위생/약품"></option>
+            <option value="🔌 전자기기 & 사역 용품"></option>
+          </datalist>
+        </div>
+        <div><label>준비물 항목명</label><input id="ps-add-name" placeholder="예: 세면도구 세트" /></div>
+        <div>
+          <label>수하물 구분</label>
+          <select id="ps-add-type">
+            <option value="carry">✈️ 기내</option>
+            <option value="check">🧳 위탁</option>
+            <option value="none">선택안함</option>
+          </select>
+        </div>
+        <button class="primary" style="margin-top:6px;" onclick="addPersonalItemAdmin()">준비물 항목 추가</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 공용준비물 탭 -->
+  <section class="panel" id="panel-shared-supplies">
     <div class="card">
-      <h2>🚐 차량 배정</h2>
-      <div id="vehicles-list"></div>
-      <div class="add-form" id="vehicles-form" style="display:none;">
-        <input type="hidden" id="vehicles-edit-id" value="" />
-        <div><label>차량 이름</label><input id="vehicles-name" placeholder="예: 1호차" /></div>
-        <div style="display:flex; gap:8px; margin-top:8px;">
-          <button class="primary" id="vehicles-submit-btn" onclick="saveGroup('vehicles')">차량 추가</button>
-          <button class="secondary" id="vehicles-cancel-btn" style="display:none;" onclick="cancelGroupEdit('vehicles')">취소</button>
+      <h2>📦 공용 준비물 체크</h2>
+      <div class="progress-section">
+        <div class="progress-info">
+          <span id="sharedProgressText">준비 진행률</span>
+          <span id="sharedProgressPercent" style="color: var(--accent);">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="sharedProgressBar"></div>
         </div>
       </div>
-      <div class="readonly-note" id="vehicles-readonly-note">현재 보기 모드입니다.</div>
+    </div>
+
+    <div id="sharedChecklistContainer"></div>
+
+    <!-- 관리자 모드 전용: 공용 준비물 항목 및 카테고리 추가 폼 -->
+    <div class="card" id="shared-admin-form-card" style="display:none;">
+      <h2>➕ 공용 준비물 항목/카테고리 추가 (관리자)</h2>
+      <div class="add-form" style="margin-top:0; padding-top:0; border-top:none;">
+        <div>
+          <label>카테고리명 (직접 입력하거나 기존 목록 선택)</label>
+          <input id="sh-add-cat" placeholder="예: 🎭 사역 소품 & 무대 장비" list="sh-cat-suggestions" />
+          <datalist id="sh-cat-suggestions">
+            <option value="🎭 사역 소품 & 무대 장비"></option>
+            <option value="🔊 음향 & 방송/행사 물품"></option>
+            <option value="🏥 구급약 & 안전 용품"></option>
+          </datalist>
+        </div>
+        <div><label>공용 준비물 항목명</label><input id="sh-add-name" placeholder="예: 팀 통합 비상 구급함" /></div>
+        <div>
+          <label>구분 태그</label>
+          <select id="sh-add-tag">
+            <option value="✈️ 팀기내">✈️ 팀기내</option>
+            <option value="🧳 팀위탁">🧳 팀위탁</option>
+            <option value="일반">일반</option>
+          </select>
+        </div>
+        <button class="primary" style="margin-top:6px;" onclick="addSharedItemAdmin()">공용 준비물 항목 추가</button>
+      </div>
     </div>
   </section>
 
 </main>
+
+<!-- 교사 선택 모달 팝업 (공용준비물 체크 전용) -->
+<div id="teacher-select-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:16px;">
+  <div class="card" style="width:100%; max-width:360px; margin:0; background:#fff; border-radius:16px; padding:20px;">
+    <h3 style="margin-top:0; margin-bottom:12px; font-size:1.05rem; font-weight:800; color:var(--sky);">🌳 교사 선택 (체크 담당자)</h3>
+    <input id="modalTeacherSearch" placeholder="🔍 교사 이름 검색..." oninput="renderModalTeacherList()" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); font-size:0.9rem; font-family:inherit; margin-bottom:12px;" />
+    <div id="modalTeacherList" style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-bottom:14px;"></div>
+    <div style="text-align:right;">
+      <button class="secondary" style="padding:8px 14px; font-size:0.85rem;" onclick="closeTeacherModal()">취소</button>
+    </div>
+  </div>
+</div>
 
 <div class="save-bar" id="save-bar">
   <span>⚠️ 변경사항이 저장되지 않았습니다.</span>
@@ -518,9 +660,6 @@
 </div>
 
 <script>
-// ==========================================
-// 🔥 사용자 제공 파이어베이스 설정값 적용 완료
-// ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyCDjGSGqoTiBpkJjl-qtKyaM4jgcnAUGig",
   authDomain: "baguio-youth-2027.firebaseapp.com",
@@ -530,11 +669,84 @@ const firebaseConfig = {
   appId: "1:978455943873:web:859cc3780f24743b365240"
 };
 
-// 파이어베이스 초기화
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 const DOC_REF = db.collection('baguio_youth_mission').doc('shared_data');
+
+// 기본 개인 준비물 마스터 목록 (초기 전체 세부 항목 복원)
+const defaultPersonalChecklistData = [
+  {
+    category: "📄 필수 서류 & 환전",
+    items: [
+      { id: "p1", name: "여권 (유효기간 6개월 이상)", tag: "✈️ 기내", type: "carry" },
+      { id: "p2", name: "eTravel QR코드 출력/캡처본", tag: "✈️ 기내", type: "carry" },
+      { id: "p3", name: "개인 용돈 (페소/달러)", tag: "✈️ 기내", type: "carry" },
+      { id: "p4", name: "여권 사본 및 여권용 사진 2매 (분실 대비)", tag: "✈️ 기내", type: "carry" }
+    ]
+  },
+  {
+    category: "👕 의류 & 잡화 (고지대 날씨 대비)",
+    items: [
+      { id: "c1", name: "얇은 겉옷/바람막이 (아침·저녁 쌀쌀)", tag: "🧳 위탁", type: "check" },
+      { id: "c2", name: "경량패딩 또는 후드집업/가디건", tag: "🧳 위탁", type: "check" },
+      { id: "c3", name: "사역용 단체 티셔츠 & 단정한 바지", tag: "🧳 위탁", type: "check" },
+      { id: "c4", name: "접이식 우산 또는 우비 (스콜 대비)", tag: "🧳 위탁", type: "check" },
+      { id: "c5", name: "편한 운동화 & 삼선 슬리퍼", tag: "🧳 위탁", type: "check" },
+      { id: "c6", name: "속옷 및 여벌 옷 4~5벌", tag: "🧳 위탁", type: "check" },
+      { id: "c7", name: "따뜻한 잠옷 (실내 난방 없음)", tag: "🧳 위탁", type: "check" },
+      { id: "c8", name: "모자 및 선글라스", tag: "🧳 위탁", type: "check" }
+    ]
+  },
+  {
+    category: "🧴 세면 & 위생/약품",
+    items: [
+      { id: "m1", name: "개인 세면도구 (수건, 칫솔, 샴푸 등)", tag: "🧳 위탁", type: "check" },
+      { id: "m2", name: "모기퇴치제 / 자외선 차단제", tag: "🧳 위탁", type: "check" },
+      { id: "m3", name: "개인 복용약 (소화제, 밴드 등)", tag: "✈️ 기내", type: "carry" },
+      { id: "m4", name: "휴대용 물티슈 및 휴지", tag: "✈️ 기내", type: "carry" },
+      { id: "m5", name: "립밤 및 보습 로션/크림", tag: "🧳 위탁", type: "check" }
+    ]
+  },
+  {
+    category: "🔌 전자기기 & 사역 용품",
+    items: [
+      { id: "e1", name: "보조배터리 (10000mAh 이상)", tag: "✈️ 기내 필수", type: "carry" },
+      { id: "e2", name: "충전기 & 멀티 돼지코 어댑터", tag: "🧳 위탁", type: "check" },
+      { id: "e3", name: "성경책 & 필기도구", tag: "✈️ 기내", type: "carry" },
+      { id: "e4", name: "개인 텀블러 / 휴대용 물병", tag: "🧳 위탁", type: "check" },
+      { id: "e5", name: "서브 가방 / 에코백", tag: "✈️ 기내", type: "carry" }
+    ]
+  }
+];
+
+// 기본 공용 준비물 마스터 데이터
+const defaultSharedChecklistData = [
+  {
+    category: "🎭 사역 소품 & 무대 장비",
+    items: [
+      { id: "sh1", name: "무언극 의상 및 소품 상자", tag: "🧳 팀위탁" },
+      { id: "sh2", name: "풍선아트 펌프 & 풍선 재고", tag: "🧳 팀위탁" },
+      { id: "sh3", name: "태권도 시범 격파용 송판 & 도복", tag: "🧳 팀위탁" },
+      { id: "sh4", name: "복음팔찌 제작 재료 전용 상자", tag: "🧳 팀위탁" }
+    ]
+  },
+  {
+    category: "🔊 음향 & 방송/행사 물품",
+    items: [
+      { id: "sh5", name: "버스킹용 포터블 앰프 & 마이크", tag: "✈️ 팀기내" },
+      { id: "sh6", name: "단체 단체 현수막 (메인/보조)", tag: "🧳 팀위탁" },
+      { id: "sh7", name: "선물용 한국 간식 및 물품 box", tag: "🧳 팀위탁" }
+    ]
+  },
+  {
+    category: "🏥 구급약 & 안전 용품",
+    items: [
+      { id: "sh8", name: "팀 통합 비상 구급함", tag: "✈️ 팀기내" },
+      { id: "sh9", name: "체온계 & 코로나 진단키트", tag: "✈️ 팀기내" }
+    ]
+  }
+];
 
 let state = {
   tripDate: "2027-01-10",
@@ -545,23 +757,25 @@ let state = {
   teachers: [],
   rooms: [],
   vehicles: [],
-  flightInfos: []
+  flightInfos: [],
+  personalChecks: {}, 
+  personalChecklistData: cloneData(defaultPersonalChecklistData),
+  sharedChecks: {},    // { itemId: { checkedBy: "교사이름" } }
+  sharedChecklistData: cloneData(defaultSharedChecklistData)
 };
 
-// 서버에 마지막으로 동기화된 상태.
 let baseState = null;
 let latestRemoteState = null;
 let canEdit = false;
 let dirty = false;
 let dirtyFields = new Set();
 let firebaseAuthReady = false;
+let activeSharedItemIdForCheck = null;
 
-// 깊은 복사
 function cloneData(data) {
   return JSON.parse(JSON.stringify(data));
 }
 
-// 배열 항목의 id를 기준으로 3-way 병합.
 function mergeArrayById(base, local, remote) {
   const b = Array.isArray(base) ? base : [];
   const l = Array.isArray(local) ? local : [];
@@ -586,31 +800,21 @@ function mergeArrayById(base, local, remote) {
     const localChanged = JSON.stringify(lv) !== JSON.stringify(bv);
     const remoteChanged = JSON.stringify(rv) !== JSON.stringify(bv);
 
-    if (!lv && bv) {
-      if (remoteChanged && rv) result.push(rv);
-      continue;
-    }
-
+    if (!lv && bv) continue;
     if (!rv && bv) {
       if (localChanged && lv) result.push(lv);
       continue;
     }
-
     if (!bv) {
       if (lv) result.push(lv);
-      if (rv && !lv) result.push(rv);
+      else if (rv) result.push(rv);
       continue;
     }
 
-    if (localChanged) {
-      result.push(lv);
-    } else if (remoteChanged) {
-      result.push(rv);
-    } else if (rv) {
-      result.push(rv);
-    } else if (lv) {
-      result.push(lv);
-    }
+    if (localChanged) result.push(lv);
+    else if (remoteChanged) result.push(rv);
+    else if (rv) result.push(rv);
+    else if (lv) result.push(lv);
   }
 
   return result;
@@ -628,14 +832,6 @@ function buildSavePayload(remoteOverride = null) {
 
     if (Array.isArray(localValue)) {
       payload[field] = mergeArrayById(baseValue, localValue, remoteValue);
-    } else if (
-      localValue &&
-      typeof localValue === 'object' &&
-      remoteValue &&
-      typeof remoteValue === 'object' &&
-      !Array.isArray(localValue)
-    ) {
-      payload[field] = cloneData(localValue);
     } else {
       payload[field] = cloneData(localValue);
     }
@@ -650,6 +846,16 @@ function initFirebaseRealtimeSync() {
       const remote = doc.data();
       if (!remote.flightInfos) remote.flightInfos = [];
       if (!remote.prepSchedule) remote.prepSchedule = [];
+      if (!remote.personalChecks) remote.personalChecks = {};
+      
+      // 🛠️ 빈 배열([])이 들어와 있더라도 기본 준비물 목록이 강제로 채워지도록 수정
+      if (!remote.personalChecklistData || !remote.personalChecklistData.length) {
+        remote.personalChecklistData = cloneData(defaultPersonalChecklistData);
+      }
+      if (!remote.sharedChecks) remote.sharedChecks = {};
+      if (!remote.sharedChecklistData || !remote.sharedChecklistData.length) {
+        remote.sharedChecklistData = cloneData(defaultSharedChecklistData);
+      }
 
       latestRemoteState = cloneData(remote);
 
@@ -667,12 +873,10 @@ function initFirebaseRealtimeSync() {
         })
         .catch(error => {
           console.error("최초 Firestore 문서 생성 실패:", error);
-          alert("Firebase 데이터 초기화에 실패했습니다: " + error.message);
         });
     }
   }, (error) => {
     console.error("실시간 동기화 에러:", error);
-    alert("Firebase 실시간 연결에 실패했습니다: " + error.message);
   });
 }
 
@@ -680,12 +884,10 @@ async function initFirebaseAuth() {
   try {
     await auth.signInAnonymously();
     firebaseAuthReady = true;
-    console.log("Firebase 익명 인증 완료:", auth.currentUser?.uid);
     initFirebaseRealtimeSync();
   } catch (error) {
     firebaseAuthReady = false;
     console.error("Firebase 익명 인증 실패:", error);
-    alert("Firebase 인증에 실패했습니다. Firebase Console의 '익명' 로그인 설정을 확인해주세요.\n\n" + error.message);
   }
 }
 
@@ -741,8 +943,8 @@ async function saveToCloud() {
     document.getElementById('save-bar').classList.remove('show');
     renderAll();
   } catch (e) {
-    console.error('Firestore 저장 실패:', e, { state, dirtyFields: [...dirtyFields] });
-    alert('저장 중 오류가 발생했습니다.\n\n' + (e.code ? e.code + '\n' : '') + e.message);
+    console.error('Firestore 저장 실패:', e);
+    alert('저장 중 오류가 발생했습니다.\n\n' + e.message);
   }
 }
 
@@ -773,19 +975,16 @@ function renderDday() {
   }
 }
 
-// 방 이름에 포함된 교사 이름을 찾거나 방에 배정된 교사를 찾아 담당 교사로 지정
 function getAssignedTeacherName(participantId) {
   let teacherName = '';
   (state.rooms || []).forEach(r => {
     const hasParticipant = (r.members || []).some(m => m.type === 'participant' && m.id === participantId);
     if (hasParticipant) {
-      // 방 멤버 중 교사가 있는지 확인
       const teacherMember = (r.members || []).find(m => m.type === 'teacher');
       if (teacherMember) {
         const t = (state.teachers || []).find(x => x.id === teacherMember.id);
         if (t) teacherName = t.name;
       }
-      // 교사가 멤버로 없으면 방 이름에서 교사 이름 매칭 시도
       if (!teacherName) {
         (state.teachers || []).forEach(t => {
           if (t.name && r.name.includes(t.name)) {
@@ -865,13 +1064,12 @@ function renderParticipants() {
               </div>
             </div>
           </div>
-          ${canEdit ? `<div style="text-align:right; margin-top:8px;"><button class="edit-btn" onclick="startEditParticipant('${p.id}')">수정</button><button class="del-btn" onclick="removeParticipant('${p.id}')">삭제</button></div>` : ''}
+          ${canEdit ? `<div style="text-align:right; margin-top:4px;"><button class="edit-btn" onclick="startEditParticipant('${p.id}')">수정</button><button class="del-btn" onclick="removeParticipant('${p.id}')">삭제</button></div>` : ''}
         </div>
       `;
     }).join('');
   }
   document.getElementById('participant-form').style.display = canEdit ? 'flex' : 'none';
-  document.getElementById('participant-readonly-note').style.display = canEdit ? 'none' : 'block';
 }
 
 function submitParticipant() {
@@ -894,6 +1092,7 @@ function submitParticipant() {
   }
   cancelParticipantEdit();
   renderParticipants();
+  syncPersonalChecklistDropdown();
   markDirty('participants');
 }
 
@@ -928,6 +1127,7 @@ function removeParticipant(id) {
   state.participants = state.participants.filter(p => p.id !== id);
   renderParticipants();
   renderAssign();
+  syncPersonalChecklistDropdown();
   markDirty('participants');
 }
 
@@ -958,23 +1158,19 @@ function renderTeachers() {
           </div>
         </div>
         <div class="meta" style="margin-top:6px;">🌱 담당 학생 (${kids.length}명): ${kids.length ? kids.map(k => escapeHtml(k.name)).join(', ') : '없음'}</div>
-        ${canEdit ? `<div style="text-align:right; margin-top:8px;"><button class="edit-btn" onclick="startEditTeacher('${t.id}')">수정</button><button class="del-btn" onclick="removeTeacher('${t.id}')">삭제</button></div>` : ''}
+        ${canEdit ? `<div style="text-align:right; margin-top:4px;"><button class="edit-btn" onclick="startEditTeacher('${t.id}')">수정</button><button class="del-btn" onclick="removeTeacher('${t.id}')">삭제</button></div>` : ''}
       </div>
     `;
     }).join('');
   }
   document.getElementById('teacher-form').style.display = canEdit ? 'flex' : 'none';
-  document.getElementById('teacher-readonly-note').style.display = canEdit ? 'none' : 'block';
 }
 
 function submitTeacher() {
   const name = document.getElementById('t-name').value.trim();
   if (!name) { alert('이름을 입력해주세요.'); return; }
   const roles = Array.from(document.querySelectorAll('.t-role-box:checked')).map(el => el.value);
-  const data = {
-    name,
-    roles,
-  };
+  const data = { name, roles };
   const editId = document.getElementById('t-edit-id').value;
   if(!state.teachers) state.teachers = [];
   if (editId) {
@@ -987,6 +1183,7 @@ function submitTeacher() {
   renderTeachers();
   renderTeacherAuthorOptions();
   renderParticipants();
+  syncPersonalChecklistDropdown();
   markDirty('teachers');
 }
 
@@ -1018,6 +1215,7 @@ function removeTeacher(id) {
   renderTeachers();
   renderTeacherAuthorOptions();
   renderParticipants();
+  syncPersonalChecklistDropdown();
   markDirty('teachers');
 }
 
@@ -1147,10 +1345,7 @@ function renderAssign() {
     } else {
       roomsList.innerHTML = rooms.map(r => `
         <div class="item" style="margin-bottom:8px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong>${escapeHtml(r.name)}</strong>
-            ${canEdit ? `<div><button class="edit-btn" onclick="startEditGroup('rooms', '${r.id}')">수정</button><button class="del-btn" onclick="removeGroup('rooms', '${r.id}')">삭제</button></div>` : ''}
-          </div>
+          <div><strong>${escapeHtml(r.name)}</strong></div>
           <div class="chip-row" style="margin-top:6px;">
             ${(r.members && r.members.length) ? r.members.map(m => `<span class="chip ok">${m.type === 'participant' ? '🌱 ' + participantName(m.id) : '🌳 ' + teacherName(m.id)} ${canEdit ? `<button style="background:none;border:none;color:#fff;cursor:pointer;margin-left:4px;" onclick="removeMember('rooms','${r.id}','${m.type}','${m.id}')">×</button>` : ''}</span>`).join('') : '<span class="meta">배정된 인원이 없어요</span>'}
           </div>
@@ -1162,12 +1357,15 @@ function renderAssign() {
               </select>
               <button class="secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="addMemberToGroup('rooms', '${r.id}')">추가</button>
             </div>
+            <div style="text-align:right; margin-top:8px; display:flex; gap:8px; justify-content:flex-end;">
+              <button class="edit-btn" style="margin-right:0;" onclick="startEditGroup('rooms', '${r.id}')">수정</button>
+              <button class="del-btn" onclick="removeGroup('rooms', '${r.id}')">삭제</button>
+            </div>
           ` : ''}
         </div>
       `).join('');
     }
     document.getElementById('rooms-form').style.display = canEdit ? 'flex' : 'none';
-    document.getElementById('rooms-readonly-note').style.display = canEdit ? 'none' : 'block';
   }
 
   const vehiclesList = document.getElementById('vehicles-list');
@@ -1178,10 +1376,7 @@ function renderAssign() {
     } else {
       vehiclesList.innerHTML = vehicles.map(v => `
         <div class="item" style="margin-bottom:8px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong>${escapeHtml(v.name)}</strong>
-            ${canEdit ? `<div><button class="edit-btn" onclick="startEditGroup('vehicles', '${v.id}')">수정</button><button class="del-btn" onclick="removeGroup('vehicles', '${v.id}')">삭제</button></div>` : ''}
-          </div>
+          <div><strong>${escapeHtml(v.name)}</strong></div>
           <div class="chip-row" style="margin-top:6px;">
             ${(v.members && v.members.length) ? v.members.map(m => `<span class="chip ok">${m.type === 'participant' ? '🌱 ' + participantName(m.id) : '🌳 ' + teacherName(m.id)} ${canEdit ? `<button style="background:none;border:none;color:#fff;cursor:pointer;margin-left:4px;" onclick="removeMember('vehicles','${v.id}','${m.type}','${m.id}')">×</button>` : ''}</span>`).join('') : '<span class="meta">배정된 인원이 없어요</span>'}
           </div>
@@ -1193,12 +1388,15 @@ function renderAssign() {
               </select>
               <button class="secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="addMemberToGroup('vehicles', '${v.id}')">추가</button>
             </div>
+            <div style="text-align:right; margin-top:8px; display:flex; gap:8px; justify-content:flex-end;">
+              <button class="edit-btn" style="margin-right:0;" onclick="startEditGroup('vehicles', '${v.id}')">수정</button>
+              <button class="del-btn" onclick="removeGroup('vehicles', '${v.id}')">삭제</button>
+            </div>
           ` : ''}
         </div>
       `).join('');
     }
     document.getElementById('vehicles-form').style.display = canEdit ? 'flex' : 'none';
-    document.getElementById('vehicles-readonly-note').style.display = canEdit ? 'none' : 'block';
   }
 }
 
@@ -1242,9 +1440,8 @@ function renderFlightInfo() {
               <span class="badge" style="margin-right:6px;">${escapeHtml(fi.airline || '항공사 미정')}</span>
               <span class="bp-flightno">${escapeHtml(fi.flightNo || '편명 미정')}</span>
             </div>
-            <div style="display:flex; align-items:center; gap:8px;">
+            <div>
               <span class="status-tag status-${fi.status}">${statusLabel}</span>
-              ${canEdit ? `<button class="edit-btn" style="margin-right:0;" onclick="startEditFlight('${fi.id}')">수정</button><button class="del-btn" onclick="removeFlight('${fi.id}')">삭제</button>` : ''}
             </div>
           </div>
           <div class="bp-route">
@@ -1267,13 +1464,13 @@ function renderFlightInfo() {
           <div class="bp-details">
             <div><div class="bp-detail-label">수화물 허용량</div><div class="bp-detail-value">${escapeHtml(fi.baggage || '-')}</div></div>
           </div>
+          ${canEdit ? `<div style="text-align:right; margin-top:4px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditFlight('${fi.id}')">수정</button><button class="del-btn" onclick="removeFlight('${fi.id}')">삭제</button></div>` : ''}
         </div>
       `;
     }).join('');
   }
 
   document.getElementById('flightinfo-form').style.display = canEdit ? 'flex' : 'none';
-  document.getElementById('flightinfo-readonly-note').style.display = canEdit ? 'none' : 'block';
 }
 
 function getTimeValue(prefix) {
@@ -1429,7 +1626,7 @@ function renderSchedule() {
       return `
         <div class="day-block">
           <div class="day-title">
-            ${escapeHtml(formatScheduleDate(s.date))}
+            <span>${escapeHtml(formatScheduleDate(s.date))}</span>
             ${canEdit ? `<button class="del-btn" onclick="removeSchedule('${s.id}')">이 날짜 삭제</button>` : ''}
           </div>
           <div class="timeline">
@@ -1437,8 +1634,11 @@ function renderSchedule() {
               const idx = s.items.indexOf(it);
               return `
               <div class="timeline-row">
-                <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>
-                <span class="tl-activity">${escapeHtml(it.activity)}</span>${canEdit ? `<span style="margin-left:auto; display:flex; gap:4px; align-items:center;"><button class="edit-btn" style="margin-right:0;" onclick="startEditScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removeScheduleItem('${s.id}', ${idx})">삭제</button></span>` : ''}
+                <div style="display:flex; gap:10px; align-items:center;">
+                  <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>
+                  <span class="tl-activity" style="flex:1;">${escapeHtml(it.activity)}</span>
+                </div>
+                ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removeScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
               </div>
             `;
             }).join('')}
@@ -1447,7 +1647,6 @@ function renderSchedule() {
     }).join('');
   }
   document.getElementById('schedule-form').style.display = canEdit ? 'flex' : 'none';
-  document.getElementById('schedule-readonly-note').style.display = canEdit ? 'none' : 'block';
 }
 
 function addScheduleEntry() {
@@ -1549,7 +1748,6 @@ function removeScheduleItem(dayId, idx) {
   markDirty('schedule');
 }
 
-// 분류 단추(칩) 색상 지정 함수
 function getCategoryChip(cat) {
   const colors = {
     '교사': 'background: #47664e; color: #fff;',
@@ -1564,7 +1762,6 @@ function getCategoryChip(cat) {
   return `<span class="chip" style="${style} margin-right:4px; border:none;">${escapeHtml(cat)}</span>`;
 }
 
-// 준비일정 렌더링 및 로직
 function renderPrepSchedule() {
   const list = document.getElementById('prep-schedule-list');
   if(!list) return;
@@ -1577,7 +1774,7 @@ function renderPrepSchedule() {
       return `
         <div class="day-block">
           <div class="day-title">
-            ${escapeHtml(formatScheduleDate(s.date))}
+            <span>${escapeHtml(formatScheduleDate(s.date))}</span>
             ${canEdit ? `<button class="del-btn" onclick="removePrepSchedule('${s.id}')">이 날짜 삭제</button>` : ''}
           </div>
           <div class="timeline">
@@ -1585,12 +1782,17 @@ function renderPrepSchedule() {
               const idx = s.items.indexOf(it);
               return `
               <div class="timeline-row">
-                <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>
-                <span class="tl-activity" style="flex:1;">
-                  ${(it.categories && it.categories.length) ? it.categories.map(c => getCategoryChip(c)).join('') : ''}
-                  <div style="font-weight:700; margin-top:2px;">${escapeHtml(it.activity)}</div>${it.place ? `<div class="meta" style="margin-top:2px;">📍 ${escapeHtml(it.place)}</div>` : ''}
-                </span>
-                ${canEdit ? `<span style="margin-left:auto; display:flex; gap:4px; align-self:flex-start;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPrepItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button></span>` : ''}
+                <div style="display:flex; gap:10px; align-items:flex-start;">
+                  <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>
+                  <span class="tl-activity" style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                      ${(it.categories && it.categories.length) ? it.categories.map(c => getCategoryChip(c)).join('') : ''}
+                      ${it.place ? `<span class="meta" style="font-weight:650;">📍 ${escapeHtml(it.place)}</span>` : ''}
+                    </div>
+                    <div style="font-weight:700; margin-top:4px;">${escapeHtml(it.activity)}</div>
+                  </span>
+                </div>
+                ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPrepItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
               </div>
             `;
             }).join('')}
@@ -1599,7 +1801,6 @@ function renderPrepSchedule() {
     }).join('');
   }
   document.getElementById('prep-schedule-form').style.display = canEdit ? 'flex' : 'none';
-  document.getElementById('prep-schedule-readonly-note').style.display = canEdit ? 'none' : 'block';
 }
 
 function addPrepScheduleEntry() {
@@ -1720,26 +1921,40 @@ function renderFeed() {
     const sorted = [...posts].sort((a,b) => b.ts - a.ts);
     list.innerHTML = sorted.map(p => `
       <div class="post">
-        ${p.title ? `<div style="font-weight:700; font-size:0.98rem; margin-bottom:2px;">${escapeHtml(p.title)}</div>` : ''}
-        <span class="author">${escapeHtml(p.author || '교사')}</span><span class="date">${new Date(p.ts).toLocaleString('ko-KR')}</span>
-        ${canEdit ? `<div style="float:right;"><button class="edit-btn" onclick="startEditPost('${p.id}')">수정</button><button class="del-btn" onclick="removePost('${p.id}')">삭제</button></div>` : ''}
-        ${(p.date || p.place) ? `<div class="meta" style="margin-top:4px;">${p.date ? '📅 ' + escapeHtml(p.date) : ''}${p.date && p.place ? ' · ' : ''}${p.place ? '📍 ' + escapeHtml(p.place) : ''}</div>` : ''}
-        <div class="text">${escapeHtml(p.text)}</div>
+        <div style="font-size:0.82rem; color:var(--muted); margin-bottom:4px;">[📅 ${escapeHtml(p.date || '')}]</div>
+        ${p.title ? `<div style="font-weight:700; font-size:0.98rem; margin-bottom:4px;">${escapeHtml(p.title)}</div>` : ''}
+        <div class="text" style="margin-bottom:6px;">${escapeHtml(p.text)}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <div>${p.place ? `<span class="meta">📍 ${escapeHtml(p.place)}</span>` : ''}</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="author" style="font-weight:700; font-size:0.88rem;">${escapeHtml(p.author || '교사')}</span>
+          </div>
+        </div>
+        ${canEdit ? `<div style="text-align:right; margin-top:8px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPost('${p.id}')">수정</button><button class="del-btn" onclick="removePost('${p.id}')">삭제</button></div>` : ''}
       </div>
     `).join('');
   }
   document.getElementById('feed-form').style.display = canEdit ? 'flex' : 'none';
-  document.getElementById('feed-readonly-note').style.display = canEdit ? 'none' : 'block';
 }
 
 function addPost() {
   const text = document.getElementById('post-text').value.trim();
   const title = document.getElementById('post-title').value.trim();
   const author = document.getElementById('post-author').value;
-  const editId = document.getElementById('post-edit-id').value;
+  let dateVal = document.getElementById('post-date').value;
 
   if (!author) { alert('작성자(교사)를 선택해주세요.'); return; }
   if (!text && !title) { alert('제목이나 내용을 입력해주세요.'); return; }
+
+  if (!dateVal) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    dateVal = `${yyyy}-${mm}-${dd}`;
+  }
+
+  const editId = document.getElementById('post-edit-id').value;
   if(!state.posts) state.posts = [];
 
   if (editId) {
@@ -1747,7 +1962,7 @@ function addPost() {
     if (p) {
       p.author = author;
       p.title = title;
-      p.date = document.getElementById('post-date').value;
+      p.date = dateVal;
       p.place = document.getElementById('post-place').value.trim();
       p.text = text;
     }
@@ -1756,7 +1971,7 @@ function addPost() {
       id: uid(),
       author,
       title,
-      date: document.getElementById('post-date').value,
+      date: dateVal,
       place: document.getElementById('post-place').value.trim(),
       text,
       ts: Date.now(),
@@ -1795,9 +2010,438 @@ function cancelPostEdit() {
 }
 
 function removePost(id) {
+  if(!confirm('정말 삭제하시겠습니까?')) return;
   state.posts = state.posts.filter(p => p.id !== id);
   renderFeed();
   markDirty('posts');
+}
+
+// ----------------------------------------------------
+// 🧳 개인 준비물 체크리스트 함수 (학생 + 교사 통합 검색)
+// ----------------------------------------------------
+function syncPersonalChecklistDropdown() {
+  const select = document.getElementById('studentChecklistSelect');
+  const searchInput = document.getElementById('studentSearchInput');
+  if (!select) return;
+
+  const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  const currentVal = select.value;
+
+  const students = (state.participants || []).map(p => ({ id: p.id, name: p.name, label: `🌱 ${p.name} (학생)` }));
+  const teachers = (state.teachers || []).map(t => ({ id: t.id, name: t.name, label: `🌳 ${t.name} (교사)` }));
+
+  const people = [...students, ...teachers]
+    .filter(s => (s.name || '').toLowerCase().includes(searchTerm))
+    .slice()
+    .sort((a,b) => (a.name||'').localeCompare(b.name||'','ko'));
+
+  if (!people.length) {
+    select.innerHTML = '<option value="">등록된 학생/교사가 없거나 검색 결과가 없습니다</option>';
+    document.getElementById('personalChecklistContainer').innerHTML = '<div class="card"><div class="empty">준비물을 확인할 학생 또는 교사를 먼저 등록해주세요.</div></div>';
+    updatePersonalProgress(0, 0);
+  } else {
+    select.innerHTML = people.map(s => `<option value="${s.id}">${escapeHtml(s.label)} 준비물</option>`).join('');
+    
+    if (currentVal && people.some(s => s.id === currentVal)) {
+      select.value = currentVal;
+    } else {
+      select.value = people[0].id;
+    }
+    renderPersonalChecklist();
+  }
+}
+
+function renderPersonalChecklist() {
+  const select = document.getElementById('studentChecklistSelect');
+  const container = document.getElementById('personalChecklistContainer');
+  const adminFormCard = document.getElementById('personal-admin-form-card');
+
+  if (adminFormCard) {
+    adminFormCard.style.display = canEdit ? 'block' : 'none';
+  }
+
+  if (!select || !container) return;
+
+  const personId = select.value;
+  const personExists = (state.participants || []).some(s => s.id === personId) || (state.teachers || []).some(t => t.id === personId);
+
+  if (!personId || !personExists) {
+    container.innerHTML = '<div class="card"><div class="empty">선택된 인원이 없거나 학생/교사 명단에 등록된 인원이 없습니다. (학생 또는 교사 탭에서 먼저 추가해주세요)</div></div>';
+    updatePersonalProgress(0, 0);
+    return;
+  }
+
+  const checkedIds = (state.personalChecks && state.personalChecks[personId]) || [];
+  
+  // 🛠️ state 내 준비물 데이터가 비어 있거나 결측되었을 경우 기본 마스터 목록(여권 등 포함)을 안전하게 반환
+  const checklist = (state.personalChecklistData && state.personalChecklistData.length > 0)
+    ? state.personalChecklistData
+    : cloneData(defaultPersonalChecklistData);
+
+  container.innerHTML = checklist.map((cat, cIdx) => `
+    <div class="card">
+      <div class="category-title">
+        <span>${escapeHtml(cat.category)}</span>
+        ${canEdit ? `
+          <div style="display:flex; gap:6px;">
+            <button class="edit-btn" style="font-size:0.75rem;" onclick="editPersonalCategoryAdmin(${cIdx})">수정</button>
+            <button class="del-btn" style="font-size:0.75rem;" onclick="removePersonalCategoryAdmin(${cIdx})">삭제</button>
+          </div>
+        ` : ''}
+      </div>
+      <div class="item-list">
+        ${(cat.items || []).map((item, iIdx) => {
+          const isChecked = checkedIds.includes(item.id);
+          let badgeClass = 'badge-none';
+          let tagText = item.tag || '';
+          if (item.type === 'carry') {
+            badgeClass = 'badge-carry';
+            if(!tagText) tagText = '✈️ 기내';
+          } else if (item.type === 'check') {
+            badgeClass = 'badge-check';
+            if(!tagText) tagText = '🧳 위탁';
+          }
+
+          return `
+            <div class="item-row ${isChecked ? 'checked' : ''}">
+              <div class="item-left" onclick="togglePersonalCheck('${personId}', '${item.id}')">
+                <div class="custom-checkbox"></div>
+                <span class="item-name">${escapeHtml(item.name)}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                ${item.type !== 'none' ? `<span class="${badgeClass}">${escapeHtml(tagText)}</span>` : ''}
+                ${canEdit ? `<button class="del-btn" style="margin-left:4px;" onclick="removePersonalItemAdmin(${cIdx}, ${iIdx})">삭제</button>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  let totalItems = 0;
+  checklist.forEach(c => totalItems += (c.items || []).length);
+  updatePersonalProgress(checkedIds.length, totalItems);
+}
+
+function togglePersonalCheck(personId, itemId) {
+  if (!state.personalChecks) state.personalChecks = {};
+  if (!state.personalChecks[personId]) state.personalChecks[personId] = [];
+
+  const arr = state.personalChecks[personId];
+  const idx = arr.indexOf(itemId);
+  if (idx > -1) {
+    arr.splice(idx, 1);
+  } else {
+    arr.push(itemId);
+  }
+
+  renderPersonalChecklist();
+  markDirty('personalChecks');
+}
+
+function addPersonalItemAdmin() {
+  const catInput = document.getElementById('ps-add-cat');
+  const nameInput = document.getElementById('ps-add-name');
+  const typeSelect = document.getElementById('ps-add-type');
+
+  const categoryName = catInput.value.trim();
+  const itemName = nameInput.value.trim();
+  const itemType = typeSelect.value;
+
+  if (!categoryName || !itemName) {
+    alert('카테고리와 준비물 항목명을 입력해주세요.');
+    return;
+  }
+
+  if (!state.personalChecklistData || !state.personalChecklistData.length) {
+    state.personalChecklistData = cloneData(defaultPersonalChecklistData);
+  }
+
+  let catObj = state.personalChecklistData.find(c => c.category === categoryName);
+  if (!catObj) {
+    catObj = { category: categoryName, items: [] };
+    state.personalChecklistData.push(catObj);
+  }
+
+  let tag = '';
+  if (itemType === 'carry') tag = '✈️ 기내';
+  else if (itemType === 'check') tag = '🧳 위탁';
+
+  catObj.items.push({
+    id: 'custom_p_' + uid(),
+    name: itemName,
+    tag: tag,
+    type: itemType
+  });
+
+  nameInput.value = '';
+  renderPersonalChecklist();
+  markDirty('personalChecklistData');
+}
+
+function editPersonalCategoryAdmin(cIdx) {
+  if (!state.personalChecklistData || !state.personalChecklistData[cIdx]) return;
+  const current = state.personalChecklistData[cIdx].category;
+  const newName = prompt('수정할 카테고리 이름을 입력하세요:', current);
+  if (newName && newName.trim() && newName.trim() !== current) {
+    state.personalChecklistData[cIdx].category = newName.trim();
+    renderPersonalChecklist();
+    markDirty('personalChecklistData');
+  }
+}
+
+function removePersonalCategoryAdmin(cIdx) {
+  if (!confirm('카테고리와 내부 모든 준비물 항목이 삭제됩니다. 정말 삭제하시겠습니까?')) return;
+  if (!state.personalChecklistData) return;
+  state.personalChecklistData.splice(cIdx, 1);
+  renderPersonalChecklist();
+  markDirty('personalChecklistData');
+}
+
+function removePersonalItemAdmin(cIdx, iIdx) {
+  if (!confirm('해당 준비물 항목을 삭제하시겠습니까?')) return;
+  if (!state.personalChecklistData) return;
+
+  if (state.personalChecklistData[cIdx] && state.personalChecklistData[cIdx].items) {
+    state.personalChecklistData[cIdx].items.splice(iIdx, 1);
+    if (state.personalChecklistData[cIdx].items.length === 0) {
+      state.personalChecklistData.splice(cIdx, 1);
+    }
+  }
+
+  renderPersonalChecklist();
+  markDirty('personalChecklistData');
+}
+
+function updatePersonalProgress(checkedCount, totalCount) {
+  const textEl = document.getElementById('personalProgressText');
+  const percentEl = document.getElementById('personalProgressPercent');
+  const barEl = document.getElementById('personalProgressBar');
+
+  const percent = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+
+  if (textEl) textEl.innerText = `준비 진행률 (${checkedCount}/${totalCount})`;
+  if (percentEl) percentEl.innerText = `${percent}%`;
+  if (barEl) barEl.style.width = `${percent}%`;
+}
+
+// ----------------------------------------------------
+// 📦 공용 준비물 체크리스트 함수 (편집 & 교사 선택 모달 검색 연동)
+// ----------------------------------------------------
+function getSharedCheckInfo(itemId) {
+  if (!state.sharedChecks) return null;
+  if (Array.isArray(state.sharedChecks)) {
+    return state.sharedChecks.includes(itemId) ? { checkedBy: '확인됨' } : null;
+  }
+  if (typeof state.sharedChecks === 'object') {
+    const val = state.sharedChecks[itemId];
+    if (!val) return null;
+    if (typeof val === 'string') return { checkedBy: val };
+    if (typeof val === 'object' && val.checkedBy) return val;
+    return { checkedBy: '확인됨' };
+  }
+  return null;
+}
+
+function renderSharedChecklist() {
+  const container = document.getElementById('sharedChecklistContainer');
+  const adminFormCard = document.getElementById('shared-admin-form-card');
+
+  if (adminFormCard) {
+    adminFormCard.style.display = canEdit ? 'block' : 'none';
+  }
+
+  if (!container) return;
+
+  const checklist = (state.sharedChecklistData && state.sharedChecklistData.length > 0)
+    ? state.sharedChecklistData
+    : cloneData(defaultSharedChecklistData);
+  let checkedCount = 0;
+
+  container.innerHTML = checklist.map((cat, cIdx) => `
+    <div class="card">
+      <div class="category-title">
+        <span>${escapeHtml(cat.category)}</span>
+        ${canEdit ? `
+          <div style="display:flex; gap:6px;">
+            <button class="edit-btn" style="font-size:0.75rem;" onclick="editSharedCategoryAdmin(${cIdx})">수정</button>
+            <button class="del-btn" style="font-size:0.75rem;" onclick="removeSharedCategoryAdmin(${cIdx})">삭제</button>
+          </div>
+        ` : ''}
+      </div>
+      <div class="item-list">
+        ${(cat.items || []).map((item, iIdx) => {
+          const checkInfo = getSharedCheckInfo(item.id);
+          const isChecked = !!checkInfo;
+          if (isChecked) checkedCount++;
+
+          return `
+            <div class="item-row ${isChecked ? 'checked' : ''}">
+              <div class="item-left" onclick="toggleSharedCheck('${item.id}')">
+                <div class="custom-checkbox"></div>
+                <div>
+                  <span class="item-name">${escapeHtml(item.name)}</span>${isChecked ? `<div style="font-size:0.75rem; color:var(--sky); font-weight:700; margin-top:2px;">✍️ 체크: ${escapeHtml(checkInfo.checkedBy)}</div>` : ''}
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span class="badge-carry">${escapeHtml(item.tag)}</span>${canEdit ? `<button class="del-btn" style="margin-left:4px;" onclick="removeSharedItemAdmin(${cIdx}, ${iIdx})">삭제</button>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  let totalItems = 0;
+  checklist.forEach(c => totalItems += (c.items || []).length);
+  updateSharedProgress(checkedCount, totalItems);
+}
+
+function toggleSharedCheck(itemId) {
+  if (!state.sharedChecks || Array.isArray(state.sharedChecks)) {
+    const newObj = {};
+    if (Array.isArray(state.sharedChecks)) {
+      state.sharedChecks.forEach(id => { newObj[id] = { checkedBy: '기존확인' }; });
+    }
+    state.sharedChecks = newObj;
+  }
+
+  if (state.sharedChecks[itemId]) {
+    delete state.sharedChecks[itemId];
+    renderSharedChecklist();
+    markDirty('sharedChecks');
+  } else {
+    activeSharedItemIdForCheck = itemId;
+    openTeacherModal();
+  }
+}
+
+// 교사 선택 모달 관련 제어 함수
+function openTeacherModal() {
+  const modal = document.getElementById('teacher-select-modal');
+  const searchInput = document.getElementById('modalTeacherSearch');
+  if (searchInput) searchInput.value = '';
+  renderModalTeacherList();
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeTeacherModal() {
+  const modal = document.getElementById('teacher-select-modal');
+  if (modal) modal.style.display = 'none';
+  activeSharedItemIdForCheck = null;
+}
+
+function renderModalTeacherList() {
+  const container = document.getElementById('modalTeacherList');
+  const searchInput = document.getElementById('modalTeacherSearch');
+  if (!container) return;
+
+  const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  const teachers = (state.teachers || []).filter(t => (t.name || '').toLowerCase().includes(query));
+
+  if (!teachers.length) {
+    container.innerHTML = '<div style="color:var(--muted); font-size:0.85rem; padding:10px 0; text-align:center;">등록된 교사가 없거나 검색 결과가 없습니다.</div>';
+    return;
+  }
+
+  container.innerHTML = teachers.map(t => `
+    <button style="width:100%; text-align:left; padding:10px 12px; background:var(--bg); border:1px solid var(--border); border-radius:10px; font-weight:700; font-size:0.88rem; cursor:pointer; color:var(--text);" onclick="selectTeacherForSharedCheck('${escapeHtml(t.name)}')">
+      🌳 ${escapeHtml(t.name)} 교사
+    </button>
+  `).join('');
+}
+
+function selectTeacherForSharedCheck(teacherName) {
+  if (!activeSharedItemIdForCheck) return;
+  if (!state.sharedChecks) state.sharedChecks = {};
+
+  state.sharedChecks[activeSharedItemIdForCheck] = { checkedBy: teacherName };
+  closeTeacherModal();
+  renderSharedChecklist();
+  markDirty('sharedChecks');
+}
+
+function addSharedItemAdmin() {
+  const catInput = document.getElementById('sh-add-cat');
+  const nameInput = document.getElementById('sh-add-name');
+  const tagSelect = document.getElementById('sh-add-tag');
+
+  const categoryName = catInput.value.trim();
+  const itemName = nameInput.value.trim();
+  const itemTag = tagSelect.value;
+
+  if (!categoryName || !itemName) {
+    alert('카테고리와 공용 준비물 항목명을 입력해주세요.');
+    return;
+  }
+
+  if (!state.sharedChecklistData || !state.sharedChecklistData.length) {
+    state.sharedChecklistData = cloneData(defaultSharedChecklistData);
+  }
+
+  let catObj = state.sharedChecklistData.find(c => c.category === categoryName);
+  if (!catObj) {
+    catObj = { category: categoryName, items: [] };
+    state.sharedChecklistData.push(catObj);
+  }
+
+  catObj.items.push({
+    id: 'custom_sh_' + uid(),
+    name: itemName,
+    tag: itemTag
+  });
+
+  nameInput.value = '';
+  renderSharedChecklist();
+  markDirty('sharedChecklistData');
+}
+
+function editSharedCategoryAdmin(cIdx) {
+  if (!state.sharedChecklistData || !state.sharedChecklistData[cIdx]) return;
+  const current = state.sharedChecklistData[cIdx].category;
+  const newName = prompt('수정할 카테고리 이름을 입력하세요:', current);
+  if (newName && newName.trim() && newName.trim() !== current) {
+    state.sharedChecklistData[cIdx].category = newName.trim();
+    renderSharedChecklist();
+    markDirty('sharedChecklistData');
+  }
+}
+
+function removeSharedCategoryAdmin(cIdx) {
+  if (!confirm('카테고리와 내부 모든 공용 준비물이 삭제됩니다. 정말 삭제하시겠습니까?')) return;
+  if (!state.sharedChecklistData) return;
+  state.sharedChecklistData.splice(cIdx, 1);
+  renderSharedChecklist();
+  markDirty('sharedChecklistData');
+}
+
+function removeSharedItemAdmin(cIdx, iIdx) {
+  if (!confirm('해당 공용 준비물 항목을 삭제하시겠습니까?')) return;
+  if (!state.sharedChecklistData) return;
+
+  if (state.sharedChecklistData[cIdx] && state.sharedChecklistData[cIdx].items) {
+    state.sharedChecklistData[cIdx].items.splice(iIdx, 1);
+    if (state.sharedChecklistData[cIdx].items.length === 0) {
+      state.sharedChecklistData.splice(cIdx, 1);
+    }
+  }
+
+  renderSharedChecklist();
+  markDirty('sharedChecklistData');
+}
+
+function updateSharedProgress(checkedCount, totalCount) {
+  const textEl = document.getElementById('sharedProgressText');
+  const percentEl = document.getElementById('sharedProgressPercent');
+  const barEl = document.getElementById('sharedProgressBar');
+
+  const percent = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+
+  if (textEl) textEl.innerText = `준비 진행률 (${checkedCount}/${totalCount})`;
+  if (percentEl) percentEl.innerText = `${percent}%`;
+  if (barEl) barEl.style.width = `${percent}%`;
 }
 
 function wireDateParts(prefix) {
@@ -1807,41 +2451,30 @@ function wireDateParts(prefix) {
   if(!y || !m || !d) return;
   y.addEventListener('input', () => { y.value = y.value.replace(/\D/g, '').slice(0, 4); if (y.value.length === 4) m.focus(); });
   m.addEventListener('input', () => { m.value = m.value.replace(/\D/g, '').slice(0, 2); if (m.value.length === 2) d.focus(); });
-  d.addEventListener('input', () => { 
-    d.value = d.value.replace(/\D/g, '').slice(0, 2); 
-  });
+  d.addEventListener('input', () => { d.value = d.value.replace(/\D/g, '').slice(0, 2); });
 }
 wireDateParts('s-date');
 wireDateParts('ps-date');
 wireDateParts('fi-dep');
 wireDateParts('fi-arr');
 
-// 일정/준비일정 탭 시간 입력 자동 포커스 이동 처리
 function wireScheduleAutoTab(prefix) {
   const ampm = document.getElementById(prefix + '-item-ampm');
   const hour = document.getElementById(prefix + '-item-hour');
   const minute = document.getElementById(prefix + '-item-minute');
   const activity = document.getElementById(prefix + '-item-activity');
 
-  if (ampm) {
-    ampm.addEventListener('change', () => {
-      if (hour) hour.focus();
-    });
-  }
+  if (ampm) ampm.addEventListener('change', () => { if (hour) hour.focus(); });
   if (hour) {
     hour.addEventListener('input', () => {
       hour.value = hour.value.replace(/\D/g, '').slice(0, 2);
-      if (hour.value.length === 2 && minute) {
-        minute.focus();
-      }
+      if (hour.value.length === 2 && minute) minute.focus();
     });
   }
   if (minute) {
     minute.addEventListener('input', () => {
       minute.value = minute.value.replace(/\D/g, '').slice(0, 2);
-      if (minute.value.length === 2 && activity) {
-        activity.focus();
-      }
+      if (minute.value.length === 2 && activity) activity.focus();
     });
   }
 }
@@ -1902,17 +2535,16 @@ function renderAll() {
   renderPrepSchedule();
   renderFeed();
   renderAssign();
+  syncPersonalChecklistDropdown();
+  renderSharedChecklist();
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 🔥 페이지 로드 즉시 기본 화면 먼저 렌더링
   renderAll();
 
-  // 일정 및 준비일정 탭 자동 포커스 이동 연결
   wireScheduleAutoTab('s');
   wireScheduleAutoTab('ps');
 
-  // 🔐 먼저 Firebase 익명 인증을 완료한 뒤 실시간 동기화를 시작합니다.
   initFirebaseAuth();
 
   document.querySelectorAll('nav.tabs button').forEach(btn => {
