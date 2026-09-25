@@ -201,7 +201,8 @@
   <section class="panel" id="panel-participants">
     <div class="card">
       <h2>🌱 학생 명단</h2>
-      <input id="p-search-teacher" placeholder="이름 또는 담당 교사로 검색" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:0.9rem; font-family:inherit; margin-bottom:10px;" />
+      <!-- 🔎 oninput 이벤트 추가됨 -->
+      <input id="p-search-teacher" placeholder="이름 또는 담당 교사로 검색" oninput="renderParticipants()" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:0.9rem; font-family:inherit; margin-bottom:10px;" />
       <div class="row-list" id="participant-list"></div>
       
       <div class="add-form" id="participant-form" style="display:none;">
