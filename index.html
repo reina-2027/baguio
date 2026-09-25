@@ -225,7 +225,10 @@
       <span>출발일: <span id="trip-date-text">2027-01-10</span></span>
     </div>
   </div>
-  <button class="admin-btn" id="admin-login-btn" onclick="toggleAdminMode()">관리자 모드</button>
+  <div style="display:flex; gap:6px; align-items:center;">
+    <button class="admin-btn" style="background:var(--sky-soft); color:var(--sky); border-color:var(--sky);" onclick="openInstallModal()">📱 앱 설치법</button>
+    <button class="admin-btn" id="admin-login-btn" onclick="toggleAdminMode()">관리자 모드</button>
+  </div>
 </header>
 
 <nav class="tabs">
@@ -642,6 +645,44 @@
 
 </main>
 
+<!-- 앱 설치 방법 안내 모달 팝업 -->
+<div id="install-guide-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:16px;">
+  <div class="card" style="width:100%; max-width:400px; margin:0; background:#fff; border-radius:16px; padding:20px; max-height:85vh; overflow-y:auto;">
+    <h3 style="margin-top:0; margin-bottom:12px; font-size:1.1rem; font-weight:800; color:var(--sky);">📱 홈 화면에 앱 설치하기</h3>
+    
+    <div style="background:#FEF7E0; padding:10px 12px; border-radius:10px; font-size:0.82rem; margin-bottom:12px; border:1px solid #F2E3B6; color:#B99248; font-weight:700;">
+      ⚠️ 카카오톡·네이버 등 인앱 브라우저에서는 설치가 안 될 수 있습니다. 우측 상단/하단의 <b>[사파리(Safari) 또는 크롬(Chrome)으로 열기]</b>를 먼저 눌러주세요!
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px; font-size:0.86rem; color:var(--text);">
+      <div style="background:var(--bg); padding:10px 12px; border-radius:10px; border:1px solid var(--border);">
+        <div style="font-weight:800; color:var(--sky); margin-bottom:4px;">🍎 아이폰 (iPhone / Safari)</div>
+        <div>1. 화면 하단의 <b>[공유하기] 버튼</b>(사각형 안 위쪽 화살표 ⬆️) 터치</div>
+        <div>2. 메뉴를 아래로 내려 <b>[홈 화면에 추가]</b> 선택</div>
+        <div>3. 우측 상단 <b>[추가]</b>를 누르면 바탕화면에 앱 생성 완료!</div>
+      </div>
+
+      <div style="background:var(--bg); padding:10px 12px; border-radius:10px; border:1px solid var(--border);">
+        <div style="font-weight:800; color:var(--sky); margin-bottom:4px;">🤖 안드로이드 (Galaxy / Chrome)</div>
+        <div>1. 우측 상단의 <b>[메뉴] 버튼</b>(점 3개 ⠇) 터치</div>
+        <div>2. 메뉴에서 <b>[앱 설치]</b> 또는 <b>[홈 화면에 추가]</b> 선택</div>
+        <div>3. <b>[설치]</b> 또는 <b>[추가]</b>를 누르면 바탕화면에 앱 생성 완료!</div>
+      </div>
+
+      <div style="background:var(--bg); padding:10px 12px; border-radius:10px; border:1px solid var(--border);">
+        <div style="font-weight:800; color:var(--sky); margin-bottom:4px;">🌐 삼성 인터넷 브라우저 (Samsung Internet)</div>
+        <div>1. 우측 하단의 <b>[메뉴] 버튼</b>(줄 3개 ☰) 터치</div>
+        <div>2. <b>[현재 페이지 추가]</b> 또는 <b>[네이버/홈 화면에 추가]</b> 선택</div>
+        <div>3. <b>[홈 화면]</b>을 눌러 추가 완료!</div>
+      </div>
+    </div>
+
+    <div style="text-align:right; margin-top:16px;">
+      <button class="primary" style="padding:8px 16px; font-size:0.85rem;" onclick="closeInstallModal()">확인</button>
+    </div>
+  </div>
+</div>
+
 <!-- 교사 선택 모달 팝업 (공용준비물 체크 전용) -->
 <div id="teacher-select-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:16px;">
   <div class="card" style="width:100%; max-width:360px; margin:0; background:#fff; border-radius:16px; padding:20px;">
@@ -848,7 +889,6 @@ function initFirebaseRealtimeSync() {
       if (!remote.prepSchedule) remote.prepSchedule = [];
       if (!remote.personalChecks) remote.personalChecks = {};
       
-      // 🛠️ 빈 배열([])이 들어와 있더라도 기본 준비물 목록이 강제로 채워지도록 수정
       if (!remote.personalChecklistData || !remote.personalChecklistData.length) {
         remote.personalChecklistData = cloneData(defaultPersonalChecklistData);
       }
@@ -889,6 +929,17 @@ async function initFirebaseAuth() {
     firebaseAuthReady = false;
     console.error("Firebase 익명 인증 실패:", error);
   }
+}
+
+// 앱 설치 가이드 모달 제어 함수
+function openInstallModal() {
+  const modal = document.getElementById('install-guide-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeInstallModal() {
+  const modal = document.getElementById('install-guide-modal');
+  if (modal) modal.style.display = 'none';
 }
 
 function toggleAdminMode() {
@@ -2073,7 +2124,6 @@ function renderPersonalChecklist() {
 
   const checkedIds = (state.personalChecks && state.personalChecks[personId]) || [];
   
-  // 🛠️ state 내 준비물 데이터가 비어 있거나 결측되었을 경우 기본 마스터 목록(여권 등 포함)을 안전하게 반환
   const checklist = (state.personalChecklistData && state.personalChecklistData.length > 0)
     ? state.personalChecklistData
     : cloneData(defaultPersonalChecklistData);
@@ -2540,7 +2590,6 @@ function renderAll() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 🔄 탭 상태 복원 로직
   const savedTab = localStorage.getItem('baguio_active_tab');
   if (savedTab) {
     const targetBtn = document.querySelector(`nav.tabs button[data-tab="${savedTab}"]`);
@@ -2578,7 +2627,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const panel = document.getElementById('panel-' + btn.dataset.tab);
       if (panel) panel.classList.add('active');
       
-      // 선택한 탭을 localStorage에 저장
       localStorage.setItem('baguio_active_tab', btn.dataset.tab);
     });
   });
