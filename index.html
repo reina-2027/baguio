@@ -945,7 +945,7 @@ function closeInstallModal() {
 function toggleAdminMode() {
   if (canEdit) {
     canEdit = false;
-    document.getElementById('admin-login-btn').textContent = '관리자 모드';
+    document.getElementById('admin-login-btn').textContent = '관리모드';
     document.getElementById('admin-login-btn').classList.remove('active');
     renderAll();
     return;
@@ -953,7 +953,7 @@ function toggleAdminMode() {
   const pw = prompt('비밀번호를 입력하세요.');
   if (pw === '0110') {
     canEdit = true;
-    document.getElementById('admin-login-btn').textContent = '관리자 ON (편집중)';
+    document.getElementById('admin-login-btn').textContent = '관리모드';
     document.getElementById('admin-login-btn').classList.add('active');
     renderAll();
   } else if (pw !== null) {
