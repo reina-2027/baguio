@@ -202,7 +202,7 @@
   .progress-bar-bg { width: 100%; height: 10px; background-color: #EFECE6; border-radius: 5px; overflow: hidden; }
   .progress-bar-fill { height: 100%; width: 0%; background-color: var(--accent); border-radius: 5px; transition: width 0.3s ease; }
   .category-title { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
-  .item-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .item-list { list-style: none; display: flex; flex-direction: column; gap: 12px; padding-left: 0; margin: 0; }
   .item-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px dashed var(--border); cursor: pointer; }
   .item-row:last-child { border-bottom: none; padding-bottom: 0; }
   .item-left { display: flex; align-items: center; gap: 10px; flex: 1; }
@@ -512,6 +512,7 @@
             <label class="role-check"><input type="checkbox" class="t-role-box" value="조식" /><span>조식</span></label>
             <label class="role-check"><input type="checkbox" class="t-role-box" value="선물" /><span>선물</span></label>
             <label class="role-check"><input type="checkbox" class="t-role-box" value="의료" /><span>의료</span></label>
+            <label class="role-check"><input type="checkbox" class="t-role-box" value="입국서류" /><span>입국서류</span></label>
             <label class="role-check"><input type="checkbox" class="t-role-box" value="부모소통" /><span>부모소통</span></label>
           </div>
         </div>
@@ -778,7 +779,7 @@ const defaultSharedChecklistData = [
     category: "🔊 음향 & 방송/행사 물품",
     items: [
       { id: "sh5", name: "버스킹용 포터블 앰프 & 마이크", tag: "✈️ 팀기내" },
-      { id: "sh6", name: "단체 단체 현수막 (메인/보조)", tag: "🧳 팀위탁" },
+      { id: "sh6", name: "단체 현수막 (메인/보조)", tag: "🧳 팀위탁" },
       { id: "sh7", name: "선물용 한국 간식 및 물품 box", tag: "🧳 팀위탁" }
     ]
   },
@@ -803,7 +804,7 @@ let state = {
   flightInfos: [],
   personalChecks: {}, 
   personalChecklistData: cloneData(defaultPersonalChecklistData),
-  sharedChecks: {},    // { itemId: { checkedBy: "교사이름" } }
+  sharedChecks: {},
   sharedChecklistData: cloneData(defaultSharedChecklistData)
 };
 
@@ -1758,17 +1759,16 @@ function addScheduleEntry() {
   markDirty('schedule');
 }
 
-function startEditScheduleItem(dayId, idx) {
+function startEditScheduleItem(dayId, itemIdx) {
   const day = (state.schedule || []).find(s => s.id === dayId);
-  if (!day || !day.items || !day.items[idx]) return;
-  const it = day.items[idx];
-
-  setDateValue('s-date', day.date);
-  parseTime24ToParts(it.time, 's');
-  document.getElementById('s-item-activity').value = it.activity || '';
+  if (!day || !day.items || !day.items[itemIdx]) return;
+  const item = day.items[itemIdx];
+  
   document.getElementById('s-edit-day-id').value = dayId;
-  document.getElementById('s-edit-item-idx').value = idx;
-
+  document.getElementById('s-edit-item-idx').value = itemIdx;
+  setDateValue('s-date', day.date || '');
+  parseTime24ToParts(item.time, 's');
+  document.getElementById('s-item-activity').value = item.activity || '';
   document.getElementById('s-submit-btn').textContent = '저장';
   document.getElementById('s-cancel-btn').style.display = 'inline-block';
   document.getElementById('panel-schedule').scrollIntoView({behavior:'smooth'});
@@ -1778,41 +1778,29 @@ function cancelScheduleEdit() {
   document.getElementById('s-edit-day-id').value = '';
   document.getElementById('s-edit-item-idx').value = '';
   setDateValue('s-date', '');
-  document.getElementById('s-item-ampm').value = '오전';
-  document.getElementById('s-item-hour').value = '';
-  document.getElementById('s-item-minute').value = '';
+  parseTime24ToParts('', 's');
   document.getElementById('s-item-activity').value = '';
   document.getElementById('s-submit-btn').textContent = '일정 추가';
   document.getElementById('s-cancel-btn').style.display = 'none';
 }
 
-function removeSchedule(id) {
-  state.schedule = state.schedule.filter(s => s.id !== id);
-  renderSchedule();
-  markDirty('schedule');
-}
-
-function removeScheduleItem(dayId, idx) {
-  const day = state.schedule.find(s => s.id === dayId);
+function removeScheduleItem(dayId, itemIdx) {
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+  const day = (state.schedule || []).find(s => s.id === dayId);
   if (!day || !day.items) return;
-  day.items.splice(idx, 1);
-  if (day.items.length === 0) state.schedule = state.schedule.filter(s => s.id !== dayId);
+  day.items.splice(itemIdx, 1);
+  if (day.items.length === 0) {
+    state.schedule = state.schedule.filter(s => s.id !== dayId);
+  }
   renderSchedule();
   markDirty('schedule');
 }
 
-function getCategoryChip(cat) {
-  const colors = {
-    '교사': 'background: #47664e; color: #fff;',
-    '워십': 'background: #96586c; color: #fff;',
-    '무언극': 'background: #c97a4a; color: #fff;',
-    '풍선아트': 'background: #b99248; color: #fff;',
-    '태권도': 'background: #3d5a80; color: #fff;',
-    '영어전도': 'background: #2b9348; color: #fff;',
-    '복음팔찌': 'background: #f77f00; color: #fff;'
-  };
-  const style = colors[cat] || 'background: var(--sky); color: #fff;';
-  return `<span class="chip" style="${style} margin-right:4px; border:none;">${escapeHtml(cat)}</span>`;
+function removeSchedule(dayId) {
+  if (!confirm('이 날짜의 모든 일정을 삭제하시겠습니까?')) return;
+  state.schedule = (state.schedule || []).filter(s => s.id !== dayId);
+  renderSchedule();
+  markDirty('schedule');
 }
 
 function renderPrepSchedule() {
@@ -1835,17 +1823,12 @@ function renderPrepSchedule() {
               const idx = s.items.indexOf(it);
               return `
               <div class="timeline-row">
-                <div style="display:flex; gap:10px; align-items:flex-start;">
-                  <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>
-                  <span class="tl-activity" style="flex:1;">
-                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                      ${(it.categories && it.categories.length) ? it.categories.map(c => getCategoryChip(c)).join('') : ''}
-                      ${it.place ? `<span class="meta" style="font-weight:650;">📍 ${escapeHtml(it.place)}</span>` : ''}
-                    </div>
-                    <div style="font-weight:700; margin-top:4px;">${escapeHtml(it.activity)}</div>
-                  </span>
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                  <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>${it.place ? `<span class="chip">${escapeHtml(it.place)}</span>` : ''}
+                  <span class="tl-activity" style="flex:1;">${escapeHtml(it.activity)}</span>
                 </div>
-                ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPrepItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
+                ${(it.categories && it.categories.length) ? `<div class="chip-row" style="margin-top:4px;">${it.categories.map(c => `<span class="chip ok">${escapeHtml(c)}</span>`).join('')}</div>` : ''}
+                ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
               </div>
             `;
             }).join('')}
@@ -1860,8 +1843,8 @@ function addPrepScheduleEntry() {
   const date = getDateValue('ps-date');
   const hourInput = document.getElementById('ps-item-hour');
   const minuteInput = document.getElementById('ps-item-minute');
-  const activity = document.getElementById('ps-item-activity').value.trim();
   const place = document.getElementById('ps-item-place').value.trim();
+  const activity = document.getElementById('ps-item-activity').value.trim();
   const categories = Array.from(document.querySelectorAll('.ps-cat-box:checked')).map(el => el.value);
   const editDayId = document.getElementById('ps-edit-day-id').value;
   const editIdx = document.getElementById('ps-edit-item-idx').value;
@@ -1878,7 +1861,7 @@ function addPrepScheduleEntry() {
   }
   if(!state.prepSchedule) state.prepSchedule = [];
 
-  const itemData = { time, activity, place, categories };
+  const itemData = { time, place, activity, categories };
 
   if (editDayId !== '' && editIdx !== '') {
     const oldDay = state.prepSchedule.find(s => s.id === editDayId);
@@ -1914,22 +1897,21 @@ function addPrepScheduleEntry() {
   markDirty('prepSchedule');
 }
 
-function startEditPrepItem(dayId, idx) {
+function startEditPrepScheduleItem(dayId, itemIdx) {
   const day = (state.prepSchedule || []).find(s => s.id === dayId);
-  if (!day || !day.items || !day.items[idx]) return;
-  const it = day.items[idx];
+  if (!day || !day.items || !day.items[itemIdx]) return;
+  const item = day.items[itemIdx];
 
-  setDateValue('ps-date', day.date);
-  parseTime24ToParts(it.time, 'ps');
-  document.getElementById('ps-item-activity').value = it.activity || '';
-  document.getElementById('ps-item-place').value = it.place || '';
-  const categories = it.categories || [];
-  document.querySelectorAll('.ps-cat-box').forEach(box => {
-    box.checked = categories.includes(box.value);
-  });
   document.getElementById('ps-edit-day-id').value = dayId;
-  document.getElementById('ps-edit-item-idx').value = idx;
-
+  document.getElementById('ps-edit-item-idx').value = itemIdx;
+  setDateValue('ps-date', day.date || '');
+  parseTime24ToParts(item.time, 'ps');
+  document.getElementById('ps-item-place').value = item.place || '';
+  document.getElementById('ps-item-activity').value = item.activity || '';
+  const cats = item.categories || [];
+  document.querySelectorAll('.ps-cat-box').forEach(box => {
+    box.checked = cats.includes(box.value);
+  });
   document.getElementById('ps-submit-btn').textContent = '저장';
   document.getElementById('ps-cancel-btn').style.display = 'inline-block';
   document.getElementById('panel-prep-schedule').scrollIntoView({behavior:'smooth'});
@@ -1939,255 +1921,197 @@ function cancelPrepScheduleEdit() {
   document.getElementById('ps-edit-day-id').value = '';
   document.getElementById('ps-edit-item-idx').value = '';
   setDateValue('ps-date', '');
-  document.getElementById('ps-item-ampm').value = '오전';
-  document.getElementById('ps-item-hour').value = '';
-  document.getElementById('ps-item-minute').value = '';
-  document.getElementById('ps-item-activity').value = '';
+  parseTime24ToParts('', 'ps');
   document.getElementById('ps-item-place').value = '';
+  document.getElementById('ps-item-activity').value = '';
   document.querySelectorAll('.ps-cat-box').forEach(box => box.checked = false);
   document.getElementById('ps-submit-btn').textContent = '준비 일정 추가';
   document.getElementById('ps-cancel-btn').style.display = 'none';
 }
 
-function removePrepSchedule(id) {
-  state.prepSchedule = state.prepSchedule.filter(s => s.id !== id);
-  renderPrepSchedule();
-  markDirty('prepSchedule');
-}
-
-function removePrepScheduleItem(dayId, idx) {
-  const day = state.prepSchedule.find(s => s.id === dayId);
+function removePrepScheduleItem(dayId, itemIdx) {
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+  const day = (state.prepSchedule || []).find(s => s.id === dayId);
   if (!day || !day.items) return;
-  day.items.splice(idx, 1);
-  if (day.items.length === 0) state.prepSchedule = state.prepSchedule.filter(s => s.id !== dayId);
+  day.items.splice(itemIdx, 1);
+  if (day.items.length === 0) {
+    state.prepSchedule = state.prepSchedule.filter(s => s.id !== dayId);
+  }
   renderPrepSchedule();
   markDirty('prepSchedule');
 }
 
-function renderFeed() {
+function removePrepSchedule(dayId) {
+  if (!confirm('이 날짜의 모든 준비 일정을 삭제하시겠습니까?')) return;
+  state.prepSchedule = (state.prepSchedule || []).filter(s => s.id !== dayId);
+  renderPrepSchedule();
+  markDirty('prepSchedule');
+}
+
+function renderPosts() {
   const list = document.getElementById('feed-list');
   if(!list) return;
+  renderTeacherAuthorOptions();
   const posts = state.posts || [];
   if (!posts.length) {
-    list.innerHTML = '<div class="empty">아직 등록된 공지가 없어요.</div>';
+    list.innerHTML = '<div class="empty">등록된 공지가 없어요.</div>';
   } else {
-    const sorted = [...posts].sort((a,b) => b.ts - a.ts);
+    const sorted = [...posts].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
     list.innerHTML = sorted.map(p => `
       <div class="post">
-        <div style="font-size:0.82rem; color:var(--muted); margin-bottom:4px;">[📅 ${escapeHtml(p.date || '')}]</div>
-        ${p.title ? `<div style="font-weight:700; font-size:0.98rem; margin-bottom:4px;">${escapeHtml(p.title)}</div>` : ''}
-        <div class="text" style="margin-bottom:6px;">${escapeHtml(p.text)}</div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-          <div>${p.place ? `<span class="meta">📍 ${escapeHtml(p.place)}</span>` : ''}</div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="author" style="font-weight:700; font-size:0.88rem;">${escapeHtml(p.author || '교사')}</span>
-          </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><span class="author">${escapeHtml(p.author || '관리자')}</span><span class="date">${escapeHtml(p.date || '')}</span></div>
+          ${canEdit ? `<button class="del-btn" onclick="removePost('${p.id}')">삭제</button>` : ''}
         </div>
-        ${canEdit ? `<div style="text-align:right; margin-top:8px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPost('${p.id}')">수정</button><button class="del-btn" onclick="removePost('${p.id}')">삭제</button></div>` : ''}
+        ${p.title ? `<div style="font-weight:700; margin-top:4px; font-size:0.96rem;">${escapeHtml(p.title)}</div>` : ''}
+        ${p.place ? `<div class="meta" style="margin-top:2px;">📍 장소: ${escapeHtml(p.place)}</div>` : ''}
+        <div class="text">${escapeHtml(p.text || '')}</div>
       </div>
     `).join('');
   }
-  document.getElementById('feed-form').style.display = canEdit ? 'flex' : 'none';
+  document.getElementById('feed-form').style.display = canEdit ? 'block' : 'none';
 }
 
 function addPost() {
-  const text = document.getElementById('post-text').value.trim();
-  const title = document.getElementById('post-title').value.trim();
   const author = document.getElementById('post-author').value;
-  let dateVal = document.getElementById('post-date').value;
+  const title = document.getElementById('post-title').value.trim();
+  const dateInput = document.getElementById('post-date').value;
+  const place = document.getElementById('post-place').value.trim();
+  const text = document.getElementById('post-text').value.trim();
 
-  if (!author) { alert('작성자(교사)를 선택해주세요.'); return; }
-  if (!text && !title) { alert('제목이나 내용을 입력해주세요.'); return; }
+  if (!author) { alert('작성자를 선택해주세요.'); return; }
+  if (!text) { alert('내용을 입력해주세요.'); return; }
 
-  if (!dateVal) {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    dateVal = `${yyyy}-${mm}-${dd}`;
-  }
+  const date = dateInput || new Date().toISOString().split('T')[0];
 
-  const editId = document.getElementById('post-edit-id').value;
-  if(!state.posts) state.posts = [];
+  if (!state.posts) state.posts = [];
+  state.posts.push({ id: uid(), author, title, date, place, text });
 
-  if (editId) {
-    const p = state.posts.find(x => x.id === editId);
-    if (p) {
-      p.author = author;
-      p.title = title;
-      p.date = dateVal;
-      p.place = document.getElementById('post-place').value.trim();
-      p.text = text;
-    }
-  } else {
-    state.posts.push({
-      id: uid(),
-      author,
-      title,
-      date: dateVal,
-      place: document.getElementById('post-place').value.trim(),
-      text,
-      ts: Date.now(),
-    });
-  }
+  document.getElementById('post-title').value = '';
+  document.getElementById('post-date').value = '';
+  document.getElementById('post-place').value = '';
+  document.getElementById('post-text').value = '';
 
-  cancelPostEdit();
-  renderFeed();
+  renderPosts();
   markDirty('posts');
-}
-
-function startEditPost(id) {
-  const p = (state.posts || []).find(x => x.id === id);
-  if (!p) return;
-  document.getElementById('post-edit-id').value = id;
-  document.getElementById('post-author').value = p.author || '';
-  document.getElementById('post-title').value = p.title || '';
-  document.getElementById('post-date').value = p.date || '';
-  document.getElementById('post-place').value = p.place || '';
-  document.getElementById('post-text').value = p.text || '';
-
-  const submitBtn = document.querySelector('#feed-form button.primary');
-  if (submitBtn) submitBtn.textContent = '공지 수정 완료';
-  document.getElementById('panel-feed').scrollIntoView({behavior:'smooth'});
-}
-
-function cancelPostEdit() {
-  document.getElementById('post-edit-id').value = '';
-  document.getElementById('post-author').value = '';
-  ['post-title','post-date','post-place','post-text'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.value = '';
-  });
-  const submitBtn = document.querySelector('#feed-form button.primary');
-  if (submitBtn) submitBtn.textContent = '공지 등록';
 }
 
 function removePost(id) {
   if(!confirm('정말 삭제하시겠습니까?')) return;
-  state.posts = state.posts.filter(p => p.id !== id);
-  renderFeed();
+  state.posts = (state.posts || []).filter(p => p.id !== id);
+  renderPosts();
   markDirty('posts');
 }
 
-// ----------------------------------------------------
-// 🧳 개인 준비물 체크리스트 함수 (학생 + 교사 통합 검색)
-// ----------------------------------------------------
 function syncPersonalChecklistDropdown() {
   const select = document.getElementById('studentChecklistSelect');
   const searchInput = document.getElementById('studentSearchInput');
   if (!select) return;
 
   const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+  const students = (state.participants || []).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')).map(p => ({
+    key: 'p_' + p.id,
+    name: '🌱 ' + p.name + (p.grade ? ' (' + p.grade + ')' : '')
+  }));
+
+  const teachers = (state.teachers || []).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')).map(t => ({
+    key: 't_' + t.id,
+    name: '🌳 ' + t.name + ' (교사)'
+  }));
+
+  const allPeople = [...students, ...teachers];
+  const filtered = searchTerm ? allPeople.filter(x => x.name.toLowerCase().includes(searchTerm)) : allPeople;
+
   const currentVal = select.value;
-
-  const students = (state.participants || []).map(p => ({ id: p.id, name: p.name, label: `🌱 ${p.name} (학생)` }));
-  const teachers = (state.teachers || []).map(t => ({ id: t.id, name: t.name, label: `🌳 ${t.name} (교사)` }));
-
-  const people = [...students, ...teachers]
-    .filter(s => (s.name || '').toLowerCase().includes(searchTerm))
-    .slice()
-    .sort((a,b) => (a.name||'').localeCompare(b.name||'','ko'));
-
-  if (!people.length) {
-    select.innerHTML = '<option value="">등록된 학생/교사가 없거나 검색 결과가 없습니다</option>';
-    document.getElementById('personalChecklistContainer').innerHTML = '<div class="card"><div class="empty">준비물을 확인할 학생 또는 교사를 먼저 등록해주세요.</div></div>';
-    updatePersonalProgress(0, 0);
+  if (!filtered.length) {
+    select.innerHTML = '<option value="">검색 결과가 없어요</option>';
   } else {
-    select.innerHTML = people.map(s => `<option value="${s.id}">${escapeHtml(s.label)} 준비물</option>`).join('');
-    
-    if (currentVal && people.some(s => s.id === currentVal)) {
+    select.innerHTML = filtered.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
+    if (filtered.some(x => x.key === currentVal)) {
       select.value = currentVal;
-    } else {
-      select.value = people[0].id;
     }
-    renderPersonalChecklist();
   }
+  renderPersonalChecklist();
 }
 
 function renderPersonalChecklist() {
   const select = document.getElementById('studentChecklistSelect');
   const container = document.getElementById('personalChecklistContainer');
-  const adminFormCard = document.getElementById('personal-admin-form-card');
-
-  if (adminFormCard) {
-    adminFormCard.style.display = canEdit ? 'block' : 'none';
-  }
-
+  const adminCard = document.getElementById('personal-admin-form-card');
   if (!select || !container) return;
 
-  const personId = select.value;
-  const personExists = (state.participants || []).some(s => s.id === personId) || (state.teachers || []).some(t => t.id === personId);
+  if (adminCard) adminCard.style.display = canEdit ? 'block' : 'none';
 
-  if (!personId || !personExists) {
-    container.innerHTML = '<div class="card"><div class="empty">선택된 인원이 없거나 학생/교사 명단에 등록된 인원이 없습니다. (학생 또는 교사 탭에서 먼저 추가해주세요)</div></div>';
-    updatePersonalProgress(0, 0);
+  const personKey = select.value;
+  if (!personKey) {
+    container.innerHTML = '<div class="card"><div class="empty">학생 또는 교사를 선택해주세요.</div></div>';
+    const percentEl = document.getElementById('personalProgressPercent');
+    const barEl = document.getElementById('personalProgressBar');
+    if (percentEl) percentEl.textContent = '0%';
+    if (barEl) barEl.style.width = '0%';
     return;
   }
 
-  const checkedIds = (state.personalChecks && state.personalChecks[personId]) || [];
-  
-  const checklist = (state.personalChecklistData && state.personalChecklistData.length > 0)
-    ? state.personalChecklistData
-    : cloneData(defaultPersonalChecklistData);
+  if (!state.personalChecks) state.personalChecks = {};
+  if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
+  const userChecks = state.personalChecks[personKey];
 
-  container.innerHTML = checklist.map((cat, cIdx) => `
-    <div class="card">
-      <div class="category-title">
-        <span>${escapeHtml(cat.category)}</span>
-        ${canEdit ? `
-          <div style="display:flex; gap:6px;">
-            <button class="edit-btn" style="font-size:0.75rem;" onclick="editPersonalCategoryAdmin(${cIdx})">수정</button>
-            <button class="del-btn" style="font-size:0.75rem;" onclick="removePersonalCategoryAdmin(${cIdx})">삭제</button>
-          </div>
-        ` : ''}
-      </div>
-      <div class="item-list">
-        ${(cat.items || []).map((item, iIdx) => {
-          const isChecked = checkedIds.includes(item.id);
-          let badgeClass = 'badge-none';
-          let tagText = item.tag || '';
-          if (item.type === 'carry') {
-            badgeClass = 'badge-carry';
-            if(!tagText) tagText = '✈️ 기내';
-          } else if (item.type === 'check') {
-            badgeClass = 'badge-check';
-            if(!tagText) tagText = '🧳 위탁';
-          }
-
-          return `
-            <div class="item-row ${isChecked ? 'checked' : ''}">
-              <div class="item-left" onclick="togglePersonalCheck('${personId}', '${item.id}')">
-                <div class="custom-checkbox"></div>
-                <span class="item-name">${escapeHtml(item.name)}</span>
-              </div>
-              <div style="display:flex; align-items:center; gap:6px;">
-                ${item.type !== 'none' ? `<span class="${badgeClass}">${escapeHtml(tagText)}</span>` : ''}
-                ${canEdit ? `<button class="del-btn" style="margin-left:4px;" onclick="removePersonalItemAdmin(${cIdx}, ${iIdx})">삭제</button>` : ''}
-              </div>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    </div>
-  `).join('');
+  const checklistData = state.personalChecklistData || defaultPersonalChecklistData;
 
   let totalItems = 0;
-  checklist.forEach(c => totalItems += (c.items || []).length);
-  updatePersonalProgress(checkedIds.length, totalItems);
+  let checkedCount = 0;
+
+  checklistData.forEach(cat => {
+    (cat.items || []).forEach(item => {
+      totalItems++;
+      if (userChecks[item.id]) checkedCount++;
+    });
+  });
+
+  const percent = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
+  const percentEl = document.getElementById('personalProgressPercent');
+  const barEl = document.getElementById('personalProgressBar');
+  if (percentEl) percentEl.textContent = percent + '%';
+  if (barEl) barEl.style.width = percent + '%';
+
+  container.innerHTML = checklistData.map(cat => {
+    return `
+      <div class="card" style="margin-bottom:14px;">
+        <div class="category-title">
+          <span>${escapeHtml(cat.category)}</span>
+        </div>
+        <ul class="item-list">
+          ${(cat.items || []).map(item => {
+            const isChecked = !!userChecks[item.id];
+            let badgeClass = 'badge-none';
+            if (item.type === 'carry') badgeClass = 'badge-carry';
+            else if (item.type === 'check') badgeClass = 'badge-check';
+
+            return `
+              <li class="item-row ${isChecked ? 'checked' : ''}" onclick="togglePersonalItem('${personKey}', '${item.id}')">
+                <div class="item-left">
+                  <div class="custom-checkbox"></div>
+                  <span class="item-name">${escapeHtml(item.name)}</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  ${item.tag ? `<span class="${badgeClass}">${escapeHtml(item.tag)}</span>` : ''}
+                  ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation(); removePersonalItemAdminById('${cat.category}', '${item.id}')" style="margin-left:4px;">삭제</button>` : ''}
+                </div>
+              </li>
+            `;
+          }).join('')}
+        </ul>
+      </div>
+    `;
+  }).join('');
 }
 
-function togglePersonalCheck(personId, itemId) {
+function togglePersonalItem(personKey, itemId) {
   if (!state.personalChecks) state.personalChecks = {};
-  if (!state.personalChecks[personId]) state.personalChecks[personId] = [];
-
-  const arr = state.personalChecks[personId];
-  const idx = arr.indexOf(itemId);
-  if (idx > -1) {
-    arr.splice(idx, 1);
-  } else {
-    arr.push(itemId);
-  }
-
+  if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
+  
+  state.personalChecks[personKey][itemId] = !state.personalChecks[personKey][itemId];
   renderPersonalChecklist();
   markDirty('personalChecks');
 }
@@ -2197,219 +2121,176 @@ function addPersonalItemAdmin() {
   const nameInput = document.getElementById('ps-add-name');
   const typeSelect = document.getElementById('ps-add-type');
 
-  const categoryName = catInput.value.trim();
+  const catName = catInput.value.trim();
   const itemName = nameInput.value.trim();
   const itemType = typeSelect.value;
 
-  if (!categoryName || !itemName) {
-    alert('카테고리와 준비물 항목명을 입력해주세요.');
+  if (!catName || !itemName) {
+    alert('카테고리명과 준비물 이름을 모두 입력해주세요.');
     return;
   }
 
-  if (!state.personalChecklistData || !state.personalChecklistData.length) {
-    state.personalChecklistData = cloneData(defaultPersonalChecklistData);
-  }
+  if (!state.personalChecklistData) state.personalChecklistData = cloneData(defaultPersonalChecklistData);
 
-  let catObj = state.personalChecklistData.find(c => c.category === categoryName);
-  if (!catObj) {
-    catObj = { category: categoryName, items: [] };
-    state.personalChecklistData.push(catObj);
-  }
+  let categoryObj = state.personalChecklistData.find(c => c.category === catName);
+  let tag = "";
+  if (itemType === 'carry') tag = "✈️ 기내";
+  else if (itemType === 'check') tag = "🧳 위탁";
 
-  let tag = '';
-  if (itemType === 'carry') tag = '✈️ 기내';
-  else if (itemType === 'check') tag = '🧳 위탁';
-
-  catObj.items.push({
-    id: 'custom_p_' + uid(),
+  const newItem = {
+    id: uid(),
     name: itemName,
     tag: tag,
     type: itemType
-  });
+  };
+
+  if (categoryObj) {
+    if (!categoryObj.items) categoryObj.items = [];
+    categoryObj.items.push(newItem);
+  } else {
+    state.personalChecklistData.push({
+      category: catName,
+      items: [newItem]
+    });
+  }
 
   nameInput.value = '';
   renderPersonalChecklist();
   markDirty('personalChecklistData');
+  alert('개인 준비물 항목이 추가되었습니다.');
 }
 
-function editPersonalCategoryAdmin(cIdx) {
-  if (!state.personalChecklistData || !state.personalChecklistData[cIdx]) return;
-  const current = state.personalChecklistData[cIdx].category;
-  const newName = prompt('수정할 카테고리 이름을 입력하세요:', current);
-  if (newName && newName.trim() && newName.trim() !== current) {
-    state.personalChecklistData[cIdx].category = newName.trim();
-    renderPersonalChecklist();
-    markDirty('personalChecklistData');
-  }
-}
-
-function removePersonalCategoryAdmin(cIdx) {
-  if (!confirm('카테고리와 내부 모든 준비물 항목이 삭제됩니다. 정말 삭제하시겠습니까?')) return;
-  if (!state.personalChecklistData) return;
-  state.personalChecklistData.splice(cIdx, 1);
-  renderPersonalChecklist();
-  markDirty('personalChecklistData');
-}
-
-function removePersonalItemAdmin(cIdx, iIdx) {
-  if (!confirm('해당 준비물 항목을 삭제하시겠습니까?')) return;
+function removePersonalItemAdminById(categoryName, itemId) {
+  if (!confirm('이 준비물 항목을 삭제하시겠습니까?')) return;
   if (!state.personalChecklistData) return;
 
-  if (state.personalChecklistData[cIdx] && state.personalChecklistData[cIdx].items) {
-    state.personalChecklistData[cIdx].items.splice(iIdx, 1);
-    if (state.personalChecklistData[cIdx].items.length === 0) {
-      state.personalChecklistData.splice(cIdx, 1);
-    }
+  const cat = state.personalChecklistData.find(c => c.category === categoryName);
+  if (cat && cat.items) {
+    cat.items = cat.items.filter(i => i.id !== itemId);
   }
+  state.personalChecklistData = state.personalChecklistData.filter(c => !c.items || c.items.length > 0);
 
   renderPersonalChecklist();
   markDirty('personalChecklistData');
-}
-
-function updatePersonalProgress(checkedCount, totalCount) {
-  const textEl = document.getElementById('personalProgressText');
-  const percentEl = document.getElementById('personalProgressPercent');
-  const barEl = document.getElementById('personalProgressBar');
-
-  const percent = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
-
-  if (textEl) textEl.innerText = `준비 진행률 (${checkedCount}/${totalCount})`;
-  if (percentEl) percentEl.innerText = `${percent}%`;
-  if (barEl) barEl.style.width = `${percent}%`;
-}
-
-// ----------------------------------------------------
-// 📦 공용 준비물 체크리스트 함수 (편집 & 교사 선택 모달 검색 연동)
-// ----------------------------------------------------
-function getSharedCheckInfo(itemId) {
-  if (!state.sharedChecks) return null;
-  if (Array.isArray(state.sharedChecks)) {
-    return state.sharedChecks.includes(itemId) ? { checkedBy: '확인됨' } : null;
-  }
-  if (typeof state.sharedChecks === 'object') {
-    const val = state.sharedChecks[itemId];
-    if (!val) return null;
-    if (typeof val === 'string') return { checkedBy: val };
-    if (typeof val === 'object' && val.checkedBy) return val;
-    return { checkedBy: '확인됨' };
-  }
-  return null;
 }
 
 function renderSharedChecklist() {
   const container = document.getElementById('sharedChecklistContainer');
-  const adminFormCard = document.getElementById('shared-admin-form-card');
-
-  if (adminFormCard) {
-    adminFormCard.style.display = canEdit ? 'block' : 'none';
-  }
-
+  const adminCard = document.getElementById('shared-admin-form-card');
   if (!container) return;
 
-  const checklist = (state.sharedChecklistData && state.sharedChecklistData.length > 0)
-    ? state.sharedChecklistData
-    : cloneData(defaultSharedChecklistData);
-  let checkedCount = 0;
+  if (adminCard) adminCard.style.display = canEdit ? 'block' : 'none';
 
-  container.innerHTML = checklist.map((cat, cIdx) => `
-    <div class="card">
-      <div class="category-title">
-        <span>${escapeHtml(cat.category)}</span>
-        ${canEdit ? `
-          <div style="display:flex; gap:6px;">
-            <button class="edit-btn" style="font-size:0.75rem;" onclick="editSharedCategoryAdmin(${cIdx})">수정</button>
-            <button class="del-btn" style="font-size:0.75rem;" onclick="removeSharedCategoryAdmin(${cIdx})">삭제</button>
-          </div>
-        ` : ''}
-      </div>
-      <div class="item-list">
-        ${(cat.items || []).map((item, iIdx) => {
-          const checkInfo = getSharedCheckInfo(item.id);
-          const isChecked = !!checkInfo;
-          if (isChecked) checkedCount++;
-
-          return `
-            <div class="item-row ${isChecked ? 'checked' : ''}">
-              <div class="item-left" onclick="toggleSharedCheck('${item.id}')">
-                <div class="custom-checkbox"></div>
-                <div>
-                  <span class="item-name">${escapeHtml(item.name)}</span>${isChecked ? `<div style="font-size:0.75rem; color:var(--sky); font-weight:700; margin-top:2px;">✍️ 체크: ${escapeHtml(checkInfo.checkedBy)}</div>` : ''}
-                </div>
-              </div>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <span class="badge-carry">${escapeHtml(item.tag)}</span>${canEdit ? `<button class="del-btn" style="margin-left:4px;" onclick="removeSharedItemAdmin(${cIdx}, ${iIdx})">삭제</button>` : ''}
-              </div>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    </div>
-  `).join('');
+  if (!state.sharedChecks) state.sharedChecks = {};
+  const sharedChecks = state.sharedChecks;
+  const sharedData = state.sharedChecklistData || defaultSharedChecklistData;
 
   let totalItems = 0;
-  checklist.forEach(c => totalItems += (c.items || []).length);
-  updateSharedProgress(checkedCount, totalItems);
+  let checkedCount = 0;
+
+  sharedData.forEach(cat => {
+    (cat.items || []).forEach(item => {
+      totalItems++;
+      if (sharedChecks[item.id] && sharedChecks[item.id].checkedBy) checkedCount++;
+    });
+  });
+
+  const percent = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
+  const percentEl = document.getElementById('sharedProgressPercent');
+  const barEl = document.getElementById('sharedProgressBar');
+  if (percentEl) percentEl.textContent = percent + '%';
+  if (barEl) barEl.style.width = percent + '%';
+
+  container.innerHTML = sharedData.map(cat => {
+    return `
+      <div class="card" style="margin-bottom:14px;">
+        <div class="category-title">
+          <span>${escapeHtml(cat.category)}</span>
+        </div>
+        <ul class="item-list">
+          ${(cat.items || []).map(item => {
+            const checkInfo = sharedChecks[item.id];
+            const isChecked = checkInfo && checkInfo.checkedBy;
+            let badgeClass = 'badge-carry';
+            if (item.tag && item.tag.includes('위탁')) badgeClass = 'badge-check';
+
+            return `
+              <li class="item-row ${isChecked ? 'checked' : ''}" onclick="openTeacherModalForSharedItem('${item.id}')">
+                <div class="item-left">
+                  <div class="custom-checkbox"></div>
+                  <div>
+                    <span class="item-name">${escapeHtml(item.name)}</span>${isChecked ? `<div class="meta" style="font-size:0.75rem; color:var(--sky); font-weight:700; margin-top:2px;">담당 교사: ${escapeHtml(checkInfo.checkedBy)} (탭하여 변경)</div>` : ''}
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  ${item.tag ? `<span class="${badgeClass}">${escapeHtml(item.tag)}</span>` : ''}
+                  ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation(); removeSharedItemAdminById('${cat.category}', '${item.id}')" style="margin-left:4px;">삭제</button>` : ''}
+                </div>
+              </li>
+            `;
+          }).join('')}
+        </ul>
+      </div>
+    `;
+  }).join('');
 }
 
-function toggleSharedCheck(itemId) {
-  if (!state.sharedChecks || Array.isArray(state.sharedChecks)) {
-    const newObj = {};
-    if (Array.isArray(state.sharedChecks)) {
-      state.sharedChecks.forEach(id => { newObj[id] = { checkedBy: '기존확인' }; });
-    }
-    state.sharedChecks = newObj;
-  }
-
-  if (state.sharedChecks[itemId]) {
-    delete state.sharedChecks[itemId];
-    renderSharedChecklist();
-    markDirty('sharedChecks');
-  } else {
-    activeSharedItemIdForCheck = itemId;
-    openTeacherModal();
-  }
-}
-
-// 교사 선택 모달 관련 제어 함수
-function openTeacherModal() {
+function openTeacherModalForSharedItem(itemId) {
+  activeSharedItemIdForCheck = itemId;
   const modal = document.getElementById('teacher-select-modal');
-  const searchInput = document.getElementById('modalTeacherSearch');
-  if (searchInput) searchInput.value = '';
-  renderModalTeacherList();
-  if (modal) modal.style.display = 'flex';
+  if (modal) {
+    modal.style.display = 'flex';
+    document.getElementById('modalTeacherSearch').value = '';
+    renderModalTeacherList();
+  }
 }
 
 function closeTeacherModal() {
+  activeSharedItemIdForCheck = null;
   const modal = document.getElementById('teacher-select-modal');
   if (modal) modal.style.display = 'none';
-  activeSharedItemIdForCheck = null;
 }
 
 function renderModalTeacherList() {
-  const container = document.getElementById('modalTeacherList');
+  const listEl = document.getElementById('modalTeacherList');
   const searchInput = document.getElementById('modalTeacherSearch');
-  if (!container) return;
+  if (!listEl) return;
 
-  const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-  const teachers = (state.teachers || []).filter(t => (t.name || '').toLowerCase().includes(query));
+  const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  const teachers = (state.teachers || []).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+  const filtered = searchTerm ? teachers.filter(t => (t.name || '').toLowerCase().includes(searchTerm)) : teachers;
 
-  if (!teachers.length) {
-    container.innerHTML = '<div style="color:var(--muted); font-size:0.85rem; padding:10px 0; text-align:center;">등록된 교사가 없거나 검색 결과가 없습니다.</div>';
-    return;
+  let html = '';
+  html += `
+    <div class="item" style="padding:8px 12px; cursor:pointer; background:var(--bg);" onclick="selectTeacherForSharedItem('')">
+      <div style="font-weight:700; color:var(--muted);">🔄 체크 해제 (미할당)</div>
+    </div>
+  `;
+
+  if (!filtered.length) {
+    html += '<div class="empty">등록된 교사가 없어요.</div>';
+  } else {
+    html += filtered.map(t => `
+      <div class="item" style="padding:8px 12px; cursor:pointer;" onclick="selectTeacherForSharedItem('${escapeHtml(t.name)}')">
+        <div style="font-weight:700;">🌳 ${escapeHtml(t.name)}</div>
+        ${t.roles && t.roles.length ? `<div class="meta" style="font-size:0.75rem;">담당: ${escapeHtml(t.roles.join(', '))}</div>` : ''}
+      </div>
+    `).join('');
   }
 
-  container.innerHTML = teachers.map(t => `
-    <button style="width:100%; text-align:left; padding:10px 12px; background:var(--bg); border:1px solid var(--border); border-radius:10px; font-weight:700; font-size:0.88rem; cursor:pointer; color:var(--text);" onclick="selectTeacherForSharedCheck('${escapeHtml(t.name)}')">
-      🌳 ${escapeHtml(t.name)} 교사
-    </button>
-  `).join('');
+  listEl.innerHTML = html;
 }
 
-function selectTeacherForSharedCheck(teacherName) {
+function selectTeacherForSharedItem(teacherName) {
   if (!activeSharedItemIdForCheck) return;
   if (!state.sharedChecks) state.sharedChecks = {};
 
-  state.sharedChecks[activeSharedItemIdForCheck] = { checkedBy: teacherName };
+  if (!teacherName) {
+    delete state.sharedChecks[activeSharedItemIdForCheck];
+  } else {
+    state.sharedChecks[activeSharedItemIdForCheck] = { checkedBy: teacherName };
+  }
+
   closeTeacherModal();
   renderSharedChecklist();
   markDirty('sharedChecks');
@@ -2420,219 +2301,137 @@ function addSharedItemAdmin() {
   const nameInput = document.getElementById('sh-add-name');
   const tagSelect = document.getElementById('sh-add-tag');
 
-  const categoryName = catInput.value.trim();
+  const catName = catInput.value.trim();
   const itemName = nameInput.value.trim();
   const itemTag = tagSelect.value;
 
-  if (!categoryName || !itemName) {
-    alert('카테고리와 공용 준비물 항목명을 입력해주세요.');
+  if (!catName || !itemName) {
+    alert('카테고리명과 공용 준비물 이름을 모두 입력해주세요.');
     return;
   }
 
-  if (!state.sharedChecklistData || !state.sharedChecklistData.length) {
-    state.sharedChecklistData = cloneData(defaultSharedChecklistData);
-  }
+  if (!state.sharedChecklistData) state.sharedChecklistData = cloneData(defaultSharedChecklistData);
 
-  let catObj = state.sharedChecklistData.find(c => c.category === categoryName);
-  if (!catObj) {
-    catObj = { category: categoryName, items: [] };
-    state.sharedChecklistData.push(catObj);
-  }
+  let categoryObj = state.sharedChecklistData.find(c => c.category === catName);
+  let tag = "";
+  if (itemTag === '✈️ 팀기내') tag = "✈️ 팀기내";
+  else if (itemTag === '🧳 팀위탁') tag = "🧳 팀위탁";
 
-  catObj.items.push({
-    id: 'custom_sh_' + uid(),
+  const newItem = {
+    id: uid(),
     name: itemName,
-    tag: itemTag
-  });
+    tag: tag
+  };
+
+  if (categoryObj) {
+    if (!categoryObj.items) categoryObj.items = [];
+    categoryObj.items.push(newItem);
+  } else {
+    state.sharedChecklistData.push({
+      category: catName,
+      items: [newItem]
+    });
+  }
 
   nameInput.value = '';
   renderSharedChecklist();
   markDirty('sharedChecklistData');
+  alert('공용 준비물 항목이 추가되었습니다.');
 }
 
-function editSharedCategoryAdmin(cIdx) {
-  if (!state.sharedChecklistData || !state.sharedChecklistData[cIdx]) return;
-  const current = state.sharedChecklistData[cIdx].category;
-  const newName = prompt('수정할 카테고리 이름을 입력하세요:', current);
-  if (newName && newName.trim() && newName.trim() !== current) {
-    state.sharedChecklistData[cIdx].category = newName.trim();
-    renderSharedChecklist();
-    markDirty('sharedChecklistData');
-  }
-}
-
-function removeSharedCategoryAdmin(cIdx) {
-  if (!confirm('카테고리와 내부 모든 공용 준비물이 삭제됩니다. 정말 삭제하시겠습니까?')) return;
-  if (!state.sharedChecklistData) return;
-  state.sharedChecklistData.splice(cIdx, 1);
-  renderSharedChecklist();
-  markDirty('sharedChecklistData');
-}
-
-function removeSharedItemAdmin(cIdx, iIdx) {
-  if (!confirm('해당 공용 준비물 항목을 삭제하시겠습니까?')) return;
+function removeSharedItemAdminById(categoryName, itemId) {
+  if (!confirm('이 공용 준비물 항목을 삭제하시겠습니까?')) return;
   if (!state.sharedChecklistData) return;
 
-  if (state.sharedChecklistData[cIdx] && state.sharedChecklistData[cIdx].items) {
-    state.sharedChecklistData[cIdx].items.splice(iIdx, 1);
-    if (state.sharedChecklistData[cIdx].items.length === 0) {
-      state.sharedChecklistData.splice(cIdx, 1);
-    }
+  const cat = state.sharedChecklistData.find(c => c.category === categoryName);
+  if (cat && cat.items) {
+    cat.items = cat.items.filter(i => i.id !== itemId);
   }
+  state.sharedChecklistData = state.sharedChecklistData.filter(c => !c.items || c.items.length > 0);
 
   renderSharedChecklist();
   markDirty('sharedChecklistData');
 }
 
-function updateSharedProgress(checkedCount, totalCount) {
-  const textEl = document.getElementById('sharedProgressText');
-  const percentEl = document.getElementById('sharedProgressPercent');
-  const barEl = document.getElementById('sharedProgressBar');
-
-  const percent = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
-
-  if (textEl) textEl.innerText = `준비 진행률 (${checkedCount}/${totalCount})`;
-  if (percentEl) percentEl.innerText = `${percent}%`;
-  if (barEl) barEl.style.width = `${percent}%`;
+function uid() {
+  return '_' + Math.random().toString(36).substr(2, 9);
 }
 
-function wireDateParts(prefix) {
-  const y = document.getElementById(prefix + '-y');
-  const m = document.getElementById(prefix + '-m');
-  const d = document.getElementById(prefix + '-d');
-  if(!y || !m || !d) return;
-  y.addEventListener('input', () => { y.value = y.value.replace(/\D/g, '').slice(0, 4); if (y.value.length === 4) m.focus(); });
-  m.addEventListener('input', () => { m.value = m.value.replace(/\D/g, '').slice(0, 2); if (m.value.length === 2) d.focus(); });
-  d.addEventListener('input', () => { d.value = d.value.replace(/\D/g, '').slice(0, 2); });
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
-wireDateParts('s-date');
-wireDateParts('ps-date');
-wireDateParts('fi-dep');
-wireDateParts('fi-arr');
-
-function wireScheduleAutoTab(prefix) {
-  const ampm = document.getElementById(prefix + '-item-ampm');
-  const hour = document.getElementById(prefix + '-item-hour');
-  const minute = document.getElementById(prefix + '-item-minute');
-  const activity = document.getElementById(prefix + '-item-activity');
-
-  if (ampm) ampm.addEventListener('change', () => { if (hour) hour.focus(); });
-  if (hour) {
-    hour.addEventListener('input', () => {
-      hour.value = hour.value.replace(/\D/g, '').slice(0, 2);
-      if (hour.value.length === 2 && minute) minute.focus();
-    });
-  }
-  if (minute) {
-    minute.addEventListener('input', () => {
-      minute.value = minute.value.replace(/\D/g, '').slice(0, 2);
-      if (minute.value.length === 2 && activity) activity.focus();
-    });
-  }
-}
-
-function wireTimePartsFor(prefix) {
-  const hour = document.getElementById(prefix + '-hour');
-  const minute = document.getElementById(prefix + '-minute');
-  if(!hour || !minute) return;
-  hour.addEventListener('input', () => {
-    hour.value = hour.value.replace(/\D/g, '').slice(0, 2);
-    if (hour.value.length === 2) minute.focus();
-  });
-  minute.addEventListener('input', () => {
-    minute.value = minute.value.replace(/\D/g, '').slice(0, 2);
-  });
-}
-wireTimePartsFor('fi-dep');
-wireTimePartsFor('fi-arr');
 
 function getDateValue(prefix) {
-  const y = document.getElementById(prefix + '-y')?.value;
-  const m = document.getElementById(prefix + '-m')?.value;
-  const d = document.getElementById(prefix + '-d')?.value;
-  if (!y || y.length !== 4 || !m || !d) return '';
-  return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+  const y = document.getElementById(prefix + '-y').value.trim();
+  const m = document.getElementById(prefix + '-m').value.trim();
+  const d = document.getElementById(prefix + '-d').value.trim();
+  if (!y || !m || !d) return '';
+  return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
 }
 
-function setDateValue(prefix, iso) {
-  const y = document.getElementById(prefix + '-y');
-  const m = document.getElementById(prefix + '-m');
-  const d = document.getElementById(prefix + '-d');
-  if (!y || !m || !d) return;
-  if (!iso) { y.value = ''; m.value = ''; d.value = ''; return; }
-  const parts = iso.split('-');
-  y.value = parts[0] || '';
-  m.value = parts[1] || '';
-  d.value = parts[2] || '';
+function setDateValue(prefix, dateStr) {
+  const yEl = document.getElementById(prefix + '-y');
+  const mEl = document.getElementById(prefix + '-m');
+  const dEl = document.getElementById(prefix + '-d');
+  if (!dateStr) {
+    if (yEl) yEl.value = '';
+    if (mEl) mEl.value = '';
+    if (dEl) dEl.value = '';
+    return;
+  }
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    if (yEl) yEl.value = parts[0];
+    if (mEl) mEl.value = parseInt(parts[1], 10);
+    if (dEl) dEl.value = parseInt(parts[2], 10);
+  }
 }
 
 function markDirty(field) {
   dirty = true;
-  if (field) dirtyFields.add(field);
+  dirtyFields.add(field);
   document.getElementById('save-bar').classList.add('show');
 }
-
-function escapeHtml(str) {
-  return (str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-function uid() { return Math.random().toString(36).slice(2, 9); }
 
 function renderAll() {
   renderDday();
   renderParticipants();
   renderTeachers();
-  renderTeacherAuthorOptions();
+  renderAssign();
   renderFlightInfo();
   renderSchedule();
   renderPrepSchedule();
-  renderFeed();
-  renderAssign();
+  renderPosts();
   syncPersonalChecklistDropdown();
   renderSharedChecklist();
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const savedTab = localStorage.getItem('baguio_active_tab');
-  if (savedTab) {
-    const targetBtn = document.querySelector(`nav.tabs button[data-tab="${savedTab}"]`);
-    const targetPanel = document.getElementById('panel-' + savedTab);
-    if (targetBtn && targetPanel) {
-      document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('section.panel').forEach(p => p.classList.remove('active'));
-      targetBtn.classList.add('active');
-      targetPanel.classList.add('active');
-    } else {
-      const defaultBtn = document.querySelector('nav.tabs button[data-tab="feed"]');
-      const defaultPanel = document.getElementById('panel-feed');
-      if (defaultBtn) defaultBtn.classList.add('active');
-      if (defaultPanel) defaultPanel.classList.add('active');
-    }
-  } else {
-    const defaultBtn = document.querySelector('nav.tabs button[data-tab="feed"]');
-    const defaultPanel = document.getElementById('panel-feed');
-    if (defaultBtn) defaultBtn.classList.add('active');
-    if (defaultPanel) defaultPanel.classList.add('active');
-  }
-
-  renderAll();
-
-  wireScheduleAutoTab('s');
-  wireScheduleAutoTab('ps');
-
+window.onload = function() {
   initFirebaseAuth();
 
-  document.querySelectorAll('nav.tabs button').forEach(btn => {
+  const tabs = document.querySelectorAll('nav.tabs button');
+  const panels = document.querySelectorAll('main section.panel');
+
+  tabs.forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('section.panel').forEach(p => p.classList.remove('active'));
+      tabs.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
-      const panel = document.getElementById('panel-' + btn.dataset.tab);
-      if (panel) panel.classList.add('active');
-      
-      localStorage.setItem('baguio_active_tab', btn.dataset.tab);
+      const tabName = btn.getAttribute('data-tab');
+      const targetPanel = document.getElementById('panel-' + tabName);
+      if (targetPanel) targetPanel.classList.add('active');
     });
   });
-});
+
+  const defaultTabBtn = document.querySelector('nav.tabs button[data-tab="feed"]');
+  if (defaultTabBtn) defaultTabBtn.click();
+};
 </script>
 </body>
 </html>
