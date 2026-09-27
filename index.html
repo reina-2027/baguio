@@ -17,6 +17,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- Firebase SDK -->
@@ -26,6 +27,17 @@
 
 <style>
   :root {
+    /* 탭별 색: 같은 밝기·채도로 맞춘 차분한 팔레트 (흰 글씨 대비 4.4:1 이상) */
+    --c-feed: #9D6368; --c-feed-deep: #6A3F42; --c-feed-soft: #FCECEC; --c-feed-line: #F1D6D8;
+    --c-bible: #986A4A; --c-bible-deep: #66442C; --c-bible-soft: #FAEDE5; --c-bible-line: #EFD9CC;
+    --c-prep: #8A7340; --c-prep-deep: #5C4A24; --c-prep-soft: #F6EFE3; --c-prep-line: #E7DDC8;
+    --c-participants: #747B46; --c-participants-deep: #4C5129; --c-participants-soft: #EFF2E4; --c-participants-line: #DDE1CB;
+    --c-teachers: #55835E; --c-teachers-deep: #34563B; --c-teachers-soft: #E8F4EA; --c-teachers-line: #D1E4D4;
+    --c-assign: #378484; --c-assign-deep: #1C5757; --c-assign-soft: #E3F4F4; --c-assign-line: #C8E5E4;
+    --c-flights: #4B7C9E; --c-flights-deep: #2C516B; --c-flights-soft: #E6F2FB; --c-flights-line: #CDE1F0;
+    --c-schedule: #7170A1; --c-schedule-deep: #4A486D; --c-schedule-soft: #EEEFFC; --c-schedule-line: #DBDCF2;
+    --c-personal: #8D678E; --c-personal-deep: #5E425F; --c-personal-soft: #F7ECF7; --c-personal-line: #E9D8E9;
+    --c-shared: #996378; --c-shared-deep: #673F4F; --c-shared-soft: #FBEBF1; --c-shared-line: #EFD6DF;
     --bg: #f7f5f0;
     --bg2: #f1ece2;
     --card: #ffffff;
@@ -34,11 +46,11 @@
     --border: #e5e1d5;
     --sky: #47664e;
     --sky-soft: #e5ebe1;
-    --accent: #c97a4a;
+    --accent: #A55A37;
     --accent-soft: #f3e2d3;
     --sun: #b99248;
     --sun-soft: #f1e8d3;
-    --assign-yellow: #5C929D;
+    --assign-yellow: var(--c-assign);
     --bloom: #96586c;
     --bloom-soft: #ece0e3;
     --ok: #4f8858;
@@ -65,10 +77,10 @@
     background: linear-gradient(175deg, var(--bg) 0%, var(--bg) 55%, var(--bg2) 100%);
     background-attachment: fixed;
     color: var(--text);
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-family: 'Pretendard Variable', Pretendard, 'Manrope', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     letter-spacing: -0.01em;
   }
-  body { padding-bottom: 32px; }
+  body { padding-bottom: 32px; line-height: 1.5; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; }
   header {
     padding: 20px 18px 16px;
     background: linear-gradient(160deg, var(--sky-soft), var(--card) 65%);
@@ -81,7 +93,7 @@
     align-items: center;
   }
   header h1 { margin: 0 0 4px; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
-  header .sub { color: var(--muted); font-size: 0.82rem; display:flex; gap:8px; align-items:center; }
+  header .sub { color: var(--muted); font-size: 0.82rem; display:flex; gap:8px; align-items:center; flex-wrap:wrap; row-gap:4px; white-space:nowrap; }
   .badge { display:inline-block; padding:3px 9px; border-radius:999px; background:var(--sky); color:#fff; font-size:0.75rem; font-weight:700; }
   .admin-btn { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer; color: var(--muted); }
   .admin-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
@@ -90,46 +102,38 @@
     display: flex; gap: 6px; padding: 10px 12px; overflow-x: auto; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 70px; z-index: 9;
   }
   nav.tabs button {
-    flex: 0 0 auto; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    flex: 0 0 auto; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); color: #4d544e; font-size: 0.88rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s;
   }
-  nav.tabs button[data-tab="feed"].active { background: #C88A8A; border-color: #C88A8A; color: #FFFFFF; }
-  nav.tabs button[data-tab="prep-schedule"].active { background: #D99B6A; border-color: #D99B6A; color: #FFFFFF; }
-  nav.tabs button[data-tab="participants"].active { background: #CDB361; border-color: #CDB361; color: #FFFFFF; }
-  nav.tabs button[data-tab="teachers"].active { background: #7A9A7B; border-color: #7A9A7B; color: #FFFFFF; }
-  nav.tabs button[data-tab="assign"].active { background: #5C929D; border-color: #5C929D; color: #FFFFFF; }
-  nav.tabs button[data-tab="flights"].active { background: #6B86AC; border-color: #6B86AC; color: #FFFFFF; }
-  nav.tabs button[data-tab="schedule"].active { background: #8877A9; border-color: #8877A9; color: #FFFFFF; }
-  nav.tabs button[data-tab="personal-supplies"].active { background: #A2638C; border-color: #A2638C; color: #FFFFFF; }
-  nav.tabs button[data-tab="shared-supplies"].active { background: #DED8CE; border-color: #DED8CE; color: var(--text); }
+  nav.tabs button[data-tab="feed"].active { background: var(--c-feed); border-color: var(--c-feed); color: #FFFFFF; }
+  nav.tabs button[data-tab="prep-schedule"].active { background: var(--c-prep); border-color: var(--c-prep); color: #FFFFFF; }
+  nav.tabs button[data-tab="participants"].active { background: var(--c-participants); border-color: var(--c-participants); color: #FFFFFF; }
+  nav.tabs button[data-tab="teachers"].active { background: var(--c-teachers); border-color: var(--c-teachers); color: #FFFFFF; }
+  nav.tabs button[data-tab="assign"].active { background: var(--c-assign); border-color: var(--c-assign); color: #FFFFFF; }
+  nav.tabs button[data-tab="flights"].active { background: var(--c-flights); border-color: var(--c-flights); color: #FFFFFF; }
+  nav.tabs button[data-tab="schedule"].active { background: var(--c-schedule); border-color: var(--c-schedule); color: #FFFFFF; }
+  nav.tabs button[data-tab="personal-supplies"].active { background: var(--c-personal); border-color: var(--c-personal); color: #FFFFFF; }
+  nav.tabs button[data-tab="shared-supplies"].active { background: var(--c-shared); border-color: var(--c-shared); color: #FFFFFF; }
+  nav.tabs button[data-tab="bible"].active { background: var(--c-bible); border-color: var(--c-bible); color: #FFFFFF; }
 
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
   section.panel { display: none; }
   section.panel.active { display: block; }
   .card { position:relative; background: var(--card); border: none; box-shadow: 0 3px 16px rgba(28,56,61,0.07); border-radius: 16px; padding: 18px 16px 16px; margin-bottom: 14px; overflow:hidden; }
   .card::before { content:""; position:absolute; top:0; left:0; right:0; height:4px; background: var(--sky); }
-  #panel-feed .card::before { background: #C88A8A; }
-  #panel-prep-schedule .card::before { background: #D99B6A; }
-  #panel-participants .card::before { background: #CDB361; }
-  #panel-teachers .card::before { background: #7A9A7B; }
-  #panel-assign .card::before { background: #5C929D; }
-  #panel-flights .card::before { background: #6B86AC; }
-  #panel-schedule .card::before { background: #8877A9; }
-  #panel-personal-supplies .card::before { background: #A2638C; }
-  #panel-shared-supplies .card::before { background: #DED8CE; }
+  #panel-feed .card::before { background: var(--c-feed); }
+  #panel-prep-schedule .card::before { background: var(--c-prep); }
+  #panel-participants .card::before { background: var(--c-participants); }
+  #panel-teachers .card::before { background: var(--c-teachers); }
+  #panel-assign .card::before { background: var(--c-assign); }
+  #panel-flights .card::before { background: var(--c-flights); }
+  #panel-schedule .card::before { background: var(--c-schedule); }
+  #panel-personal-supplies .card::before { background: var(--c-personal); }
+  #panel-shared-supplies .card::before { background: var(--c-shared); }
+  #panel-bible .card::before { background: var(--c-bible); }
 
-  .card h2 { margin: 0 0 12px; font-size: 1.02rem; font-weight: 800; }
+  .card h2 { margin: 0 0 12px; font-size: 1.02rem; font-weight: 800; letter-spacing:-0.02em; }
   .row-list { display:flex; flex-direction:column; gap:8px; }
   .item { border: 1px solid var(--border); border-radius: 12px; padding: 11px 13px; background: var(--bg); }
-  .item .top { display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
-  .avatar-placeholder { width:38px; height:38px; border-radius:50%; background:var(--sky-soft); color: var(--sky); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:0.75rem; flex-shrink:0; }
-  .name-row { display:flex; align-items:center; gap:8px; }
-  .role-check { display:flex; align-items:center; gap:6px; font-size:0.85rem; cursor:pointer; padding:3px 0; }
-  .role-check input[type="checkbox"] { flex-shrink:0; margin:0; }
-  .role-check span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text); }
-  .chip-row { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
-  .chip { font-size:0.76rem; padding:4px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:var(--card); font-weight:600; }
-  .chip.ok { background: var(--sky); color:#fff; border-color:var(--sky); }
-  .item .name { font-weight: 700; }
   .item .meta { color: var(--muted); font-size: 0.82rem; }
   .del-btn { border:none; background:none; color: var(--muted); font-size:0.82rem; cursor:pointer; text-decoration:underline; }
   .edit-btn { border:none; background:none; color: var(--sky); font-size:0.82rem; font-weight:700; cursor:pointer; text-decoration:underline; margin-right:10px; }
@@ -148,158 +152,62 @@
   button.primary { background: var(--accent); color:#fff; border:none; border-radius:11px; padding:10px 16px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
   button.secondary { background: var(--card); color: var(--sky); border:1.5px solid var(--sky); border-radius:11px; padding:10px 16px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
   
-  /* 준비일정 새로운 전용 카드 및 스타일 (두 번째 파일 디자인 반영) */
-  .section-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 12px; color: #D99B6A; }
-  .section-title.past { color: #888888; margin-top: 24px; }
+  /* 준비일정 카드 */
+  .section-title { font-size:0.9rem; font-weight:800; color:var(--text); margin:4px 2px 10px; }
+  .section-title.past { color:var(--muted); margin-top:22px; }
+  .item-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(40,30,20,0.04); }
+  .item-card.past-card { background:var(--bg); opacity:0.75; box-shadow:none; }
+  .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px; }
+  .date-text { font-size:0.92rem; font-weight:800; color:var(--text); display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
+  .tag-wrap { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:4px; }
+  .tag-cat { display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:6px; background:var(--bg2); color:#5b5f55; }
+  .tag-cat::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--c-prep); }
+  .tag-cat.english::before { background:#3b7a57; }
+  .tag-cat.teacher::before { background:#3b7a8c; }
+  .tag-cat.worship::before { background:#b07070; }
+  .tag-cat.praise::before { background:var(--c-schedule); }
+  .tag-cat.balloon::before { background:#b99248; }
+  .tag-cat.taekwondo::before { background:#c97a4a; }
+  .dday-pill { display:inline-block; padding:1px 7px; border-radius:6px; background:var(--c-prep-soft); color:var(--c-prep-deep); font-size:0.72rem; font-weight:800; margin-left:4px; }
+  .dday-pill.today { background:var(--c-prep); color:#fff; }
+  .dday-pill.after { background:var(--bg2); color:var(--muted); }
+  .card-body { display:flex; flex-direction:column; gap:3px; }
+  .info-row { display:flex; align-items:center; gap:6px; font-size:0.82rem; color:var(--muted); font-weight:600; flex-wrap:wrap; }
+  .time-text { color:var(--c-prep); font-weight:800; }
+  .dot { color:#ccc; font-size:0.7rem; }
+  .content-text { font-size:0.98rem; font-weight:600; color:var(--text); margin-top:3px; white-space:pre-wrap; }
+  .past-card .date-text, .past-card .content-text, .past-card .time-text { color:var(--muted); }
+  .past-card .tag-cat::before { background:#b5b0a6; }
+  .ps-actions { display:flex; justify-content:flex-end; gap:14px; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); }
+  .ps-actions button { border:none; background:none; padding:0; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); }
+  .ps-actions button.del { color:#b0504a; }
 
-  .item-card {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 16px 18px;
-    margin-bottom: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    border: 1px solid #eae6dc;
-    position: relative;
-    overflow: hidden;
-  }
-  .item-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 6px;
-    background: #D99B6A;
-  }
-  .item-card.english::before { background: #3b7a57; }
-  .item-card.teacher::before { background: #3b7a8c; }
-  .item-card.worship::before { background: #b07070; }
-  .item-card.praise::before { background: #8877A9; }
-  .item-card.balloon::before { background: #b99248; }
-  .item-card.taekwondo::before { background: #c97a4a; }
+  /* 선교일정: 날짜별 타임라인 */
+  .sch-filter-btn { padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:#4d544e; font-size:0.84rem; font-weight:700; cursor:pointer; white-space:nowrap; font-family:inherit; transition:all .15s; }
+  .sch-filter-btn.active { background:var(--c-schedule); color:#fff; border-color:var(--c-schedule); }
+  .sch-day-group { margin-bottom:22px; }
+  .sch-day-group:last-child { margin-bottom:4px; }
+  .sch-day-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .sch-day-title { display:flex; align-items:center; gap:8px; }
+  .sch-day-no { font-size:0.7rem; font-weight:800; letter-spacing:0.06em; color:#fff; background:var(--c-schedule); padding:3px 9px; border-radius:999px; }
+  .sch-day-date { font-size:1.02rem; font-weight:800; color:var(--text); }
+  .sch-day-del { border:none; background:none; color:#b0504a; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:inherit; padding:0; }
+  .sch-item { display:grid; grid-template-columns:62px 1fr; column-gap:12px; }
+  .sch-time { font-size:0.8rem; font-weight:800; color:var(--c-schedule-deep); text-align:right; padding-top:2px; line-height:1.35; word-break:keep-all; }
+  .sch-body { position:relative; padding:0 0 18px 18px; border-left:2px solid var(--c-schedule-line); }
+  .sch-item:last-child .sch-body { padding-bottom:2px; border-left-color:transparent; }
+  .sch-body::before { content:""; position:absolute; left:-7px; top:3px; width:12px; height:12px; border-radius:50%; background:var(--card); border:3px solid var(--c-schedule); box-sizing:border-box; }
+  .sch-activity-title { font-size:0.98rem; font-weight:700; color:var(--text); line-height:1.4; word-break:keep-all; }
+  .sch-activity-desc { margin-top:4px; font-size:0.87rem; color:var(--muted); line-height:1.55; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
+  .sch-actions { display:flex; gap:14px; margin-top:6px; }
+  .sch-actions button { border:none; background:none; padding:0; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); }
+  .sch-actions button.del { color:#b0504a; }
 
-  .item-card.past-card {
-    background: #fafaf8;
-    opacity: 0.72;
-    border-color: #ebe4d8;
-  }
-  .item-card.past-card::before { background: #b5b0a6 !important; }
-
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #f2eee5;
-  }
-  .past-card .card-top { border-bottom-color: #eee9e0; }
-
-  .date-text { font-size: 0.95rem; font-weight: 800; color: #1a231c; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-  .past-card .date-text { color: #666666; }
-
-  .tag-cat {
-    font-size: 0.78rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 800;
-  }
-  .tag-cat.english { background: #e2f0e6; color: #235237; } 
-  .tag-cat.teacher { background: #e3edf1; color: #24525d; } 
-  .tag-cat.worship { background: #f2e6e6; color: #663b3b; }
-  .tag-cat.default { background: #f3e2d3; color: #c97a4a; }
-  .past-card .tag-cat { background: #e8e5df !important; color: #666666 !important; }
-
-  .card-body { display: flex; flex-direction: column; gap: 3px; }
-  .info-row { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #666; font-weight: 600; flex-wrap: wrap; }
-  .time-text { color: #b99248; font-weight: 800; }
-  .past-card .time-text { color: #999999; }
-  .dot { color: #ccc; font-size: 0.7rem; }
-  .content-text { font-size: 0.95rem; font-weight: 400; color: #333; margin-top: 4px; white-space: pre-wrap; }
-  .past-card .content-text { color: #777777; }
-
-  /* 선교일정 탭 전용 깔끔한 타임라인 카드 스타일 */
-  .sch-filter-bar {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .sch-filter-btn {
-    padding: 7px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s;
-  }
-  .sch-filter-btn.active {
-    background: var(--sky);
-    color: #fff;
-    border-color: var(--sky);
-  }
-  .sch-day-group {
-    margin-bottom: 20px;
-  }
-  .sch-day-header {
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .sch-timeline-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-  .sch-time-box {
-    min-width: 72px;
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: var(--sun);
-    padding-top: 1px;
-    flex-shrink: 0;
-  }
-  .sch-content-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .sch-activity-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .sch-activity-desc {
-    font-size: 0.88rem;
-    font-weight: 400;
-    color: var(--muted);
-    line-height: 1.4;
-    white-space: pre-wrap;
-  }
-
-  .post { border-bottom: 1px solid var(--border); padding: 12px 0; }
-  .post:last-child { border-bottom: none; }
-  .post .author { font-weight:700; font-size:0.88rem; }
-  .post .date { color: var(--muted); font-size:0.76rem; margin-left:6px; }
-  .post .text { margin-top:4px; font-size:0.92rem; white-space: pre-wrap; }
   .empty { color: var(--muted); font-size:0.88rem; text-align:center; padding: 18px 0; }
   .save-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: var(--card); border-top:1px solid var(--border); box-shadow: 0 -3px 12px rgba(28,56,61,0.1); display:none; justify-content: space-between; align-items: center; z-index: 1000; }
   .save-bar.show { display:flex; }
-  .save-bar span { font-size:0.85rem; font-weight: 700; color: var(--accent); }
+  .save-bar span { font-size:0.85rem; font-weight: 700; color: var(--accent); word-break:keep-all; margin-right:10px; }
+  .save-bar button { white-space:nowrap; flex-shrink:0; }
   .boarding-pass { background: linear-gradient(135deg, var(--sky-soft), var(--card) 65%); border-radius:16px; padding:18px 16px 16px; position:relative; }
   .boarding-pass .bp-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
   .boarding-pass .bp-flightno { font-weight:800; font-size:1rem; letter-spacing:0.02em; }
@@ -353,6 +261,200 @@
   .badge-carry { background-color: var(--badge-carry); color: var(--badge-carry-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   .badge-check { background-color: var(--badge-check); color: var(--badge-check-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   .badge-none { background-color: var(--bg2); color: var(--muted); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+  /* ===== 학생 · 교사 · 방배정 탭 정리된 디자인 ===== */
+  .list-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .list-head h2 { margin:0 !important; }
+  .list-count { font-size:0.78rem; font-weight:700; color:var(--muted); }
+  .people-search, .search-input { width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:0.9rem; font-family:inherit; }
+  .people-search { margin-bottom:6px; }
+
+  .person-list { display:flex; flex-direction:column; }
+  .person-row { display:flex; align-items:center; gap:12px; padding:12px 4px; border-bottom:1px solid var(--border); }
+  .person-row:last-child { border-bottom:none; }
+  .person-row.clickable { cursor:pointer; border-radius:10px; }
+  .person-row.clickable:active { background:var(--bg); }
+  .p-body { flex:1; min-width:0; }
+  .p-line1 { display:flex; align-items:baseline; gap:6px; }
+  .p-name { font-weight:700; font-size:0.95rem; }
+  .p-sub { font-size:0.78rem; color:var(--muted); font-weight:600; }
+  .p-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
+  .p-tag { font-size:0.72rem; padding:2px 8px; border-radius:6px; background:var(--bg2); color:#5b5f55; font-weight:700; }
+  .p-info { font-size:0.78rem; color:var(--muted); margin-top:5px; line-height:1.45; }
+  .p-info .none { color:#b5b0a6; }
+  /* 학생·교사 명단 글자 10% 확대 */
+  #participant-list .p-name, #teacher-list .p-name { font-size:1.05rem; }
+  #participant-list .p-sub, #teacher-list .p-sub { font-size:0.86rem; }
+  #participant-list .p-tag, #teacher-list .p-tag { font-size:0.8rem; }
+  #participant-list .p-info, #teacher-list .p-info { font-size:0.86rem; }
+  .p-chev { color:#c9c4b8; font-size:1.2rem; flex-shrink:0; }
+
+  .add-form.collapsed > *:not(.form-toggle) { display:none !important; }
+  .add-form:not(.collapsed) > .form-toggle { display:none; }
+  .form-toggle { width:100%; padding:11px; border-radius:12px; border:1.5px dashed var(--border); background:transparent; color:var(--muted); font-weight:700; font-size:0.88rem; cursor:pointer; font-family:inherit; }
+  .form-actions { display:flex; gap:8px; margin-top:10px; align-items:center; }
+  .danger-link { margin-left:auto; border:none; background:none; color:#b0504a; font-size:0.85rem; font-weight:700; cursor:pointer; font-family:inherit; padding:8px 4px; }
+
+  .pill-group { display:flex; flex-wrap:wrap; gap:6px; }
+  .role-check { display:flex; align-items:center; cursor:pointer; padding:6px 12px; border:1px solid var(--border); border-radius:999px; background:var(--card); }
+  .role-check input { display:none; }
+  .role-check span { font-size:0.82rem; font-weight:600; color:var(--text); white-space:nowrap; }
+  .role-check:has(input:checked) { background:var(--sky); border-color:var(--sky); }
+  .role-check:has(input:checked) span { color:#fff; }
+
+  .group-list { display:flex; flex-direction:column; gap:10px; }
+  .group-card { border:1px solid var(--border); border-radius:14px; padding:12px 14px; background:var(--bg); }
+  .group-head { display:flex; align-items:center; gap:8px; }
+  .group-name { font-weight:800; font-size:0.95rem; }
+  .group-count { font-size:0.75rem; color:var(--muted); font-weight:600; }
+  .group-edit-btn { margin-left:auto; border:1px solid var(--border); background:var(--card); color:var(--muted); font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:999px; cursor:pointer; font-family:inherit; }
+  .group-card.editing .group-edit-btn { background:var(--assign-yellow); border-color:var(--assign-yellow); color:#fff; }
+  .member-wrap { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .member { display:inline-flex; align-items:center; gap:2px; font-size:0.8rem; font-weight:600; padding:4px 10px; border-radius:999px; background:var(--card); border:1px solid var(--border); color:var(--text); }
+  .member.teacher { background:var(--sky-soft); border-color:transparent; color:var(--sky); }
+  .member .x { display:none; border:none; background:none; color:var(--muted); cursor:pointer; padding:0 0 0 4px; font-size:0.95rem; line-height:1; }
+  .group-card.editing .member .x { display:inline; }
+  .member-empty { font-size:0.8rem; color:#b5b0a6; }
+  .group-tools { display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); flex-direction:column; gap:10px; }
+  .group-card.editing .group-tools { display:flex; }
+  .group-tools .add-row { display:flex; gap:6px; }
+  .group-tools select { flex:1; min-width:0; padding:8px 10px; font-size:0.85rem; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); font-family:inherit; }
+  .group-tools .add-row button { padding:8px 14px; font-size:0.85rem; }
+  .group-tools .link-row { display:flex; justify-content:flex-end; gap:14px; }
+  .group-tools .link-row button { border:none; background:none; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); padding:0; }
+  .group-tools .link-row button.del { color:#b0504a; }
+  /* 공지 탭 */
+  .feed-list { display:flex; flex-direction:column; gap:12px; margin-top:4px; }
+  .notice { display:flex; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; box-shadow:0 1px 3px rgba(40,30,20,0.04); }
+  .notice.latest { border-color:var(--c-feed-line); background:linear-gradient(180deg, var(--c-feed-soft) 0%, var(--card) 70%); }
+  .notice-date { flex-shrink:0; width:50px; text-align:center; border-radius:12px; background:var(--c-feed-soft); color:var(--c-feed-deep); padding:8px 0 7px; align-self:flex-start; }
+  .notice.latest .notice-date { background:var(--c-feed); color:#fff; }
+  .notice-date .m { display:block; font-size:0.7rem; font-weight:700; opacity:0.85; }
+  .notice-date .d { display:block; font-size:1.35rem; font-weight:800; line-height:1.15; }
+  .notice-date .w { display:block; font-size:0.7rem; font-weight:700; opacity:0.85; }
+  .notice-main { flex:1; min-width:0; }
+  .notice-top { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+  .notice-new { font-size:0.66rem; font-weight:800; color:var(--c-feed-deep); background:var(--c-feed-soft); padding:2px 7px; border-radius:999px; letter-spacing:0.03em; }
+  .notice-title { font-size:1.05rem; font-weight:800; line-height:1.4; color:var(--text); word-break:keep-all; }
+  .notice-text { margin-top:6px; font-size:0.93rem; line-height:1.7; color:#434a44; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
+  .notice-foot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+  .notice-author { font-size:0.78rem; font-weight:700; color:var(--muted); }
+  .notice-actions { display:flex; gap:14px; }
+  .notice-actions button { border:none; background:none; padding:0; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); }
+  .notice-actions button.del { color:#b0504a; }
+  #feed-form { margin-top:0; padding-top:0; border-top:none; margin-bottom:14px; }
+  @media (max-width:420px) {
+    .notice { gap:12px; padding:14px; }
+    .notice-date { width:46px; }
+  }
+
+  /* 폰에서는 시간 입력줄을 한 줄 전체로 */
+  @media (max-width:600px) { .add-form .grid:has(.date-parts) { grid-template-columns:1fr; } }
+
+  /* 전체 가독성 다듬기 (기능 영향 없음) */
+  header .badge, .admin-btn { white-space:nowrap; }
+  nav.tabs { scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  nav.tabs::-webkit-scrollbar { display:none; }
+  button { -webkit-tap-highlight-color:transparent; }
+  button.primary:active, button.secondary:active { transform:translateY(1px); }
+  input::placeholder, textarea::placeholder { color:#a9a597; }
+  @media (max-width:600px) {
+    /* iOS에서 입력창 누를 때 화면이 확대되는 현상 방지 */
+    input:not([type="checkbox"]):not([type="radio"]), select, textarea { font-size:16px !important; }
+  }
+  /* ===== 성경읽기 탭 ===== */
+  .bb-bar { height:8px; background:#EEE8DF; border-radius:999px; overflow:hidden; flex:1; }
+  .bb-bar i { display:block; height:100%; background:var(--c-bible); border-radius:999px; transition:width .5s ease; }
+  .bb-bar.big { height:12px; }
+  .bb-bar.small { height:6px; }
+  .bb-community { text-align:center; background:linear-gradient(180deg, var(--c-bible-soft) 0%, var(--card) 75%); }
+  .bb-period { font-size:0.75rem; font-weight:700; color:var(--c-bible-deep); background:var(--c-bible-soft); display:inline-block; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+  .bb-comm-title { font-size:0.95rem; font-weight:800; color:var(--text); }
+  .bb-comm-pct { font-size:2.6rem; font-weight:800; color:var(--c-bible-deep); line-height:1.1; margin:4px 0 10px; letter-spacing:-0.03em; }
+  .bb-comm-pct span { font-size:1.2rem; margin-left:2px; }
+  .bb-book-bars { display:flex; flex-direction:column; gap:8px; margin-top:16px; text-align:left; }
+  .bb-book-row { display:flex; align-items:center; gap:10px; }
+  .bb-book-name { width:60px; font-size:0.8rem; font-weight:700; color:#5b5f55; flex-shrink:0; }
+  .bb-book-pct { width:36px; text-align:right; font-size:0.78rem; font-weight:700; color:var(--muted); flex-shrink:0; }
+  .bb-note { margin-top:12px; font-size:0.72rem; color:var(--muted); }
+  .bb-sub { font-size:0.82rem; color:var(--muted); margin:-6px 0 14px; }
+  .bb-picker { display:grid; grid-template-columns:repeat(auto-fill, minmax(96px, 1fr)); gap:8px; }
+  .bb-pick { display:flex; flex-direction:column; align-items:center; gap:2px; padding:12px 6px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; cursor:pointer; }
+  .bb-pick span { font-size:0.95rem; font-weight:700; }
+  .bb-pick small { font-size:0.72rem; color:var(--muted); font-weight:600; }
+  .bb-pick:active { background:var(--c-bible-soft); border-color:var(--c-bible); }
+  .bb-pick.teacher { background:var(--sky-soft); border-color:transparent; }
+  .bb-group-label { font-size:0.8rem; font-weight:800; color:var(--muted); margin:14px 2px 8px; }
+  .bb-group-label:first-of-type { margin-top:0; }
+  .bb-confirm { text-align:center; padding-top:26px; }
+  .bb-confirm-q { font-size:1.15rem; font-weight:800; margin-bottom:10px; word-break:keep-all; }
+  .bb-confirm .bb-sub { margin:0 0 18px; }
+  .bb-me-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
+  .bb-me-name { font-size:1.02rem; font-weight:800; }
+  .bb-change { border:1px solid var(--border); background:var(--card); color:var(--muted); font-size:0.74rem; font-weight:700; padding:4px 10px; border-radius:999px; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .bb-me-count { font-size:0.9rem; color:var(--muted); font-weight:600; margin-bottom:8px; }
+  .bb-me-count b { font-size:1.6rem; color:var(--text); font-weight:800; margin-right:2px; }
+  .bb-me-count span { float:right; margin-top:10px; font-weight:800; color:var(--c-bible-deep); }
+  .bb-done-all { margin-top:12px; text-align:center; font-weight:800; color:var(--c-bible-deep); background:var(--c-bible-soft); border-radius:12px; padding:10px; }
+  .bb-week { margin-top:16px; padding-top:14px; border-top:1px dashed var(--border); }
+  .bb-week-label { font-size:0.78rem; font-weight:700; color:var(--muted); margin-bottom:8px; }
+  .bb-week-dots { display:flex; justify-content:space-between; }
+  .bb-day { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; }
+  .bb-day small { font-size:0.68rem; color:var(--muted); font-weight:600; }
+  .bb-day.on small { color:var(--text); font-weight:700; }
+  .bb-day.today small { color:#fff; background:var(--c-bible); border-radius:999px; padding:0 6px; }
+  .bb-day.future .bb-dot { border-style:dashed; opacity:0.55; }
+  .bb-day.future small { opacity:0.55; }
+  .bb-guide-title { font-size:1rem; font-weight:800; margin-bottom:12px; }
+  .bb-guide-rule { display:flex; gap:8px; }
+  .bb-guide-rule div { flex:1; background:var(--c-bible-soft); border-radius:12px; padding:10px 8px; text-align:center; }
+  .bb-guide-rule b { display:block; font-size:0.78rem; color:var(--c-bible-deep); }
+  .bb-guide-rule span { display:block; font-size:1.1rem; font-weight:800; margin-top:2px; }
+  .bb-guide-desc { font-size:0.84rem; color:#4d544e; line-height:1.6; margin:10px 2px 0; word-break:keep-all; }
+  .bb-pace { margin-top:12px; font-size:0.86rem; line-height:1.55; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; word-break:keep-all; }
+  .bb-pace.good { background:#f1f5ec; border-color:#dbe6cf; }
+  .bb-pace small { color:var(--muted); font-size:0.8rem; }
+  .bb-guide-sub { font-size:0.78rem; font-weight:700; color:var(--muted); margin:16px 2px 6px; }
+  .bb-plan { list-style:none; margin:0; padding:0; }
+  .bb-plan li { display:flex; justify-content:space-between; align-items:center; padding:8px 2px; border-bottom:1px dashed var(--border); font-size:0.86rem; }
+  .bb-plan li:last-child { border-bottom:none; }
+  .bb-plan span { font-weight:700; }
+  .bb-plan em { font-style:normal; color:var(--muted); font-weight:600; font-size:0.8rem; }
+  .bb-guide-tip { margin-top:10px; font-size:0.76rem; color:var(--muted); line-height:1.55; word-break:keep-all; }
+  .bb-dot { width:16px; height:16px; border-radius:50%; border:2px solid #ddd6c9; background:transparent; display:inline-block; flex-shrink:0; }
+  .bb-book-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px; }
+  .bb-book-title { font-size:1rem; font-weight:800; }
+  .bb-book-cnt { font-size:0.8rem; font-weight:700; color:var(--muted); }
+  .bb-book.done { background:linear-gradient(180deg, var(--c-bible-soft) 0%, var(--card) 60%); }
+  .bb-book.done .bb-book-cnt { color:var(--c-bible-deep); }
+  .bb-done { margin-top:8px; font-size:0.85rem; font-weight:800; color:var(--c-bible-deep); }
+  .bb-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(40px, 1fr)); gap:6px; margin-top:12px; }
+  .bb-ch { position:relative; aspect-ratio:1; min-height:40px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:#8b8f84; font-size:0.9rem; font-weight:700; font-family:inherit; cursor:pointer; padding:0; transition:transform .1s; }
+  .bb-ch:active { transform:scale(0.92); }
+  .bb-ch.read { color:#fff; border-color:transparent; box-shadow:0 1px 2px rgba(0,0,0,0.08); }
+  .bb-multi { position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; background:#fff; opacity:0.9; }
+  .bb-hint { font-size:0.74rem; color:var(--muted); text-align:center; margin:4px 8px 8px; line-height:1.5; word-break:keep-all; }
+  .bb-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:2000; align-items:flex-end; justify-content:center; }
+  .bb-modal.show { display:flex; }
+  .bb-sheet { width:100%; max-width:420px; background:#fff; border-radius:20px 20px 0 0; padding:22px 20px calc(18px + env(safe-area-inset-bottom, 0px)); }
+  @media (min-width:600px) { .bb-modal { align-items:center; } .bb-sheet { border-radius:20px; } }
+  .bb-sheet-title { font-size:1.15rem; font-weight:800; margin-bottom:12px; }
+  .bb-sheet-label { font-size:0.78rem; font-weight:700; color:var(--muted); margin-bottom:6px; }
+  .bb-history { list-style:none; padding:0; margin:0 0 16px; max-height:200px; overflow-y:auto; }
+  .bb-history li { display:flex; align-items:center; gap:10px; padding:7px 0; font-size:0.98rem; font-weight:700; border-bottom:1px solid #f2eee5; }
+  .bb-history li:last-child { border-bottom:none; }
+  .bb-history .bb-dot { width:12px; height:12px; }
+  .bb-history small { color:var(--muted); font-weight:600; }
+  .bb-history em { font-style:normal; font-size:0.7rem; font-weight:800; color:var(--c-bible-deep); background:var(--c-bible-soft); padding:2px 7px; border-radius:999px; }
+  .bb-sheet-actions { display:flex; gap:8px; }
+  .bb-sheet-actions button { flex:1; }
+  .bb-close { border:none; background:var(--bg2); color:var(--text); border-radius:11px; padding:10px 16px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .bb-toast { position:fixed; left:50%; bottom:calc(84px + env(safe-area-inset-bottom, 0px)); transform:translate(-50%, 10px); background:rgba(38,47,40,0.92); color:#fff; font-size:0.85rem; font-weight:700; padding:9px 16px; border-radius:999px; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s; z-index:2100; white-space:nowrap; }
+  .bb-toast.show { opacity:1; transform:translate(-50%, 0); }
+  /* 공지: 성경읽기 완독 소식 */
+  .notice.bible { border-color:var(--c-bible-line); background:linear-gradient(135deg, var(--c-bible-soft) 0%, #fffdf8 70%); }
+  .notice.bible .notice-date { background:var(--c-bible); color:#fff; }
+  .notice.bible .notice-author { color:var(--c-bible-deep); }
+  .notice.bible .notice-title { color:var(--c-bible-deep); }
 </style>
 </head>
 <body>
@@ -373,10 +475,11 @@
 
 <nav class="tabs">
   <button data-tab="feed">공지</button>
+  <button data-tab="bible">성경읽기</button>
   <button data-tab="prep-schedule">준비일정</button>
   <button data-tab="participants">학생</button>
   <button data-tab="teachers">교사</button>
-  <button data-tab="assign">방배정</button>
+  <button data-tab="assign">배정</button>
   <button data-tab="flights">항공권</button>
   <button data-tab="schedule">선교일정</button>
   <button data-tab="personal-supplies">개인준비물</button>
@@ -388,11 +491,12 @@
   <!-- 1. 학생 탭 -->
   <section class="panel" id="panel-participants">
     <div class="card">
-      <h2>🌱 학생 명단</h2>
-      <input id="p-search-teacher" placeholder="이름, 성별, 학년, 담당, 방, 교사, 차량 검색" oninput="renderParticipants()" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:0.9rem; font-family:inherit; margin-bottom:10px;" />
-      <div class="row-list" id="participant-list"></div>
-      
-      <div class="add-form" id="participant-form" style="display:none;">
+      <div class="list-head"><h2>🌱 학생 명단</h2><span class="list-count" id="participant-count"></span></div>
+      <input id="p-search-teacher" class="people-search" placeholder="🔍 이름, 학년, 담당, 방, 차량 검색" oninput="renderParticipants()" />
+      <div class="person-list" id="participant-list"></div>
+
+      <div class="add-form collapsed" id="participant-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('participant-form')">＋ 학생 추가</button>
         <input type="hidden" id="p-edit-id" value="" />
         <div><label>이름</label><input id="p-name" placeholder="이름" /></div>
         <div class="grid">
@@ -418,19 +522,20 @@
         </div>
         <div>
           <label>담당</label>
-          <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:4px;">
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="워십" />&nbsp;&nbsp;<span>워십</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="무언극" />&nbsp;&nbsp;<span>무언극</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="풍선아트" />&nbsp;&nbsp;<span>풍선아트</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="태권도" />&nbsp;&nbsp;<span>태권도</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="영어전도" />&nbsp;&nbsp;<span>영어전도</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="복음팔찌" />&nbsp;&nbsp;<span>복음팔찌</span></label>
+          <div class="pill-group">
+            <label class="role-check"><input type="checkbox" class="p-role-box" value="워십" /><span>워십</span></label>
+            <label class="role-check"><input type="checkbox" class="p-role-box" value="무언극" /><span>무언극</span></label>
+            <label class="role-check"><input type="checkbox" class="p-role-box" value="풍선아트" /><span>풍선아트</span></label>
+            <label class="role-check"><input type="checkbox" class="p-role-box" value="태권도" /><span>태권도</span></label>
+            <label class="role-check"><input type="checkbox" class="p-role-box" value="영어전도" /><span>영어전도</span></label>
+            <label class="role-check"><input type="checkbox" class="p-role-box" value="복음팔찌" /><span>복음팔찌</span></label>
           </div>
         </div>
 
-        <div style="display:flex; gap:8px; margin-top:10px;">
+        <div class="form-actions">
           <button class="primary" id="p-submit-btn" onclick="submitParticipant()">학생 추가</button>
-          <button class="secondary" id="p-cancel-btn" style="display:none;" onclick="cancelParticipantEdit()">취소</button>
+          <button class="secondary" id="p-cancel-btn" onclick="cancelParticipantEdit()">취소</button>
+          <button class="danger-link" id="p-delete-btn" style="display:none;" onclick="deleteEditingPerson('participant')">삭제</button>
         </div>
       </div>
     </div>
@@ -441,7 +546,8 @@
     <div class="card">
       <h2>🗓️ 선교 일정</h2>
       <!-- 관리자 입력 폼을 상단으로 이동 -->
-      <div class="add-form" id="schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
+      <div class="add-form collapsed" id="schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
+        <button type="button" class="form-toggle" onclick="openForm('schedule-form')">＋ 일정 추가</button>
         <input type="hidden" id="s-edit-day-id" value="" />
         <input type="hidden" id="s-edit-item-idx" value="" />
         <div><label>날짜</label>
@@ -454,7 +560,7 @@
         <div>
           <label>시간</label>
           <div class="date-parts">
-            <select id="s-item-ampm" class="date-parts" style="padding:9px; border-radius:10px; border:1px solid var(--border);">
+            <select id="s-item-ampm" class="dp-ampm">
               <option value="오전">오전</option>
               <option value="오후">오후</option>
             </select>
@@ -466,7 +572,7 @@
         <div><label>내용</label><textarea id="s-item-description" placeholder="세부 내용을 입력하세요"></textarea></div>
         <div style="display:flex; gap:8px; margin-top:10px;">
           <button class="primary" id="s-submit-btn" onclick="addScheduleEntry()">일정 추가</button>
-          <button class="secondary" id="s-cancel-btn" style="display:none;" onclick="cancelScheduleEdit()">취소</button>
+          <button class="secondary" id="s-cancel-btn" onclick="cancelScheduleEdit()">취소</button>
         </div>
       </div>
       <div id="schedule-date-filter" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px; border-bottom:1px solid var(--border);"></div>
@@ -480,7 +586,8 @@
       <h2>📋 준비 일정</h2>
       
       <!-- 관리자 작성/수정 폼 (상단 배치) -->
-      <div class="add-form" id="prep-schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
+      <div class="add-form collapsed" id="prep-schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
+        <button type="button" class="form-toggle" onclick="openForm('prep-schedule-form')">＋ 준비 일정 추가</button>
         <input type="hidden" id="ps-edit-day-id" value="" />
         <input type="hidden" id="ps-edit-item-idx" value="" />
         <div><label>날짜</label>
@@ -494,7 +601,7 @@
           <div>
             <label>시간</label>
             <div class="date-parts">
-              <select id="ps-item-ampm" class="date-parts" style="padding:9px; border-radius:10px; border:1px solid var(--border);">
+              <select id="ps-item-ampm" class="dp-ampm">
                 <option value="오전">오전</option>
                 <option value="오후">오후</option>
               </select>
@@ -507,19 +614,19 @@
         <div><label>활동 내용</label><input id="ps-item-activity" placeholder="예: 준비 모임" /></div>
         <div>
           <label>분류</label>
-          <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:4px;">
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="교사" />&nbsp;&nbsp;<span>교사</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="워십" />&nbsp;&nbsp;<span>워십</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="무언극" />&nbsp;&nbsp;<span>무언극</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="풍선아트" />&nbsp;&nbsp;<span>풍선아트</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="태권도" />&nbsp;&nbsp;<span>태권도</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="영어전도" />&nbsp;&nbsp;<span>영어전도</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="복음팔찌" />&nbsp;&nbsp;<span>복음팔찌</span></label>
+          <div class="pill-group">
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="교사" /><span>교사</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="워십" /><span>워십</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="무언극" /><span>무언극</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="풍선아트" /><span>풍선아트</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="태권도" /><span>태권도</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="영어전도" /><span>영어전도</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="복음팔찌" /><span>복음팔찌</span></label>
           </div>
         </div>
-        <div style="display:flex; gap:8px; margin-top:10px;">
+        <div class="form-actions">
           <button class="primary" id="ps-submit-btn" onclick="addPrepScheduleEntry()">준비 일정 추가</button>
-          <button class="secondary" id="ps-cancel-btn" style="display:none;" onclick="cancelPrepScheduleEdit()">취소</button>
+          <button class="secondary" id="ps-cancel-btn" onclick="cancelPrepScheduleEdit()">취소</button>
         </div>
       </div>
 
@@ -530,27 +637,29 @@
   <!-- 4. 방배정 탭 -->
   <section class="panel" id="panel-assign">
     <div class="card">
-      <h2>🛏️ 방 배정</h2>
-      <div class="row-list" id="rooms-list"></div>
-      <div class="add-form" id="rooms-form" style="display:none;">
+      <div class="list-head"><h2>🛏️ 방 배정</h2><span class="list-count" id="rooms-count"></span></div>
+      <div class="group-list" id="rooms-list"></div>
+      <div class="add-form collapsed" id="rooms-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('rooms-form')">＋ 방 추가</button>
         <input type="hidden" id="rooms-edit-id" value="" />
         <div><label>방 이름</label><input id="rooms-name" placeholder="예: 101호 (남자방)" /></div>
-        <div style="display:flex; gap:8px; margin-top:10px;">
+        <div class="form-actions">
           <button class="primary" id="rooms-submit-btn" onclick="saveGroup('rooms')">방 추가</button>
-          <button class="secondary" id="rooms-cancel-btn" style="display:none;" onclick="cancelGroupEdit('rooms')">취소</button>
+          <button class="secondary" id="rooms-cancel-btn" onclick="cancelGroupEdit('rooms')">취소</button>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <h2>🚐 차량 배정</h2>
-      <div class="row-list" id="vehicles-list"></div>
-      <div class="add-form" id="vehicles-form" style="display:none;">
+      <div class="list-head"><h2>🚐 차량 배정</h2><span class="list-count" id="vehicles-count"></span></div>
+      <div class="group-list" id="vehicles-list"></div>
+      <div class="add-form collapsed" id="vehicles-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('vehicles-form')">＋ 차량 추가</button>
         <input type="hidden" id="vehicles-edit-id" value="" />
         <div><label>차량 이름</label><input id="vehicles-name" placeholder="예: 1호차 (봉고)" /></div>
-        <div style="display:flex; gap:8px; margin-top:10px;">
+        <div class="form-actions">
           <button class="primary" id="vehicles-submit-btn" onclick="saveGroup('vehicles')">차량 추가</button>
-          <button class="secondary" id="vehicles-cancel-btn" style="display:none;" onclick="cancelGroupEdit('vehicles')">취소</button>
+          <button class="secondary" id="vehicles-cancel-btn" onclick="cancelGroupEdit('vehicles')">취소</button>
         </div>
       </div>
     </div>
@@ -590,12 +699,12 @@
           <div>
             <label>출발 시간</label>
             <div class="date-parts">
-              <select id="fi-dep-ampm" class="date-parts" style="padding:9px; border-radius:10px; border:1px solid var(--border);">
+              <select id="fi-dep-ampm" class="dp-ampm">
                 <option value="오전">오전</option>
                 <option value="오후">오후</option>
               </select>
-              <input type="tel" inputmode="numeric" maxlength="2" placeholder="시" class="dp-m" id="fi-dep-hour" />
-              <input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="fi-dep-minute" />
+              <input type="tel" inputmode="numeric" maxlength="2" placeholder="시" class="dp-m" id="fi-dep-hour" /><span>시</span>
+              <input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="fi-dep-minute" /><span>분</span>
             </div>
           </div>
           <div><label>출발 공항</label><input id="fi-dep-airport" placeholder="예: 인천국제공항" /></div>
@@ -616,12 +725,12 @@
           <div>
             <label>도착 시간</label>
             <div class="date-parts">
-              <select id="fi-arr-ampm" class="date-parts" style="padding:9px; border-radius:10px; border:1px solid var(--border);">
+              <select id="fi-arr-ampm" class="dp-ampm">
                 <option value="오전">오전</option>
                 <option value="오후">오후</option>
               </select>
-              <input type="tel" inputmode="numeric" maxlength="2" placeholder="시" class="dp-m" id="fi-arr-hour" />
-              <input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="fi-arr-minute" />
+              <input type="tel" inputmode="numeric" maxlength="2" placeholder="시" class="dp-m" id="fi-arr-hour" /><span>시</span>
+              <input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="fi-arr-minute" /><span>분</span>
             </div>
           </div>
           <div><label>도착 공항</label><input id="fi-arr-airport" placeholder="예: 니노이 아키노 국제공항" /></div>
@@ -639,36 +748,52 @@
     </div>
   </section>
 
+  <!-- 성경읽기 탭 -->
+  <section class="panel" id="panel-bible">
+    <div id="bible-root"></div>
+  </section>
+
   <!-- 6. 공지 탭 -->
   <section class="panel" id="panel-feed">
     <div class="card">
       <h2>📢 공지</h2>
-      <div class="add-form" id="feed-form" style="display:none;">
+      <div class="add-form collapsed" id="feed-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('feed-form')">＋ 공지 작성</button>
         <input type="hidden" id="post-edit-id" value="" />
         <div><label>작성자</label><select id="post-author"><option value="">작성자 선택</option></select></div>
         <div><label>날짜 (비워두면 오늘 날짜)</label><input type="date" id="post-date" /></div>
         <div><label>제목</label><input id="post-title" placeholder="예: 준비모임 안내" /></div>
         <div><label>내용</label><textarea id="post-text" placeholder="공지 내용을 입력해주세요"></textarea></div>
-        <div style="display:flex; gap:8px;">
+        <div class="form-actions">
           <button class="primary" id="post-submit-btn" onclick="addPost()">공지 등록</button>
-          <button class="secondary" id="post-cancel-btn" style="display:none;" onclick="cancelPostEdit()">취소</button>
+          <button class="secondary" id="post-cancel-btn" onclick="cancelPostEdit()">취소</button>
         </div>
       </div>
-      <div id="feed-list" style="margin-top:12px;"></div>
+      <div id="feed-list" class="feed-list"></div>
     </div>
   </section>
 
   <!-- 7. 교사 탭 -->
   <section class="panel" id="panel-teachers">
     <div class="card">
-      <h2>🌳 교사 명단</h2>
-      <div class="row-list" id="teacher-list"></div>
-      <div class="add-form" id="teacher-form" style="display:none;">
+      <div class="list-head"><h2>🌳 교사 명단</h2><span class="list-count" id="teacher-count"></span></div>
+      <div class="person-list" id="teacher-list"></div>
+      <div class="add-form collapsed" id="teacher-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('teacher-form')">＋ 교사 추가</button>
         <input type="hidden" id="t-edit-id" value="" />
-        <div><label>이름</label><input id="t-name" placeholder="이름" /></div>
+        <div class="grid">
+          <div><label>이름</label><input id="t-name" placeholder="이름" /></div>
+          <div><label>성별</label>
+            <select id="t-gender">
+              <option value="">성별 선택</option>
+              <option value="남">남</option>
+              <option value="여">여</option>
+            </select>
+          </div>
+        </div>
         <div>
           <label>담당</label>
-          <div class="health-grid-form" style="display:grid; grid-template-columns:repeat(2,1fr); gap:4px;">
+          <div class="pill-group">
             <label class="role-check"><input type="checkbox" class="t-role-box" value="총괄" /><span>총괄</span></label>
             <label class="role-check"><input type="checkbox" class="t-role-box" value="보험" /><span>보험</span></label>
             <label class="role-check"><input type="checkbox" class="t-role-box" value="회계" /><span>회계</span></label>
@@ -686,9 +811,10 @@
             <label class="role-check"><input type="checkbox" class="t-role-box" value="부모소통" /><span>부모소통</span></label>
           </div>
         </div>
-        <div style="display:flex; gap:8px; margin-top:8px;">
+        <div class="form-actions">
           <button class="primary" id="t-submit-btn" onclick="submitTeacher()">교사 추가</button>
-          <button class="secondary" id="t-cancel-btn" style="display:none;" onclick="cancelTeacherEdit()">취소</button>
+          <button class="secondary" id="t-cancel-btn" onclick="cancelTeacherEdit()">취소</button>
+          <button class="danger-link" id="t-delete-btn" style="display:none;" onclick="deleteEditingPerson('teacher')">삭제</button>
         </div>
       </div>
     </div>
@@ -723,7 +849,7 @@
 
       <!-- 학생 & 교사 통합 검색 및 선택 -->
       <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-        <input id="studentSearchInput" placeholder="🔍 학생 또는 교사 이름 검색..." oninput="syncPersonalChecklistDropdown()" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:0.9rem; font-family:inherit;" />
+        <input id="studentSearchInput" class="search-input" placeholder="🔍 학생 또는 교사 이름 검색..." oninput="syncPersonalChecklistDropdown()" />
         <div class="select-wrapper">
           <select id="studentChecklistSelect" onchange="renderPersonalChecklist()">
             <!-- 학생 및 교사 목록이 동적으로 동기화됩니다 -->
@@ -856,11 +982,17 @@
   </div>
 </div>
 
+<!-- 성경읽기: 장 상세(읽은 날짜) 팝업 -->
+<div id="bible-detail-modal" class="bb-modal" onclick="if (event.target === this) closeBibleDetail()">
+  <div class="bb-sheet" id="bible-detail-body"></div>
+</div>
+<div id="bible-toast" class="bb-toast"></div>
+
 <!-- 교사 선택 모달 팝업 (공용준비물 체크 전용) -->
 <div id="teacher-select-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:16px;">
   <div class="card" style="width:100%; max-width:360px; margin:0; background:#fff; border-radius:16px; padding:20px;">
     <h3 style="margin-top:0; margin-bottom:12px; font-size:1.05rem; font-weight:800; color:var(--sky);">🌳 교사 선택 (체크 담당자)</h3>
-    <input id="modalTeacherSearch" placeholder="🔍 교사 이름 검색..." oninput="renderModalTeacherList()" style="width:100%; padding:9px 11px; border-radius:10px; border:1px solid var(--border); font-size:0.9rem; font-family:inherit; margin-bottom:12px;" />
+    <input id="modalTeacherSearch" class="search-input" placeholder="🔍 교사 이름 검색..." oninput="renderModalTeacherList()" style="margin-bottom:12px;" />
     <div id="modalTeacherList" style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-bottom:14px;"></div>
     <div style="text-align:right;">
       <button class="secondary" style="padding:8px 14px; font-size:0.85rem;" onclick="closeTeacherModal()">취소</button>
@@ -1072,12 +1204,15 @@ function initFirebaseRealtimeSync() {
       }
 
       latestRemoteState = cloneData(remote);
+      bibleReading = cloneData(remote.bibleReading || {});
 
       if (!dirty) {
         state = cloneData(remote);
         baseState = cloneData(remote);
         dirtyFields.clear();
         renderAll();
+      } else {
+        renderBible();
       }
     } else {
       DOC_REF.set(state, { merge: true })
@@ -1119,7 +1254,6 @@ function closeInstallModal() {
 function toggleAdminMode() {
   if (canEdit) {
     canEdit = false;
-    document.getElementById('admin-login-btn').textContent = '관리모드';
     document.getElementById('admin-login-btn').classList.remove('active');
     renderAll();
     return;
@@ -1127,7 +1261,6 @@ function toggleAdminMode() {
   const pw = prompt('비밀번호를 입력하세요.');
   if (pw === '0110') {
     canEdit = true;
-    document.getElementById('admin-login-btn').textContent = '관리모드';
     document.getElementById('admin-login-btn').classList.add('active');
     renderAll();
   } else if (pw !== null) {
@@ -1175,140 +1308,113 @@ async function saveToCloud() {
 
 function renderDday() {
   const badge = document.getElementById('dday-badge');
-  const tripDateText = document.getElementById('trip-date-text');
   if (!badge) return;
-
   const targetDateStr = state.tripDate || "2027-01-10";
-  if (tripDateText) tripDateText.textContent = targetDateStr;
-
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const target = new Date(targetDateStr);
-  
-  if (isNaN(target.getTime())) {
-    badge.textContent = 'D-day 미설정';
-    return;
-  }
-
-  const diff = Math.round((target - today) / (1000*60*60*24));
-  if (diff > 0) {
-    badge.textContent = `D-${diff}`;
-  } else if (diff === 0) {
-    badge.textContent = `D-DAY 🎉`;
-  } else {
-    badge.textContent = `D+${Math.abs(diff)}`;
-  }
+  document.getElementById('trip-date-text').textContent = targetDateStr;
+  const diff = daysUntil(targetDateStr);
+  badge.textContent = diff === null ? 'D-day 미설정' : ddayText(diff);
 }
 
+// ===== 공통 도우미 =====
+const byName = (a, b) => (a.name || '').localeCompare(b.name || '', 'ko');
+
+function roomOrVehicleOf(type, id, key) {
+  const g = (state[key] || []).find(x => (x.members || []).some(m => m.type === type && m.id === id));
+  return g ? g.name : '';
+}
+
+function assignmentOf(type, id) {
+  return { room: roomOrVehicleOf(type, id, 'rooms'), vehicle: roomOrVehicleOf(type, id, 'vehicles') };
+}
+
+// 같은 방에 배정된 교사 이름 (없으면 방 이름에 포함된 교사 이름)
 function getAssignedTeacherName(participantId) {
   let teacherName = '';
   (state.rooms || []).forEach(r => {
-    const hasParticipant = (r.members || []).some(m => m.type === 'participant' && m.id === participantId);
-    if (hasParticipant) {
-      const teacherMember = (r.members || []).find(m => m.type === 'teacher');
-      if (teacherMember) {
-        const t = (state.teachers || []).find(x => x.id === teacherMember.id);
-        if (t) teacherName = t.name;
-      }
-      if (!teacherName) {
-        (state.teachers || []).forEach(t => {
-          if (t.name && r.name.includes(t.name)) {
-            teacherName = t.name;
-          }
-        });
-      }
+    const members = r.members || [];
+    if (!members.some(m => m.type === 'participant' && m.id === participantId)) return;
+    const teacherMember = members.find(m => m.type === 'teacher');
+    const t = teacherMember && (state.teachers || []).find(x => x.id === teacherMember.id);
+    if (t) teacherName = t.name;
+    if (!teacherName) {
+      (state.teachers || []).forEach(x => { if (x.name && (r.name || '').includes(x.name)) teacherName = x.name; });
     }
   });
   return teacherName;
 }
 
-function assignmentOf(type, id) {
-  let room = '';
-  let vehicle = '';
-  (state.rooms || []).forEach(r => {
-    if ((r.members || []).some(m => m.type === type && m.id === id)) room = r.name;
-  });
-  (state.vehicles || []).forEach(v => {
-    if ((v.members || []).some(m => m.type === type && m.id === id)) vehicle = v.name;
-  });
-  return { room, vehicle };
+function assignInfoHtml(type, id) {
+  const a = assignmentOf(type, id);
+  const room = a.room ? escapeHtml(a.room) : '<span class="none">방 미배정</span>';
+  const vehicle = a.vehicle ? escapeHtml(a.vehicle) : '<span class="none">차량 미배정</span>';
+  return `<div class="p-info">🛏️ ${room} &nbsp;·&nbsp; 🚐 ${vehicle}</div>`;
 }
 
+function personRowHtml({ name, sub, roles, extra, onclick }) {
+  return `
+    <div class="person-row${canEdit ? ' clickable' : ''}" ${canEdit ? `onclick="${onclick}"` : ''}>
+      <div class="p-body">
+        <div class="p-line1">
+          <span class="p-name">${escapeHtml(name)}</span>
+          ${sub ? `<span class="p-sub">${escapeHtml(sub)}</span>` : ''}
+        </div>
+        ${roles && roles.length ? `<div class="p-tags">${roles.map(r => `<span class="p-tag">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
+        ${extra}
+      </div>
+      ${canEdit ? '<span class="p-chev">›</span>' : ''}
+    </div>`;
+}
+
+// 학생·교사·배정이 서로 연결되어 있어 함께 다시 그림
+function renderPeople() {
+  renderParticipants();
+  renderTeachers();
+  renderAssign();
+}
+
+// ===== 학생 =====
 function renderParticipants() {
   const list = document.getElementById('participant-list');
+  if (!list) return;
   const searchInput = document.getElementById('p-search-teacher');
   const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
-  
-  const filtered = (searchTerm
-    ? (state.participants || []).filter(p => {
-        const name = (p.name || '').toLowerCase();
-        const gender = (p.gender || '').toLowerCase();
-        const grade = (p.grade || '').toLowerCase();
-        const roles = (p.roles || []).join(' ').toLowerCase();
-        const teacher = getAssignedTeacherName(p.id).toLowerCase();
-        const assign = assignmentOf('participant', p.id);
-        const room = (assign.room || '').toLowerCase();
-        const vehicle = (assign.vehicle || '').toLowerCase();
+  const all = state.participants || [];
 
-        return name.includes(searchTerm) ||
-               gender.includes(searchTerm) ||
-               grade.includes(searchTerm) ||
-               roles.includes(searchTerm) ||
-               teacher.includes(searchTerm) ||
-               room.includes(searchTerm) ||
-               vehicle.includes(searchTerm);
-      })
-    : (state.participants || [])).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
-  
-  if (!state.participants || !state.participants.length) {
+  const filtered = all.filter(p => {
+    if (!searchTerm) return true;
+    const a = assignmentOf('participant', p.id);
+    return [p.name, p.gender, p.grade, (p.roles || []).join(' '), getAssignedTeacherName(p.id), a.room, a.vehicle]
+      .some(v => (v || '').toLowerCase().includes(searchTerm));
+  }).sort(byName);
+
+  if (!all.length) {
     list.innerHTML = '<div class="empty">아직 등록된 학생이 없어요.</div>';
   } else if (!filtered.length) {
-    list.innerHTML = `<div class="empty">검색 결과가 없어요.</div>`;
+    list.innerHTML = '<div class="empty">검색 결과가 없어요.</div>';
   } else {
-    list.innerHTML = filtered.map(p => {
-      const assign = assignmentOf('participant', p.id);
-      return `
-        <div class="item">
-          <div class="top">
-            <div class="name-row">
-              <span class="avatar-placeholder">${escapeHtml(p.grade || '-')}</span>
-              <div>
-                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <div>
-                    <span class="name">${escapeHtml(p.name)}</span>
-                    <span class="meta"> · ${escapeHtml(p.gender || '성별 미정')}</span>
-                  </div>
-                  <div class="chip-row">
-                    ${(p.roles && p.roles.length) ? p.roles.map(r => `<span class="chip ok">${escapeHtml(r)}</span>`).join('') : '<span class="meta" style="font-size:0.8rem;">담당내용 없음</span>'}
-                  </div>
-                </div>
-                <div class="chip-row" style="margin-top:6px;">
-                  <span class="chip">🛏️ 방: ${escapeHtml(assign.room || '미배정')}</span>
-                  <span class="chip">🚐 차량: ${escapeHtml(assign.vehicle || '미배정')}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          ${canEdit ? `<div style="text-align:right; margin-top:4px;"><button class="edit-btn" onclick="startEditParticipant('${p.id}')">수정</button><button class="del-btn" onclick="removeParticipant('${p.id}')">삭제</button></div>` : ''}
-        </div>
-      `;
-    }).join('');
+    list.innerHTML = filtered.map(p => personRowHtml({
+      name: p.name,
+      sub: [p.grade, p.gender].filter(Boolean).join(' · '),
+      roles: p.roles,
+      extra: assignInfoHtml('participant', p.id),
+      onclick: `startEditParticipant('${p.id}')`
+    })).join('');
   }
+  document.getElementById('participant-count').textContent = `${all.length}명`;
   document.getElementById('participant-form').style.display = canEdit ? 'flex' : 'none';
 }
 
 function submitParticipant() {
   const name = document.getElementById('p-name').value.trim();
   if (!name) { alert('이름을 입력해주세요.'); return; }
-  const roles = Array.from(document.querySelectorAll('.p-role-box:checked')).map(el => el.value);
   const data = {
     name,
     gender: document.getElementById('p-gender').value,
     grade: document.getElementById('p-grade').value,
-    roles
+    roles: Array.from(document.querySelectorAll('.p-role-box:checked')).map(el => el.value)
   };
   const editId = document.getElementById('p-edit-id').value;
-  if(!state.participants) state.participants = [];
+  if (!state.participants) state.participants = [];
   if (editId) {
     const p = state.participants.find(x => x.id === editId);
     if (p) Object.assign(p, data);
@@ -1316,88 +1422,85 @@ function submitParticipant() {
     state.participants.push({ id: uid(), ...data });
   }
   cancelParticipantEdit();
-  renderParticipants();
+  renderPeople();
   syncPersonalChecklistDropdown();
   markDirty('participants');
 }
 
 function startEditParticipant(id) {
-  const p = state.participants.find(x => x.id === id);
+  const p = (state.participants || []).find(x => x.id === id);
   if (!p) return;
   document.getElementById('p-edit-id').value = id;
   document.getElementById('p-name').value = p.name || '';
   document.getElementById('p-gender').value = p.gender || '';
   document.getElementById('p-grade').value = p.grade || '';
   const roles = p.roles || [];
-  document.querySelectorAll('.p-role-box').forEach(box => {
-    box.checked = roles.includes(box.value);
-  });
+  document.querySelectorAll('.p-role-box').forEach(box => { box.checked = roles.includes(box.value); });
   document.getElementById('p-submit-btn').textContent = '저장';
-  document.getElementById('p-cancel-btn').style.display = 'inline-block';
-  document.getElementById('panel-participants').scrollIntoView({behavior:'smooth'});
+  document.getElementById('p-delete-btn').style.display = 'inline-block';
+  openForm('participant-form', true);
 }
 
 function cancelParticipantEdit() {
-  document.getElementById('p-edit-id').value = '';
-  document.getElementById('p-name').value = '';
-  document.getElementById('p-gender').value = '';
-  document.getElementById('p-grade').value = '';
-  document.querySelectorAll('.p-role-box').forEach(box => box.checked = false);
+  ['p-edit-id', 'p-name', 'p-gender', 'p-grade'].forEach(id => { document.getElementById(id).value = ''; });
+  document.querySelectorAll('.p-role-box').forEach(box => { box.checked = false; });
   document.getElementById('p-submit-btn').textContent = '학생 추가';
-  document.getElementById('p-cancel-btn').style.display = 'none';
+  document.getElementById('p-delete-btn').style.display = 'none';
+  closeForm('participant-form');
 }
 
 function removeParticipant(id) {
-  if(!confirm('정말 삭제하시겠습니까?')) return;
-  state.participants = state.participants.filter(p => p.id !== id);
-  renderParticipants();
-  renderAssign();
+  if (!confirm('정말 삭제하시겠습니까?')) return false;
+  state.participants = (state.participants || []).filter(p => p.id !== id);
+  renderPeople();
   syncPersonalChecklistDropdown();
   markDirty('participants');
+  return true;
 }
 
+// ===== 교사 =====
 function renderTeacherAuthorOptions() {
   const sel = document.getElementById('post-author');
-  if(!sel) return;
+  if (!sel) return;
   const current = sel.value;
-  const teachers = state.teachers || [];
-  sel.innerHTML = '<option value="">작성자 선택</option>' + teachers.slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')).map(t => `<option value="${escapeHtml(t.name)}">${escapeHtml(t.name)}</option>`).join('');
+  const teachers = (state.teachers || []).slice().sort(byName);
+  sel.innerHTML = '<option value="">작성자 선택</option>' + teachers.map(t => `<option value="${escapeHtml(t.name)}">${escapeHtml(t.name)}</option>`).join('');
   if (teachers.some(t => t.name === current)) sel.value = current;
 }
 
 function renderTeachers() {
   const list = document.getElementById('teacher-list');
-  if(!list) return;
+  if (!list) return;
   const teachers = state.teachers || [];
   if (!teachers.length) {
     list.innerHTML = '<div class="empty">아직 등록된 교사가 없어요.</div>';
   } else {
-    list.innerHTML = teachers.slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')).map(t => {
+    list.innerHTML = teachers.slice().sort(byName).map(t => {
       const kids = (state.participants || []).filter(p => getAssignedTeacherName(p.id) === t.name);
-      return `
-      <div class="item">
-        <div class="top">
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span class="name">${escapeHtml(t.name)}</span>
-            ${(t.roles && t.roles.length) ? `<div class="chip-row">${t.roles.map(r => `<span class="chip ok">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
-          </div>
-        </div>
-        <div class="meta" style="margin-top:6px;">🌱 담당 학생 (${kids.length}명): ${kids.length ? kids.map(k => escapeHtml(k.name)).join(', ') : '없음'}</div>
-        ${canEdit ? `<div style="text-align:right; margin-top:4px;"><button class="edit-btn" onclick="startEditTeacher('${t.id}')">수정</button><button class="del-btn" onclick="removeTeacher('${t.id}')">삭제</button></div>` : ''}
-      </div>
-    `;
+      return personRowHtml({
+        name: t.name,
+        sub: t.gender || '',
+        roles: t.roles,
+        extra: assignInfoHtml('teacher', t.id) +
+          `<div class="p-info">담당 학생 ${kids.length}명${kids.length ? ' · ' + kids.map(k => escapeHtml(k.name)).join(', ') : ''}</div>`,
+        onclick: `startEditTeacher('${t.id}')`
+      });
     }).join('');
   }
+  document.getElementById('teacher-count').textContent = `${teachers.length}명`;
   document.getElementById('teacher-form').style.display = canEdit ? 'flex' : 'none';
 }
 
 function submitTeacher() {
   const name = document.getElementById('t-name').value.trim();
   if (!name) { alert('이름을 입력해주세요.'); return; }
-  const roles = Array.from(document.querySelectorAll('.t-role-box:checked')).map(el => el.value);
-  const data = { name, roles };
+  const data = {
+    name,
+    gender: document.getElementById('t-gender').value,
+    roles: Array.from(document.querySelectorAll('.t-role-box:checked')).map(el => el.value)
+  };
   const editId = document.getElementById('t-edit-id').value;
-  if(!state.teachers) state.teachers = [];
+  if (!state.teachers) state.teachers = [];
   if (editId) {
     const t = state.teachers.find(x => x.id === editId);
     if (t) Object.assign(t, data);
@@ -1405,9 +1508,8 @@ function submitTeacher() {
     state.teachers.push({ id: uid(), ...data });
   }
   cancelTeacherEdit();
-  renderTeachers();
+  renderPeople();
   renderTeacherAuthorOptions();
-  renderParticipants();
   syncPersonalChecklistDropdown();
   markDirty('teachers');
 }
@@ -1417,138 +1519,132 @@ function startEditTeacher(id) {
   if (!t) return;
   document.getElementById('t-edit-id').value = id;
   document.getElementById('t-name').value = t.name || '';
+  document.getElementById('t-gender').value = t.gender || '';
   const roles = t.roles || [];
-  document.querySelectorAll('.t-role-box').forEach(box => {
-    box.checked = roles.includes(box.value);
-  });
+  document.querySelectorAll('.t-role-box').forEach(box => { box.checked = roles.includes(box.value); });
   document.getElementById('t-submit-btn').textContent = '저장';
-  document.getElementById('t-cancel-btn').style.display = 'inline-block';
-  document.getElementById('panel-teachers').scrollIntoView({behavior:'smooth'});
+  document.getElementById('t-delete-btn').style.display = 'inline-block';
+  openForm('teacher-form', true);
 }
 
 function cancelTeacherEdit() {
-  document.getElementById('t-edit-id').value = '';
-  document.getElementById('t-name').value = '';
-  document.querySelectorAll('.t-role-box').forEach(box => box.checked = false);
+  ['t-edit-id', 't-name', 't-gender'].forEach(id => { document.getElementById(id).value = ''; });
+  document.querySelectorAll('.t-role-box').forEach(box => { box.checked = false; });
   document.getElementById('t-submit-btn').textContent = '교사 추가';
-  document.getElementById('t-cancel-btn').style.display = 'none';
+  document.getElementById('t-delete-btn').style.display = 'none';
+  closeForm('teacher-form');
 }
 
 function removeTeacher(id) {
-  if(!confirm('정말 삭제하시겠습니까?')) return;
+  if (!confirm('정말 삭제하시겠습니까?')) return false;
   state.teachers = (state.teachers || []).filter(x => x.id !== id);
-  renderTeachers();
+  renderPeople();
   renderTeacherAuthorOptions();
-  renderParticipants();
   syncPersonalChecklistDropdown();
   markDirty('teachers');
+  return true;
 }
 
+function deleteEditingPerson(kind) {
+  const isP = kind === 'participant';
+  const id = document.getElementById(isP ? 'p-edit-id' : 't-edit-id').value;
+  if (!id) return;
+  const removed = isP ? removeParticipant(id) : removeTeacher(id);
+  if (removed) { if (isP) cancelParticipantEdit(); else cancelTeacherEdit(); }
+}
+
+// ===== 접히는 입력 폼 =====
+function openForm(formId, scroll = false) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  form.classList.remove('collapsed');
+  if (scroll) {
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    const first = form.querySelector('input:not([type="hidden"]):not([type="checkbox"]), textarea, select');
+    if (first) first.focus();
+  }
+}
+
+function closeForm(formId) {
+  const form = document.getElementById(formId);
+  if (form) form.classList.add('collapsed');
+}
+
+// ===== 방·차량 배정 =====
+const GROUP_LABEL = { rooms: '방', vehicles: '차량' };
+const openGroupEdits = new Set();
+
 function saveGroup(type) {
-  const inputId = type === 'rooms' ? 'rooms-name' : 'vehicles-name';
-  const editIdId = type === 'rooms' ? 'rooms-edit-id' : 'vehicles-edit-id';
-  const nameInput = document.getElementById(inputId);
-  const editIdInput = document.getElementById(editIdId);
-  const name = nameInput.value.trim();
+  const name = document.getElementById(type + '-name').value.trim();
   if (!name) return;
-
   if (!state[type]) state[type] = [];
-  const editId = editIdInput.value;
-
+  const editId = document.getElementById(type + '-edit-id').value;
   if (editId) {
     const group = state[type].find(x => x.id === editId);
     if (group) group.name = name;
   } else {
     state[type].push({ id: uid(), name, members: [] });
   }
-
   cancelGroupEdit(type);
-  renderAssign();
-  renderParticipants();
-  renderTeachers();
+  renderPeople();
   markDirty(type);
 }
 
 function startEditGroup(type, id) {
-  const groups = state[type] || [];
-  const g = groups.find(x => x.id === id);
+  const g = (state[type] || []).find(x => x.id === id);
   if (!g) return;
-  const inputId = type === 'rooms' ? 'rooms-name' : 'vehicles-name';
-  const editIdId = type === 'rooms' ? 'rooms-edit-id' : 'vehicles-edit-id';
-  const submitBtnId = type === 'rooms' ? 'rooms-submit-btn' : 'vehicles-submit-btn';
-  const cancelBtnId = type === 'rooms' ? 'rooms-cancel-btn' : 'vehicles-cancel-btn';
-
-  document.getElementById(editIdId).value = id;
-  document.getElementById(inputId).value = g.name || '';
-  document.getElementById(submitBtnId).textContent = '저장';
-  document.getElementById(cancelBtnId).style.display = 'inline-block';
-  document.getElementById('panel-assign').scrollIntoView({behavior:'smooth'});
+  document.getElementById(type + '-edit-id').value = id;
+  document.getElementById(type + '-name').value = g.name || '';
+  document.getElementById(type + '-submit-btn').textContent = '저장';
+  openForm(type + '-form', true);
 }
 
 function cancelGroupEdit(type) {
-  const inputId = type === 'rooms' ? 'rooms-name' : 'vehicles-name';
-  const editIdId = type === 'rooms' ? 'rooms-edit-id' : 'vehicles-edit-id';
-  const submitBtnId = type === 'rooms' ? 'rooms-submit-btn' : 'vehicles-submit-btn';
-  const cancelBtnId = type === 'rooms' ? 'rooms-cancel-btn' : 'vehicles-cancel-btn';
-
-  document.getElementById(editIdId).value = '';
-  document.getElementById(inputId).value = '';
-  document.getElementById(submitBtnId).textContent = type === 'rooms' ? '방 추가' : '차량 추가';
-  document.getElementById(cancelBtnId).style.display = 'none';
+  document.getElementById(type + '-edit-id').value = '';
+  document.getElementById(type + '-name').value = '';
+  document.getElementById(type + '-submit-btn').textContent = GROUP_LABEL[type] + ' 추가';
+  closeForm(type + '-form');
 }
 
 function removeGroup(type, id) {
-  if(!confirm('정말 삭제하시겠습니까?')) return;
+  if (!confirm('정말 삭제하시겠습니까?')) return;
   state[type] = (state[type] || []).filter(x => x.id !== id);
-  renderAssign();
-  renderParticipants();
-  renderTeachers();
+  renderPeople();
   markDirty(type);
 }
 
-function getUnassignedOptions(category) {
-  const allPeople = [
+function getUnassignedOptions(type) {
+  const assigned = new Set();
+  (state[type] || []).forEach(g => (g.members || []).forEach(m => assigned.add(`${m.type}:${m.id}`)));
+  const people = [
     ...(state.participants || []).map(p => ({ type: 'participant', id: p.id, name: '🌱 ' + p.name })),
     ...(state.teachers || []).map(t => ({ type: 'teacher', id: t.id, name: '🌳 ' + t.name }))
   ];
-  
-  const assignedSet = new Set();
-  const groups = state[category] || [];
-  groups.forEach(g => {
-    (g.members || []).forEach(m => {
-      assignedSet.add(`${m.type}:${m.id}`);
-    });
-  });
-
-  return allPeople
-    .filter(p => !assignedSet.has(`${p.type}:${p.id}`))
+  return people
+    .filter(p => !assigned.has(`${p.type}:${p.id}`))
     .map(p => `<option value="${p.type}:${p.id}">${escapeHtml(p.name)}</option>`)
     .join('');
 }
 
 function addMemberToGroup(type, groupId) {
-  const sel = document.getElementById(`${type === 'rooms' ? 'room' : 'vehicle'}-add-${groupId}`);
+  const sel = document.getElementById(`${type}-add-${groupId}`);
   if (!sel || !sel.value) return;
   const [mType, mId] = sel.value.split(':');
   const group = (state[type] || []).find(x => x.id === groupId);
   if (!group) return;
   if (!group.members) group.members = [];
-  if (!group.members.some(m => m.type === mType && m.id === mId)) {
-    group.members.push({ type: mType, id: mId });
-    renderAssign();
-    renderParticipants();
-    renderTeachers();
-    markDirty(type);
-  }
+  if (group.members.some(m => m.type === mType && m.id === mId)) return;
+  group.members.push({ type: mType, id: mId });
+  renderPeople();
+  markDirty(type);
 }
 
 function removeMember(type, groupId, mType, mId) {
   const group = (state[type] || []).find(x => x.id === groupId);
   if (!group || !group.members) return;
   group.members = group.members.filter(m => !(m.type === mType && m.id === mId));
-  renderAssign();
-  renderParticipants();
-  renderTeachers();
+  renderPeople();
   markDirty(type);
 }
 
@@ -1556,73 +1652,67 @@ function participantName(id) {
   const p = (state.participants || []).find(x => x.id === id);
   return p ? p.name : '삭제된 학생';
 }
+
 function teacherName(id) {
   const t = (state.teachers || []).find(x => x.id === id);
   return t ? t.name : '삭제된 교사';
 }
 
-function renderAssign() {
-  const roomsList = document.getElementById('rooms-list');
-  if (roomsList) {
-    const rooms = state.rooms || [];
-    if (!rooms.length) {
-      roomsList.innerHTML = '<div class="empty">등록된 방이 없어요.</div>';
-    } else {
-      roomsList.innerHTML = rooms.map(r => `
-        <div class="item" style="margin-bottom:8px;">
-          <div><strong>${escapeHtml(r.name)}</strong></div>
-          <div class="chip-row" style="margin-top:6px;">
-            ${(r.members && r.members.length) ? r.members.map(m => `<span class="chip ok">${m.type === 'participant' ? '🌱 ' + participantName(m.id) : '🌳 ' + teacherName(m.id)} ${canEdit ? `<button style="background:none;border:none;color:#fff;cursor:pointer;margin-left:4px;" onclick="removeMember('rooms','${r.id}','${m.type}','${m.id}')">×</button>` : ''}</span>`).join('') : '<span class="meta">배정된 인원이 없어요</span>'}
-          </div>
-          ${canEdit ? `
-            <div style="margin-top:8px; display:flex; gap:6px;">
-              <select id="room-add-${r.id}" style="flex:1; padding:4px; font-size:0.8rem; border-radius:6px; border:1px solid var(--border); background:var(--card); color:var(--text);">
-                <option value="">+ 인원 추가</option>
-                ${getUnassignedOptions('rooms')}
-              </select>
-              <button class="secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="addMemberToGroup('rooms', '${r.id}')">추가</button>
-            </div>
-            <div style="text-align:right; margin-top:8px; display:flex; gap:8px; justify-content:flex-end;">
-              <button class="edit-btn" style="margin-right:0;" onclick="startEditGroup('rooms', '${r.id}')">수정</button>
-              <button class="del-btn" onclick="removeGroup('rooms', '${r.id}')">삭제</button>
-            </div>
-          ` : ''}
-        </div>
-      `).join('');
-    }
-    document.getElementById('rooms-form').style.display = canEdit ? 'flex' : 'none';
-  }
+function toggleGroupEdit(type, id) {
+  const key = type + ':' + id;
+  if (openGroupEdits.has(key)) openGroupEdits.delete(key); else openGroupEdits.add(key);
+  renderAssign();
+}
 
-  const vehiclesList = document.getElementById('vehicles-list');
-  if (vehiclesList) {
-    const vehicles = state.vehicles || [];
-    if (!vehicles.length) {
-      vehiclesList.innerHTML = '<div class="empty">등록된 차량이 없어요.</div>';
-    } else {
-      vehiclesList.innerHTML = vehicles.map(v => `
-        <div class="item" style="margin-bottom:8px;">
-          <div><strong>${escapeHtml(v.name)}</strong></div>
-          <div class="chip-row" style="margin-top:6px;">
-            ${(v.members && v.members.length) ? v.members.map(m => `<span class="chip ok">${m.type === 'participant' ? '🌱 ' + participantName(m.id) : '🌳 ' + teacherName(m.id)} ${canEdit ? `<button style="background:none;border:none;color:#fff;cursor:pointer;margin-left:4px;" onclick="removeMember('vehicles','${v.id}','${m.type}','${m.id}')">×</button>` : ''}</span>`).join('') : '<span class="meta">배정된 인원이 없어요</span>'}
-          </div>
-          ${canEdit ? `
-            <div style="margin-top:8px; display:flex; gap:6px;">
-              <select id="vehicle-add-${v.id}" style="flex:1; padding:4px; font-size:0.8rem; border-radius:6px; border:1px solid var(--border); background:var(--card); color:var(--text);">
-                <option value="">+ 인원 추가</option>
-                ${getUnassignedOptions('vehicles')}
-              </select>
-              <button class="secondary" style="padding:4px 8px; font-size:0.8rem;" onclick="addMemberToGroup('vehicles', '${v.id}')">추가</button>
-            </div>
-            <div style="text-align:right; margin-top:8px; display:flex; gap:8px; justify-content:flex-end;">
-              <button class="edit-btn" style="margin-right:0;" onclick="startEditGroup('vehicles', '${v.id}')">수정</button>
-              <button class="del-btn" onclick="removeGroup('vehicles', '${v.id}')">삭제</button>
-            </div>
-          ` : ''}
+function renderGroupCards(type, groups) {
+  return groups.map(g => {
+    // 교사를 먼저 표시
+    const members = (g.members || []).slice().sort((a, b) => (a.type === b.type ? 0 : a.type === 'teacher' ? -1 : 1));
+    const tCnt = members.filter(m => m.type === 'teacher').length;
+    const editing = canEdit && openGroupEdits.has(type + ':' + g.id);
+    return `
+      <div class="group-card${editing ? ' editing' : ''}">
+        <div class="group-head">
+          <span class="group-name">${escapeHtml(g.name)}</span>
+          <span class="group-count">${members.length ? `학생 ${members.length - tCnt} · 교사 ${tCnt}` : ''}</span>
+          ${canEdit ? `<button class="group-edit-btn" onclick="toggleGroupEdit('${type}','${g.id}')">${editing ? '완료' : '편집'}</button>` : ''}
         </div>
-      `).join('');
-    }
-    document.getElementById('vehicles-form').style.display = canEdit ? 'flex' : 'none';
-  }
+        <div class="member-wrap">
+          ${members.length ? members.map(m => {
+            const isT = m.type === 'teacher';
+            const label = isT ? '🌳 ' + escapeHtml(teacherName(m.id)) : '🌱 ' + escapeHtml(participantName(m.id));
+            return `<span class="member${isT ? ' teacher' : ''}">${label}${canEdit ? `<button class="x" aria-label="빼기" onclick="removeMember('${type}','${g.id}','${m.type}','${m.id}')">×</button>` : ''}</span>`;
+          }).join('') : '<span class="member-empty">배정된 인원이 없어요</span>'}
+        </div>
+        ${editing ? `
+        <div class="group-tools">
+          <div class="add-row">
+            <select id="${type}-add-${g.id}">
+              <option value="">인원 선택</option>
+              ${getUnassignedOptions(type)}
+            </select>
+            <button class="secondary" onclick="addMemberToGroup('${type}', '${g.id}')">추가</button>
+          </div>
+          <div class="link-row">
+            <button onclick="startEditGroup('${type}', '${g.id}')">이름 수정</button>
+            <button class="del" onclick="removeGroup('${type}', '${g.id}')">${GROUP_LABEL[type]} 삭제</button>
+          </div>
+        </div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function renderAssign() {
+  [['rooms', '개'], ['vehicles', '대']].forEach(([type, unit]) => {
+    const list = document.getElementById(type + '-list');
+    if (!list) return;
+    const groups = state[type] || [];
+    list.innerHTML = groups.length
+      ? renderGroupCards(type, groups)
+      : `<div class="empty">등록된 ${GROUP_LABEL[type]}이 없어요.</div>`;
+    document.getElementById(type + '-count').textContent = groups.length ? `${groups.length}${unit}` : '';
+    document.getElementById(type + '-form').style.display = canEdit ? 'flex' : 'none';
+  });
 }
 
 function formatScheduleDate(dateStr) {
@@ -1641,24 +1731,23 @@ function formatTimeKo(time24) {
   return `${ampm} ${h12}:${mStr}`;
 }
 
+function formatShortDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric', weekday: 'short' });
+}
+
 function renderFlightInfo() {
   const list = document.getElementById('flightinfo-list');
-  if(!list) return;
+  if (!list) return;
   const flights = state.flightInfos || [];
+  const STATUS_LABEL = { '완료': '예약완료', '대기': '대기중' };
 
   if (!flights.length) {
     list.innerHTML = '<div class="empty">등록된 항공권이 없어요.</div>';
   } else {
-    list.innerHTML = flights.map(fi => {
-      const statusLabel = fi.status === '완료' ? '예약완료' : fi.status === '대기' ? '대기중' : '미정';
-      const formatDepDateStr = (dateStr) => {
-        if (!dateStr) return '';
-        const d = new Date(dateStr);
-        if (isNaN(d.getTime())) return dateStr;
-        return d.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric', weekday: 'short' });
-      };
-
-      return `
+    list.innerHTML = flights.map(fi => `
         <div class="boarding-pass" style="margin-bottom:12px;">
           <div class="bp-top">
             <div>
@@ -1666,13 +1755,13 @@ function renderFlightInfo() {
               <span class="bp-flightno">${escapeHtml(fi.flightNo || '편명 미정')}</span>
             </div>
             <div>
-              <span class="status-tag status-${fi.status}">${statusLabel}</span>
+              <span class="status-tag status-${fi.status}">${STATUS_LABEL[fi.status] || '미정'}</span>
             </div>
           </div>
           <div class="bp-route">
             <div class="bp-point">
               <div class="bp-time">${escapeHtml(formatTimeKo(fi.depTime))}</div>
-              <div class="bp-date">${escapeHtml(formatDepDateStr(fi.depDate))}</div>
+              <div class="bp-date">${escapeHtml(formatShortDate(fi.depDate))}</div>
               <div class="bp-airport">${escapeHtml(fi.depAirport || '출발공항 미정')}${fi.depTerminal ? ' (' + escapeHtml(fi.depTerminal) + ')' : ''}</div>
             </div>
             <div class="bp-mid">
@@ -1681,7 +1770,7 @@ function renderFlightInfo() {
             </div>
             <div class="bp-point bp-arr">
               <div class="bp-time">${escapeHtml(formatTimeKo(fi.arrTime))}</div>
-              <div class="bp-date">${escapeHtml(formatDepDateStr(fi.arrDate))}</div>
+              <div class="bp-date">${escapeHtml(formatShortDate(fi.arrDate))}</div>
               <div class="bp-airport">${escapeHtml(fi.arrAirport || '도착공항 미정')}${fi.arrTerminal ? ' (' + escapeHtml(fi.arrTerminal) + ')' : ''}</div>
             </div>
           </div>
@@ -1691,65 +1780,57 @@ function renderFlightInfo() {
           </div>
           ${canEdit ? `<div style="text-align:right; margin-top:4px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditFlight('${fi.id}')">수정</button><button class="del-btn" onclick="removeFlight('${fi.id}')">삭제</button></div>` : ''}
         </div>
-      `;
-    }).join('');
+      `).join('');
   }
 
   document.getElementById('flightinfo-form').style.display = canEdit ? 'flex' : 'none';
 }
 
+// 오전/오후 + 시 + 분 입력칸 → "HH:MM" (prefix 예: 's-item', 'ps-item', 'fi-dep')
 function getTimeValue(prefix) {
   const hourInput = document.getElementById(prefix + '-hour');
   const minuteInput = document.getElementById(prefix + '-minute');
   const ampmSelect = document.getElementById(prefix + '-ampm');
   if (!hourInput || !hourInput.value) return '';
-  const ampm = ampmSelect ? ampmSelect.value : '오전';
-  const hour12 = parseInt(hourInput.value, 10);
-  const minute = (minuteInput && minuteInput.value ? minuteInput.value : '0').padStart(2, '0');
-  let hour24 = hour12 % 12;
-  if (ampm === '오후') hour24 += 12;
-  return `${String(hour24).padStart(2,'0')}:${minute}`;
+  const minute = ((minuteInput && minuteInput.value) || '0').padStart(2, '0');
+  let hour24 = parseInt(hourInput.value, 10) % 12;
+  if (ampmSelect && ampmSelect.value === '오후') hour24 += 12;
+  return `${String(hour24).padStart(2, '0')}:${minute}`;
 }
 
-function parseTime24ToParts(time24, prefix) {
-  const ampmEl = document.getElementById(prefix + '-item-ampm');
-  const hourEl = document.getElementById(prefix + '-item-hour');
-  const minuteEl = document.getElementById(prefix + '-item-minute');
-  if (!time24) {
-    if (ampmEl) ampmEl.value = '오전';
-    if (hourEl) hourEl.value = '';
-    if (minuteEl) minuteEl.value = '';
-    return;
+// "HH:MM" → 오전/오후 + 시 + 분 입력칸 (빈 값이면 초기화)
+function setTimeValue(prefix, time24) {
+  const ampmEl = document.getElementById(prefix + '-ampm');
+  const hourEl = document.getElementById(prefix + '-hour');
+  const minuteEl = document.getElementById(prefix + '-minute');
+  let ampm = '오전', hour = '', minute = '';
+  if (time24) {
+    const [h24Str, mStr] = time24.split(':');
+    const h24 = parseInt(h24Str, 10);
+    ampm = h24 < 12 ? '오전' : '오후';
+    hour = (h24 % 12) || 12;
+    minute = mStr;
   }
-  const [h24Str, mStr] = time24.split(':');
-  let h24 = parseInt(h24Str, 10);
-  let ampm = h24 < 12 ? '오전' : '오후';
-  let h12 = h24 % 12;
-  if (h12 === 0) h12 = 12;
   if (ampmEl) ampmEl.value = ampm;
-  if (hourEl) hourEl.value = h12;
-  if (minuteEl) minuteEl.value = mStr;
+  if (hourEl) hourEl.value = hour;
+  if (minuteEl) minuteEl.value = minute;
 }
+
+// 항공권 입력칸 id ↔ 데이터 필드
+const FLIGHT_TEXT_FIELDS = [['fi-airline', 'airline'], ['fi-flightno', 'flightNo'], ['fi-dep-airport', 'depAirport'], ['fi-dep-terminal', 'depTerminal'], ['fi-arr-airport', 'arrAirport'], ['fi-arr-terminal', 'arrTerminal'], ['fi-baggage', 'baggage']];
 
 function saveFlightInfo() {
   const data = {
-    airline: document.getElementById('fi-airline').value.trim(),
-    flightNo: document.getElementById('fi-flightno').value.trim(),
     status: document.getElementById('fi-status').value,
     depDate: getDateValue('fi-dep'),
     depTime: getTimeValue('fi-dep'),
-    depAirport: document.getElementById('fi-dep-airport').value.trim(),
-    depTerminal: document.getElementById('fi-dep-terminal').value.trim(),
     arrDate: getDateValue('fi-arr'),
-    arrTime: getTimeValue('fi-arr'),
-    arrAirport: document.getElementById('fi-arr-airport').value.trim(),
-    arrTerminal: document.getElementById('fi-arr-terminal').value.trim(),
-    baggage: document.getElementById('fi-baggage').value.trim(),
+    arrTime: getTimeValue('fi-arr')
   };
+  FLIGHT_TEXT_FIELDS.forEach(([id, key]) => { data[key] = document.getElementById(id).value.trim(); });
 
   const editId = document.getElementById('fi-edit-id').value;
   if (!state.flightInfos) state.flightInfos = [];
-
   if (editId) {
     const fi = state.flightInfos.find(x => x.id === editId);
     if (fi) Object.assign(fi, data);
@@ -1766,45 +1847,12 @@ function startEditFlight(id) {
   const fi = (state.flightInfos || []).find(x => x.id === id);
   if (!fi) return;
   document.getElementById('fi-edit-id').value = id;
-  document.getElementById('fi-airline').value = fi.airline || '';
-  document.getElementById('fi-flightno').value = fi.flightNo || '';
   document.getElementById('fi-status').value = fi.status || '미정';
+  FLIGHT_TEXT_FIELDS.forEach(([elId, key]) => { document.getElementById(elId).value = fi[key] || ''; });
   setDateValue('fi-dep', fi.depDate || '');
   setDateValue('fi-arr', fi.arrDate || '');
-
-  if (fi.depTime) {
-    const [h24, m] = fi.depTime.split(':');
-    let h = parseInt(h24, 10);
-    const ampm = h < 12 ? '오전' : '오후';
-    let h12 = h % 12; if (h12 === 0) h12 = 12;
-    document.getElementById('fi-dep-ampm').value = ampm;
-    document.getElementById('fi-dep-hour').value = h12;
-    document.getElementById('fi-dep-minute').value = m;
-  } else {
-    document.getElementById('fi-dep-ampm').value = '오전';
-    document.getElementById('fi-dep-hour').value = '';
-    document.getElementById('fi-dep-minute').value = '';
-  }
-
-  if (fi.arrTime) {
-    const [h24, m] = fi.arrTime.split(':');
-    let h = parseInt(h24, 10);
-    const ampm = h < 12 ? '오전' : '오후';
-    let h12 = h % 12; if (h12 === 0) h12 = 12;
-    document.getElementById('fi-arr-ampm').value = ampm;
-    document.getElementById('fi-arr-hour').value = h12;
-    document.getElementById('fi-arr-minute').value = m;
-  } else {
-    document.getElementById('fi-arr-ampm').value = '오전';
-    document.getElementById('fi-arr-hour').value = '';
-    document.getElementById('fi-arr-minute').value = '';
-  }
-
-  document.getElementById('fi-dep-airport').value = fi.depAirport || '';
-  document.getElementById('fi-dep-terminal').value = fi.depTerminal || '';
-  document.getElementById('fi-arr-airport').value = fi.arrAirport || '';
-  document.getElementById('fi-arr-terminal').value = fi.arrTerminal || '';
-  document.getElementById('fi-baggage').value = fi.baggage || '';
+  setTimeValue('fi-dep', fi.depTime || '');
+  setTimeValue('fi-arr', fi.arrTime || '');
   document.getElementById('fi-submit-btn').textContent = '저장';
   document.getElementById('fi-cancel-btn').style.display = 'inline-block';
   document.getElementById('panel-flights').scrollIntoView({behavior:'smooth'});
@@ -1812,22 +1860,12 @@ function startEditFlight(id) {
 
 function cancelFlightEdit() {
   document.getElementById('fi-edit-id').value = '';
-  document.getElementById('fi-airline').value = '';
-  document.getElementById('fi-flightno').value = '';
   document.getElementById('fi-status').value = '미정';
+  FLIGHT_TEXT_FIELDS.forEach(([elId]) => { document.getElementById(elId).value = ''; });
   setDateValue('fi-dep', '');
   setDateValue('fi-arr', '');
-  document.getElementById('fi-dep-ampm').value = '오전';
-  document.getElementById('fi-dep-hour').value = '';
-  document.getElementById('fi-dep-minute').value = '';
-  document.getElementById('fi-arr-ampm').value = '오전';
-  document.getElementById('fi-arr-hour').value = '';
-  document.getElementById('fi-arr-minute').value = '';
-  document.getElementById('fi-dep-airport').value = '';
-  document.getElementById('fi-dep-terminal').value = '';
-  document.getElementById('fi-arr-airport').value = '';
-  document.getElementById('fi-arr-terminal').value = '';
-  document.getElementById('fi-baggage').value = '';
+  setTimeValue('fi-dep', '');
+  setTimeValue('fi-arr', '');
   document.getElementById('fi-submit-btn').textContent = '항공권 추가';
   document.getElementById('fi-cancel-btn').style.display = 'none';
 }
@@ -1869,25 +1907,26 @@ function renderSchedule() {
     list.innerHTML = '<div class="empty">등록된 선교 일정이 없어요.</div>';
   } else {
     list.innerHTML = filteredSchedule.map(s => {
+      const dayNo = sortedSchedule.indexOf(s) + 1;
+      const items = (s.items || []).slice().sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
       return `
         <div class="sch-day-group">
           <div class="sch-day-header">
-            <span>📅 ${escapeHtml(formatScheduleDate(s.date))}</span>
-            ${canEdit ? `<button class="del-btn" onclick="removeSchedule('${s.id}')">이 날짜 삭제</button>` : ''}
+            <div class="sch-day-title"><span class="sch-day-no">DAY ${dayNo}</span><span class="sch-day-date">${escapeHtml(formatScheduleDate(s.date))}</span></div>
+            ${canEdit ? `<button class="sch-day-del" onclick="removeSchedule('${s.id}')">이 날짜 삭제</button>` : ''}
           </div>
-          <div class="timeline">
-            ${(s.items || []).sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99')).map(it => {
+          <div class="sch-timeline">
+            ${items.map(it => {
               const idx = s.items.indexOf(it);
               return `
-              <div class="sch-timeline-card">
-                <div class="sch-time-box">${escapeHtml(formatTimeKo(it.time))}</div>
-                <div class="sch-content-box">
+              <div class="sch-item">
+                <div class="sch-time">${escapeHtml(formatTimeKo(it.time))}</div>
+                <div class="sch-body">
                   <div class="sch-activity-title">${escapeHtml(it.activity)}</div>
                   ${it.description ? `<div class="sch-activity-desc">${escapeHtml(it.description)}</div>` : ''}
-                  ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removeScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
+                  ${canEdit ? `<div class="sch-actions"><button onclick="startEditScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removeScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
                 </div>
-              </div>
-            `;
+              </div>`;
             }).join('')}
           </div>
         </div>`;
@@ -1896,57 +1935,37 @@ function renderSchedule() {
   document.getElementById('schedule-form').style.display = canEdit ? 'flex' : 'none';
 }
 
+// 날짜별로 묶인 일정(state.schedule / state.prepSchedule)에 항목 추가·수정
+function upsertDayItem(key, date, itemData, editDayId, editIdx) {
+  if (!state[key]) state[key] = [];
+  if (editDayId !== '' && editIdx !== '') {
+    const oldDay = state[key].find(s => s.id === editDayId);
+    if (!oldDay || !oldDay.items || !oldDay.items[editIdx]) return;
+    if (oldDay.date === date) { oldDay.items[editIdx] = itemData; return; }
+    // 날짜가 바뀌면 기존 날짜에서 빼고 새 날짜로 이동
+    oldDay.items.splice(editIdx, 1);
+    if (!oldDay.items.length) state[key] = state[key].filter(s => s.id !== editDayId);
+  }
+  const day = state[key].find(s => s.date === date);
+  if (day) (day.items = day.items || []).push(itemData);
+  else state[key].push({ id: uid(), date, items: [itemData] });
+}
+
+function removeDayItem(key, dayId, itemIdx) {
+  const day = (state[key] || []).find(s => s.id === dayId);
+  if (!day || !day.items) return;
+  day.items.splice(itemIdx, 1);
+  if (!day.items.length) state[key] = state[key].filter(s => s.id !== dayId);
+}
+
 function addScheduleEntry() {
   const date = getDateValue('s-date');
-  const hourInput = document.getElementById('s-item-hour');
-  const minuteInput = document.getElementById('s-item-minute');
   const activity = document.getElementById('s-item-activity').value.trim();
   const description = document.getElementById('s-item-description').value.trim();
-  const editDayId = document.getElementById('s-edit-day-id').value;
-  const editIdx = document.getElementById('s-edit-item-idx').value;
-
   if (!date || !activity) { alert('날짜와 일정을 입력해주세요.'); return; }
-  let time = '';
-  if (hourInput.value) {
-    const ampm = document.getElementById('s-item-ampm').value;
-    const hour12 = parseInt(hourInput.value, 10);
-    const minute = (minuteInput.value || '0').padStart(2, '0');
-    let hour24 = hour12 % 12;
-    if (ampm === '오후') hour24 += 12;
-    time = `${String(hour24).padStart(2,'0')}:${minute}`;
-  }
-  if(!state.schedule) state.schedule = [];
 
-  const itemData = { time, activity, description };
-
-  if (editDayId !== '' && editIdx !== '') {
-    const oldDay = state.schedule.find(s => s.id === editDayId);
-    if (oldDay && oldDay.items && oldDay.items[editIdx]) {
-      if (oldDay.date === date) {
-        oldDay.items[editIdx] = itemData;
-      } else {
-        oldDay.items.splice(editIdx, 1);
-        if (oldDay.items.length === 0) {
-          state.schedule = state.schedule.filter(s => s.id !== editDayId);
-        }
-        const existingNewDay = state.schedule.find(s => s.date === date);
-        if (existingNewDay) {
-          if (!existingNewDay.items) existingNewDay.items = [];
-          existingNewDay.items.push(itemData);
-        } else {
-          state.schedule.push({ id: uid(), date, items: [itemData] });
-        }
-      }
-    }
-  } else {
-    const existing = state.schedule.find(s => s.date === date);
-    if (existing) {
-      if(!existing.items) existing.items = [];
-      existing.items.push(itemData);
-    } else {
-      state.schedule.push({ id: uid(), date, items: [itemData] });
-    }
-  }
+  upsertDayItem('schedule', date, { time: getTimeValue('s-item'), activity, description },
+    document.getElementById('s-edit-day-id').value, document.getElementById('s-edit-item-idx').value);
 
   cancelScheduleEdit();
   renderSchedule();
@@ -1961,33 +1980,27 @@ function startEditScheduleItem(dayId, itemIdx) {
   document.getElementById('s-edit-day-id').value = dayId;
   document.getElementById('s-edit-item-idx').value = itemIdx;
   setDateValue('s-date', day.date || '');
-  parseTime24ToParts(item.time, 's');
+  setTimeValue('s-item', item.time);
   document.getElementById('s-item-activity').value = item.activity || '';
   document.getElementById('s-item-description').value = item.description || '';
   document.getElementById('s-submit-btn').textContent = '저장';
-  document.getElementById('s-cancel-btn').style.display = 'inline-block';
-  document.getElementById('panel-schedule').scrollIntoView({behavior:'smooth'});
+  openForm('schedule-form', true);
 }
 
 function cancelScheduleEdit() {
   document.getElementById('s-edit-day-id').value = '';
   document.getElementById('s-edit-item-idx').value = '';
   setDateValue('s-date', '');
-  parseTime24ToParts('', 's');
+  setTimeValue('s-item', '');
   document.getElementById('s-item-activity').value = '';
   document.getElementById('s-item-description').value = '';
   document.getElementById('s-submit-btn').textContent = '일정 추가';
-  document.getElementById('s-cancel-btn').style.display = 'none';
+  closeForm('schedule-form');
 }
 
 function removeScheduleItem(dayId, itemIdx) {
   if (!confirm('정말 삭제하시겠습니까?')) return;
-  const day = (state.schedule || []).find(s => s.id === dayId);
-  if (!day || !day.items) return;
-  day.items.splice(itemIdx, 1);
-  if (day.items.length === 0) {
-    state.schedule = state.schedule.filter(s => s.id !== dayId);
-  }
+  removeDayItem('schedule', dayId, itemIdx);
   renderSchedule();
   markDirty('schedule');
 }
@@ -1999,23 +2012,25 @@ function removeSchedule(dayId) {
   markDirty('schedule');
 }
 
-// 준비일정 개별 날짜 D-Day 계산 및 배지 생성 함수
-function calcDdayBadge(dateStr) {
-  if (!dateStr) return '';
+// 오늘 기준 남은 일수 (날짜가 잘못되면 null)
+function daysUntil(dateStr) {
+  if (!dateStr) return null;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const target = new Date(dateStr + 'T00:00:00');
-  if (isNaN(target.getTime())) return '';
+  if (isNaN(target.getTime())) return null;
+  return Math.round((target - today) / 86400000);
+}
 
-  const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+function ddayText(diff) {
+  return diff > 0 ? `D-${diff}` : diff === 0 ? 'D-DAY 🎉' : `D+${Math.abs(diff)}`;
+}
 
-  if (diffDays > 0) {
-    return `<span style="display:inline-block; padding:2px 8px; border-radius:12px; background:#D99B6A; color:#fff; font-size:0.75rem; font-weight:800; margin-left:6px;">D-${diffDays}</span>`;
-  } else if (diffDays === 0) {
-    return `<span style="display:inline-block; padding:2px 8px; border-radius:12px; background:#c97a4a; color:#fff; font-size:0.75rem; font-weight:800; margin-left:6px;">D-DAY 🎉</span>`;
-  } else {
-    return `<span style="display:inline-block; padding:2px 8px; border-radius:12px; background:var(--border); color:var(--muted); font-size:0.75rem; font-weight:700; margin-left:6px;">D+${Math.abs(diffDays)}</span>`;
-  }
+function calcDdayBadge(dateStr) {
+  const diff = daysUntil(dateStr);
+  if (diff === null) return '';
+  const cls = diff === 0 ? ' today' : diff < 0 ? ' after' : '';
+  return `<span class="dday-pill${cls}">${ddayText(diff)}</span>`;
 }
 
 // 카테고리에 따른 CSS 클래스 반환 함수 (두 번째 파일 스타일 연동)
@@ -2046,7 +2061,7 @@ function renderItemCards(dayList, isPast = false) {
         <div class="item-card ${catClass} ${pastClass}">
           <div class="card-top">
             <span class="date-text">📅 ${escapeHtml(dateFormatted)} ${ddayBadge}</span>
-            <div style="display:flex; align-items:center; gap:6px;">
+            <div class="tag-wrap">
               <span class="tag-cat ${catClass}">${escapeHtml(mainCat)}</span>
               ${(it.categories && it.categories.length > 1) ? it.categories.slice(1).map(c => `<span class="tag-cat default">${escapeHtml(c)}</span>`).join('') : ''}
             </div>
@@ -2058,8 +2073,7 @@ function renderItemCards(dayList, isPast = false) {
             </div>
             <div class="content-text">${escapeHtml(it.activity)}</div>
           </div>
-          ${canEdit ? `<div style="text-align:right; margin-top:10px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
-          ${canEdit ? `<div style="text-align:right; margin-top:4px;"><button class="del-btn" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
+          ${canEdit ? `<div class="ps-actions"><button onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button><button class="del" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
         </div>
       `;
     });
@@ -2114,56 +2128,13 @@ function renderPrepSchedule() {
 
 function addPrepScheduleEntry() {
   const date = getDateValue('ps-date');
-  const hourInput = document.getElementById('ps-item-hour');
-  const minuteInput = document.getElementById('ps-item-minute');
   const place = document.getElementById('ps-item-place').value.trim();
   const activity = document.getElementById('ps-item-activity').value.trim();
   const categories = Array.from(document.querySelectorAll('.ps-cat-box:checked')).map(el => el.value);
-  const editDayId = document.getElementById('ps-edit-day-id').value;
-  const editIdx = document.getElementById('ps-edit-item-idx').value;
-
   if (!date || !activity) { alert('날짜와 활동 내용을 입력해주세요.'); return; }
-  let time = '';
-  if (hourInput.value) {
-    const ampm = document.getElementById('ps-item-ampm').value;
-    const hour12 = parseInt(hourInput.value, 10);
-    const minute = (minuteInput.value || '0').padStart(2, '0');
-    let hour24 = hour12 % 12;
-    if (ampm === '오후') hour24 += 12;
-    time = `${String(hour24).padStart(2,'0')}:${minute}`;
-  }
-  if(!state.prepSchedule) state.prepSchedule = [];
 
-  const itemData = { time, place, activity, categories };
-
-  if (editDayId !== '' && editIdx !== '') {
-    const oldDay = state.prepSchedule.find(s => s.id === editDayId);
-    if (oldDay && oldDay.items && oldDay.items[editIdx]) {
-      if (oldDay.date === date) {
-        oldDay.items[editIdx] = itemData;
-      } else {
-        oldDay.items.splice(editIdx, 1);
-        if (oldDay.items.length === 0) {
-          state.prepSchedule = state.prepSchedule.filter(s => s.id !== editDayId);
-        }
-        const existingNewDay = state.prepSchedule.find(s => s.date === date);
-        if (existingNewDay) {
-          if (!existingNewDay.items) existingNewDay.items = [];
-          existingNewDay.items.push(itemData);
-        } else {
-          state.prepSchedule.push({ id: uid(), date, items: [itemData] });
-        }
-      }
-    }
-  } else {
-    const existing = state.prepSchedule.find(s => s.date === date);
-    if (existing) {
-      if(!existing.items) existing.items = [];
-      existing.items.push(itemData);
-    } else {
-      state.prepSchedule.push({ id: uid(), date, items: [itemData] });
-    }
-  }
+  upsertDayItem('prepSchedule', date, { time: getTimeValue('ps-item'), place, activity, categories },
+    document.getElementById('ps-edit-day-id').value, document.getElementById('ps-edit-item-idx').value);
 
   cancelPrepScheduleEdit();
   renderPrepSchedule();
@@ -2178,7 +2149,7 @@ function startEditPrepScheduleItem(dayId, itemIdx) {
   document.getElementById('ps-edit-day-id').value = dayId;
   document.getElementById('ps-edit-item-idx').value = itemIdx;
   setDateValue('ps-date', day.date || '');
-  parseTime24ToParts(item.time, 'ps');
+  setTimeValue('ps-item', item.time);
   document.getElementById('ps-item-place').value = item.place || '';
   document.getElementById('ps-item-activity').value = item.activity || '';
   const cats = item.categories || [];
@@ -2186,30 +2157,24 @@ function startEditPrepScheduleItem(dayId, itemIdx) {
     box.checked = cats.includes(box.value);
   });
   document.getElementById('ps-submit-btn').textContent = '저장';
-  document.getElementById('ps-cancel-btn').style.display = 'inline-block';
-  document.getElementById('panel-prep-schedule').scrollIntoView({behavior:'smooth'});
+  openForm('prep-schedule-form', true);
 }
 
 function cancelPrepScheduleEdit() {
   document.getElementById('ps-edit-day-id').value = '';
   document.getElementById('ps-edit-item-idx').value = '';
   setDateValue('ps-date', '');
-  parseTime24ToParts('', 'ps');
+  setTimeValue('ps-item', '');
   document.getElementById('ps-item-place').value = '';
   document.getElementById('ps-item-activity').value = '';
   document.querySelectorAll('.ps-cat-box').forEach(box => box.checked = false);
   document.getElementById('ps-submit-btn').textContent = '준비 일정 추가';
-  document.getElementById('ps-cancel-btn').style.display = 'none';
+  closeForm('prep-schedule-form');
 }
 
 function removePrepScheduleItem(dayId, itemIdx) {
   if (!confirm('정말 삭제하시겠습니까?')) return;
-  const day = (state.prepSchedule || []).find(s => s.id === dayId);
-  if (!day || !day.items) return;
-  day.items.splice(itemIdx, 1);
-  if (day.items.length === 0) {
-    state.prepSchedule = state.prepSchedule.filter(s => s.id !== dayId);
-  }
+  removeDayItem('prepSchedule', dayId, itemIdx);
   renderPrepSchedule();
   markDirty('prepSchedule');
 }
@@ -2221,6 +2186,13 @@ function removePrepSchedule(dayId) {
   markDirty('prepSchedule');
 }
 
+function dateParts(d) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
+  if (!m) return null;
+  const dt = new Date(+m[1], +m[2] - 1, +m[3]);
+  return { m: +m[2], d: +m[3], w: ['일','월','화','수','목','금','토'][dt.getDay()] };
+}
+
 function renderPosts() {
   const list = document.getElementById('feed-list');
   if(!list) return;
@@ -2230,17 +2202,24 @@ function renderPosts() {
     list.innerHTML = '<div class="empty">등록된 공지가 없어요.</div>';
   } else {
     const sorted = [...posts].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-    list.innerHTML = sorted.map(p => `
-      <div class="post">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="font-size:0.85rem; font-weight:700; color:var(--text);">📅 ${escapeHtml(p.date || '')}</div>
-          ${canEdit ? `<div><button class="edit-btn" style="margin-right:0;" onclick="startEditPost('${p.id}')">수정</button><button class="del-btn" style="margin-left:8px;" onclick="removePost('${p.id}')">삭제</button></div>` : ''}
+    list.innerHTML = sorted.map((p, i) => {
+      const dp = dateParts(p.date);
+      const diff = daysUntil(p.date);
+      return `
+      <article class="notice${p.kind === 'bible' ? ' bible' : i === 0 ? ' latest' : ''}">
+        <div class="notice-date">${dp ? `<span class="m">${dp.m}월</span><span class="d">${dp.d}</span><span class="w">${dp.w}요일</span>` : `<span class="w">${escapeHtml(p.date || '')}</span>`}</div>
+        <div class="notice-main">
+          <div class="notice-top">
+            <span class="notice-author">${escapeHtml(p.author || '관리자')}</span>
+            ${diff !== null && diff <= 0 && diff > -3 ? '<span class="notice-new">NEW</span>' : ''}
+          </div>
+          ${p.title ? `<div class="notice-title">${escapeHtml(p.title)}</div>` : ''}
+          <div class="notice-text">${escapeHtml(p.text || '')}</div>
+          ${canEdit ? `<div class="notice-foot"><span></span><div class="notice-actions">${p.kind === 'bible' ? '' : `<button onclick="startEditPost('${p.id}')">수정</button>`}<button class="del" onclick="removePost('${p.id}')">삭제</button></div></div>` : ''}
         </div>
-        ${p.title ? `<div style="font-weight:700; margin-top:6px; font-size:0.98rem; color:var(--text);"> ${escapeHtml(p.title)}</div>` : ''}
-        <div class="text" style="margin-top:6px; font-size:0.92rem; white-space:pre-wrap;">${escapeHtml(p.text || '')}</div>
-        <div style="text-align:right; font-size:0.82rem; color:var(--muted); margin-top:8px; font-weight:600;">${escapeHtml(p.author || '관리자')}</div>
-      </div>
-    `).join('');
+      </article>
+    `;
+    }).join('');
   }
   document.getElementById('feed-form').style.display = canEdit ? 'block' : 'none';
 }
@@ -2289,8 +2268,7 @@ function startEditPost(id) {
   const submitBtn = document.getElementById('post-submit-btn');
   if (submitBtn) submitBtn.textContent = '저장';
   const cancelBtn = document.getElementById('post-cancel-btn');
-  if (cancelBtn) cancelBtn.style.display = 'inline-block';
-  document.getElementById('panel-feed').scrollIntoView({behavior:'smooth'});
+  openForm('feed-form', true);
 }
 
 function cancelPostEdit() {
@@ -2302,8 +2280,7 @@ function cancelPostEdit() {
   
   const submitBtn = document.getElementById('post-submit-btn');
   if (submitBtn) submitBtn.textContent = '공지 등록';
-  const cancelBtn = document.getElementById('post-cancel-btn');
-  if (cancelBtn) cancelBtn.style.display = 'none';
+  closeForm('feed-form');
 }
 
 function removePost(id) {
@@ -2313,24 +2290,38 @@ function removePost(id) {
   markDirty('posts');
 }
 
+function setProgress(prefix, done, total) {
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+  const percentEl = document.getElementById(prefix + 'ProgressPercent');
+  const barEl = document.getElementById(prefix + 'ProgressBar');
+  if (percentEl) percentEl.textContent = percent + '%';
+  if (barEl) barEl.style.width = percent + '%';
+}
+
+function addItemToCategory(key, defaults, catName, newItem) {
+  if (!state[key]) state[key] = cloneData(defaults);
+  const cat = state[key].find(c => c.category === catName);
+  if (cat) (cat.items = cat.items || []).push(newItem);
+  else state[key].push({ category: catName, items: [newItem] });
+}
+
+function removeItemFromCategory(key, catName, itemId) {
+  if (!state[key]) return;
+  const cat = state[key].find(c => c.category === catName);
+  if (cat && cat.items) cat.items = cat.items.filter(i => i.id !== itemId);
+  state[key] = state[key].filter(c => !c.items || c.items.length > 0);
+}
+
 function syncPersonalChecklistDropdown() {
   const select = document.getElementById('studentChecklistSelect');
   const searchInput = document.getElementById('studentSearchInput');
   if (!select) return;
-
   const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
 
-  const students = (state.participants || []).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')).map(p => ({
-    key: 'p_' + p.id,
-    name: '🌱 ' + p.name + (p.grade ? ' (' + p.grade + ')' : '')
-  }));
-
-  const teachers = (state.teachers || []).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')).map(t => ({
-    key: 't_' + t.id,
-    name: '🌳 ' + t.name + ' (교사)'
-  }));
-
-  const allPeople = [...students, ...teachers];
+  const allPeople = [
+    ...(state.participants || []).slice().sort(byName).map(p => ({ key: 'p_' + p.id, name: '🌱 ' + p.name + (p.grade ? ' (' + p.grade + ')' : '') })),
+    ...(state.teachers || []).slice().sort(byName).map(t => ({ key: 't_' + t.id, name: '🌳 ' + t.name + ' (교사)' }))
+  ];
   const filtered = searchTerm ? allPeople.filter(x => x.name.toLowerCase().includes(searchTerm)) : allPeople;
 
   const currentVal = select.value;
@@ -2338,9 +2329,7 @@ function syncPersonalChecklistDropdown() {
     select.innerHTML = '<option value="">검색 결과가 없어요</option>';
   } else {
     select.innerHTML = filtered.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
-    if (filtered.some(x => x.key === currentVal)) {
-      select.value = currentVal;
-    }
+    if (filtered.some(x => x.key === currentVal)) select.value = currentVal;
   }
   renderPersonalChecklist();
 }
@@ -2356,10 +2345,7 @@ function renderPersonalChecklist() {
   const personKey = select.value;
   if (!personKey) {
     container.innerHTML = '<div class="card"><div class="empty">학생 또는 교사를 선택해주세요.</div></div>';
-    const percentEl = document.getElementById('personalProgressPercent');
-    const barEl = document.getElementById('personalProgressBar');
-    if (percentEl) percentEl.textContent = '0%';
-    if (barEl) barEl.style.width = '0%';
+    setProgress('personal', 0, 0);
     return;
   }
 
@@ -2379,11 +2365,7 @@ function renderPersonalChecklist() {
     });
   });
 
-  const percent = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
-  const percentEl = document.getElementById('personalProgressPercent');
-  const barEl = document.getElementById('personalProgressBar');
-  if (percentEl) percentEl.textContent = percent + '%';
-  if (barEl) barEl.style.width = percent + '%';
+  setProgress('personal', checkedCount, totalItems);
 
   container.innerHTML = checklistData.map(cat => {
     return `
@@ -2427,43 +2409,16 @@ function togglePersonalItem(personKey, itemId) {
 }
 
 function addPersonalItemAdmin() {
-  const catInput = document.getElementById('ps-add-cat');
+  const catName = document.getElementById('ps-add-cat').value.trim();
   const nameInput = document.getElementById('ps-add-name');
-  const typeSelect = document.getElementById('ps-add-type');
-
-  const catName = catInput.value.trim();
   const itemName = nameInput.value.trim();
-  const itemType = typeSelect.value;
-
+  const itemType = document.getElementById('ps-add-type').value;
   if (!catName || !itemName) {
     alert('카테고리명과 준비물 이름을 모두 입력해주세요.');
     return;
   }
-
-  if (!state.personalChecklistData) state.personalChecklistData = cloneData(defaultPersonalChecklistData);
-
-  let categoryObj = state.personalChecklistData.find(c => c.category === catName);
-  let tag = "";
-  if (itemType === 'carry') tag = "✈️ 기내";
-  else if (itemType === 'check') tag = "🧳 위탁";
-
-  const newItem = {
-    id: uid(),
-    name: itemName,
-    tag: tag,
-    type: itemType
-  };
-
-  if (categoryObj) {
-    if (!categoryObj.items) categoryObj.items = [];
-    categoryObj.items.push(newItem);
-  } else {
-    state.personalChecklistData.push({
-      category: catName,
-      items: [newItem]
-    });
-  }
-
+  const tag = itemType === 'carry' ? '✈️ 기내' : itemType === 'check' ? '🧳 위탁' : '';
+  addItemToCategory('personalChecklistData', defaultPersonalChecklistData, catName, { id: uid(), name: itemName, tag, type: itemType });
   nameInput.value = '';
   renderPersonalChecklist();
   markDirty('personalChecklistData');
@@ -2472,14 +2427,7 @@ function addPersonalItemAdmin() {
 
 function removePersonalItemAdminById(categoryName, itemId) {
   if (!confirm('이 준비물 항목을 삭제하시겠습니까?')) return;
-  if (!state.personalChecklistData) return;
-
-  const cat = state.personalChecklistData.find(c => c.category === categoryName);
-  if (cat && cat.items) {
-    cat.items = cat.items.filter(i => i.id !== itemId);
-  }
-  state.personalChecklistData = state.personalChecklistData.filter(c => !c.items || c.items.length > 0);
-
+  removeItemFromCategory('personalChecklistData', categoryName, itemId);
   renderPersonalChecklist();
   markDirty('personalChecklistData');
 }
@@ -2505,11 +2453,7 @@ function renderSharedChecklist() {
     });
   });
 
-  const percent = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
-  const percentEl = document.getElementById('sharedProgressPercent');
-  const barEl = document.getElementById('sharedProgressBar');
-  if (percentEl) percentEl.textContent = percent + '%';
-  if (barEl) barEl.style.width = percent + '%';
+  setProgress('shared', checkedCount, totalItems);
 
   container.innerHTML = sharedData.map(cat => {
     return `
@@ -2567,7 +2511,7 @@ function renderModalTeacherList() {
   if (!listEl) return;
 
   const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
-  const teachers = (state.teachers || []).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+  const teachers = (state.teachers || []).slice().sort(byName);
   const filtered = searchTerm ? teachers.filter(t => (t.name || '').toLowerCase().includes(searchTerm)) : teachers;
 
   let html = '';
@@ -2607,42 +2551,15 @@ function selectTeacherForSharedItem(teacherName) {
 }
 
 function addSharedItemAdmin() {
-  const catInput = document.getElementById('sh-add-cat');
+  const catName = document.getElementById('sh-add-cat').value.trim();
   const nameInput = document.getElementById('sh-add-name');
-  const tagSelect = document.getElementById('sh-add-tag');
-
-  const catName = catInput.value.trim();
   const itemName = nameInput.value.trim();
-  const itemTag = tagSelect.value;
-
+  const itemTag = document.getElementById('sh-add-tag').value;
   if (!catName || !itemName) {
     alert('카테고리명과 공용 준비물 이름을 모두 입력해주세요.');
     return;
   }
-
-  if (!state.sharedChecklistData) state.sharedChecklistData = cloneData(defaultSharedChecklistData);
-
-  let categoryObj = state.sharedChecklistData.find(c => c.category === catName);
-  let tag = "";
-  if (itemTag === '✈️ 팀기내') tag = "✈️ 팀기내";
-  else if (itemTag === '🧳 팀위탁') tag = "🧳 팀위탁";
-
-  const newItem = {
-    id: uid(),
-    name: itemName,
-    tag: tag
-  };
-
-  if (categoryObj) {
-    if (!categoryObj.items) categoryObj.items = [];
-    categoryObj.items.push(newItem);
-  } else {
-    state.sharedChecklistData.push({
-      category: catName,
-      items: [newItem]
-    });
-  }
-
+  addItemToCategory('sharedChecklistData', defaultSharedChecklistData, catName, { id: uid(), name: itemName, tag: itemTag === 'none' ? '' : itemTag });
   nameInput.value = '';
   renderSharedChecklist();
   markDirty('sharedChecklistData');
@@ -2651,20 +2568,13 @@ function addSharedItemAdmin() {
 
 function removeSharedItemAdminById(categoryName, itemId) {
   if (!confirm('이 공용 준비물 항목을 삭제하시겠습니까?')) return;
-  if (!state.sharedChecklistData) return;
-
-  const cat = state.sharedChecklistData.find(c => c.category === categoryName);
-  if (cat && cat.items) {
-    cat.items = cat.items.filter(i => i.id !== itemId);
-  }
-  state.sharedChecklistData = state.sharedChecklistData.filter(c => !c.items || c.items.length > 0);
-
+  removeItemFromCategory('sharedChecklistData', categoryName, itemId);
   renderSharedChecklist();
   markDirty('sharedChecklistData');
 }
 
 function uid() {
-  return '_' + Math.random().toString(36).substr(2, 9);
+  return '_' + Math.random().toString(36).slice(2, 11);
 }
 
 function escapeHtml(str) {
@@ -2711,19 +2621,576 @@ function markDirty(field) {
 
 function renderAll() {
   renderDday();
-  renderParticipants();
-  renderTeachers();
-  renderAssign();
+  renderPeople();
   renderFlightInfo();
   renderSchedule();
   renderPrepSchedule();
   renderPosts();
   syncPersonalChecklistDropdown();
   renderSharedChecklist();
+  renderBible();
+}
+
+// ===== 성경읽기 =====
+// 저장 위치: 기존 문서(shared_data)의 새 필드 bibleReading
+//   bibleReading.{학생·교사 id}.{matthew|mark|luke|john}.{장번호} = ["2026-10-11", "2026-10-15", ...]  (읽은 날짜 이력)
+// 장 하나를 누를 때마다 그 칸만 바로 저장하므로(arrayUnion) 다른 사람 기록이나 기존 데이터와 섞이지 않음
+const BIBLE_BOOKS = [
+  { key: 'matthew', name: '마태복음', icon: '📕', chapters: 28 },
+  { key: 'mark',    name: '마가복음', icon: '📗', chapters: 16 },
+  { key: 'luke',    name: '누가복음', icon: '📘', chapters: 24 },
+  { key: 'john',    name: '요한복음', icon: '📙', chapters: 21 }
+];
+const BIBLE_TOTAL = BIBLE_BOOKS.reduce((sum, b) => sum + b.chapters, 0); // 89
+const BIBLE_PERIOD = { start: '2026-10-11', end: '2026-12-27' };
+const BIBLE_STUDENT_KEY = 'baguio_bible_student';
+// 읽은 날짜별 색 (날짜마다 순서대로 돌아가며 사용, 이웃한 날짜는 항상 다른 색)
+const BIBLE_COLORS = ['#688B60', '#5188A7', '#A0774F', '#94729C', '#438F8A', '#A96F69'];
+
+let bibleReading = {};
+let bibleStudentId = (() => { try { return localStorage.getItem(BIBLE_STUDENT_KEY) || ''; } catch (e) { return ''; } })();
+let bibleDetail = null; // { bookKey, ch }
+let bibleToastTimer = null;
+
+function bibleToday() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function bibleDateObj(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function bibleAddDays(dateStr, n) {
+  const d = bibleDateObj(dateStr);
+  d.setDate(d.getDate() + n);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function bibleDayDiff(a, b) {
+  return Math.round((bibleDateObj(b) - bibleDateObj(a)) / 86400000);
+}
+
+function bibleColor(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dayNo = Math.floor(Date.UTC(y, m - 1, d) / 86400000);
+  return BIBLE_COLORS[dayNo % BIBLE_COLORS.length];
+}
+
+const BIBLE_WEEK = ['주', '월', '화', '수', '목', '금', '토']; // 일요일은 '주'(주일)
+
+function bibleSetStudent(id) {
+  bibleStudentId = id || '';
+  try {
+    if (bibleStudentId) localStorage.setItem(BIBLE_STUDENT_KEY, bibleStudentId);
+    else localStorage.removeItem(BIBLE_STUDENT_KEY);
+  } catch (e) { /* 저장소를 못 쓰는 브라우저에서도 이번 화면에서는 동작 */ }
+}
+
+let biblePendingId = ''; // 이름을 눌렀지만 아직 "맞아요"를 누르기 전
+
+// 성경읽기 참여자: 학생 + 교사
+function bibleMembers() {
+  return [
+    ...(state.participants || []).slice().sort(byName).map(p => ({ id: p.id, name: p.name, sub: p.grade || '', role: 'student' })),
+    ...(state.teachers || []).slice().sort(byName).map(t => ({ id: t.id, name: t.name, sub: '', role: 'teacher' }))
+  ];
+}
+
+function bibleDisplayName(m) {
+  return m.role === 'teacher' ? `${m.name} 선생님` : `${m.name}님`;
+}
+
+function selectBibleStudent(id) {
+  biblePendingId = id;
+  renderBible();
+}
+
+function confirmBibleStudent() {
+  bibleSetStudent(biblePendingId);
+  biblePendingId = '';
+  renderBible();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelBibleSelect() {
+  biblePendingId = '';
+  renderBible();
+}
+
+function changeBibleStudent() {
+  bibleSetStudent('');
+  biblePendingId = '';
+  renderBible();
+}
+
+// 한 장의 읽은 날짜 이력 (오래된 순)
+function bibleDates(sid, bookKey, ch) {
+  const arr = (((bibleReading || {})[sid] || {})[bookKey] || {})[String(ch)];
+  return Array.isArray(arr) ? arr.filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x)).sort() : [];
+}
+
+function bibleBookCount(sid, book) {
+  let n = 0;
+  for (let ch = 1; ch <= book.chapters; ch++) if (bibleDates(sid, book.key, ch).length) n++;
+  return n;
+}
+
+function bibleStudentCount(sid) {
+  return BIBLE_BOOKS.reduce((sum, b) => sum + bibleBookCount(sid, b), 0);
+}
+
+function bibleReadDateSet(sid) {
+  const set = new Set();
+  BIBLE_BOOKS.forEach(b => { for (let ch = 1; ch <= b.chapters; ch++) bibleDates(sid, b.key, ch).forEach(d => set.add(d)); });
+  return set;
+}
+
+// 공동체 진행률 = 등록된 학생·교사 한 명 한 명의 개인 진행률 평균 (100% 넘지 않음)
+function bibleCommunity() {
+  const students = bibleMembers();
+  const result = { overall: 0, books: {}, count: students.length,
+    studentCount: students.filter(m => m.role === 'student').length,
+    teacherCount: students.filter(m => m.role === 'teacher').length };
+  BIBLE_BOOKS.forEach(b => { result.books[b.key] = 0; });
+  if (!students.length) return result;
+  let overallSum = 0;
+  const bookSum = {};
+  BIBLE_BOOKS.forEach(b => { bookSum[b.key] = 0; });
+  students.forEach(p => {
+    let total = 0;
+    BIBLE_BOOKS.forEach(b => {
+      const c = bibleBookCount(p.id, b);
+      total += c;
+      bookSum[b.key] += c / b.chapters;
+    });
+    overallSum += total / BIBLE_TOTAL;
+  });
+  result.overall = Math.round((overallSum / students.length) * 100);
+  BIBLE_BOOKS.forEach(b => { result.books[b.key] = Math.round((bookSum[b.key] / students.length) * 100); });
+  return result;
+}
+
+function biblePeriodText() {
+  const today = bibleToday();
+  const total = bibleDayDiff(BIBLE_PERIOD.start, BIBLE_PERIOD.end) + 1;
+  const fmt = s => { const d = bibleDateObj(s); return `${d.getMonth() + 1}월 ${d.getDate()}일(${BIBLE_WEEK[d.getDay()]})`; };
+  let status;
+  if (today < BIBLE_PERIOD.start) status = `시작까지 D-${bibleDayDiff(today, BIBLE_PERIOD.start)}`;
+  else if (today > BIBLE_PERIOD.end) status = '읽기 기간이 끝났어요';
+  else status = `${bibleDayDiff(BIBLE_PERIOD.start, today) + 1}일째 / ${total}일`;
+  return `${fmt(BIBLE_PERIOD.start)} ~ ${fmt(BIBLE_PERIOD.end)} · ${status}`;
+}
+
+// ----- 기간 안에 다 읽기 위한 계획: 주일 2장, 월~토 1장 (마지막 날은 남은 1장) -----
+function biblePlannedOn(dateStr) {
+  if (dateStr < BIBLE_PERIOD.start) return 0;
+  const last = dateStr > BIBLE_PERIOD.end ? BIBLE_PERIOD.end : dateStr;
+  let sum = 0;
+  for (let d = BIBLE_PERIOD.start; d <= last; d = bibleAddDays(d, 1)) {
+    sum += bibleDateObj(d).getDay() === 0 ? 2 : 1;
+  }
+  return Math.min(sum, BIBLE_TOTAL);
+}
+
+// 계획대로 읽을 때 복음서별 읽는 기간
+function biblePlanMilestones() {
+  const result = [];
+  let cum = 0, bookIdx = 0, target = BIBLE_BOOKS[0].chapters, from = BIBLE_PERIOD.start;
+  for (let d = BIBLE_PERIOD.start; d <= BIBLE_PERIOD.end && bookIdx < BIBLE_BOOKS.length; d = bibleAddDays(d, 1)) {
+    cum = Math.min(cum + (bibleDateObj(d).getDay() === 0 ? 2 : 1), BIBLE_TOTAL);
+    while (bookIdx < BIBLE_BOOKS.length && cum >= target) {
+      result.push({ book: BIBLE_BOOKS[bookIdx], from, to: d });
+      from = bibleAddDays(d, 1);
+      bookIdx++;
+      if (bookIdx < BIBLE_BOOKS.length) target += BIBLE_BOOKS[bookIdx].chapters;
+    }
+  }
+  return result;
+}
+
+function bibleShortDate(dateStr) {
+  const o = bibleDateObj(dateStr);
+  return `${o.getMonth() + 1}/${o.getDate()}(${BIBLE_WEEK[o.getDay()]})`;
+}
+
+function bibleGuideHtml(myCount) {
+  const today = bibleToday();
+  const remaining = BIBLE_TOTAL - myCount;
+  let status = '';
+  if (remaining <= 0) {
+    status = '<div class="bb-pace good">✨ 다 읽었어요! 끝까지 함께해 줘서 고마워요</div>';
+  } else if (today < BIBLE_PERIOD.start) {
+    status = `<div class="bb-pace">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요. 첫날은 주일이라 2장!</div>`;
+  } else if (today > BIBLE_PERIOD.end) {
+    status = `<div class="bb-pace">기간은 끝났지만 남은 ${remaining}장도 천천히 읽어 봐요</div>`;
+  } else {
+    const planned = biblePlannedOn(today);
+    const daysLeft = bibleDayDiff(today, BIBLE_PERIOD.end) + 1;
+    const perDay = remaining / daysLeft;
+    const perDayText = perDay <= 1.15 ? '하루 1장 정도' : `하루 약 ${Math.ceil(perDay * 10) / 10}장`;
+    const diff = myCount - planned;
+    const head = diff >= 0
+      ? `<b>계획대로 잘 읽고 있어요</b> · 오늘까지 계획 ${planned}장`
+      : `오늘까지 계획은 ${planned}장, 지금 ${myCount}장이에요`;
+    status = `<div class="bb-pace${diff >= 0 ? ' good' : ''}">${head}<br><small>남은 ${daysLeft}일 동안 ${remaining}장 → ${perDayText}씩 읽으면 돼요</small></div>`;
+  }
+  const ms = biblePlanMilestones();
+  return `
+    <div class="card bb-guide">
+      <div class="bb-guide-title">🧭 기간 안에 다 읽으려면</div>
+      <div class="bb-guide-rule">
+        <div><b>주일</b><span>2장</span></div>
+        <div><b>월 ~ 토</b><span>하루 1장</span></div>
+      </div>
+      <div class="bb-guide-desc">한 주에 8장씩 읽으면 ${bibleShortDate(BIBLE_PERIOD.end)}에 89장을 모두 읽어요. 마지막 날은 요한복음 21장 한 장이에요.</div>
+      ${status}
+      <div class="bb-guide-sub">마태 → 마가 → 누가 → 요한 순서로, 1장부터 차례대로</div>
+      <ul class="bb-plan">
+        ${ms.map(m => `<li><span>${m.book.icon} ${m.book.name}</span><em>${bibleShortDate(m.from)} ~ ${bibleShortDate(m.to)}</em></li>`).join('')}
+      </ul>
+      <div class="bb-guide-tip">하루 놓쳤다면 다음 날 한 장 더 읽으면 금방 따라잡아요. 읽은 뒤에는 바로 장 번호를 눌러 기록해 주세요.</div>
+    </div>`;
+}
+
+function bibleBar(pct, cls = '') {
+  return `<div class="bb-bar ${cls}"><i style="width:${Math.max(0, Math.min(100, pct))}%"></i></div>`;
+}
+
+function renderBible() {
+  const root = document.getElementById('bible-root');
+  if (!root) return;
+  const members = bibleMembers();
+  const comm = bibleCommunity();
+
+  let html = `
+    <div class="card bb-community">
+      <div class="bb-period">${biblePeriodText()}</div>
+      <div class="bb-comm-title">📖 우리 함께 읽고 있어요</div>
+      <div class="bb-comm-pct">${comm.overall}<span>%</span></div>
+      ${bibleBar(comm.overall, 'big')}
+      <div class="bb-book-bars">
+        ${BIBLE_BOOKS.map(b => `
+          <div class="bb-book-row">
+            <span class="bb-book-name">${b.name}</span>
+            ${bibleBar(comm.books[b.key])}
+            <span class="bb-book-pct">${comm.books[b.key]}%</span>
+          </div>`).join('')}
+      </div>
+      <div class="bb-note">${comm.count ? `학생 ${comm.studentCount}명 · 선생님 ${comm.teacherCount}명의 진행률을 평균한 값이에요` : '등록된 사람이 없어요'}</div>
+    </div>`;
+
+  const me = members.find(m => m.id === bibleStudentId);
+
+  if (!me) {
+    const pending = members.find(m => m.id === biblePendingId);
+    const loading = latestRemoteState === null;
+    const pickBtn = m => `
+      <button class="bb-pick${m.role === 'teacher' ? ' teacher' : ''}" onclick="selectBibleStudent('${m.id}')">
+        <span>${escapeHtml(m.name)}</span>${m.sub ? `<small>${escapeHtml(m.sub)}</small>` : ''}
+      </button>`;
+    const studentsList = members.filter(m => m.role === 'student');
+    const teachersList = members.filter(m => m.role === 'teacher');
+
+    if (pending) {
+      html += `
+        <div class="card bb-confirm">
+          <div class="bb-confirm-q">${escapeHtml(bibleDisplayName(pending))}이 맞나요?</div>
+          <div class="bb-sub">맞으면 이 이름으로 성경읽기를 기록해요</div>
+          <div class="bb-sheet-actions">
+            <button class="bb-close" onclick="cancelBibleSelect()">다시 고를게요</button>
+            <button class="primary" onclick="confirmBibleStudent()">네, 맞아요</button>
+          </div>
+        </div>`;
+    } else {
+      html += `
+        <div class="card">
+          <h2>누구의 성경읽기 기록인가요?</h2>
+          <div class="bb-sub">내 이름을 눌러 주세요</div>
+          ${loading ? '<div class="empty">명단을 불러오는 중이에요…</div>'
+            : !members.length ? '<div class="empty">아직 등록된 사람이 없어요.</div>'
+            : `${studentsList.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${studentsList.map(pickBtn).join('')}</div>` : ''}
+               ${teachersList.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${teachersList.map(pickBtn).join('')}</div>` : ''}`}
+        </div>`;
+    }
+    root.innerHTML = html;
+    return;
+  }
+
+  const sid = me.id;
+  const myCount = bibleStudentCount(sid);
+  const myPct = Math.round((myCount / BIBLE_TOTAL) * 100);
+  const today = bibleToday();
+  const readSet = bibleReadDateSet(sid);
+
+  // 이번 주: 주일(일요일)부터 토요일까지
+  const weekStart = bibleAddDays(today, -bibleDateObj(today).getDay());
+  const week = [];
+  for (let i = 0; i < 7; i++) {
+    const d = bibleAddDays(weekStart, i);
+    week.push({ d, read: readSet.has(d), label: BIBLE_WEEK[i], isToday: d === today, future: d > today });
+  }
+
+  html += `
+    <div class="card bb-me">
+      <div class="bb-me-head">
+        <div class="bb-me-name">${escapeHtml(bibleDisplayName(me))}의 성경읽기</div>
+        <button class="bb-change" onclick="changeBibleStudent()">↺ 이름 다시 선택</button>
+      </div>
+      <div class="bb-me-count"><b>${myCount}</b> / ${BIBLE_TOTAL}장 <span>${myPct}%</span></div>
+      ${bibleBar(myPct, 'big')}
+      ${myCount === BIBLE_TOTAL ? '<div class="bb-done-all">✨ 4복음서 완독</div>' : ''}
+      <div class="bb-week">
+        <div class="bb-week-label">이번 주</div>
+        <div class="bb-week-dots">
+          ${week.map(w => `
+            <div class="bb-day${w.read ? ' on' : ''}${w.isToday ? ' today' : ''}${w.future ? ' future' : ''}">
+              <span class="bb-dot" ${w.read ? `style="background:${bibleColor(w.d)}; border-color:${bibleColor(w.d)}"` : ''}></span>
+              <small>${w.label}</small>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+
+  html += bibleGuideHtml(myCount);
+
+  html += BIBLE_BOOKS.map(b => {
+    const cnt = bibleBookCount(sid, b);
+    const done = cnt === b.chapters;
+    let grid = '';
+    for (let ch = 1; ch <= b.chapters; ch++) {
+      const dates = bibleDates(sid, b.key, ch);
+      const last = dates[dates.length - 1];
+      grid += `<button class="bb-ch${last ? ' read' : ''}" ${last ? `style="background:${bibleColor(last)}"` : ''} onclick="onBibleChapter('${b.key}', ${ch})" aria-label="${b.name} ${ch}장${last ? ' 읽음' : ''}">${ch}${dates.length > 1 ? '<i class="bb-multi"></i>' : ''}</button>`;
+    }
+    return `
+      <div class="card bb-book${done ? ' done' : ''}">
+        <div class="bb-book-head">
+          <span class="bb-book-title">${b.icon} ${b.name}</span>
+          <span class="bb-book-cnt">${cnt} / ${b.chapters}장</span>
+        </div>
+        ${bibleBar(Math.round((cnt / b.chapters) * 100), 'small')}
+        ${done ? '<div class="bb-done">✨ 완독!</div>' : ''}
+        <div class="bb-grid">${grid}</div>
+      </div>`;
+  }).join('');
+
+  html += '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
+  root.innerHTML = html;
+}
+
+function onBibleChapter(bookKey, ch) {
+  if (!bibleStudentId) return;
+  if (bibleDates(bibleStudentId, bookKey, ch).length) openBibleDetail(bookKey, ch);
+  else recordBibleRead(bookKey, ch);
+}
+
+function bibleFieldPath(sid, bookKey, ch) {
+  return new firebase.firestore.FieldPath('bibleReading', sid, bookKey, String(ch));
+}
+
+function bibleLocalSet(sid, bookKey, ch, fn) {
+  if (!bibleReading[sid]) bibleReading[sid] = {};
+  if (!bibleReading[sid][bookKey]) bibleReading[sid][bookKey] = {};
+  const key = String(ch);
+  bibleReading[sid][bookKey][key] = fn(Array.isArray(bibleReading[sid][bookKey][key]) ? bibleReading[sid][bookKey][key] : []);
+}
+
+function recordBibleRead(bookKey, ch) {
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  const sid = bibleStudentId;
+  const today = bibleToday();
+  if (bibleDates(sid, bookKey, ch).includes(today)) return;
+  const book = BIBLE_BOOKS.find(b => b.key === bookKey);
+  const before = bibleStudentCount(sid);
+
+  bibleLocalSet(sid, bookKey, ch, arr => [...arr, today]);
+  renderBible();
+  showBibleToast(`${book.name} ${ch}장 읽음 ✓`);
+
+  DOC_REF.update(bibleFieldPath(sid, bookKey, ch), firebase.firestore.FieldValue.arrayUnion(today))
+    .then(() => {
+      if (before < BIBLE_TOTAL && bibleStudentCount(sid) === BIBLE_TOTAL) postBibleCompletion(sid);
+    })
+    .catch(e => {
+      console.error('성경읽기 저장 실패:', e);
+      bibleLocalSet(sid, bookKey, ch, arr => arr.filter(d => d !== today));
+      renderBible();
+      alert('기록을 저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+    });
+}
+
+function cancelTodayBibleRead() {
+  if (!bibleDetail) return;
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  const { bookKey, ch } = bibleDetail;
+  const sid = bibleStudentId;
+  const today = bibleToday();
+  bibleLocalSet(sid, bookKey, ch, arr => arr.filter(d => d !== today));
+  closeBibleDetail();
+  renderBible();
+  DOC_REF.update(bibleFieldPath(sid, bookKey, ch), firebase.firestore.FieldValue.arrayRemove(today))
+    .catch(e => {
+      console.error('성경읽기 취소 저장 실패:', e);
+      bibleLocalSet(sid, bookKey, ch, arr => arr.includes(today) ? arr : [...arr, today]);
+      renderBible();
+      alert('취소를 저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');
+    });
+}
+
+function rereadBibleToday() {
+  if (!bibleDetail) return;
+  const { bookKey, ch } = bibleDetail;
+  closeBibleDetail();
+  recordBibleRead(bookKey, ch);
+}
+
+function openBibleDetail(bookKey, ch) {
+  const book = BIBLE_BOOKS.find(b => b.key === bookKey);
+  const dates = bibleDates(bibleStudentId, bookKey, ch).slice().reverse();
+  const today = bibleToday();
+  const readToday = dates.includes(today);
+  bibleDetail = { bookKey, ch };
+  document.getElementById('bible-detail-body').innerHTML = `
+    <div class="bb-sheet-title">${book.name} ${ch}장</div>
+    <div class="bb-sheet-label">읽은 날짜${dates.length > 1 ? ` · ${dates.length}번` : ''}</div>
+    <ul class="bb-history">
+      ${dates.map(d => {
+        const o = bibleDateObj(d);
+        return `<li><span class="bb-dot" style="background:${bibleColor(d)}; border-color:${bibleColor(d)}"></span>${d.replace(/-/g, '.')} <small>(${BIBLE_WEEK[o.getDay()]})</small>${d === today ? '<em>오늘</em>' : ''}</li>`;
+      }).join('')}
+    </ul>
+    <div class="bb-sheet-actions">
+      ${readToday
+        ? '<button class="secondary" onclick="cancelTodayBibleRead()">오늘 기록 취소</button>'
+        : '<button class="primary" onclick="rereadBibleToday()">오늘 또 읽었어요</button>'}
+      <button class="bb-close" onclick="closeBibleDetail()">닫기</button>
+    </div>`;
+  document.getElementById('bible-toast').classList.remove('show');
+  document.getElementById('bible-detail-modal').classList.add('show');
+}
+
+function closeBibleDetail() {
+  bibleDetail = null;
+  document.getElementById('bible-detail-modal').classList.remove('show');
+}
+
+function showBibleToast(msg) {
+  const el = document.getElementById('bible-toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(bibleToastTimer);
+  bibleToastTimer = setTimeout(() => el.classList.remove('show'), 1600);
+}
+
+// 4복음서를 모두 읽으면 공지에 완독 소식 자동 게시 (한 사람당 한 번)
+function postBibleCompletion(sid) {
+  const p = bibleMembers().find(x => x.id === sid);
+  if (!p) return;
+  const post = {
+    id: 'bible_done_' + sid,
+    kind: 'bible',
+    studentId: sid,
+    author: '📖 성경읽기',
+    date: bibleToday(),
+    title: `${p.name} ${p.role === 'teacher' ? '선생님' : '학생'}이 4복음서를 완독했어요!`,
+    text: '마태·마가·누가·요한복음 89장을 모두 읽었어요.\n함께 축하하고 응원해 주세요! 👏'
+  };
+  db.runTransaction(async (tx) => {
+    const doc = await tx.get(DOC_REF);
+    const posts = (doc.exists && doc.data().posts) || [];
+    if (posts.some(x => x && x.id === post.id)) return false;
+    tx.update(DOC_REF, { posts: firebase.firestore.FieldValue.arrayUnion(post) });
+    return true;
+  }).then(added => {
+    if (added && !(state.posts || []).some(x => x.id === post.id)) {
+      if (!state.posts) state.posts = [];
+      state.posts.push(post);
+      renderPosts();
+    }
+    if (added) showBibleToast('🎉 4복음서 완독! 공지에 소식이 올라갔어요');
+  }).catch(e => console.error('완독 공지 등록 실패:', e));
+}
+
+// ===== 날짜·시간 칸 자동 이동 =====
+// 칸을 다 채우면 다음 칸으로, 마지막 칸(분·일)을 채우면 다음 입력란으로 이동
+// 오전/오후 칸에서는 선택 목록이 자동으로 열리고, 고르면 '시' 칸으로 이동
+function focusNextField(el) {
+  const scope = el.closest('.add-form') || document;
+  const fields = Array.from(scope.querySelectorAll('input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]), textarea, select.dp-ampm'))
+    .filter(f => f.offsetParent !== null && !f.disabled && !f.readOnly);
+  const next = fields[fields.indexOf(el) + 1];
+  if (!next) return;
+  if (next.matches('select.dp-ampm')) { openAmpmPicker(next); return; }
+  next.focus();
+  if (next.select) next.select();
+}
+
+function openAmpmPicker(sel) {
+  // 같은 값을 다시 골라도 '선택'으로 인식되도록 잠시 비워 둠 (고르지 않고 나가면 원래 값으로 복원)
+  sel.dataset.prev = sel.value || '오전';
+  sel.selectedIndex = -1;
+  sel.focus();
+  try { if (sel.showPicker) sel.showPicker(); } catch (e) { /* 목록 자동 열기를 지원하지 않는 브라우저는 칸만 선택된 상태 */ }
+}
+
+function setupDateTimeAutoAdvance() {
+  document.addEventListener('input', (e) => {
+    const el = e.target;
+    if (!el.matches || !el.matches('.date-parts input')) return;
+    const digits = el.value.replace(/\D/g, '');
+    if (digits !== el.value) el.value = digits;
+    if (!digits) return;
+    const id = el.id;
+    const isHour = /-hour$/.test(id);
+    let done = digits.length >= (parseInt(el.getAttribute('maxlength'), 10) || 2);
+
+    // 한 자리로 확정되는 값은 바로 이동 (월 2~9, 일 4~9, 시 2~9, 분 6~9)
+    if (!done && digits.length === 1) {
+      const n = +digits;
+      done = (/-m$/.test(id) && n >= 2) || (/-d$/.test(id) && n >= 4) || (isHour && n >= 2) || (/-minute$/.test(id) && n >= 6);
+    }
+
+    // 13~23시처럼 24시간으로 적으면 오후로 바꿔 줌
+    if (isHour && digits.length === 2) {
+      const ampm = document.getElementById(id.replace(/-hour$/, '-ampm'));
+      const h = +digits;
+      if (ampm && h >= 13 && h <= 23) { el.value = String(h - 12); ampm.value = '오후'; }
+      else if (ampm && h === 0) { el.value = '12'; ampm.value = '오전'; }
+    }
+
+    if (done) focusNextField(el);
+  });
+
+  // 오전/오후를 고르면 바로 '시' 칸으로
+  document.addEventListener('change', (e) => {
+    const sel = e.target;
+    if (!sel.matches || !sel.matches('select.dp-ampm')) return;
+    delete sel.dataset.prev;
+    focusNextField(sel);
+  });
+  document.addEventListener('focusout', (e) => {
+    const sel = e.target;
+    if (!sel.matches || !sel.matches('select.dp-ampm')) return;
+    if (sel.selectedIndex === -1) sel.value = sel.dataset.prev || '오전';
+    delete sel.dataset.prev;
+  });
 }
 
 window.onload = function() {
   initFirebaseAuth();
+  setupDateTimeAutoAdvance();
+
+  // 상단 메뉴 탭이 헤더 높이에 맞춰 바로 아래에 붙도록
+  const header = document.querySelector('header');
+  const nav = document.querySelector('nav.tabs');
+  const syncNavTop = () => { nav.style.top = `calc(env(safe-area-inset-top, 0px) + ${header.offsetHeight}px)`; };
+  syncNavTop();
+  // 글꼴 로딩·화면 회전 등으로 헤더 높이가 바뀌면 다시 맞춤
+  if (window.ResizeObserver) new ResizeObserver(syncNavTop).observe(header);
+  else window.addEventListener('resize', syncNavTop);
 
   const tabs = document.querySelectorAll('nav.tabs button');
   const panels = document.querySelectorAll('main section.panel');
