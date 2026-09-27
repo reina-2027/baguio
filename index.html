@@ -29,13 +29,13 @@
   :root {
     /* 탭별 색: 같은 밝기·채도로 맞춘 차분한 팔레트 (흰 글씨 대비 4.4:1 이상) */
     --c-feed: #AC6A76; --c-feed-deep: #6D3D46; --c-feed-soft: #FCF0F2; --c-feed-line: #F2D8DD;
-    --c-bible: #597F68; --c-bible-deep: #385544; --c-bible-soft: #EDF5F0; --c-bible-line: #CFE3D6;
+    --c-bible: #5D7460; --c-bible-deep: #38453F; --c-bible-soft: #F0F3ED; --c-bible-line: #D9E0D0;
     --c-prep: #CEAC64; --c-prep-deep: #533F0D; --c-prep-soft: #FAF3E5; --c-prep-line: #ECDEC2;
     --c-participants: #747B46; --c-participants-deep: #4C5129; --c-participants-soft: #EFF2E4; --c-participants-line: #DDE1CB;
     --c-teachers: #7170A1; --c-teachers-deep: #4A486D; --c-teachers-soft: #EEEFFC; --c-teachers-line: #DBDCF2;
     --c-assign: #B97340; --c-assign-deep: #6E401E; --c-assign-soft: #FFF3EA; --c-assign-line: #F4DCCB;
     --c-flights: #4B7C9E; --c-flights-deep: #2C516B; --c-flights-soft: #E6F2FB; --c-flights-line: #CDE1F0;
-    --c-schedule: #209199; --c-schedule-deep: #01585E; --c-schedule-soft: #E9F7F8; --c-schedule-line: #C6E8EA;
+    --c-schedule: #9B9389; --c-schedule-deep: #5F5B54; --c-schedule-soft: #FCF9F4; --c-schedule-line: #EFE9DC;
     --c-personal: #8D678E; --c-personal-deep: #5E425F; --c-personal-soft: #F7ECF7; --c-personal-line: #E9D8E9;
     --c-shared: #7D766E; --c-shared-deep: #514C46; --c-shared-soft: #F6F3EF; --c-shared-line: #E5DED7;
     --bg: #f7f5f0;
@@ -263,27 +263,27 @@
   .progress-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
   .progress-bar-bg { width: 100%; height: 10px; background-color: #EFECE6; border-radius: 5px; overflow: hidden; }
   .progress-bar-fill { height: 100%; width: 0%; background-color: var(--accent); border-radius: 5px; transition: width 0.3s ease; }
-  .category-title { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
-  .item-list { list-style: none; display: flex; flex-direction: column; gap: 12px; padding-left: 0; margin: 0; }
-  .item-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px dashed var(--border); cursor: pointer; }
+  .category-title { font-size: 0.9rem; font-weight: 700; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .item-list { list-style: none; display: flex; flex-direction: column; gap: 8px; padding-left: 0; margin: 0; }
+  .item-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 6px; cursor: pointer; }
   .item-row:last-child { border-bottom: none; padding-bottom: 0; }
   .item-left { display: flex; align-items: center; gap: 10px; flex: 1; }
-  .custom-checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #CCC; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+  .custom-checkbox { width: 18px; height: 18px; border-radius: 5px; border: 2px solid #CCC; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
   .item-row.checked .custom-checkbox { background-color: var(--accent); border-color: var(--accent); }
-  .custom-checkbox::after { content: '✓'; color: white; font-size: 13px; font-weight: bold; display: none; }
+  .custom-checkbox::after { content: '✓'; color: white; font-size: 12px; font-weight: bold; display: none; }
   .item-row.checked .custom-checkbox::after { display: block; }
-  .item-name { font-size: 14px; color: var(--text); transition: color 0.2s; }
+  .item-name { font-size: 13px; color: var(--text); transition: color 0.2s; line-height: 1.3; }
   .item-row.checked .item-name { text-decoration: line-through; color: var(--muted); }
   .badge-carry { background-color: var(--badge-carry); color: var(--badge-carry-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   .badge-check { background-color: var(--badge-check); color: var(--badge-check-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   .item-must-reason { font-size:0.72rem; color:var(--muted); margin-top:2px; }
   .supply-me-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:4px 0 12px; }
   .supply-me-name { font-size:0.98rem; font-weight:800; }
-  .supply-q { font-size:0.98rem; font-weight:800; margin:4px 0 4px; }
+  .supply-q { font-size:0.92rem; font-weight:800; margin:4px 0 4px; }
   .supply-confirm { text-align:center; padding:12px 0 4px; }
   .supply-select-wrap { position:relative; margin-bottom:4px; }
-  .supply-select-wrap::after { content:'▾'; position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--c-personal); font-size:0.9rem; pointer-events:none; }
-  .supply-select { width:100%; appearance:none; -webkit-appearance:none; padding:12px 38px 12px 14px; border-radius:12px; border:1.5px solid var(--c-personal-line); background:var(--c-personal-soft); color:var(--text); font-size:0.95rem; font-weight:700; font-family:inherit; cursor:pointer; }
+  .supply-select-wrap::after { content:'▾'; position:absolute; right:14px; top:50%; transform:translateY(-50%); color:#9B7A9F; font-size:0.9rem; pointer-events:none; }
+  .supply-select { width:100%; appearance:none; -webkit-appearance:none; padding:10px 38px 10px 14px; border-radius:12px; border:1.5px solid var(--c-personal-line); background:var(--c-personal-soft); color:var(--text); font-size:0.88rem; font-weight:700; font-family:inherit; cursor:pointer; }
   .badge-none { background-color: var(--bg2); color: var(--muted); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   /* ===== 학생 · 교사 · 방배정 탭 정리된 디자인 ===== */
   .list-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
@@ -400,14 +400,14 @@
   .bb-book-name { width:60px; font-size:0.8rem; font-weight:700; color:#5b5f55; flex-shrink:0; }
   .bb-book-pct { width:36px; text-align:right; font-size:0.78rem; font-weight:700; color:var(--muted); flex-shrink:0; }
   .bb-note { margin-top:12px; font-size:0.72rem; color:var(--muted); }
-  .bb-sub { font-size:0.82rem; color:var(--muted); margin:-6px 0 14px; }
+  .bb-sub { font-size:0.75rem; color:var(--muted); margin:-4px 0 10px; line-height:1.4; }
   .bb-picker { display:grid; grid-template-columns:repeat(auto-fill, minmax(96px, 1fr)); gap:8px; }
-  .bb-pick { display:flex; flex-direction:column; align-items:center; gap:2px; padding:12px 6px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; cursor:pointer; }
-  .bb-pick span { font-size:0.95rem; font-weight:700; }
-  .bb-pick small { font-size:0.72rem; color:var(--muted); font-weight:600; }
+  .bb-pick { display:flex; flex-direction:column; align-items:center; gap:2px; padding:10px 6px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; cursor:pointer; }
+  .bb-pick span { font-size:0.85rem; font-weight:700; line-height:1.3; }
+  .bb-pick small { font-size:0.68rem; color:var(--muted); font-weight:600; line-height:1.3; }
   .bb-pick:active { background:var(--c-bible-soft); border-color:var(--c-bible); }
   .bb-pick.teacher { background:var(--sky-soft); border-color:transparent; }
-  .bb-group-label { font-size:0.8rem; font-weight:800; color:var(--muted); margin:14px 2px 8px; }
+  .bb-group-label { font-size:0.7rem; font-weight:800; color:var(--muted); margin:12px 2px 6px; letter-spacing:0.02em; }
   .bb-group-label:first-of-type { margin-top:0; }
   .bb-confirm { text-align:center; padding-top:26px; }
   .bb-confirm-q { font-size:1.15rem; font-weight:800; margin-bottom:10px; word-break:keep-all; }
@@ -2605,6 +2605,16 @@ function renderPersonalChecklist() {
 
   setProgress('personal', checkedCount, totalItems);
 
+  // personKey에서 학생 정보 가져오기
+  let gradePrefix = '';
+  if (personKey.startsWith('p_')) {
+    const studentId = personKey.substring(2);
+    const student = (state.participants || []).find(p => p.id === studentId);
+    if (student && student.grade) {
+      gradePrefix = `<span style="font-size:0.65rem; color:var(--muted); margin-right:4px;">${escapeHtml(student.grade)}</span>`;
+    }
+  }
+
   container.innerHTML = checklistData.map(cat => {
     return `
       <div class="card" style="margin-bottom:14px;">
@@ -2621,7 +2631,7 @@ function renderPersonalChecklist() {
                 <div class="item-left">
                   <div class="custom-checkbox"></div>
                   <div>
-                    <span class="item-name">${escapeHtml(item.name)}</span>
+                    <span class="item-name">${gradePrefix}${escapeHtml(item.name)}</span>
                     ${must && must.reason ? `<div class="item-must-reason">${escapeHtml(must.reason)}</div>` : ''}
                   </div>
                 </div>
