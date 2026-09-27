@@ -38,7 +38,7 @@
     --accent-soft: #f3e2d3;
     --sun: #b99248;
     --sun-soft: #f1e8d3;
-    --assign-yellow: #e6a336;
+    --assign-yellow: #5C929D;
     --bloom: #96586c;
     --bloom-soft: #ece0e3;
     --ok: #4f8858;
@@ -92,29 +92,30 @@
   nav.tabs button {
     flex: 0 0 auto; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.88rem; font-weight: 600; cursor: pointer;
   }
-  nav.tabs button[data-tab="feed"].active { background: #F4B8A5; border-color: #F4B8A5; color: var(--text); }
-  nav.tabs button[data-tab="prep-schedule"].active { background: #F6E3B4; border-color: #F6E3B4; color: var(--text); }
-  nav.tabs button[data-tab="participants"].active { background: #E8BAC6; border-color: #E8BAC6; color: var(--text); }
-  nav.tabs button[data-tab="teachers"].active { background: #C3D8C4; border-color: #C3D8C4; color: var(--text); }
-  nav.tabs button[data-tab="flights"].active { background: #BDD5EA; border-color: #BDD5EA; color: var(--text); }
-  nav.tabs button[data-tab="schedule"].active { background: #E2C275; border-color: #E2C275; color: var(--text); }
-  nav.tabs button[data-tab="personal-supplies"].active { background: #D2E0FB; border-color: #D2E0FB; color: var(--text); }
-  nav.tabs button[data-tab="shared-supplies"].active { background: #E8D5C4; border-color: #E8D5C4; color: var(--text); }
+  nav.tabs button[data-tab="feed"].active { background: #C88A8A; border-color: #C88A8A; color: #FFFFFF; }
+  nav.tabs button[data-tab="prep-schedule"].active { background: #D99B6A; border-color: #D99B6A; color: #FFFFFF; }
+  nav.tabs button[data-tab="participants"].active { background: #CDB361; border-color: #CDB361; color: #FFFFFF; }
+  nav.tabs button[data-tab="teachers"].active { background: #7A9A7B; border-color: #7A9A7B; color: #FFFFFF; }
+  nav.tabs button[data-tab="assign"].active { background: #5C929D; border-color: #5C929D; color: #FFFFFF; }
+  nav.tabs button[data-tab="flights"].active { background: #6B86AC; border-color: #6B86AC; color: #FFFFFF; }
+  nav.tabs button[data-tab="schedule"].active { background: #8877A9; border-color: #8877A9; color: #FFFFFF; }
+  nav.tabs button[data-tab="personal-supplies"].active { background: #A2638C; border-color: #A2638C; color: #FFFFFF; }
+  nav.tabs button[data-tab="shared-supplies"].active { background: #DED8CE; border-color: #DED8CE; color: var(--text); }
 
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
   section.panel { display: none; }
   section.panel.active { display: block; }
   .card { position:relative; background: var(--card); border: none; box-shadow: 0 3px 16px rgba(28,56,61,0.07); border-radius: 16px; padding: 18px 16px 16px; margin-bottom: 14px; overflow:hidden; }
   .card::before { content:""; position:absolute; top:0; left:0; right:0; height:4px; background: var(--sky); }
-  #panel-feed .card::before { background: #F4B8A5; }
-  #panel-prep-schedule .card::before { background: #F6E3B4; }
-  #panel-participants .card::before { background: #E8BAC6; }
-  #panel-teachers .card::before { background: #C3D8C4; }
-  #panel-flights .card::before { background: #BDD5EA; }
-  #panel-schedule .card::before { background: #E2C275; }
-  #panel-assign .card::before { background: var(--assign-yellow); }
-  #panel-personal-supplies .card::before { background: #D2E0FB; }
-  #panel-shared-supplies .card::before { background: #E8D5C4; }
+  #panel-feed .card::before { background: #C88A8A; }
+  #panel-prep-schedule .card::before { background: #D99B6A; }
+  #panel-participants .card::before { background: #CDB361; }
+  #panel-teachers .card::before { background: #7A9A7B; }
+  #panel-assign .card::before { background: #5C929D; }
+  #panel-flights .card::before { background: #6B86AC; }
+  #panel-schedule .card::before { background: #8877A9; }
+  #panel-personal-supplies .card::before { background: #A2638C; }
+  #panel-shared-supplies .card::before { background: #DED8CE; }
 
   .card h2 { margin: 0 0 12px; font-size: 1.02rem; font-weight: 800; }
   .row-list { display:flex; flex-direction:column; gap:8px; }
@@ -146,8 +147,150 @@
   .add-form label { font-size:0.78rem; color: var(--muted); margin-bottom:2px; display:block; font-weight:600; }
   button.primary { background: var(--accent); color:#fff; border:none; border-radius:11px; padding:10px 16px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
   button.secondary { background: var(--card); color: var(--sky); border:1.5px solid var(--sky); border-radius:11px; padding:10px 16px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
-  .day-block { margin-bottom: 12px; }
-  .day-block .day-title { font-weight:700; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center; }
+  
+  /* 준비일정 새로운 전용 카드 및 스타일 (두 번째 파일 디자인 반영) */
+  .section-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 12px; color: #D99B6A; }
+  .section-title.past { color: #888888; margin-top: 24px; }
+
+  .item-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    border: 1px solid #eae6dc;
+    position: relative;
+    overflow: hidden;
+  }
+  .item-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: #D99B6A;
+  }
+  .item-card.english::before { background: #3b7a57; }
+  .item-card.teacher::before { background: #3b7a8c; }
+  .item-card.worship::before { background: #b07070; }
+  .item-card.praise::before { background: #8877A9; }
+  .item-card.balloon::before { background: #b99248; }
+  .item-card.taekwondo::before { background: #c97a4a; }
+
+  .item-card.past-card {
+    background: #fafaf8;
+    opacity: 0.72;
+    border-color: #ebe4d8;
+  }
+  .item-card.past-card::before { background: #b5b0a6 !important; }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f2eee5;
+  }
+  .past-card .card-top { border-bottom-color: #eee9e0; }
+
+  .date-text { font-size: 0.95rem; font-weight: 800; color: #1a231c; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .past-card .date-text { color: #666666; }
+
+  .tag-cat {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 800;
+  }
+  .tag-cat.english { background: #e2f0e6; color: #235237; } 
+  .tag-cat.teacher { background: #e3edf1; color: #24525d; } 
+  .tag-cat.worship { background: #f2e6e6; color: #663b3b; }
+  .tag-cat.default { background: #f3e2d3; color: #c97a4a; }
+  .past-card .tag-cat { background: #e8e5df !important; color: #666666 !important; }
+
+  .card-body { display: flex; flex-direction: column; gap: 3px; }
+  .info-row { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #666; font-weight: 600; flex-wrap: wrap; }
+  .time-text { color: #b99248; font-weight: 800; }
+  .past-card .time-text { color: #999999; }
+  .dot { color: #ccc; font-size: 0.7rem; }
+  .content-text { font-size: 0.95rem; font-weight: 400; color: #333; margin-top: 4px; white-space: pre-wrap; }
+  .past-card .content-text { color: #777777; }
+
+  /* 선교일정 탭 전용 깔끔한 타임라인 카드 스타일 */
+  .sch-filter-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sch-filter-btn {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .sch-filter-btn.active {
+    background: var(--sky);
+    color: #fff;
+    border-color: var(--sky);
+  }
+  .sch-day-group {
+    margin-bottom: 20px;
+  }
+  .sch-day-header {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sch-timeline-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .sch-time-box {
+    min-width: 72px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--sun);
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+  .sch-content-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sch-activity-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .sch-activity-desc {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.4;
+    white-space: pre-wrap;
+  }
+
   .post { border-bottom: 1px solid var(--border); padding: 12px 0; }
   .post:last-child { border-bottom: none; }
   .post .author { font-weight:700; font-size:0.88rem; }
@@ -176,11 +319,6 @@
   .boarding-pass .bp-details { display:flex; flex-wrap:wrap; gap:16px; }
   .boarding-pass .bp-detail-label { font-size:0.72rem; color:var(--muted); }
   .boarding-pass .bp-detail-value { font-size:0.9rem; font-weight:700; margin-top:1px; }
-  .timeline { margin-top:8px; padding-left:2px; }
-  .timeline-row { display:flex; flex-direction:column; gap:6px; padding:8px 0; border-left:2px solid var(--border); padding-left:12px; margin-left:4px; position:relative; }
-  .timeline-row::before { content:""; position:absolute; left:-6px; top:11px; width:9px; height:9px; border-radius:50%; background:var(--sun); }
-  .timeline-row .tl-time { font-weight:700; font-size:0.84rem; min-width:64px; color:var(--sun); flex-shrink:0; }
-  .timeline-row .tl-activity { font-size:0.9rem; }
   .date-parts { display:flex; align-items:center; gap:4px; }
   .date-parts input, .date-parts select { font-size:0.9rem; }
   .date-parts input { text-align:center; padding:9px 4px !important; font-family:inherit; }
@@ -238,6 +376,7 @@
   <button data-tab="prep-schedule">준비일정</button>
   <button data-tab="participants">학생</button>
   <button data-tab="teachers">교사</button>
+  <button data-tab="assign">방배정</button>
   <button data-tab="flights">항공권</button>
   <button data-tab="schedule">선교일정</button>
   <button data-tab="personal-supplies">개인준비물</button>
@@ -301,8 +440,8 @@
   <section class="panel" id="panel-schedule">
     <div class="card">
       <h2>🗓️ 선교 일정</h2>
-      <div id="schedule-list"></div>
-      <div class="add-form" id="schedule-form" style="display:none;">
+      <!-- 관리자 입력 폼을 상단으로 이동 -->
+      <div class="add-form" id="schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
         <input type="hidden" id="s-edit-day-id" value="" />
         <input type="hidden" id="s-edit-item-idx" value="" />
         <div><label>날짜</label>
@@ -312,25 +451,26 @@
             <input type="tel" inputmode="numeric" maxlength="2" placeholder="DD" class="dp-d" id="s-date-d" /><span>일</span>
           </div>
         </div>
-        <div class="grid">
-          <div>
-            <label>시간</label>
-            <div class="date-parts">
-              <select id="s-item-ampm" class="date-parts" style="padding:9px; border-radius:10px; border:1px solid var(--border);">
-                <option value="오전">오전</option>
-                <option value="오후">오후</option>
-              </select>
-              <input type="tel" inputmode="numeric" maxlength="2" placeholder="시" class="dp-m" id="s-item-hour" /><span>시</span>
-              <input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="s-item-minute" /><span>분</span>
-            </div>
+        <div>
+          <label>시간</label>
+          <div class="date-parts">
+            <select id="s-item-ampm" class="date-parts" style="padding:9px; border-radius:10px; border:1px solid var(--border);">
+              <option value="오전">오전</option>
+              <option value="오후">오후</option>
+            </select>
+            <input type="tel" inputmode="numeric" maxlength="2" placeholder="시" class="dp-m" id="s-item-hour" /><span>시</span>
+            <input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="s-item-minute" /><span>분</span>
           </div>
-          <div><label>활동 내용</label><input id="s-item-activity" placeholder="예: 숙소 출발" /></div>
         </div>
+        <div><label>일정</label><input id="s-item-activity" placeholder="예: 숙소 출발" /></div>
+        <div><label>내용</label><textarea id="s-item-description" placeholder="세부 내용을 입력하세요"></textarea></div>
         <div style="display:flex; gap:8px; margin-top:10px;">
           <button class="primary" id="s-submit-btn" onclick="addScheduleEntry()">일정 추가</button>
           <button class="secondary" id="s-cancel-btn" style="display:none;" onclick="cancelScheduleEdit()">취소</button>
         </div>
       </div>
+      <div id="schedule-date-filter" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px; border-bottom:1px solid var(--border);"></div>
+      <div id="schedule-list"></div>
     </div>
   </section>
 
@@ -338,8 +478,9 @@
   <section class="panel" id="panel-prep-schedule">
     <div class="card">
       <h2>📋 준비 일정</h2>
-      <div id="prep-schedule-list"></div>
-      <div class="add-form" id="prep-schedule-form" style="display:none;">
+      
+      <!-- 관리자 작성/수정 폼 (상단 배치) -->
+      <div class="add-form" id="prep-schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
         <input type="hidden" id="ps-edit-day-id" value="" />
         <input type="hidden" id="ps-edit-item-idx" value="" />
         <div><label>날짜</label>
@@ -381,10 +522,41 @@
           <button class="secondary" id="ps-cancel-btn" style="display:none;" onclick="cancelPrepScheduleEdit()">취소</button>
         </div>
       </div>
+
+      <div id="prep-schedule-list" style="margin-top:12px;"></div>
     </div>
   </section>
 
-  <!-- 4. 항공권 탭 -->
+  <!-- 4. 방배정 탭 -->
+  <section class="panel" id="panel-assign">
+    <div class="card">
+      <h2>🛏️ 방 배정</h2>
+      <div class="row-list" id="rooms-list"></div>
+      <div class="add-form" id="rooms-form" style="display:none;">
+        <input type="hidden" id="rooms-edit-id" value="" />
+        <div><label>방 이름</label><input id="rooms-name" placeholder="예: 101호 (남자방)" /></div>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <button class="primary" id="rooms-submit-btn" onclick="saveGroup('rooms')">방 추가</button>
+          <button class="secondary" id="rooms-cancel-btn" style="display:none;" onclick="cancelGroupEdit('rooms')">취소</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🚐 차량 배정</h2>
+      <div class="row-list" id="vehicles-list"></div>
+      <div class="add-form" id="vehicles-form" style="display:none;">
+        <input type="hidden" id="vehicles-edit-id" value="" />
+        <div><label>차량 이름</label><input id="vehicles-name" placeholder="예: 1호차 (봉고)" /></div>
+        <div style="display:flex; gap:8px; margin-top:10px;">
+          <button class="primary" id="vehicles-submit-btn" onclick="saveGroup('vehicles')">차량 추가</button>
+          <button class="secondary" id="vehicles-cancel-btn" style="display:none;" onclick="cancelGroupEdit('vehicles')">취소</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 항공권 탭 -->
   <section class="panel" id="panel-flights">
     <div class="card">
       <h2>🎫 항공권 정보</h2>
@@ -467,28 +639,26 @@
     </div>
   </section>
 
-  <!-- 5. 공지 탭 -->
+  <!-- 6. 공지 탭 -->
   <section class="panel" id="panel-feed">
     <div class="card">
       <h2>📢 공지</h2>
       <div class="add-form" id="feed-form" style="display:none;">
         <input type="hidden" id="post-edit-id" value="" />
         <div><label>작성자</label><select id="post-author"><option value="">작성자 선택</option></select></div>
+        <div><label>날짜 (비워두면 오늘 날짜)</label><input type="date" id="post-date" /></div>
         <div><label>제목</label><input id="post-title" placeholder="예: 준비모임 안내" /></div>
-        <div class="grid">
-          <div><label>날짜 (비워두면 자동입력)</label><input type="date" id="post-date" /></div>
-          <div><label>장소</label><input id="post-place" placeholder="예: 본당" /></div>
-        </div>
         <div><label>내용</label><textarea id="post-text" placeholder="공지 내용을 입력해주세요"></textarea></div>
         <div style="display:flex; gap:8px;">
-          <button class="primary" onclick="addPost()">공지 등록</button>
+          <button class="primary" id="post-submit-btn" onclick="addPost()">공지 등록</button>
+          <button class="secondary" id="post-cancel-btn" style="display:none;" onclick="cancelPostEdit()">취소</button>
         </div>
       </div>
       <div id="feed-list" style="margin-top:12px;"></div>
     </div>
   </section>
 
-  <!-- 6. 교사 탭 -->
+  <!-- 7. 교사 탭 -->
   <section class="panel" id="panel-teachers">
     <div class="card">
       <h2>🌳 교사 명단</h2>
@@ -524,7 +694,7 @@
     </div>
   </section>
 
-  <!-- 7. 개인준비물 탭 -->
+  <!-- 8. 개인준비물 탭 -->
   <section class="panel" id="panel-personal-supplies">
     <div class="card">
       <h2>🧳 개인 준비물 체크</h2>
@@ -534,7 +704,7 @@
         <div style="font-weight:800; color:#B99248; margin-bottom:6px; font-size:0.88rem;">🌤️ 바기오 1월 날씨 & 추천 옷차림 안내</div>
         <div style="display:flex; flex-direction:column; gap:4px; color:var(--text);">
           <div>• <b>날씨 특성</b>: 해발 1,500m 고지대로 1월은 건기이며 서늘하고 쾌적합니다. (낮 20~23℃ / 아침·밤 11~14℃)</div>
-          <div>• <b>옷차림 안내</b>: 낮에는 반팔·얇은 긴팔, 아침·저녁 및 밤에는 한국 가을~초겨울처럼 쌀쌀합니다.</div>
+          <div>• <b>옷차림 안내</b>: 낮에는 반팔·얇은 긴팔, 아침·저녁 및 밤에는 한국 가월~초겨울처럼 쌀쌀합니다.</div>
           <div>• <b>필수 준비</b>: 바람막이, 후드집업, 가디건 등 겹쳐입을 겉옷, 따뜻한 잠옷, 래시가드</div>
         </div>
       </div>
@@ -602,7 +772,7 @@
     </div>
   </section>
 
-  <!-- 8. 공용준비물 탭 -->
+  <!-- 9. 공용준비물 탭 -->
   <section class="panel" id="panel-shared-supplies">
     <div class="card">
       <h2>📦 공용 준비물 체크</h2>
@@ -815,6 +985,7 @@ let dirty = false;
 let dirtyFields = new Set();
 let firebaseAuthReady = false;
 let activeSharedItemIdForCheck = null;
+let currentScheduleFilter = 'all'; // 선교일정 날짜별 필터 상태 (기본 전체일정)
 
 function cloneData(data) {
   return JSON.parse(JSON.stringify(data));
@@ -1668,31 +1839,53 @@ function removeFlight(id) {
   markDirty('flightInfos');
 }
 
+function filterScheduleByDate(dateVal) {
+  currentScheduleFilter = dateVal;
+  renderSchedule();
+}
+
 function renderSchedule() {
+  const filterContainer = document.getElementById('schedule-date-filter');
   const list = document.getElementById('schedule-list');
   if(!list) return;
   const schedule = state.schedule || [];
-  if (!schedule.length) {
+
+  const sortedSchedule = [...schedule].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+
+  if (filterContainer) {
+    let filterHtml = `<button class="sch-filter-btn ${currentScheduleFilter === 'all' ? 'active' : ''}" onclick="filterScheduleByDate('all')">전체일정</button>`;
+    sortedSchedule.forEach(s => {
+      const active = currentScheduleFilter === s.date;
+      filterHtml += `<button class="sch-filter-btn ${active ? 'active' : ''}" onclick="filterScheduleByDate('${s.date}')">${escapeHtml(formatScheduleDate(s.date))}</button>`;
+    });
+    filterContainer.innerHTML = filterHtml;
+  }
+
+  const filteredSchedule = currentScheduleFilter === 'all' 
+    ? sortedSchedule 
+    : sortedSchedule.filter(s => s.date === currentScheduleFilter);
+
+  if (!filteredSchedule.length) {
     list.innerHTML = '<div class="empty">등록된 선교 일정이 없어요.</div>';
   } else {
-    const sorted = [...schedule].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-    list.innerHTML = sorted.map(s => {
+    list.innerHTML = filteredSchedule.map(s => {
       return `
-        <div class="day-block">
-          <div class="day-title">
-            <span>${escapeHtml(formatScheduleDate(s.date))}</span>
+        <div class="sch-day-group">
+          <div class="sch-day-header">
+            <span>📅 ${escapeHtml(formatScheduleDate(s.date))}</span>
             ${canEdit ? `<button class="del-btn" onclick="removeSchedule('${s.id}')">이 날짜 삭제</button>` : ''}
           </div>
           <div class="timeline">
             ${(s.items || []).sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99')).map(it => {
               const idx = s.items.indexOf(it);
               return `
-              <div class="timeline-row">
-                <div style="display:flex; gap:10px; align-items:center;">
-                  <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>
-                  <span class="tl-activity" style="flex:1;">${escapeHtml(it.activity)}</span>
+              <div class="sch-timeline-card">
+                <div class="sch-time-box">${escapeHtml(formatTimeKo(it.time))}</div>
+                <div class="sch-content-box">
+                  <div class="sch-activity-title">${escapeHtml(it.activity)}</div>
+                  ${it.description ? `<div class="sch-activity-desc">${escapeHtml(it.description)}</div>` : ''}
+                  ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removeScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
                 </div>
-                ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removeScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
               </div>
             `;
             }).join('')}
@@ -1708,10 +1901,11 @@ function addScheduleEntry() {
   const hourInput = document.getElementById('s-item-hour');
   const minuteInput = document.getElementById('s-item-minute');
   const activity = document.getElementById('s-item-activity').value.trim();
+  const description = document.getElementById('s-item-description').value.trim();
   const editDayId = document.getElementById('s-edit-day-id').value;
   const editIdx = document.getElementById('s-edit-item-idx').value;
 
-  if (!date || !activity) { alert('날짜와 활동 내용을 입력해주세요.'); return; }
+  if (!date || !activity) { alert('날짜와 일정을 입력해주세요.'); return; }
   let time = '';
   if (hourInput.value) {
     const ampm = document.getElementById('s-item-ampm').value;
@@ -1723,7 +1917,7 @@ function addScheduleEntry() {
   }
   if(!state.schedule) state.schedule = [];
 
-  const itemData = { time, activity };
+  const itemData = { time, activity, description };
 
   if (editDayId !== '' && editIdx !== '') {
     const oldDay = state.schedule.find(s => s.id === editDayId);
@@ -1769,6 +1963,7 @@ function startEditScheduleItem(dayId, itemIdx) {
   setDateValue('s-date', day.date || '');
   parseTime24ToParts(item.time, 's');
   document.getElementById('s-item-activity').value = item.activity || '';
+  document.getElementById('s-item-description').value = item.description || '';
   document.getElementById('s-submit-btn').textContent = '저장';
   document.getElementById('s-cancel-btn').style.display = 'inline-block';
   document.getElementById('panel-schedule').scrollIntoView({behavior:'smooth'});
@@ -1780,6 +1975,7 @@ function cancelScheduleEdit() {
   setDateValue('s-date', '');
   parseTime24ToParts('', 's');
   document.getElementById('s-item-activity').value = '';
+  document.getElementById('s-item-description').value = '';
   document.getElementById('s-submit-btn').textContent = '일정 추가';
   document.getElementById('s-cancel-btn').style.display = 'none';
 }
@@ -1803,40 +1999,117 @@ function removeSchedule(dayId) {
   markDirty('schedule');
 }
 
+// 준비일정 개별 날짜 D-Day 계산 및 배지 생성 함수
+function calcDdayBadge(dateStr) {
+  if (!dateStr) return '';
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(dateStr + 'T00:00:00');
+  if (isNaN(target.getTime())) return '';
+
+  const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 0) {
+    return `<span style="display:inline-block; padding:2px 8px; border-radius:12px; background:#D99B6A; color:#fff; font-size:0.75rem; font-weight:800; margin-left:6px;">D-${diffDays}</span>`;
+  } else if (diffDays === 0) {
+    return `<span style="display:inline-block; padding:2px 8px; border-radius:12px; background:#c97a4a; color:#fff; font-size:0.75rem; font-weight:800; margin-left:6px;">D-DAY 🎉</span>`;
+  } else {
+    return `<span style="display:inline-block; padding:2px 8px; border-radius:12px; background:var(--border); color:var(--muted); font-size:0.75rem; font-weight:700; margin-left:6px;">D+${Math.abs(diffDays)}</span>`;
+  }
+}
+
+// 카테고리에 따른 CSS 클래스 반환 함수 (두 번째 파일 스타일 연동)
+function getCategoryClass(catName) {
+  if (!catName) return 'default';
+  if (catName.includes('영어')) return 'english';
+  if (catName.includes('교사')) return 'teacher';
+  if (catName.includes('워십')) return 'worship';
+  if (catName.includes('무언극')) return 'praise';
+  if (catName.includes('풍선')) return 'balloon';
+  if (catName.includes('태권도')) return 'taekwondo';
+  return 'default';
+}
+
+function renderItemCards(dayList, isPast = false) {
+  let html = '';
+  dayList.forEach(s => {
+    const ddayBadge = isPast ? '' : calcDdayBadge(s.date);
+    const dateFormatted = formatScheduleDate(s.date);
+
+    (s.items || []).sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99')).forEach(it => {
+      const idx = s.items.indexOf(it);
+      const mainCat = (it.categories && it.categories.length > 0) ? it.categories[0] : '준비일정';
+      const catClass = getCategoryClass(mainCat);
+      const pastClass = isPast ? 'past-card' : '';
+
+      html += `
+        <div class="item-card ${catClass} ${pastClass}">
+          <div class="card-top">
+            <span class="date-text">📅 ${escapeHtml(dateFormatted)} ${ddayBadge}</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="tag-cat ${catClass}">${escapeHtml(mainCat)}</span>
+              ${(it.categories && it.categories.length > 1) ? it.categories.slice(1).map(c => `<span class="tag-cat default">${escapeHtml(c)}</span>`).join('') : ''}
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="time-text">${escapeHtml(formatTimeKo(it.time))}</span>
+              ${it.place ? `<span class="dot">·</span><span>${escapeHtml(it.place)}</span>` : ''}
+            </div>
+            <div class="content-text">${escapeHtml(it.activity)}</div>
+          </div>
+          ${canEdit ? `<div style="text-align:right; margin-top:10px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
+          ${canEdit ? `<div style="text-align:right; margin-top:4px;"><button class="del-btn" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
+        </div>
+      `;
+    });
+  });
+  return html;
+}
+
 function renderPrepSchedule() {
   const list = document.getElementById('prep-schedule-list');
   if(!list) return;
   const prepSchedule = state.prepSchedule || [];
+  
+  document.getElementById('prep-schedule-form').style.display = canEdit ? 'flex' : 'none';
+
   if (!prepSchedule.length) {
     list.innerHTML = '<div class="empty">등록된 준비 일정이 없어요.</div>';
-  } else {
-    const sorted = [...prepSchedule].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-    list.innerHTML = sorted.map(s => {
-      return `
-        <div class="day-block">
-          <div class="day-title">
-            <span>${escapeHtml(formatScheduleDate(s.date))}</span>
-            ${canEdit ? `<button class="del-btn" onclick="removePrepSchedule('${s.id}')">이 날짜 삭제</button>` : ''}
-          </div>
-          <div class="timeline">
-            ${(s.items || []).sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99')).map(it => {
-              const idx = s.items.indexOf(it);
-              return `
-              <div class="timeline-row">
-                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                  <span class="tl-time">${escapeHtml(formatTimeKo(it.time))}</span>${it.place ? `<span class="chip">${escapeHtml(it.place)}</span>` : ''}
-                  <span class="tl-activity" style="flex:1;">${escapeHtml(it.activity)}</span>
-                </div>
-                ${(it.categories && it.categories.length) ? `<div class="chip-row" style="margin-top:4px;">${it.categories.map(c => `<span class="chip ok">${escapeHtml(c)}</span>`).join('')}</div>` : ''}
-                ${canEdit ? `<div style="text-align:right; margin-top:6px; display:flex; gap:8px; justify-content:flex-end;"><button class="edit-btn" style="margin-right:0;" onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del-btn" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
-              </div>
-            `;
-            }).join('')}
-          </div>
-        </div>`;
-    }).join('');
+    return;
   }
-  document.getElementById('prep-schedule-form').style.display = canEdit ? 'flex' : 'none';
+
+  const todayObj = new Date();
+  todayObj.setHours(0, 0, 0, 0);
+  const yyyy = todayObj.getFullYear();
+  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
+  const dd = String(todayObj.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+
+  const upcoming = prepSchedule.filter(s => (s.date || '') >= todayStr).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  const past = prepSchedule.filter(s => (s.date || '') < todayStr).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+  let html = '';
+
+  if (upcoming.length > 0) {
+    html += `
+      <div class="section-title">📌 앞으로 일정</div>
+      ${renderItemCards(upcoming, false)}
+    `;
+  }
+
+  if (past.length > 0) {
+    html += `
+      <div class="section-title past">⌛ 지나간 일정</div>
+      ${renderItemCards(past, true)}
+    `;
+  }
+
+  if (!upcoming.length && !past.length) {
+    html = '<div class="empty">등록된 준비 일정이 없어요.</div>';
+  }
+
+  list.innerHTML = html;
 }
 
 function addPrepScheduleEntry() {
@@ -1960,12 +2233,12 @@ function renderPosts() {
     list.innerHTML = sorted.map(p => `
       <div class="post">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div><span class="author">${escapeHtml(p.author || '관리자')}</span><span class="date">${escapeHtml(p.date || '')}</span></div>
-          ${canEdit ? `<button class="del-btn" onclick="removePost('${p.id}')">삭제</button>` : ''}
+          <div style="font-size:0.85rem; font-weight:700; color:var(--text);">📅 ${escapeHtml(p.date || '')}</div>
+          ${canEdit ? `<div><button class="edit-btn" style="margin-right:0;" onclick="startEditPost('${p.id}')">수정</button><button class="del-btn" style="margin-left:8px;" onclick="removePost('${p.id}')">삭제</button></div>` : ''}
         </div>
-        ${p.title ? `<div style="font-weight:700; margin-top:4px; font-size:0.96rem;">${escapeHtml(p.title)}</div>` : ''}
-        ${p.place ? `<div class="meta" style="margin-top:2px;">📍 장소: ${escapeHtml(p.place)}</div>` : ''}
-        <div class="text">${escapeHtml(p.text || '')}</div>
+        ${p.title ? `<div style="font-weight:700; margin-top:6px; font-size:0.98rem; color:var(--text);"> ${escapeHtml(p.title)}</div>` : ''}
+        <div class="text" style="margin-top:6px; font-size:0.92rem; white-space:pre-wrap;">${escapeHtml(p.text || '')}</div>
+        <div style="text-align:right; font-size:0.82rem; color:var(--muted); margin-top:8px; font-weight:600;">${escapeHtml(p.author || '관리자')}</div>
       </div>
     `).join('');
   }
@@ -1976,24 +2249,61 @@ function addPost() {
   const author = document.getElementById('post-author').value;
   const title = document.getElementById('post-title').value.trim();
   const dateInput = document.getElementById('post-date').value;
-  const place = document.getElementById('post-place').value.trim();
   const text = document.getElementById('post-text').value.trim();
+  const editId = document.getElementById('post-edit-id').value;
 
   if (!author) { alert('작성자를 선택해주세요.'); return; }
+  if (!title) { alert('제목을 입력해주세요.'); return; }
   if (!text) { alert('내용을 입력해주세요.'); return; }
 
   const date = dateInput || new Date().toISOString().split('T')[0];
 
   if (!state.posts) state.posts = [];
-  state.posts.push({ id: uid(), author, title, date, place, text });
 
-  document.getElementById('post-title').value = '';
-  document.getElementById('post-date').value = '';
-  document.getElementById('post-place').value = '';
-  document.getElementById('post-text').value = '';
+  if (editId) {
+    const post = state.posts.find(p => p.id === editId);
+    if (post) {
+      post.author = author;
+      post.title = title;
+      post.date = date;
+      post.text = text;
+    }
+  } else {
+    state.posts.push({ id: uid(), author, title, date, text });
+  }
 
+  cancelPostEdit();
   renderPosts();
   markDirty('posts');
+}
+
+function startEditPost(id) {
+  const post = (state.posts || []).find(p => p.id === id);
+  if (!post) return;
+  document.getElementById('post-edit-id').value = id;
+  document.getElementById('post-author').value = post.author || '';
+  document.getElementById('post-date').value = post.date || '';
+  document.getElementById('post-title').value = post.title || '';
+  document.getElementById('post-text').value = post.text || '';
+  
+  const submitBtn = document.getElementById('post-submit-btn');
+  if (submitBtn) submitBtn.textContent = '저장';
+  const cancelBtn = document.getElementById('post-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = 'inline-block';
+  document.getElementById('panel-feed').scrollIntoView({behavior:'smooth'});
+}
+
+function cancelPostEdit() {
+  document.getElementById('post-edit-id').value = '';
+  document.getElementById('post-author').value = '';
+  document.getElementById('post-date').value = '';
+  document.getElementById('post-title').value = '';
+  document.getElementById('post-text').value = '';
+  
+  const submitBtn = document.getElementById('post-submit-btn');
+  if (submitBtn) submitBtn.textContent = '공지 등록';
+  const cancelBtn = document.getElementById('post-cancel-btn');
+  if (cancelBtn) cancelBtn.style.display = 'none';
 }
 
 function removePost(id) {
