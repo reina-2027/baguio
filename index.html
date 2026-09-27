@@ -28,16 +28,16 @@
 <style>
   :root {
     /* 탭별 색: 같은 밝기·채도로 맞춘 차분한 팔레트 (흰 글씨 대비 4.4:1 이상) */
-    --c-feed: #9D6368; --c-feed-deep: #6A3F42; --c-feed-soft: #FCECEC; --c-feed-line: #F1D6D8;
-    --c-bible: #986A4A; --c-bible-deep: #66442C; --c-bible-soft: #FAEDE5; --c-bible-line: #EFD9CC;
-    --c-prep: #8A7340; --c-prep-deep: #5C4A24; --c-prep-soft: #F6EFE3; --c-prep-line: #E7DDC8;
+    --c-feed: #AC6A76; --c-feed-deep: #6D3D46; --c-feed-soft: #FCF0F2; --c-feed-line: #F2D8DD;
+    --c-bible: #597F68; --c-bible-deep: #385544; --c-bible-soft: #EDF5F0; --c-bible-line: #CFE3D6;
+    --c-prep: #CEAC64; --c-prep-deep: #533F0D; --c-prep-soft: #FAF3E5; --c-prep-line: #ECDEC2;
     --c-participants: #747B46; --c-participants-deep: #4C5129; --c-participants-soft: #EFF2E4; --c-participants-line: #DDE1CB;
-    --c-teachers: #55835E; --c-teachers-deep: #34563B; --c-teachers-soft: #E8F4EA; --c-teachers-line: #D1E4D4;
-    --c-assign: #378484; --c-assign-deep: #1C5757; --c-assign-soft: #E3F4F4; --c-assign-line: #C8E5E4;
+    --c-teachers: #7170A1; --c-teachers-deep: #4A486D; --c-teachers-soft: #EEEFFC; --c-teachers-line: #DBDCF2;
+    --c-assign: #B97340; --c-assign-deep: #6E401E; --c-assign-soft: #FFF3EA; --c-assign-line: #F4DCCB;
     --c-flights: #4B7C9E; --c-flights-deep: #2C516B; --c-flights-soft: #E6F2FB; --c-flights-line: #CDE1F0;
-    --c-schedule: #7170A1; --c-schedule-deep: #4A486D; --c-schedule-soft: #EEEFFC; --c-schedule-line: #DBDCF2;
+    --c-schedule: #209199; --c-schedule-deep: #01585E; --c-schedule-soft: #E9F7F8; --c-schedule-line: #C6E8EA;
     --c-personal: #8D678E; --c-personal-deep: #5E425F; --c-personal-soft: #F7ECF7; --c-personal-line: #E9D8E9;
-    --c-shared: #996378; --c-shared-deep: #673F4F; --c-shared-soft: #FBEBF1; --c-shared-line: #EFD6DF;
+    --c-shared: #7D766E; --c-shared-deep: #514C46; --c-shared-soft: #F6F3EF; --c-shared-line: #E5DED7;
     --bg: #f7f5f0;
     --bg2: #f1ece2;
     --card: #ffffff;
@@ -105,7 +105,7 @@
     flex: 0 0 auto; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); color: #4d544e; font-size: 0.88rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s;
   }
   nav.tabs button[data-tab="feed"].active { background: var(--c-feed); border-color: var(--c-feed); color: #FFFFFF; }
-  nav.tabs button[data-tab="prep-schedule"].active { background: var(--c-prep); border-color: var(--c-prep); color: #FFFFFF; }
+  nav.tabs button[data-tab="prep-schedule"].active { background: var(--c-prep); border-color: var(--c-prep); color: var(--c-prep-deep); }
   nav.tabs button[data-tab="participants"].active { background: var(--c-participants); border-color: var(--c-participants); color: #FFFFFF; }
   nav.tabs button[data-tab="teachers"].active { background: var(--c-teachers); border-color: var(--c-teachers); color: #FFFFFF; }
   nav.tabs button[data-tab="assign"].active { background: var(--c-assign); border-color: var(--c-assign); color: #FFFFFF; }
@@ -169,11 +169,11 @@
   .tag-cat.balloon::before { background:#b99248; }
   .tag-cat.taekwondo::before { background:#c97a4a; }
   .dday-pill { display:inline-block; padding:1px 7px; border-radius:6px; background:var(--c-prep-soft); color:var(--c-prep-deep); font-size:0.72rem; font-weight:800; margin-left:4px; }
-  .dday-pill.today { background:var(--c-prep); color:#fff; }
+  .dday-pill.today { background:var(--c-prep); color:var(--c-prep-deep); }
   .dday-pill.after { background:var(--bg2); color:var(--muted); }
   .card-body { display:flex; flex-direction:column; gap:3px; }
   .info-row { display:flex; align-items:center; gap:6px; font-size:0.82rem; color:var(--muted); font-weight:600; flex-wrap:wrap; }
-  .time-text { color:var(--c-prep); font-weight:800; }
+  .time-text { color:#94732B; font-weight:800; }
   .dot { color:#ccc; font-size:0.7rem; }
   .content-text { font-size:0.98rem; font-weight:600; color:var(--text); margin-top:3px; white-space:pre-wrap; }
   .past-card .date-text, .past-card .content-text, .past-card .time-text { color:var(--muted); }
@@ -184,10 +184,11 @@
 
   /* 선교일정: 날짜별 타임라인 */
   .sch-filter-btn { padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:#4d544e; font-size:0.84rem; font-weight:700; cursor:pointer; white-space:nowrap; font-family:inherit; transition:all .15s; }
-  .sch-filter-btn.active { background:var(--c-schedule); color:#fff; border-color:var(--c-schedule); }
-  .sch-day-group { margin-bottom:22px; }
+  .sch-filter-btn.active { background:var(--c-schedule-line); color:var(--c-schedule-deep); border-color:var(--c-schedule-line); }
+  .sch-day-group { border:1px solid var(--border); border-radius:14px; padding:12px 14px 10px; margin-bottom:12px; background:var(--card); box-shadow:0 1px 3px rgba(40,30,20,0.04); }
   .sch-day-group:last-child { margin-bottom:4px; }
-  .sch-day-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .sch-day-group.today { border-color:var(--c-schedule-line); box-shadow:0 0 0 3px var(--c-schedule-soft); }
+  .sch-day-header { display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; margin-bottom:14px; border-bottom:1px dashed var(--border); }
   .sch-day-title { display:flex; align-items:center; gap:8px; }
   .sch-day-no { font-size:0.7rem; font-weight:800; letter-spacing:0.06em; color:#fff; background:var(--c-schedule); padding:3px 9px; border-radius:999px; }
   .sch-day-date { font-size:1.02rem; font-weight:800; color:var(--text); }
@@ -199,6 +200,28 @@
   .sch-body::before { content:""; position:absolute; left:-7px; top:3px; width:12px; height:12px; border-radius:50%; background:var(--card); border:3px solid var(--c-schedule); box-sizing:border-box; }
   .sch-activity-title { font-size:0.98rem; font-weight:700; color:var(--text); line-height:1.4; word-break:keep-all; }
   .sch-activity-desc { margin-top:4px; font-size:0.87rem; color:var(--muted); line-height:1.55; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
+  .sch-item.now .sch-body::before { background:var(--c-schedule); box-shadow:0 0 0 4px var(--c-schedule-line); }
+  .sch-item.now .sch-time { color:var(--c-schedule); }
+  .sch-item.now .sch-card { background:var(--c-schedule-soft); border:1px solid var(--c-schedule-line); margin:-6px 0 0 -6px; padding:6px 10px 8px; border-radius:10px; }
+  .sch-now { display:inline-block; font-size:0.66rem; font-weight:800; color:#fff; background:var(--c-schedule); padding:1px 7px; border-radius:999px; margin-right:6px; vertical-align:2px; }
+  .place-row { display:flex; gap:6px; }
+  .place-row input { flex:1; min-width:0; }
+  .place-check-btn { flex-shrink:0; border:1.5px solid var(--c-schedule-line); background:var(--c-schedule-soft); color:var(--c-schedule-deep); border-radius:10px; padding:0 12px; font-size:0.82rem; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .place-preview:empty { display:none; }
+  .place-preview { margin-top:8px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--card); }
+  .place-preview iframe { display:block; width:100%; height:200px; border:0; }
+  .place-preview-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 10px; font-size:0.76rem; color:var(--muted); line-height:1.45; word-break:keep-all; }
+  .place-preview-foot a { flex-shrink:0; color:var(--c-schedule-deep); font-weight:700; text-decoration:none; }
+  .place-preview-msg { padding:10px; font-size:0.8rem; color:var(--muted); }
+  .sch-next { background:linear-gradient(135deg, var(--c-schedule-soft) 0%, var(--card) 85%); border:1px solid var(--c-schedule-line); border-radius:14px; padding:12px 14px; margin-bottom:14px; }
+  .sch-next-label { font-size:0.76rem; font-weight:700; color:var(--c-schedule-deep); }
+  .sch-next-label b { display:inline-block; margin-left:4px; color:#fff; background:var(--c-schedule); padding:1px 8px; border-radius:999px; font-size:0.72rem; }
+  .sch-next-title { font-size:1.05rem; font-weight:800; margin-top:6px; word-break:keep-all; }
+  .sch-next-meta { font-size:0.82rem; color:var(--muted); font-weight:600; margin-top:3px; }
+  .sch-next-meta a, .sch-place { color:var(--c-schedule-deep); text-decoration:none; font-weight:700; }
+  .sch-place { display:inline-block; font-size:0.82rem; margin-top:3px; }
+  .sch-day-group.past, .sch-item.past { opacity:0.45; }
+  .sch-day-done { font-size:0.68rem; font-weight:700; color:var(--muted); background:var(--bg2); padding:2px 7px; border-radius:999px; }
   .sch-actions { display:flex; gap:14px; margin-top:6px; }
   .sch-actions button { border:none; background:none; padding:0; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); }
   .sch-actions button.del { color:#b0504a; }
@@ -236,13 +259,6 @@
   .date-parts select.dp-ampm { width:4.4em; flex-shrink:0; }
 
   /* 준비물 체크리스트 전용 스타일 */
-  .select-wrapper { position: relative; }
-  .select-wrapper select {
-    width: 100%; padding: 12px 14px; font-size: 15px; font-weight: 600; border-radius: 10px; border: 1.5px solid var(--accent); background-color: #FFF; color: var(--accent); outline: none; appearance: none; cursor: pointer;
-  }
-  .select-wrapper::after {
-    content: '▼'; font-size: 10px; color: var(--accent); position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none;
-  }
   .progress-section { margin-top: 8px; }
   .progress-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
   .progress-bar-bg { width: 100%; height: 10px; background-color: #EFECE6; border-radius: 5px; overflow: hidden; }
@@ -260,6 +276,14 @@
   .item-row.checked .item-name { text-decoration: line-through; color: var(--muted); }
   .badge-carry { background-color: var(--badge-carry); color: var(--badge-carry-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   .badge-check { background-color: var(--badge-check); color: var(--badge-check-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+  .item-must-reason { font-size:0.72rem; color:var(--muted); margin-top:2px; }
+  .supply-me-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:4px 0 12px; }
+  .supply-me-name { font-size:0.98rem; font-weight:800; }
+  .supply-q { font-size:0.98rem; font-weight:800; margin:4px 0 4px; }
+  .supply-confirm { text-align:center; padding:12px 0 4px; }
+  .supply-select-wrap { position:relative; margin-bottom:4px; }
+  .supply-select-wrap::after { content:'▾'; position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--c-personal); font-size:0.9rem; pointer-events:none; }
+  .supply-select { width:100%; appearance:none; -webkit-appearance:none; padding:12px 38px 12px 14px; border-radius:12px; border:1.5px solid var(--c-personal-line); background:var(--c-personal-soft); color:var(--text); font-size:0.95rem; font-weight:700; font-family:inherit; cursor:pointer; }
   .badge-none { background-color: var(--bg2); color: var(--muted); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   /* ===== 학생 · 교사 · 방배정 탭 정리된 디자인 ===== */
   .list-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
@@ -569,12 +593,20 @@
           </div>
         </div>
         <div><label>일정</label><input id="s-item-activity" placeholder="예: 숙소 출발" /></div>
+        <div><label>장소 (선택 · 적으면 지도로 열려요)</label>
+          <div class="place-row">
+            <input id="s-item-place" placeholder="예: 인천국제공항 제1터미널" oninput="clearSchedulePlacePreview()" />
+            <button type="button" class="place-check-btn" onclick="previewSchedulePlace()">🔍 지도 확인</button>
+          </div>
+          <div id="s-place-preview" class="place-preview"></div>
+        </div>
         <div><label>내용</label><textarea id="s-item-description" placeholder="세부 내용을 입력하세요"></textarea></div>
         <div style="display:flex; gap:8px; margin-top:10px;">
           <button class="primary" id="s-submit-btn" onclick="addScheduleEntry()">일정 추가</button>
           <button class="secondary" id="s-cancel-btn" onclick="cancelScheduleEdit()">취소</button>
         </div>
       </div>
+      <div id="schedule-next"></div>
       <div id="schedule-date-filter" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px; border-bottom:1px solid var(--border);"></div>
       <div id="schedule-list"></div>
     </div>
@@ -824,6 +856,20 @@
   <section class="panel" id="panel-personal-supplies">
     <div class="card">
       <h2>🧳 개인 준비물 체크</h2>
+      <!-- 이름 선택 (한 번 고르면 이 기기에서 기억) -->
+      <div id="personal-picker"></div>
+      <select id="studentChecklistSelect" hidden aria-hidden="true"></select>
+
+      <div class="progress-section" id="personal-progress" style="display:none; margin-bottom:14px;">
+        <div class="progress-info">
+          <span id="personalProgressText">준비 진행률</span>
+          <span id="personalProgressPercent" style="color: var(--accent);">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="personalProgressBar"></div>
+        </div>
+      </div>
+
       
       <!-- 🌤️ 바기오 1월 날씨 & 옷차림 안내 (독립된 알림 상자) -->
       <div style="background:#FEF7E0; padding:12px 14px; border-radius:12px; font-size:0.82rem; margin-bottom:10px; border:1px solid #F2E3B6;">
@@ -847,25 +893,6 @@
         </div>
       </div>
 
-      <!-- 학생 & 교사 통합 검색 및 선택 -->
-      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
-        <input id="studentSearchInput" class="search-input" placeholder="🔍 학생 또는 교사 이름 검색..." oninput="syncPersonalChecklistDropdown()" />
-        <div class="select-wrapper">
-          <select id="studentChecklistSelect" onchange="renderPersonalChecklist()">
-            <!-- 학생 및 교사 목록이 동적으로 동기화됩니다 -->
-          </select>
-        </div>
-      </div>
-
-      <div class="progress-section">
-        <div class="progress-info">
-          <span id="personalProgressText">준비 진행률</span>
-          <span id="personalProgressPercent" style="color: var(--accent);">0%</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="personalProgressBar"></div>
-        </div>
-      </div>
     </div>
 
     <div id="personalChecklistContainer"></div>
@@ -886,11 +913,11 @@
         </div>
         <div><label>준비물 항목명</label><input id="ps-add-name" placeholder="예: 세면도구 세트" /></div>
         <div>
-          <label>수하물 구분</label>
+          <label>항공 규정 (반드시 지켜야 하는 경우만)</label>
           <select id="ps-add-type">
-            <option value="carry">✈️ 기내</option>
-            <option value="check">🧳 위탁</option>
-            <option value="none">선택안함</option>
+            <option value="none">구분 없음</option>
+            <option value="cabin">✈️ 반드시 기내 (위탁 금지)</option>
+            <option value="checked">🧳 반드시 위탁 (기내 금지)</option>
           </select>
         </div>
         <button class="primary" style="margin-top:6px;" onclick="addPersonalItemAdmin()">준비물 항목 추가</button>
@@ -930,11 +957,11 @@
         </div>
         <div><label>공용 준비물 항목명</label><input id="sh-add-name" placeholder="예: 팀 통합 비상 구급함" /></div>
         <div>
-          <label>구분 태그</label>
+          <label>항공 규정 (반드시 지켜야 하는 경우만)</label>
           <select id="sh-add-tag">
-            <option value="✈️ 팀기내">✈️ 팀기내</option>
-            <option value="🧳 팀위탁">🧳 팀위탁</option>
-            <option value="none">선택안함</option>
+            <option value="none">구분 없음</option>
+            <option value="cabin">✈️ 반드시 기내 (위탁 금지)</option>
+            <option value="checked">🧳 반드시 위탁 (기내 금지)</option>
           </select>
         </div>
         <button class="primary" style="margin-top:6px;" onclick="addSharedItemAdmin()">공용 준비물 항목 추가</button>
@@ -1123,47 +1150,69 @@ function cloneData(data) {
   return JSON.parse(JSON.stringify(data));
 }
 
+// 목록 항목을 구분하는 키: id, 없으면 준비물 카테고리 이름
+function mergeKeyOf(x) {
+  if (!x || typeof x !== 'object') return null;
+  if (x.id) return 'id:' + x.id;
+  if (x.category) return 'cat:' + x.category;
+  return null;
+}
+
+// 세 갈래 병합: 내가 바꾼 항목은 내 것, 다른 사람이 바꾼 항목은 서버 것을 유지
 function mergeArrayById(base, local, remote) {
   const b = Array.isArray(base) ? base : [];
   const l = Array.isArray(local) ? local : [];
   const r = Array.isArray(remote) ? remote : [];
 
-  const bMap = new Map(b.filter(x => x && x.id).map(x => [x.id, x]));
-  const lMap = new Map(l.filter(x => x && x.id).map(x => [x.id, x]));
-  const rMap = new Map(r.filter(x => x && x.id).map(x => [x.id, x]));
+  // 구분 키가 없는 항목이 있으면 병합할 수 없으므로 내 목록을 그대로 저장
+  if (l.some(x => !mergeKeyOf(x))) return cloneData(l);
 
-  const ids = [];
+  const bMap = new Map(b.filter(mergeKeyOf).map(x => [mergeKeyOf(x), x]));
+  const lMap = new Map(l.map(x => [mergeKeyOf(x), x]));
+  const rMap = new Map(r.filter(mergeKeyOf).map(x => [mergeKeyOf(x), x]));
+
+  const keys = [];
   [...b, ...l, ...r].forEach(x => {
-    if (x?.id && !ids.includes(x.id)) ids.push(x.id);
+    const k = mergeKeyOf(x);
+    if (k && !keys.includes(k)) keys.push(k);
   });
 
   const result = [];
-
-  for (const id of ids) {
-    const bv = bMap.get(id);
-    const lv = lMap.get(id);
-    const rv = rMap.get(id);
-
+  for (const k of keys) {
+    const bv = bMap.get(k);
+    const lv = lMap.get(k);
+    const rv = rMap.get(k);
     const localChanged = JSON.stringify(lv) !== JSON.stringify(bv);
     const remoteChanged = JSON.stringify(rv) !== JSON.stringify(bv);
 
-    if (!lv && bv) continue;
-    if (!rv && bv) {
+    if (!lv && bv) continue;                // 내가 삭제
+    if (!rv && bv) {                        // 다른 사람이 삭제
       if (localChanged && lv) result.push(lv);
       continue;
     }
-    if (!bv) {
+    if (!bv) {                              // 새로 생김
       if (lv) result.push(lv);
       else if (rv) result.push(rv);
       continue;
     }
-
     if (localChanged) result.push(lv);
     else if (remoteChanged) result.push(rv);
-    else if (rv) result.push(rv);
-    else if (lv) result.push(lv);
+    else result.push(rv || lv);
   }
+  return result;
+}
 
+// 객체 필드도 키 단위로 병합 (통째로 덮어쓰지 않음)
+function mergeObjectByKey(base, local, remote) {
+  const b = base && typeof base === 'object' ? base : {};
+  const l = local && typeof local === 'object' ? local : {};
+  const r = remote && typeof remote === 'object' ? remote : {};
+  const result = cloneData(r);
+  new Set([...Object.keys(b), ...Object.keys(l)]).forEach(k => {
+    if (JSON.stringify(l[k]) === JSON.stringify(b[k])) return; // 내가 안 바꾼 키는 서버 값 유지
+    if (l[k] === undefined) delete result[k];
+    else result[k] = cloneData(l[k]);
+  });
   return result;
 }
 
@@ -1179,6 +1228,8 @@ function buildSavePayload(remoteOverride = null) {
 
     if (Array.isArray(localValue)) {
       payload[field] = mergeArrayById(baseValue, localValue, remoteValue);
+    } else if (localValue && typeof localValue === 'object') {
+      payload[field] = mergeObjectByKey(baseValue, localValue, remoteValue);
     } else {
       payload[field] = cloneData(localValue);
     }
@@ -1187,21 +1238,24 @@ function buildSavePayload(remoteOverride = null) {
   return payload;
 }
 
+function normalizeRemote(remote) {
+  if (!remote.flightInfos) remote.flightInfos = [];
+  if (!remote.prepSchedule) remote.prepSchedule = [];
+  if (!remote.personalChecks) remote.personalChecks = {};
+  if (!remote.personalChecklistData || !remote.personalChecklistData.length) {
+    remote.personalChecklistData = cloneData(defaultPersonalChecklistData);
+  }
+  if (!remote.sharedChecks) remote.sharedChecks = {};
+  if (!remote.sharedChecklistData || !remote.sharedChecklistData.length) {
+    remote.sharedChecklistData = cloneData(defaultSharedChecklistData);
+  }
+  return remote;
+}
+
 function initFirebaseRealtimeSync() {
   DOC_REF.onSnapshot((doc) => {
     if (doc.exists) {
-      const remote = doc.data();
-      if (!remote.flightInfos) remote.flightInfos = [];
-      if (!remote.prepSchedule) remote.prepSchedule = [];
-      if (!remote.personalChecks) remote.personalChecks = {};
-      
-      if (!remote.personalChecklistData || !remote.personalChecklistData.length) {
-        remote.personalChecklistData = cloneData(defaultPersonalChecklistData);
-      }
-      if (!remote.sharedChecks) remote.sharedChecks = {};
-      if (!remote.sharedChecklistData || !remote.sharedChecklistData.length) {
-        remote.sharedChecklistData = cloneData(defaultSharedChecklistData);
-      }
+      const remote = normalizeRemote(doc.data());
 
       latestRemoteState = cloneData(remote);
       bibleReading = cloneData(remote.bibleReading || {});
@@ -1212,6 +1266,13 @@ function initFirebaseRealtimeSync() {
         dirtyFields.clear();
         renderAll();
       } else {
+        // 체크 기록은 누를 때 바로 저장되므로 편집 중에도 서버 값으로 갱신
+        ['personalChecks', 'sharedChecks'].forEach(k => {
+          state[k] = cloneData(remote[k]);
+          if (baseState) baseState[k] = cloneData(remote[k]);
+        });
+        renderPersonalChecklist();
+        renderSharedChecklist();
         renderBible();
       }
     } else {
@@ -1291,7 +1352,7 @@ async function saveToCloud() {
 
     const savedDoc = await DOC_REF.get();
     if (savedDoc.exists) {
-      state = cloneData(savedDoc.data());
+      state = normalizeRemote(cloneData(savedDoc.data()));
       latestRemoteState = cloneData(state);
       baseState = cloneData(state);
     }
@@ -1715,8 +1776,13 @@ function renderAssign() {
   });
 }
 
+function parseLocalDate(dateStr) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr || '');
+  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(dateStr);
+}
+
 function formatScheduleDate(dateStr) {
-  const d = new Date(dateStr);
+  const d = parseLocalDate(dateStr);
   if (isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
 }
@@ -1733,7 +1799,7 @@ function formatTimeKo(time24) {
 
 function formatShortDate(dateStr) {
   if (!dateStr) return '';
-  const d = new Date(dateStr);
+  const d = parseLocalDate(dateStr);
   if (isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric', weekday: 'short' });
 }
@@ -1882,25 +1948,95 @@ function filterScheduleByDate(dateVal) {
   renderSchedule();
 }
 
+// ----- 장소 미리 확인: 입력한 장소를 지도에서 먼저 보고 저장 -----
+let schedulePlaceChecked = '';
+
+function previewSchedulePlace() {
+  const input = document.getElementById('s-item-place');
+  const box = document.getElementById('s-place-preview');
+  const q = input.value.trim();
+  if (!q) { box.innerHTML = '<div class="place-preview-msg">장소를 먼저 입력해 주세요.</div>'; input.focus(); return; }
+  schedulePlaceChecked = q;
+  box.innerHTML = `
+    <iframe src="https://maps.google.com/maps?q=${encodeURIComponent(q)}&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="장소 미리보기"></iframe>
+    <div class="place-preview-foot">
+      <span>지도에 표시된 곳이 맞는지 확인해 주세요. 다르면 이름을 더 자세히 적어 보세요.</span>
+      <a href="${scheduleMapUrl(q)}" target="_blank" rel="noopener">크게 보기</a>
+    </div>`;
+}
+
+function clearSchedulePlacePreview() {
+  schedulePlaceChecked = '';
+  const box = document.getElementById('s-place-preview');
+  if (box) box.innerHTML = '';
+}
+
+let scheduleAutoToday = false; // 여행 중 처음 열 때 한 번만 오늘 날짜 자동 선택
+
+function scheduleMapUrl(place) {
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place);
+}
+
+function scheduleRelText(date, time, nowDate, nowObj) {
+  if (date === nowDate) {
+    const [h, m] = time.split(':').map(Number);
+    const mins = h * 60 + m - (nowObj.getHours() * 60 + nowObj.getMinutes());
+    if (mins < 60) return `${mins}분 후`;
+    return `${Math.floor(mins / 60)}시간${mins % 60 ? ` ${mins % 60}분` : ''} 후`;
+  }
+  const days = Math.round((parseLocalDate(date) - parseLocalDate(nowDate)) / 86400000);
+  return days === 1 ? '내일' : `${days}일 후`;
+}
+
 function renderSchedule() {
   const filterContainer = document.getElementById('schedule-date-filter');
+  const nextBox = document.getElementById('schedule-next');
   const list = document.getElementById('schedule-list');
-  if(!list) return;
-  const schedule = state.schedule || [];
+  if (!list) return;
+  const sortedSchedule = [...(state.schedule || [])].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
 
-  const sortedSchedule = [...schedule].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  // 기기 시간 기준 현재 날짜·시각
+  const nowObj = new Date();
+  const nowDate = `${nowObj.getFullYear()}-${String(nowObj.getMonth() + 1).padStart(2, '0')}-${String(nowObj.getDate()).padStart(2, '0')}`;
+  const nowTime = `${String(nowObj.getHours()).padStart(2, '0')}:${String(nowObj.getMinutes()).padStart(2, '0')}`;
+
+  // 여행 중이면 처음 한 번 오늘 날짜를 자동 선택
+  if (!scheduleAutoToday && sortedSchedule.some(s => s.date === nowDate)) {
+    currentScheduleFilter = nowDate;
+    scheduleAutoToday = true;
+  }
 
   if (filterContainer) {
     let filterHtml = `<button class="sch-filter-btn ${currentScheduleFilter === 'all' ? 'active' : ''}" onclick="filterScheduleByDate('all')">전체일정</button>`;
     sortedSchedule.forEach(s => {
       const active = currentScheduleFilter === s.date;
-      filterHtml += `<button class="sch-filter-btn ${active ? 'active' : ''}" onclick="filterScheduleByDate('${s.date}')">${escapeHtml(formatScheduleDate(s.date))}</button>`;
+      const label = (s.date === nowDate ? '오늘 · ' : '') + formatScheduleDate(s.date);
+      filterHtml += `<button class="sch-filter-btn ${active ? 'active' : ''}" onclick="filterScheduleByDate('${s.date}')">${escapeHtml(label)}</button>`;
     });
     filterContainer.innerHTML = filterHtml;
   }
 
-  const filteredSchedule = currentScheduleFilter === 'all' 
-    ? sortedSchedule 
+  // 다음 일정 (날짜 선택과 상관없이 항상 표시)
+  if (nextBox) {
+    let next = null;
+    sortedSchedule.forEach(s => {
+      (s.items || []).forEach(it => {
+        if (!it.time) return;
+        const upcoming = s.date > nowDate || (s.date === nowDate && it.time > nowTime);
+        if (!upcoming) return;
+        if (!next || s.date < next.date || (s.date === next.date && it.time < next.it.time)) next = { date: s.date, it };
+      });
+    });
+    nextBox.innerHTML = next ? `
+      <div class="sch-next">
+        <div class="sch-next-label">다음 일정 <b>${scheduleRelText(next.date, next.it.time, nowDate, nowObj)}</b></div>
+        <div class="sch-next-title">${escapeHtml(next.it.activity)}</div>
+        <div class="sch-next-meta">${escapeHtml(formatScheduleDate(next.date))} ${escapeHtml(formatTimeKo(next.it.time))}${next.it.place ? ` · <a href="${scheduleMapUrl(next.it.place)}" target="_blank" rel="noopener">📍 ${escapeHtml(next.it.place)}</a>` : ''}</div>
+      </div>` : '';
+  }
+
+  const filteredSchedule = currentScheduleFilter === 'all'
+    ? sortedSchedule
     : sortedSchedule.filter(s => s.date === currentScheduleFilter);
 
   if (!filteredSchedule.length) {
@@ -1909,23 +2045,29 @@ function renderSchedule() {
     list.innerHTML = filteredSchedule.map(s => {
       const dayNo = sortedSchedule.indexOf(s) + 1;
       const items = (s.items || []).slice().sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
+      // 지금 진행 중: 오늘 시작 시간이 지난 마지막 일정 / 그보다 앞선 오늘 일정은 지난 일정
+      const nowItem = s.date === nowDate ? items.filter(it => it.time && it.time <= nowTime).pop() : null;
+      const dayPast = s.date < nowDate;
       return `
-        <div class="sch-day-group">
+        <div class="sch-day-group${dayPast ? ' past' : ''}${s.date === nowDate ? ' today' : ''}">
           <div class="sch-day-header">
-            <div class="sch-day-title"><span class="sch-day-no">DAY ${dayNo}</span><span class="sch-day-date">${escapeHtml(formatScheduleDate(s.date))}</span></div>
+            <div class="sch-day-title"><span class="sch-day-no">DAY ${dayNo}</span><span class="sch-day-date">${escapeHtml(formatScheduleDate(s.date))}</span>${dayPast ? '<span class="sch-day-done">지난 일정</span>' : ''}</div>
             ${canEdit ? `<button class="sch-day-del" onclick="removeSchedule('${s.id}')">이 날짜 삭제</button>` : ''}
           </div>
           <div class="sch-timeline">
             ${items.map(it => {
               const idx = s.items.indexOf(it);
+              const isNow = it === nowItem;
+              const isPast = !dayPast && nowItem && it.time && it.time < nowItem.time;
               return `
-              <div class="sch-item">
+              <div class="sch-item${isNow ? ' now' : ''}${isPast ? ' past' : ''}">
                 <div class="sch-time">${escapeHtml(formatTimeKo(it.time))}</div>
-                <div class="sch-body">
-                  <div class="sch-activity-title">${escapeHtml(it.activity)}</div>
+                <div class="sch-body"><div class="sch-card">
+                  <div class="sch-activity-title">${isNow ? '<span class="sch-now">지금</span>' : ''}${escapeHtml(it.activity)}</div>
+                  ${it.place ? `<a class="sch-place" href="${scheduleMapUrl(it.place)}" target="_blank" rel="noopener">📍 ${escapeHtml(it.place)}</a>` : ''}
                   ${it.description ? `<div class="sch-activity-desc">${escapeHtml(it.description)}</div>` : ''}
                   ${canEdit ? `<div class="sch-actions"><button onclick="startEditScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removeScheduleItem('${s.id}', ${idx})">삭제</button></div>` : ''}
-                </div>
+                </div></div>
               </div>`;
             }).join('')}
           </div>
@@ -1962,9 +2104,13 @@ function addScheduleEntry() {
   const date = getDateValue('s-date');
   const activity = document.getElementById('s-item-activity').value.trim();
   const description = document.getElementById('s-item-description').value.trim();
+  const place = document.getElementById('s-item-place').value.trim();
   if (!date || !activity) { alert('날짜와 일정을 입력해주세요.'); return; }
+  if (place && place !== schedulePlaceChecked && !confirm('장소를 지도에서 확인하지 않았어요. 그래도 저장할까요?\n(취소를 누르고 "🔍 지도 확인"으로 먼저 볼 수 있어요)')) return;
 
-  upsertDayItem('schedule', date, { time: getTimeValue('s-item'), activity, description },
+  const itemData = { time: getTimeValue('s-item'), activity, description };
+  if (place) itemData.place = place;
+  upsertDayItem('schedule', date, itemData,
     document.getElementById('s-edit-day-id').value, document.getElementById('s-edit-item-idx').value);
 
   cancelScheduleEdit();
@@ -1983,6 +2129,9 @@ function startEditScheduleItem(dayId, itemIdx) {
   setTimeValue('s-item', item.time);
   document.getElementById('s-item-activity').value = item.activity || '';
   document.getElementById('s-item-description').value = item.description || '';
+  document.getElementById('s-item-place').value = item.place || '';
+  clearSchedulePlacePreview();
+  schedulePlaceChecked = item.place || ''; // 이미 저장된 장소는 확인된 것으로 봄
   document.getElementById('s-submit-btn').textContent = '저장';
   openForm('schedule-form', true);
 }
@@ -1994,6 +2143,8 @@ function cancelScheduleEdit() {
   setTimeValue('s-item', '');
   document.getElementById('s-item-activity').value = '';
   document.getElementById('s-item-description').value = '';
+  document.getElementById('s-item-place').value = '';
+  clearSchedulePlacePreview();
   document.getElementById('s-submit-btn').textContent = '일정 추가';
   closeForm('schedule-form');
 }
@@ -2235,7 +2386,7 @@ function addPost() {
   if (!title) { alert('제목을 입력해주세요.'); return; }
   if (!text) { alert('내용을 입력해주세요.'); return; }
 
-  const date = dateInput || new Date().toISOString().split('T')[0];
+  const date = dateInput || bibleToday();
 
   if (!state.posts) state.posts = [];
 
@@ -2305,33 +2456,120 @@ function addItemToCategory(key, defaults, catName, newItem) {
   else state[key].push({ category: catName, items: [newItem] });
 }
 
-function removeItemFromCategory(key, catName, itemId) {
+function removeItemFromCategory(key, itemId) {
   if (!state[key]) return;
-  const cat = state[key].find(c => c.category === catName);
-  if (cat && cat.items) cat.items = cat.items.filter(i => i.id !== itemId);
+  state[key].forEach(c => { if (c.items) c.items = c.items.filter(i => i.id !== itemId); });
   state[key] = state[key].filter(c => !c.items || c.items.length > 0);
+}
+
+// ----- 개인 준비물: 내 이름 기억하기 (로그인 아님, 이 기기에서만 기억) -----
+const SUPPLY_PERSON_KEY = 'baguio_supplies_person';
+let supplyPersonKey = (() => { try { return localStorage.getItem(SUPPLY_PERSON_KEY) || ''; } catch (e) { return ''; } })();
+let supplyPendingKey = '';
+
+function setSupplyPerson(key) {
+  supplyPersonKey = key || '';
+  try {
+    if (supplyPersonKey) localStorage.setItem(SUPPLY_PERSON_KEY, supplyPersonKey);
+    else localStorage.removeItem(SUPPLY_PERSON_KEY);
+  } catch (e) { /* 저장소를 못 쓰는 브라우저에서도 이번 화면에서는 동작 */ }
+}
+
+function selectSupplyPerson(key) { supplyPendingKey = key; syncPersonalChecklistDropdown(); }
+function confirmSupplyPerson() { setSupplyPerson(supplyPendingKey); supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
+function cancelSupplySelect() { supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
+function changeSupplyPerson() { setSupplyPerson(''); supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
+
+function supplyPeople() {
+  return [
+    ...(state.participants || []).slice().sort(byName).map(p => ({ key: 'p_' + p.id, name: p.name, sub: p.grade || '', role: 'student' })),
+    ...(state.teachers || []).slice().sort(byName).map(t => ({ key: 't_' + t.id, name: t.name, sub: '', role: 'teacher' }))
+  ];
 }
 
 function syncPersonalChecklistDropdown() {
   const select = document.getElementById('studentChecklistSelect');
-  const searchInput = document.getElementById('studentSearchInput');
-  if (!select) return;
-  const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+  const picker = document.getElementById('personal-picker');
+  const progress = document.getElementById('personal-progress');
+  if (!select || !picker) return;
 
-  const allPeople = [
-    ...(state.participants || []).slice().sort(byName).map(p => ({ key: 'p_' + p.id, name: '🌱 ' + p.name + (p.grade ? ' (' + p.grade + ')' : '') })),
-    ...(state.teachers || []).slice().sort(byName).map(t => ({ key: 't_' + t.id, name: '🌳 ' + t.name + ' (교사)' }))
-  ];
-  const filtered = searchTerm ? allPeople.filter(x => x.name.toLowerCase().includes(searchTerm)) : allPeople;
+  const people = supplyPeople();
+  const me = people.find(x => x.key === supplyPersonKey);
+  select.innerHTML = '<option value=""></option>' + people.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
+  select.value = me ? me.key : '';
+  const label = x => x.role === 'teacher' ? `${x.name} 선생님` : `${x.name}님`;
 
-  const currentVal = select.value;
-  if (!filtered.length) {
-    select.innerHTML = '<option value="">검색 결과가 없어요</option>';
+  if (me) {
+    picker.innerHTML = `
+      <div class="supply-me-head">
+        <div class="supply-me-name">${escapeHtml(label(me))}의 준비물</div>
+        <button class="bb-change" onclick="changeSupplyPerson()">↺ 이름 다시 선택</button>
+      </div>`;
   } else {
-    select.innerHTML = filtered.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
-    if (filtered.some(x => x.key === currentVal)) select.value = currentVal;
+    const pending = people.find(x => x.key === supplyPendingKey);
+    // 학년별로 묶어서 하나의 목록으로 (인원이 많아도 화면이 복잡하지 않게)
+    const GRADE_ORDER = ['초6', '중1', '중2', '중3', '고1', '고2', '고3'];
+    const groups = new Map();
+    people.filter(x => x.role === 'student').forEach(x => {
+      const g = x.sub || '학년 미정';
+      if (!groups.has(g)) groups.set(g, []);
+      groups.get(g).push(x);
+    });
+    const gOrder = [...groups.keys()].sort((a, b) => {
+      const ia = GRADE_ORDER.indexOf(a), ib = GRADE_ORDER.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+    const teachers = people.filter(x => x.role === 'teacher');
+    const options = gOrder.map(g => `<optgroup label="🌱 ${escapeHtml(g)}">${groups.get(g).map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('')}</optgroup>`).join('')
+      + (teachers.length ? `<optgroup label="🌳 선생님">${teachers.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('')}</optgroup>` : '');
+    if (pending) {
+      picker.innerHTML = `
+        <div class="supply-confirm">
+          <div class="bb-confirm-q">${escapeHtml(label(pending))}이 맞나요?</div>
+          <div class="bb-sub" style="margin:0 0 16px;">맞으면 다음부터 바로 내 준비물이 보여요</div>
+          <div class="bb-sheet-actions">
+            <button class="bb-close" onclick="cancelSupplySelect()">다시 고를게요</button>
+            <button class="primary" onclick="confirmSupplyPerson()">네, 맞아요</button>
+          </div>
+        </div>`;
+    } else {
+      picker.innerHTML = `
+        <div class="supply-q">누구의 준비물인가요?</div>
+        <div class="bb-sub" style="margin:0 0 10px;">목록에서 내 이름을 골라 주세요</div>
+        ${latestRemoteState === null ? '<div class="empty">명단을 불러오는 중이에요…</div>'
+          : !people.length ? '<div class="empty">아직 등록된 사람이 없어요.</div>'
+          : `<div class="supply-select-wrap">
+               <select class="supply-select" onchange="if (this.value) selectSupplyPerson(this.value)">
+                 <option value="">👤 이름 선택</option>${options}
+               </select>
+             </div>`}`;
+    }
   }
+  if (progress) progress.style.display = me ? '' : 'none';
   renderPersonalChecklist();
+}
+
+// 항공사 규정상 "반드시" 지켜야 하는 항목만 표시 (기본 목록은 id로 지정, 관리자가 추가한 항목은 must 값)
+const SUPPLY_MUST_DEFAULT = {
+  p1: ['cabin', '여권은 위탁 수하물에 넣을 수 없어요'],
+  p3: ['cabin', '현금·귀중품은 위탁 수하물에 넣을 수 없어요'],
+  e1: ['cabin', '보조배터리는 위탁 수하물에 넣을 수 없어요'],
+  m1: ['checked', '100ml 넘는 샴푸·액체류는 기내 반입 금지'],
+  m2: ['checked', '스프레이·100ml 넘는 액체류는 기내 반입 금지']
+};
+
+function supplyMust(item) {
+  if (item.must === 'cabin' || item.must === 'checked') return { must: item.must, reason: item.mustReason || '' };
+  if (item.must === 'none') return null;
+  const d = SUPPLY_MUST_DEFAULT[item.id];
+  return d ? { must: d[0], reason: d[1] } : null;
+}
+
+function supplyMustBadge(m) {
+  if (!m) return '';
+  return m.must === 'cabin'
+    ? '<span class="badge-carry">✈️ 반드시 기내</span>'
+    : '<span class="badge-check">🧳 반드시 위탁</span>';
 }
 
 function renderPersonalChecklist() {
@@ -2344,7 +2582,7 @@ function renderPersonalChecklist() {
 
   const personKey = select.value;
   if (!personKey) {
-    container.innerHTML = '<div class="card"><div class="empty">학생 또는 교사를 선택해주세요.</div></div>';
+    container.innerHTML = '';
     setProgress('personal', 0, 0);
     return;
   }
@@ -2376,19 +2614,20 @@ function renderPersonalChecklist() {
         <ul class="item-list">
           ${(cat.items || []).map(item => {
             const isChecked = !!userChecks[item.id];
-            let badgeClass = 'badge-none';
-            if (item.type === 'carry') badgeClass = 'badge-carry';
-            else if (item.type === 'check') badgeClass = 'badge-check';
+            const must = supplyMust(item);
 
             return `
               <li class="item-row ${isChecked ? 'checked' : ''}" onclick="togglePersonalItem('${personKey}', '${item.id}')">
                 <div class="item-left">
                   <div class="custom-checkbox"></div>
-                  <span class="item-name">${escapeHtml(item.name)}</span>
+                  <div>
+                    <span class="item-name">${escapeHtml(item.name)}</span>
+                    ${must && must.reason ? `<div class="item-must-reason">${escapeHtml(must.reason)}</div>` : ''}
+                  </div>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px;">
-                  ${item.tag ? `<span class="${badgeClass}">${escapeHtml(item.tag)}</span>` : ''}
-                  ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation(); removePersonalItemAdminById('${cat.category}', '${item.id}')" style="margin-left:4px;">삭제</button>` : ''}
+                  ${supplyMustBadge(must)}
+                  ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation(); removePersonalItemAdminById('${item.id}')" style="margin-left:4px;">삭제</button>` : ''}
                 </div>
               </li>
             `;
@@ -2399,13 +2638,26 @@ function renderPersonalChecklist() {
   }).join('');
 }
 
+// 누를 때 그 사람·그 항목 칸만 바로 저장 (다른 사람 체크를 덮어쓰지 않음, 저장 버튼 필요 없음)
 function togglePersonalItem(personKey, itemId) {
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
   if (!state.personalChecks) state.personalChecks = {};
   if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
-  
-  state.personalChecks[personKey][itemId] = !state.personalChecks[personKey][itemId];
+  const next = !state.personalChecks[personKey][itemId];
+  const apply = v => {
+    if (v) state.personalChecks[personKey][itemId] = true;
+    else delete state.personalChecks[personKey][itemId];
+  };
+  apply(next);
   renderPersonalChecklist();
-  markDirty('personalChecks');
+  const fv = firebase.firestore.FieldValue;
+  DOC_REF.update(new firebase.firestore.FieldPath('personalChecks', personKey, itemId), next ? true : fv.delete())
+    .catch(e => {
+      console.error('준비물 체크 저장 실패:', e);
+      apply(!next);
+      renderPersonalChecklist();
+      alert('체크를 저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+    });
 }
 
 function addPersonalItemAdmin() {
@@ -2417,17 +2669,16 @@ function addPersonalItemAdmin() {
     alert('카테고리명과 준비물 이름을 모두 입력해주세요.');
     return;
   }
-  const tag = itemType === 'carry' ? '✈️ 기내' : itemType === 'check' ? '🧳 위탁' : '';
-  addItemToCategory('personalChecklistData', defaultPersonalChecklistData, catName, { id: uid(), name: itemName, tag, type: itemType });
+  addItemToCategory('personalChecklistData', defaultPersonalChecklistData, catName, { id: uid(), name: itemName, must: itemType });
   nameInput.value = '';
   renderPersonalChecklist();
   markDirty('personalChecklistData');
   alert('개인 준비물 항목이 추가되었습니다.');
 }
 
-function removePersonalItemAdminById(categoryName, itemId) {
+function removePersonalItemAdminById(itemId) {
   if (!confirm('이 준비물 항목을 삭제하시겠습니까?')) return;
-  removeItemFromCategory('personalChecklistData', categoryName, itemId);
+  removeItemFromCategory('personalChecklistData', itemId);
   renderPersonalChecklist();
   markDirty('personalChecklistData');
 }
@@ -2465,8 +2716,7 @@ function renderSharedChecklist() {
           ${(cat.items || []).map(item => {
             const checkInfo = sharedChecks[item.id];
             const isChecked = checkInfo && checkInfo.checkedBy;
-            let badgeClass = 'badge-carry';
-            if (item.tag && item.tag.includes('위탁')) badgeClass = 'badge-check';
+            const must = supplyMust(item);
 
             return `
               <li class="item-row ${isChecked ? 'checked' : ''}" onclick="openTeacherModalForSharedItem('${item.id}')">
@@ -2477,8 +2727,8 @@ function renderSharedChecklist() {
                   </div>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px;">
-                  ${item.tag ? `<span class="${badgeClass}">${escapeHtml(item.tag)}</span>` : ''}
-                  ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation(); removeSharedItemAdminById('${cat.category}', '${item.id}')" style="margin-left:4px;">삭제</button>` : ''}
+                  ${supplyMustBadge(must)}
+                  ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation(); removeSharedItemAdminById('${item.id}')" style="margin-left:4px;">삭제</button>` : ''}
                 </div>
               </li>
             `;
@@ -2525,7 +2775,7 @@ function renderModalTeacherList() {
     html += '<div class="empty">등록된 교사가 없어요.</div>';
   } else {
     html += filtered.map(t => `
-      <div class="item" style="padding:8px 12px; cursor:pointer;" onclick="selectTeacherForSharedItem('${escapeHtml(t.name)}')">
+      <div class="item" style="padding:8px 12px; cursor:pointer;" data-name="${escapeHtml(t.name)}" onclick="selectTeacherForSharedItem(this.dataset.name)">
         <div style="font-weight:700;">🌳 ${escapeHtml(t.name)}</div>
         ${t.roles && t.roles.length ? `<div class="meta" style="font-size:0.75rem;">담당: ${escapeHtml(t.roles.join(', '))}</div>` : ''}
       </div>
@@ -2537,17 +2787,23 @@ function renderModalTeacherList() {
 
 function selectTeacherForSharedItem(teacherName) {
   if (!activeSharedItemIdForCheck) return;
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 시도해 주세요.'); return; }
   if (!state.sharedChecks) state.sharedChecks = {};
-
-  if (!teacherName) {
-    delete state.sharedChecks[activeSharedItemIdForCheck];
-  } else {
-    state.sharedChecks[activeSharedItemIdForCheck] = { checkedBy: teacherName };
-  }
+  const itemId = activeSharedItemIdForCheck;
+  const prev = state.sharedChecks[itemId];
+  if (!teacherName) delete state.sharedChecks[itemId];
+  else state.sharedChecks[itemId] = { checkedBy: teacherName };
 
   closeTeacherModal();
   renderSharedChecklist();
-  markDirty('sharedChecks');
+  const fv = firebase.firestore.FieldValue;
+  DOC_REF.update(new firebase.firestore.FieldPath('sharedChecks', itemId), teacherName ? { checkedBy: teacherName } : fv.delete())
+    .catch(e => {
+      console.error('공용 준비물 체크 저장 실패:', e);
+      if (prev) state.sharedChecks[itemId] = prev; else delete state.sharedChecks[itemId];
+      renderSharedChecklist();
+      alert('체크를 저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');
+    });
 }
 
 function addSharedItemAdmin() {
@@ -2559,16 +2815,16 @@ function addSharedItemAdmin() {
     alert('카테고리명과 공용 준비물 이름을 모두 입력해주세요.');
     return;
   }
-  addItemToCategory('sharedChecklistData', defaultSharedChecklistData, catName, { id: uid(), name: itemName, tag: itemTag === 'none' ? '' : itemTag });
+  addItemToCategory('sharedChecklistData', defaultSharedChecklistData, catName, { id: uid(), name: itemName, must: itemTag });
   nameInput.value = '';
   renderSharedChecklist();
   markDirty('sharedChecklistData');
   alert('공용 준비물 항목이 추가되었습니다.');
 }
 
-function removeSharedItemAdminById(categoryName, itemId) {
+function removeSharedItemAdminById(itemId) {
   if (!confirm('이 공용 준비물 항목을 삭제하시겠습니까?')) return;
-  removeItemFromCategory('sharedChecklistData', categoryName, itemId);
+  removeItemFromCategory('sharedChecklistData', itemId);
   renderSharedChecklist();
   markDirty('sharedChecklistData');
 }
@@ -3182,6 +3438,7 @@ function setupDateTimeAutoAdvance() {
 window.onload = function() {
   initFirebaseAuth();
   setupDateTimeAutoAdvance();
+  setInterval(renderSchedule, 60000); // 선교일정 '지금' 표시 갱신
 
   // 상단 메뉴 탭이 헤더 높이에 맞춰 바로 아래에 붙도록
   const header = document.querySelector('header');
