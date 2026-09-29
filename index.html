@@ -49,15 +49,9 @@
     /* 탭별 색: 같은 밝기·채도로 맞춘 차분한 팔레트 (흰 글씨 대비 4.4:1 이상) */
     --c-feed: #B97340; --c-feed-deep: #6E401E; --c-feed-soft: #FFF3EA; --c-feed-line: #F4DCCB;
     --c-bible: #597F68; --c-bible-deep: #385544; --c-bible-soft: #EDF5F0; --c-bible-line: #CFE3D6;
-    --c-prep: #CEAC64; --c-prep-deep: #533F0D; --c-prep-soft: #FAF3E5; --c-prep-line: #ECDEC2;
-    --c-participants: #747B46; --c-participants-deep: #4C5129; --c-participants-soft: #EFF2E4; --c-participants-line: #DDE1CB;
-    --c-teachers: #7170A1; --c-teachers-deep: #4A486D; --c-teachers-soft: #EEEFFC; --c-teachers-line: #DBDCF2;
-    --c-assign: #378484; --c-assign-deep: #1C5757; --c-assign-soft: #E3F4F4; --c-assign-line: #C8E5E4;
-    --c-flights: #4B7C9E; --c-flights-deep: #2C516B; --c-flights-soft: #E6F2FB; --c-flights-line: #CDE1F0;
-    --c-schedule: #9B9389; --c-schedule-deep: #5F5B54; --c-schedule-soft: #FCF9F4; --c-schedule-line: #EFE9DC;
-    --c-personal: #8D678E; --c-personal-deep: #5E425F; --c-personal-soft: #F7ECF7; --c-personal-line: #E9D8E9;
-    --c-shared: #7D766E; --c-shared-deep: #514C46; --c-shared-soft: #F6F3EF; --c-shared-line: #E5DED7;
-    --bg: #f7f5f0;
+    --c-prep: #CEAC64; --c-prep-deep: #533F0D; --c-prep-soft: #FAF3E5;    --c-participants: #747B46;--c-teachers: #7170A1;--c-assign: #378484;--c-flights: #4B7C9E;--c-schedule: #9B9389; --c-schedule-deep: #5F5B54; --c-schedule-soft: #FCF9F4; --c-schedule-line: #EFE9DC;
+    --c-personal: #8D678E;--c-personal-soft: #F7ECF7; --c-personal-line: #E9D8E9;
+    --c-shared: #7D766E;--bg: #f7f5f0;
     --bg2: #f1ece2;
     --card: #ffffff;
     --text: #262f28;
@@ -66,15 +60,9 @@
     --sky: #47664e;
     --sky-soft: #e5ebe1;
     --accent: #A55A37;
-    --accent-soft: #f3e2d3;
     --sun: #b99248;
-    --sun-soft: #f1e8d3;
     --assign-yellow: var(--c-assign);
-    --bloom: #96586c;
-    --bloom-soft: #ece0e3;
     --ok: #4f8858;
-    --warn: #c97a4a;
-    --pending: #b99248;
     --badge-carry: #E3F2FD;
     --badge-carry-text: #1565C0;
     --badge-check: #FFF3E0;
@@ -301,13 +289,11 @@
   .badge-check { background-color: var(--badge-check); color: var(--badge-check-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   .item-must-reason { font-size:0.72rem; color:var(--muted); margin-top:2px; }
   .supply-me-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:4px 0 12px; }
-  .supply-me-name { font-size:0.98rem; font-weight:800; }
   .supply-q { font-size:0.98rem; font-weight:800; margin:4px 0 4px; }
   .supply-confirm { text-align:center; padding:12px 0 4px; }
   .supply-select-wrap { position:relative; margin-bottom:4px; }
   .supply-select-wrap::after { content:'▾'; position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--c-personal); font-size:0.9rem; pointer-events:none; }
   .supply-select { width:100%; appearance:none; -webkit-appearance:none; padding:12px 38px 12px 14px; border-radius:12px; border:1.5px solid var(--c-personal-line); background:var(--c-personal-soft); color:var(--text); font-size:0.95rem; font-weight:700; font-family:inherit; cursor:pointer; }
-  .badge-none { background-color: var(--bg2); color: var(--muted); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   /* ===== 학생 · 교사 · 방배정 탭 정리된 디자인 ===== */
   .list-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
   .list-head h2 { margin:0 !important; }
@@ -840,7 +826,7 @@
         <button type="button" class="secondary" onclick="document.getElementById('backup-file').click()">📤 백업 파일로 복원</button>
         <input type="file" id="backup-file" accept=".json,application/json" style="display:none;" onchange="restoreFromFile(this)">
       </div>
-      <div class="bb-hint" style="text-align:left; margin:10px 2px 0;">앱을 여는 기기가 6시간마다 자동으로 서버에 백업 사본을 남겨요. 가끔 "백업 파일 내려받기"로 내 컴퓨터에도 보관해 두면 더 안전해요.</div>
+      <div class="bb-hint" style="text-align:left; margin:10px 2px 0;">앱을 여는 기기가 30분마다 내용이 바뀐 경우에만 서버에 백업 사본을 남겨요(저장 직후에도 남겨요). 가끔 "백업 파일 내려받기"로 내 컴퓨터에도 보관해 두면 더 안전해요.</div>
     </div>
   </section>
 
@@ -1324,6 +1310,26 @@ function backupSummary(d) {
   return `학생 ${(d.participants || []).length}명 · 교사 ${(d.teachers || []).length}명 · 공지 ${(d.posts || []).length}개 · 성경읽기 ${Object.keys(d.bibleReading || {}).length}명`;
 }
 
+// 이 기기에 "마지막으로 본 정상 데이터"를 임시 보관 (서버 백업이 없어도 복원할 수 있는 마지막 안전망)
+let sawMeaningfulData = false;
+const LAST_GOOD_KEY = 'baguio_last_good';
+function saveLastGoodLocal(remote) {
+  try { localStorage.setItem(LAST_GOOD_KEY, JSON.stringify({ t: Date.now(), data: remote })); } catch (e) { /* 용량 부족 등은 무시 */ }
+}
+function readLastGoodLocal() {
+  try {
+    const o = JSON.parse(localStorage.getItem(LAST_GOOD_KEY) || 'null');
+    return o && o.data && hasMeaningfulData(o.data) ? o : null;
+  } catch (e) { return null; }
+}
+
+// 키 순서와 상관없이 같은 내용이면 같은 문자열이 되도록 비교용으로 변환
+function stableStringify(v) {
+  if (Array.isArray(v)) return '[' + v.map(stableStringify).join(',') + ']';
+  if (v && typeof v === 'object') return '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + stableStringify(v[k])).join(',') + '}';
+  return JSON.stringify(v);
+}
+
 let backupBusy = false;
 // 30분 단위로 한 번씩(먼저 여는 기기가) 백업. 관리모드에서 저장한 직후에는 바로(분 단위) 백업.
 async function maybeAutoBackup(remote, exactMinute) {
@@ -1338,7 +1344,21 @@ async function maybeAutoBackup(remote, exactMinute) {
     const ref = db.collection(BACKUP_COLLECTION).doc('backup_' + slot);
     const snap = await ref.get();
     if (!snap.exists) {
+      // 가장 최근 백업과 내용이 같으면 새로 저장하지 않음 (용량 절약: 실제로 바뀐 것만 백업)
+      let latest = null;
+      const recent = await db.collection(BACKUP_COLLECTION).orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(3).get();
+      recent.forEach(s => { if (!latest && s.id.indexOf('backup_') === 0) latest = s.data(); });
       const data = cloneData(remote);
+      if (latest) {
+        const { _backupAt, ...rest } = latest;
+        if (stableStringify(rest) === stableStringify(data)) {
+          backupInfo = '자동 백업: 바뀐 내용이 없어서 새로 저장하지 않았어요 (30분마다 확인)';
+          try { localStorage.setItem('baguio_last_backup_slot', slot); } catch (e) {}
+          backupBusy = false;
+          renderBackupCard();
+          return;
+        }
+      }
       data._backupAt = new Date().toISOString();
       await ref.set(data);
       backupInfo = '마지막 자동 백업: ' + d.toLocaleString('ko-KR');
@@ -1431,11 +1451,13 @@ async function openAutoBackupList() {
     if (s.id.indexOf('backup_') !== 0) return;
     const data = s.data();
     const { _backupAt, ...rest } = data;
-    const sig = JSON.stringify(rest);
+    const sig = stableStringify(rest);
     if (sig === lastSig) return;
     lastSig = sig;
     backupItems.push({ id: s.id, data });
   });
+  const localGood = readLastGoodLocal();
+  if (localGood) backupItems.unshift({ id: 'local_last_good', data: { ...localGood.data, _backupAt: new Date(localGood.t).toISOString() }, local: true });
   let modal = document.getElementById('backup-modal');
   if (!modal) {
     modal = document.createElement('div');
@@ -1446,7 +1468,8 @@ async function openAutoBackupList() {
   }
   const rows = backupItems.map((it, i) => {
     const when = it.data._backupAt ? new Date(it.data._backupAt).toLocaleString('ko-KR') : it.id;
-    const tag = it.id.indexOf('backup_pre_') === 0 ? ' <small style="color:var(--muted)">(복원 직전 사본)</small>' : '';
+    const tag = it.local ? ' <small style="color:var(--muted)">(이 기기에 보관된 마지막 정상 데이터)</small>'
+      : it.id.indexOf('backup_pre_') === 0 ? ' <small style="color:var(--muted)">(복원 직전 사본)</small>' : '';
     return `<li style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f2eee5;">
       <div style="flex:1; min-width:0;"><div style="font-weight:800; font-size:0.9rem;">${escapeHtml(when)}${tag}</div><div style="font-size:0.78rem; color:var(--muted); margin-top:2px;">${escapeHtml(backupSummary(it.data))}</div></div>
       <button class="primary" style="padding:7px 14px; font-size:0.82rem;" onclick="restoreFromList(${i})">복원</button></li>`;
@@ -1470,8 +1493,11 @@ function restoreFromList(i) {
 function initFirebaseRealtimeSync() {
   DOC_REF.onSnapshot((doc) => {
     if (doc.exists) {
-      showSyncAlert('');
       const remote = normalizeRemote(doc.data());
+      // 이 화면에서 내용이 있던 서버 데이터가 갑자기 비면 모두에게 경고 (덮어쓰기/삭제 즉시 발견)
+      const wiped = sawMeaningfulData && !hasMeaningfulData(remote);
+      if (hasMeaningfulData(remote)) { sawMeaningfulData = true; saveLastGoodLocal(remote); }
+      showSyncAlert(wiped ? '⚠️ 서버 데이터가 갑자기 비었어요! 관리자에게 알려 주세요. (관리모드 → 공지 탭 아래 "자동 백업에서 복원")' : '');
       let forceBackup = false;
       try { forceBackup = sessionStorage.getItem('baguio_force_backup') === '1'; sessionStorage.removeItem('baguio_force_backup'); } catch (e) {}
       maybeAutoBackup(remote, forceBackup);
@@ -1596,6 +1622,11 @@ async function saveToCloud() {
     alert('서버 데이터를 아직 불러오지 못했어요. 잠시 후 화면이 채워지면 다시 저장해 주세요.');
     return;
   }
+
+  // 서버에 내용이 있는 목록을 이번 저장으로 통째로 비우게 되면 한 번 더 확인
+  const emptied = Array.from(dirtyFields).filter(f =>
+    Array.isArray(state[f]) && state[f].length === 0 && Array.isArray(latestRemoteState[f]) && latestRemoteState[f].length > 0);
+  if (emptied.length && !confirm('이번 저장으로 아래 목록이 완전히 비워져요.\n' + emptied.join(', ') + '\n\n정말 저장할까요?')) return;
 
   try {
     await db.runTransaction(async (transaction) => {
@@ -2474,7 +2505,7 @@ function renderItemCards(dayList, isPast = false) {
     const ddayBadge = isPast ? '' : calcDdayBadge(s.date);
     const dateFormatted = formatScheduleDate(s.date);
 
-    (s.items || []).sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99')).forEach(it => {
+    (s.items || []).slice().sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99')).forEach(it => {
       const idx = s.items.indexOf(it);
       const mainCat = (it.categories && it.categories.length > 0) ? it.categories[0] : '준비일정';
       const catClass = getCategoryClass(mainCat);
@@ -2754,7 +2785,6 @@ function setSupplyPerson(key) {
 function selectSupplyPerson(key) { supplyPendingKey = key; syncPersonalChecklistDropdown(); }
 function confirmSupplyPerson() { setSupplyPerson(supplyPendingKey); supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
 function cancelSupplySelect() { supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
-function changeSupplyPerson() { setSupplyPerson(''); supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
 
 function supplyPeople() {
   return [
@@ -3547,10 +3577,6 @@ function recordBibleRead(bookKey, ch) {
       renderBible();
       alert('기록을 저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
     });
-}
-
-function cancelTodayBibleRead() {
-  cancelBibleReadOn(bibleToday());
 }
 
 // 날짜를 지정해서 그 날의 읽음 기록만 취소 (오늘·이전 기록 모두 가능, 다른 날짜 기록은 그대로)
