@@ -305,6 +305,7 @@
 
   .person-list { display:flex; flex-direction:column; }
   .person-row { display:flex; align-items:center; gap:12px; padding:12px 4px; border-bottom:1px solid var(--border); }
+  .member .m-grade { font-size:0.85em; font-weight:600; opacity:.8; margin-left:2px; }
   .person-row.flash { background:var(--c-english-soft, #fbefea); animation:rowflash 2.4s ease-out; }
   @keyframes rowflash { 0%,60% { background:#ffe9a8; } 100% { background:transparent; } }
   .person-row:last-child { border-bottom:none; }
@@ -2166,7 +2167,8 @@ function renderGroupCards(type, groups) {
         <div class="member-wrap">
           ${members.length ? members.map(m => {
             const isT = m.type === 'teacher';
-            const label = isT ? '🌳 ' + escapeHtml(teacherName(m.id)) : '🌱 ' + escapeHtml(participantName(m.id));
+            const grade = isT ? '' : ((state.participants || []).find(x => x.id === m.id) || {}).grade;
+            const label = isT ? '🌳 ' + escapeHtml(teacherName(m.id)) : '🌱 ' + escapeHtml(participantName(m.id)) + (grade ? ` <small class="m-grade">${escapeHtml(grade)}</small>` : '');
             return `<span class="member${isT ? ' teacher' : ''}">${label}${canEdit ? `<button class="x" aria-label="빼기" onclick="removeMember('${type}','${g.id}','${m.type}','${m.id}')">×</button>` : ''}</span>`;
           }).join('') : '<span class="member-empty">배정된 인원이 없어요</span>'}
         </div>
