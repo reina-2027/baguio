@@ -829,6 +829,19 @@
       </div>
       <div id="feed-list" class="feed-list"></div>
     </div>
+
+    <!-- 데이터 백업 (관리모드에서만 보임) -->
+    <div class="card" id="backup-card" style="display:none;">
+      <h2>🛟 데이터 백업</h2>
+      <div class="bb-sub" id="backup-status" style="margin:-4px 0 12px;">자동 백업 대기 중</div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button type="button" class="secondary" onclick="openAutoBackupList()">🕘 자동 백업에서 복원</button>
+        <button type="button" class="secondary" onclick="downloadBackupFile()">📥 백업 파일 내려받기</button>
+        <button type="button" class="secondary" onclick="document.getElementById('backup-file').click()">📤 백업 파일로 복원</button>
+        <input type="file" id="backup-file" accept=".json,application/json" style="display:none;" onchange="restoreFromFile(this)">
+      </div>
+      <div class="bb-hint" style="text-align:left; margin:10px 2px 0;">앱을 여는 기기가 6시간마다 자동으로 서버에 백업 사본을 남겨요. 가끔 "백업 파일 내려받기"로 내 컴퓨터에도 보관해 두면 더 안전해요.</div>
+    </div>
   </section>
 
   <!-- 7. 교사 탭 -->
@@ -1291,11 +1304,177 @@ function showSyncAlert(msg) {
   el.textContent = msg;
 }
 
+// ===== 데이터 백업 =====
+// 자동 백업: 앱을 여는 기기가 6시간 단위로 한 번씩 서버에 사본(backup_날짜_시간대)을 만듦 (이미 있으면 건너뜀)
+// 복원: 관리모드에서 자동 백업 목록 또는 내려받은 파일로 복원
+const BACKUP_COLLECTION = 'baguio_youth_mission';
+let backupInfo = '자동 백업 대기 중';
+let backupItems = [];
+
+function hasMeaningfulData(d) {
+  if (!d) return false;
+  const lists = ['participants', 'teachers', 'posts', 'prepSchedule', 'schedule', 'flightInfos', 'rooms', 'vehicles'];
+  return lists.some(k => Array.isArray(d[k]) && d[k].length > 0)
+    || Object.keys(d.bibleReading || {}).length > 0
+    || Object.keys(d.personalChecks || {}).length > 0;
+}
+
+function backupSummary(d) {
+  d = d || {};
+  return `학생 ${(d.participants || []).length}명 · 교사 ${(d.teachers || []).length}명 · 공지 ${(d.posts || []).length}개 · 성경읽기 ${Object.keys(d.bibleReading || {}).length}명`;
+}
+
+let backupBusy = false;
+// 30분 단위로 한 번씩(먼저 여는 기기가) 백업. 관리모드에서 저장한 직후에는 바로(분 단위) 백업.
+async function maybeAutoBackup(remote, exactMinute) {
+  if (backupBusy || !hasMeaningfulData(remote)) return; // 비어 있는(리셋된) 데이터는 백업하지 않음
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  const mm = exactMinute ? d.getMinutes() : Math.floor(d.getMinutes() / 30) * 30;
+  const slot = `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}_${p(d.getHours())}${p(mm)}`;
+  try { if (localStorage.getItem('baguio_last_backup_slot') === slot) return; } catch (e) {}
+  backupBusy = true;
+  try {
+    const ref = db.collection(BACKUP_COLLECTION).doc('backup_' + slot);
+    const snap = await ref.get();
+    if (!snap.exists) {
+      const data = cloneData(remote);
+      data._backupAt = new Date().toISOString();
+      await ref.set(data);
+      backupInfo = '마지막 자동 백업: ' + d.toLocaleString('ko-KR');
+    } else {
+      backupInfo = '자동 백업: 방금 전 백업이 이미 있어요 (30분마다 저장)';
+    }
+    try { localStorage.setItem('baguio_last_backup_slot', slot); } catch (e) {}
+  } catch (e) {
+    console.error('자동 백업 실패:', e);
+    backupInfo = '⚠️ 자동 백업 실패 (' + (e && e.code ? e.code : '') + ') — Firestore 규칙을 확인해 주세요';
+  }
+  backupBusy = false;
+  renderBackupCard();
+}
+
+function renderBackupCard() {
+  const card = document.getElementById('backup-card');
+  if (!card) return;
+  card.style.display = canEdit ? 'block' : 'none';
+  const st = document.getElementById('backup-status');
+  if (!st) return;
+  const empty = latestRemoteState && !hasMeaningfulData(latestRemoteState);
+  st.textContent = (empty ? '⚠️ 서버 데이터가 비어 있어요. "자동 백업에서 복원"을 확인해 보세요.  ' : '') + backupInfo;
+}
+
+function downloadBackupFile() {
+  const data = latestRemoteState || state;
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `baguio_backup_${bibleToday()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+async function restoreData(data, label) {
+  if (!canEdit) { alert('관리모드에서만 복원할 수 있어요.'); return; }
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 시도해 주세요.'); return; }
+  if (!confirm(`${label}\n${backupSummary(data)}\n\n현재 서버 데이터가 이 내용으로 통째로 바뀌어요. 복원할까요?`)) return;
+  try {
+    // 복원 직전의 현재 데이터도 안전 사본으로 남김 (내용이 있을 때만)
+    if (hasMeaningfulData(latestRemoteState)) {
+      const pre = cloneData(latestRemoteState);
+      pre._backupAt = new Date().toISOString();
+      await db.collection(BACKUP_COLLECTION).doc('backup_pre_' + Date.now()).set(pre);
+    }
+    const clean = cloneData(data);
+    delete clean._backupAt;
+    await DOC_REF.set(clean);
+    alert('복원했어요. 화면을 새로고침합니다.');
+    location.reload();
+  } catch (e) {
+    console.error('복원 실패:', e);
+    alert('복원하지 못했어요.\n' + (e && e.code ? e.code : '') + ' ' + (e && e.message ? e.message : ''));
+  }
+}
+
+function restoreFromFile(input) {
+  const file = input.files && input.files[0];
+  input.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try { data = JSON.parse(reader.result); } catch (e) { alert('백업 파일을 읽지 못했어요. (JSON 형식이 아니에요)'); return; }
+    if (!data || typeof data !== 'object' || Array.isArray(data) || !('participants' in data || 'teachers' in data || 'tripDate' in data)) {
+      alert('이 앱의 백업 파일이 아닌 것 같아요.');
+      return;
+    }
+    restoreData(data, '파일: ' + file.name);
+  };
+  reader.readAsText(file);
+}
+
+async function openAutoBackupList() {
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 시도해 주세요.'); return; }
+  let snaps;
+  try {
+    snaps = await db.collection(BACKUP_COLLECTION).orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(200).get();
+  } catch (e) {
+    alert('백업 목록을 불러오지 못했어요.\n' + (e && e.code ? e.code : '') + ' ' + (e && e.message ? e.message : ''));
+    return;
+  }
+  backupItems = [];
+  // 최신순으로 훑으면서, 바로 앞(더 최신) 백업과 내용이 똑같은 것은 목록에서 묶어서 숨김
+  let lastSig = null;
+  snaps.forEach(s => {
+    if (s.id.indexOf('backup_') !== 0) return;
+    const data = s.data();
+    const { _backupAt, ...rest } = data;
+    const sig = JSON.stringify(rest);
+    if (sig === lastSig) return;
+    lastSig = sig;
+    backupItems.push({ id: s.id, data });
+  });
+  let modal = document.getElementById('backup-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'backup-modal';
+    modal.className = 'bb-modal';
+    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('show'); });
+    document.body.appendChild(modal);
+  }
+  const rows = backupItems.map((it, i) => {
+    const when = it.data._backupAt ? new Date(it.data._backupAt).toLocaleString('ko-KR') : it.id;
+    const tag = it.id.indexOf('backup_pre_') === 0 ? ' <small style="color:var(--muted)">(복원 직전 사본)</small>' : '';
+    return `<li style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f2eee5;">
+      <div style="flex:1; min-width:0;"><div style="font-weight:800; font-size:0.9rem;">${escapeHtml(when)}${tag}</div><div style="font-size:0.78rem; color:var(--muted); margin-top:2px;">${escapeHtml(backupSummary(it.data))}</div></div>
+      <button class="primary" style="padding:7px 14px; font-size:0.82rem;" onclick="restoreFromList(${i})">복원</button></li>`;
+  }).join('');
+  modal.innerHTML = `<div class="bb-sheet">
+    <div class="bb-sheet-title">🕘 자동 백업 목록</div>
+    <div class="bb-sub" style="margin:-4px 0 8px;">가장 내용이 많은 백업을 골라 복원하세요.</div>
+    <ul style="list-style:none; padding:0; margin:0 0 14px; max-height:50vh; overflow-y:auto;">${rows || '<li class="empty">아직 자동 백업이 없어요.</li>'}</ul>
+    <div class="bb-sheet-actions"><button class="bb-close" onclick="document.getElementById('backup-modal').classList.remove('show')">닫기</button></div></div>`;
+  modal.classList.add('show');
+}
+
+function restoreFromList(i) {
+  const it = backupItems[i];
+  if (!it) return;
+  const m = document.getElementById('backup-modal');
+  if (m) m.classList.remove('show');
+  restoreData(it.data, '자동 백업: ' + (it.data._backupAt ? new Date(it.data._backupAt).toLocaleString('ko-KR') : it.id));
+}
+
 function initFirebaseRealtimeSync() {
   DOC_REF.onSnapshot((doc) => {
     if (doc.exists) {
       showSyncAlert('');
       const remote = normalizeRemote(doc.data());
+      let forceBackup = false;
+      try { forceBackup = sessionStorage.getItem('baguio_force_backup') === '1'; sessionStorage.removeItem('baguio_force_backup'); } catch (e) {}
+      maybeAutoBackup(remote, forceBackup);
 
       latestRemoteState = cloneData(remote);
       bibleReading = cloneData(remote.bibleReading || {});
@@ -1316,15 +1495,23 @@ function initFirebaseRealtimeSync() {
         renderBible();
       }
     } else {
-      showSyncAlert('⚠️ 서버에서 저장된 데이터 문서를 찾지 못했어요 (문서 없음). 새로 만드는 중이에요. 이 메시지가 계속 보이면 알려주세요.');
-      DOC_REF.set(state, { merge: true })
-        .then(() => {
+      // [중요] 서버 확인 전(캐시)에 온 "문서 없음"은 진짜가 아님. 예전에는 이때 기본값을 서버에 써서 실제 데이터를 덮어썼음.
+      // 이제는 절대 자동으로 서버에 쓰지 않고, 서버가 "정말 없다"고 확인해 줄 때만 안내를 띄움.
+      const handleMissingDoc = () => {
+        showSyncAlert('⚠️ 서버에 저장된 데이터 문서가 없어요. 관리모드 → 공지 탭 아래 "자동 백업에서 복원"을 확인해 보세요.');
+        if (!dirty) {
           latestRemoteState = cloneData(state);
           baseState = cloneData(state);
-        })
-        .catch(error => {
-          console.error("최초 Firestore 문서 생성 실패:", error);
-        });
+          renderAll();
+        }
+      };
+      if (doc.metadata && doc.metadata.fromCache) {
+        DOC_REF.get({ source: 'server' })
+          .then(s => { if (!s.exists) handleMissingDoc(); })
+          .catch(() => { /* 오프라인이면 무시: 연결되면 실제 데이터가 도착함 */ });
+        return;
+      }
+      handleMissingDoc();
     }
   }, (error) => {
     console.error("실시간 동기화 에러:", error);
@@ -1404,6 +1591,12 @@ async function saveToCloud() {
     return;
   }
 
+  // 서버 데이터를 아직 불러오지 못한 상태에서는 저장하지 않음 (덮어쓰기 방지)
+  if (latestRemoteState === null) {
+    alert('서버 데이터를 아직 불러오지 못했어요. 잠시 후 화면이 채워지면 다시 저장해 주세요.');
+    return;
+  }
+
   try {
     await db.runTransaction(async (transaction) => {
       const latestDoc = await transaction.get(DOC_REF);
@@ -1427,6 +1620,7 @@ async function saveToCloud() {
     renderAll();
     // 저장 직후 새로고침 (보던 탭·스크롤 위치는 그대로 유지됨)
     try {
+      sessionStorage.setItem('baguio_force_backup', '1'); // 새로고침 직후 바로 백업 한 번
       sessionStorage.setItem('activeTab', document.querySelector('nav.tabs button.active')?.getAttribute('data-tab') || 'feed');
       sessionStorage.setItem('scrollPosition', window.scrollY);
     } catch (e2) {}
@@ -2962,6 +3156,7 @@ function renderAll() {
   syncPersonalChecklistDropdown();
   renderSharedChecklist();
   renderBible();
+  renderBackupCard();
 }
 
 // ===== 성경읽기 =====
