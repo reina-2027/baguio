@@ -242,6 +242,7 @@
   .boarding-pass .bp-point .bp-time { font-size:1.5rem; font-weight:800; line-height:1.1; }
   .boarding-pass .bp-point .bp-date { font-size:0.72rem; color:var(--muted); margin-top:2px; }
   .boarding-pass .bp-point .bp-airport { font-size:0.84rem; font-weight:600; margin-top:6px; word-break:break-all; }
+  .boarding-pass .bp-point .bp-terminal { font-size:0.78rem; font-weight:600; color:var(--muted); margin-top:2px; word-break:break-all; }
   .boarding-pass .bp-point.bp-arr { text-align:right; }
   .boarding-pass .bp-mid { flex-shrink:0; display:flex; flex-direction:column; align-items:center; color:var(--accent); padding-top:4px; }
   .boarding-pass .bp-mid .bp-plane { font-size:1.3rem; }
@@ -1848,7 +1849,7 @@ function renderFlightInfo() {
             <div class="bp-point">
               <div class="bp-time">${escapeHtml(formatTimeKo(fi.depTime))}</div>
               <div class="bp-date">${escapeHtml(formatShortDate(fi.depDate))}</div>
-              <div class="bp-airport">${escapeHtml(fi.depAirport || '출발공항 미정')}${fi.depTerminal ? ' (' + escapeHtml(fi.depTerminal) + ')' : ''}</div>
+              <div class="bp-airport">${escapeHtml(fi.depAirport || '출발공항 미정')}</div>${fi.depTerminal ? '<div class="bp-terminal">' + escapeHtml(fi.depTerminal) + '</div>' : ''}
             </div>
             <div class="bp-mid">
               <span class="bp-plane">✈️</span>
@@ -1857,7 +1858,7 @@ function renderFlightInfo() {
             <div class="bp-point bp-arr">
               <div class="bp-time">${escapeHtml(formatTimeKo(fi.arrTime))}</div>
               <div class="bp-date">${escapeHtml(formatShortDate(fi.arrDate))}</div>
-              <div class="bp-airport">${escapeHtml(fi.arrAirport || '도착공항 미정')}${fi.arrTerminal ? ' (' + escapeHtml(fi.arrTerminal) + ')' : ''}</div>
+              <div class="bp-airport">${escapeHtml(fi.arrAirport || '도착공항 미정')}</div>${fi.arrTerminal ? '<div class="bp-terminal">' + escapeHtml(fi.arrTerminal) + '</div>' : ''}
             </div>
           </div>
           <div class="bp-divider"></div>
