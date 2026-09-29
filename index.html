@@ -1428,8 +1428,11 @@ async function maybeAutoBackup(remote, exactMinute) {
     if (!snap.exists) {
       // 가장 최근 백업과 내용이 같으면 새로 저장하지 않음 (용량 절약: 실제로 바뀐 것만 백업)
       let latest = null;
-      const recent = await db.collection(BACKUP_COLLECTION).orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(3).get();
-      recent.forEach(s => { if (!latest && s.id.indexOf('backup_') === 0) latest = s.data(); });
+      try {
+        // _backupAt(저장 시각) 순으로 조회: 필드 하나 정렬이라 별도 색인이 필요 없음
+        const recent = await db.collection(BACKUP_COLLECTION).orderBy('_backupAt', 'desc').limit(1).get();
+        recent.forEach(s => { if (!latest) latest = s.data(); });
+      } catch (e) { console.warn('최근 백업 조회 실패(중복 비교 없이 저장):', e); }
       const data = cloneData(remote);
       if (latest) {
         const { _backupAt, ...rest } = latest;
@@ -1521,7 +1524,7 @@ async function openAutoBackupList() {
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 시도해 주세요.'); return; }
   let snaps;
   try {
-    snaps = await db.collection(BACKUP_COLLECTION).orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(200).get();
+    snaps = await db.collection(BACKUP_COLLECTION).orderBy('_backupAt', 'desc').limit(200).get();
   } catch (e) {
     alert('백업 목록을 불러오지 못했어요.\n' + (e && e.code ? e.code : '') + ' ' + (e && e.message ? e.message : ''));
     return;
