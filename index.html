@@ -3467,3 +3467,83 @@ window.onload = function() {
 
   // 상단 메뉴 탭이 헤더 높이에 맞춰 바로 아래에 붙도록
   const header = document.querySelector('header');
+  const nav = document.querySelector('nav.tabs');
+  const syncNavTop = () => { nav.style.top = `calc(env(safe-area-inset-top, 0px) + ${header.offsetHeight}px)`; };
+  syncNavTop();
+  // 글꼴 로딩·화면 회전 등으로 헤더 높이가 바뀌면 다시 맞춤
+  if (window.ResizeObserver) new ResizeObserver(syncNavTop).observe(header);
+  else window.addEventListener('resize', syncNavTop);
+
+  const tabs = document.querySelectorAll('nav.tabs button');
+  const panels = document.querySelectorAll('main section.panel');
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const tabName = btn.getAttribute('data-tab');
+      const targetPanel = document.getElementById('panel-' + tabName);
+      if (targetPanel) targetPanel.classList.add('active');
+    });
+  });
+
+  // 저장된 탭과 스크롤 위치 복구
+  const savedTab = sessionStorage.getItem('activeTab') || 'feed';
+  const savedScroll = sessionStorage.getItem('scrollPosition') || 0;
+
+  const defaultTabBtn = document.querySelector(`nav.tabs button[data-tab="${savedTab}"]`) || document.querySelector('nav.tabs button[data-tab="feed"]');
+  if (defaultTabBtn) {
+    defaultTabBtn.click();
+    // 탭 클릭 후 스크롤 위치 복구
+    setTimeout(() => {
+      window.scrollTo(0, parseInt(savedScroll));
+    }, 50);
+  }
+
+  // 탭 전환 시 현재 위치 저장
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabName = btn.getAttribute('data-tab');
+      sessionStorage.setItem('activeTab', tabName);
+      sessionStorage.setItem('scrollPosition', window.scrollY);
+    });
+  });
+
+  // 페이지 언로드 전에 스크롤 위치 저장
+  window.addEventListener('beforeunload', () => {
+    const activeTab = document.querySelector('nav.tabs button.active')?.getAttribute('data-tab');
+    if (activeTab) sessionStorage.setItem('activeTab', activeTab);
+    sessionStorage.setItem('scrollPosition', window.scrollY);
+  });
+
+  // 화면을 좌우로 쓸면 탭 이동 (왼쪽으로 쓸면 오른쪽 탭, 오른쪽으로 쓸면 왼쪽 탭)
+  let sx = 0, sy = 0, swipeOk = false;
+  document.addEventListener('touchstart', e => {
+    swipeOk = false;
+    if (e.touches.length !== 1) return;
+    const t = e.target;
+    if (t.closest('input, select, textarea, nav.tabs, .bb-modal, .bb-history, #schedule-date-filter, .chips, #teacher-select-modal, [style*="overflow-x"]')) return;
+    if (document.querySelector('.bb-modal.show')) return;
+    const tm = document.getElementById('teacher-select-modal');
+    if (tm && tm.style.display === 'flex') return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; swipeOk = true;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (!swipeOk) return;
+    swipeOk = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.8) return;
+    const list = Array.from(tabs);
+    const cur = list.findIndex(b => b.classList.contains('active'));
+    const next = list[cur + (dx < 0 ? 1 : -1)];
+    if (!next) return;
+    next.click();
+    next.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+    window.scrollTo(0, 0);
+  }, { passive: true });
+};
+</script>
+</body>
+</html>
