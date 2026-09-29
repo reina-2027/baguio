@@ -24,6 +24,25 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script>
+  // 구글 서버에서 Firebase를 못 받았을 때 다른 서버(jsDelivr)에서 다시 받기
+  if (typeof firebase === 'undefined' || !firebase.firestore || !firebase.auth) {
+    ['app', 'firestore', 'auth'].forEach(function (n) {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/firebase@10.8.0/firebase-' + n + '-compat.js"><\/script>');
+    });
+  }
+</script>
+<script>
+  // 두 곳 모두 실패하면 화면에 안내 표시
+  if (typeof firebase === 'undefined') {
+    window.addEventListener('DOMContentLoaded', function () {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:3000;background:#fff3f0;border:1px solid #e3b5ab;color:#7a2e22;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;line-height:1.5;';
+      d.textContent = '⚠️ 데이터 서버(Firebase)를 불러오지 못했어요. 인터넷 연결이나 광고·콘텐츠 차단 앱을 확인한 뒤 새로고침해 주세요.';
+      document.body.appendChild(d);
+    });
+  }
+</script>
 
 <style>
   :root {
@@ -1259,9 +1278,23 @@ function normalizeRemote(remote) {
   return remote;
 }
 
+// 데이터를 못 불러올 때 화면 아래에 원인을 보여줌 (콘솔을 못 여는 폰에서도 확인 가능)
+function showSyncAlert(msg) {
+  let el = document.getElementById('sync-alert');
+  if (!msg) { if (el) el.remove(); return; }
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'sync-alert';
+    el.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:3000;background:#fff3f0;border:1px solid #e3b5ab;color:#7a2e22;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;line-height:1.5;word-break:break-all;box-shadow:0 4px 16px rgba(0,0,0,.15)';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+}
+
 function initFirebaseRealtimeSync() {
   DOC_REF.onSnapshot((doc) => {
     if (doc.exists) {
+      showSyncAlert('');
       const remote = normalizeRemote(doc.data());
 
       latestRemoteState = cloneData(remote);
@@ -1283,6 +1316,7 @@ function initFirebaseRealtimeSync() {
         renderBible();
       }
     } else {
+      showSyncAlert('⚠️ 서버에서 저장된 데이터 문서를 찾지 못했어요 (문서 없음). 새로 만드는 중이에요. 이 메시지가 계속 보이면 알려주세요.');
       DOC_REF.set(state, { merge: true })
         .then(() => {
           latestRemoteState = cloneData(state);
@@ -1294,6 +1328,7 @@ function initFirebaseRealtimeSync() {
     }
   }, (error) => {
     console.error("실시간 동기화 에러:", error);
+    showSyncAlert('⚠️ 데이터를 불러오지 못했어요. 오류: ' + (error && error.code ? error.code : '') + ' ' + (error && error.message ? error.message : ''));
   });
 }
 
@@ -1305,6 +1340,7 @@ async function initFirebaseAuth() {
   } catch (error) {
     firebaseAuthReady = false;
     console.error("Firebase 익명 인증 실패:", error);
+    showSyncAlert('⚠️ 서버 로그인에 실패했어요. 오류: ' + (error && error.code ? error.code : '') + ' ' + (error && error.message ? error.message : ''));
   }
 }
 
@@ -2524,7 +2560,7 @@ function syncPersonalChecklistDropdown() {
   select.value = me ? me.key : '';
   const label = x => x.role === 'teacher' ? teacherTitle(x.name) : `${x.name}님`;
 
-  if (me) {
+  if (me && !people.find(x => x.key === supplyPendingKey)) {
     const teachers = people.filter(x => x.role === 'teacher');
     const students = people.filter(x => x.role === 'student');
     const options = students.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌱 ${escapeHtml(x.sub || '')} ${escapeHtml(x.name)}</option>`).join('') + (teachers.length ? teachers.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌳 ${escapeHtml(teacherTitle(x.name))}</option>`).join('') : '');
