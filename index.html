@@ -177,6 +177,9 @@
   .dot { color:#ccc; font-size:0.7rem; }
   .content-text { font-size:0.98rem; font-weight:600; color:var(--text); margin-top:3px; white-space:pre-wrap; }
   .past-card .date-text, .past-card .content-text, .past-card .time-text { color:var(--muted); }
+  .content-desc { font-size:0.87rem; color:var(--muted); margin-top:4px; line-height:1.55; white-space:pre-wrap; }
+  /* 글자 단위로 줄바꿈 (단어 덩어리가 통째로 내려가지 않게) */
+  .content-text, .content-desc, .p-info, .notice-title, .notice-text, .sch-activity-title, .sch-activity-desc, .item-name, .item-must-reason, .sch-next-title, .sch-next-meta { word-break:break-all; overflow-wrap:anywhere; }
   .past-card .tag-cat::before { background:#b5b0a6; }
   .ps-actions { display:flex; justify-content:flex-end; gap:14px; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); }
   .ps-actions button { border:none; background:none; padding:0; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); }
@@ -198,8 +201,8 @@
   .sch-body { position:relative; padding:0 0 18px 18px; border-left:2px solid var(--c-schedule-line); }
   .sch-item:last-child .sch-body { padding-bottom:2px; border-left-color:transparent; }
   .sch-body::before { content:""; position:absolute; left:-7px; top:3px; width:12px; height:12px; border-radius:50%; background:var(--card); border:3px solid var(--c-schedule); box-sizing:border-box; }
-  .sch-activity-title { font-size:0.98rem; font-weight:700; color:var(--text); line-height:1.4; word-break:keep-all; }
-  .sch-activity-desc { margin-top:4px; font-size:0.87rem; color:var(--muted); line-height:1.55; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
+  .sch-activity-title { font-size:0.98rem; font-weight:700; color:var(--text); line-height:1.4; word-break:break-all; }
+  .sch-activity-desc { margin-top:4px; font-size:0.87rem; color:var(--muted); line-height:1.55; white-space:pre-wrap; word-break:break-all; overflow-wrap:anywhere; }
   .sch-item.now .sch-body::before { background:var(--c-schedule); box-shadow:0 0 0 4px var(--c-schedule-line); }
   .sch-item.now .sch-time { color:var(--c-schedule); }
   .sch-item.now .sch-card { background:var(--c-schedule-soft); border:1px solid var(--c-schedule-line); margin:-6px 0 0 -6px; padding:6px 10px 8px; border-radius:10px; }
@@ -210,13 +213,13 @@
   .place-preview:empty { display:none; }
   .place-preview { margin-top:8px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--card); }
   .place-preview iframe { display:block; width:100%; height:200px; border:0; }
-  .place-preview-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 10px; font-size:0.76rem; color:var(--muted); line-height:1.45; word-break:keep-all; }
+  .place-preview-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 10px; font-size:0.76rem; color:var(--muted); line-height:1.45; word-break:break-all; }
   .place-preview-foot a { flex-shrink:0; color:var(--c-schedule-deep); font-weight:700; text-decoration:none; }
   .place-preview-msg { padding:10px; font-size:0.8rem; color:var(--muted); }
   .sch-next { background:linear-gradient(135deg, var(--c-schedule-soft) 0%, var(--card) 85%); border:1px solid var(--c-schedule-line); border-radius:14px; padding:12px 14px; margin-bottom:14px; }
   .sch-next-label { font-size:0.76rem; font-weight:700; color:var(--c-schedule-deep); }
   .sch-next-label b { display:inline-block; margin-left:4px; color:#fff; background:var(--c-schedule); padding:1px 8px; border-radius:999px; font-size:0.72rem; }
-  .sch-next-title { font-size:1.05rem; font-weight:800; margin-top:6px; word-break:keep-all; }
+  .sch-next-title { font-size:1.05rem; font-weight:800; margin-top:6px; word-break:break-all; }
   .sch-next-meta { font-size:0.82rem; color:var(--muted); font-weight:600; margin-top:3px; }
   .sch-next-meta a, .sch-place { color:var(--c-schedule-deep); text-decoration:none; font-weight:700; }
   .sch-place { display:inline-block; font-size:0.82rem; margin-top:3px; }
@@ -238,7 +241,7 @@
   .boarding-pass .bp-point { flex:1; min-width:0; }
   .boarding-pass .bp-point .bp-time { font-size:1.5rem; font-weight:800; line-height:1.1; }
   .boarding-pass .bp-point .bp-date { font-size:0.72rem; color:var(--muted); margin-top:2px; }
-  .boarding-pass .bp-point .bp-airport { font-size:0.84rem; font-weight:600; margin-top:6px; word-break:keep-all; }
+  .boarding-pass .bp-point .bp-airport { font-size:0.84rem; font-weight:600; margin-top:6px; word-break:break-all; }
   .boarding-pass .bp-point.bp-arr { text-align:right; }
   .boarding-pass .bp-mid { flex-shrink:0; display:flex; flex-direction:column; align-items:center; color:var(--accent); padding-top:4px; }
   .boarding-pass .bp-mid .bp-plane { font-size:1.3rem; }
@@ -358,8 +361,8 @@
   .notice-main { flex:1; min-width:0; }
   .notice-top { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
   .notice-new { font-size:0.66rem; font-weight:800; color:var(--c-feed-deep); background:var(--c-feed-soft); padding:2px 7px; border-radius:999px; letter-spacing:0.03em; }
-  .notice-title { font-size:1.05rem; font-weight:800; line-height:1.4; color:var(--text); word-break:keep-all; }
-  .notice-text { margin-top:6px; font-size:0.93rem; line-height:1.7; color:#434a44; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
+  .notice-title { font-size:1.05rem; font-weight:800; line-height:1.4; color:var(--text); word-break:break-all; }
+  .notice-text { margin-top:6px; font-size:0.93rem; line-height:1.7; color:#434a44; white-space:pre-wrap; word-break:break-all; overflow-wrap:anywhere; }
   .notice-foot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
   .notice-author { font-size:0.78rem; font-weight:700; color:var(--muted); }
   .notice-actions { display:flex; gap:14px; }
@@ -410,7 +413,7 @@
   .bb-group-label { font-size:0.8rem; font-weight:800; color:var(--muted); margin:14px 2px 8px; }
   .bb-group-label:first-of-type { margin-top:0; }
   .bb-confirm { text-align:center; padding-top:26px; }
-  .bb-confirm-q { font-size:1.15rem; font-weight:800; margin-bottom:10px; word-break:keep-all; }
+  .bb-confirm-q { font-size:1.15rem; font-weight:800; margin-bottom:10px; word-break:break-all; }
   .bb-confirm .bb-sub { margin:0 0 18px; }
   .bb-me-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
   .bb-me-name { font-size:1.02rem; font-weight:800; }
@@ -433,8 +436,8 @@
   .bb-guide-rule div { flex:1; background:var(--c-bible-soft); border-radius:12px; padding:10px 8px; text-align:center; }
   .bb-guide-rule b { display:block; font-size:0.78rem; color:var(--c-bible-deep); }
   .bb-guide-rule span { display:block; font-size:1.1rem; font-weight:800; margin-top:2px; }
-  .bb-guide-desc { font-size:0.84rem; color:#4d544e; line-height:1.6; margin:10px 2px 0; word-break:keep-all; }
-  .bb-pace { margin-top:12px; font-size:0.86rem; line-height:1.55; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; word-break:keep-all; }
+  .bb-guide-desc { font-size:0.84rem; color:#4d544e; line-height:1.6; margin:10px 2px 0; word-break:break-all; }
+  .bb-pace { margin-top:12px; font-size:0.86rem; line-height:1.55; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; word-break:break-all; }
   .bb-pace.good { background:#f1f5ec; border-color:#dbe6cf; }
   .bb-pace small { color:var(--muted); font-size:0.8rem; }
   .bb-guide-sub { font-size:0.78rem; font-weight:700; color:var(--muted); margin:16px 2px 6px; }
@@ -443,7 +446,7 @@
   .bb-plan li:last-child { border-bottom:none; }
   .bb-plan span { font-weight:700; }
   .bb-plan em { font-style:normal; color:var(--muted); font-weight:600; font-size:0.8rem; }
-  .bb-guide-tip { margin-top:10px; font-size:0.76rem; color:var(--muted); line-height:1.55; word-break:keep-all; }
+  .bb-guide-tip { margin-top:10px; font-size:0.76rem; color:var(--muted); line-height:1.55; word-break:break-all; }
   .bb-dot { width:16px; height:16px; border-radius:50%; border:2px solid #ddd6c9; background:transparent; display:inline-block; flex-shrink:0; }
   .bb-book-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px; }
   .bb-book-title { font-size:1rem; font-weight:800; }
@@ -456,7 +459,7 @@
   .bb-ch:active { transform:scale(0.92); }
   .bb-ch.read { color:#fff; border-color:transparent; box-shadow:0 1px 2px rgba(0,0,0,0.08); }
   .bb-multi { position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; background:#fff; opacity:0.9; }
-  .bb-hint { font-size:0.74rem; color:var(--muted); text-align:center; margin:4px 8px 8px; line-height:1.5; word-break:keep-all; }
+  .bb-hint { font-size:0.74rem; color:var(--muted); text-align:center; margin:4px 8px 8px; line-height:1.5; word-break:break-all; }
   .bb-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:2000; align-items:flex-end; justify-content:center; }
   .bb-modal.show { display:flex; }
   .bb-sheet { width:100%; max-width:420px; background:#fff; border-radius:20px 20px 0 0; padding:22px 20px calc(18px + env(safe-area-inset-bottom, 0px)); }
@@ -468,6 +471,7 @@
   .bb-history li:last-child { border-bottom:none; }
   .bb-history .bb-dot { width:12px; height:12px; }
   .bb-history small { color:var(--muted); font-weight:600; }
+  .bb-cancel-one { margin-left:auto; border:1px solid var(--border); background:var(--card); color:#b0504a; font-size:0.74rem; font-weight:700; padding:3px 10px; border-radius:999px; cursor:pointer; font-family:inherit; }
   .bb-history em { font-style:normal; font-size:0.7rem; font-weight:800; color:var(--c-bible-deep); background:var(--c-bible-soft); padding:2px 7px; border-radius:999px; }
   .bb-sheet-actions { display:flex; gap:8px; }
   .bb-sheet-actions button { flex:1; }
@@ -616,7 +620,7 @@
   <!-- 3. 준비일정 탭 -->
   <section class="panel" id="panel-prep-schedule">
     <div class="card">
-      <h2>📋 준비 일정</h2>
+      <h2>🗓️ 준비 일정</h2>
       
       <!-- 관리자 작성/수정 폼 (상단 배치) -->
       <div class="add-form collapsed" id="prep-schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
@@ -644,7 +648,8 @@
           </div>
           <div><label>장소</label><input id="ps-item-place" placeholder="예: 본당 / 연습실" /></div>
         </div>
-        <div><label>활동 내용</label><input id="ps-item-activity" placeholder="예: 준비 모임" /></div>
+        <div><label>제목</label><input id="ps-item-activity" placeholder="예: 준비 모임" /></div>
+        <div><label>내용 (선택)</label><textarea id="ps-item-description" placeholder="세부 내용을 입력하세요"></textarea></div>
         <div>
           <label>분류</label>
           <div class="pill-group">
@@ -1362,6 +1367,12 @@ async function saveToCloud() {
     dirtyFields.clear();
     document.getElementById('save-bar').classList.remove('show');
     renderAll();
+    // 저장 직후 새로고침 (보던 탭·스크롤 위치는 그대로 유지됨)
+    try {
+      sessionStorage.setItem('activeTab', document.querySelector('nav.tabs button.active')?.getAttribute('data-tab') || 'feed');
+      sessionStorage.setItem('scrollPosition', window.scrollY);
+    } catch (e2) {}
+    location.reload();
   } catch (e) {
     console.error('Firestore 저장 실패:', e);
     alert('저장 중 오류가 발생했습니다.\n\n' + e.message);
@@ -1379,6 +1390,14 @@ function renderDday() {
 
 // ===== 공통 도우미 =====
 const byName = (a, b) => (a.name || '').localeCompare(b.name || '', 'ko');
+
+// 교사 호칭: 기본 "선생님", 예외 신승=전도사님 / 정형철=목사님 (저장된 이름은 그대로 두고 화면에서만 붙임)
+function teacherTitle(name) {
+  const n = String(name || '').replace(/\s*(선생님|전도사님|목사님)\s*$/, '').trim();
+  if (n === '신승') return '신승 전도사님';
+  if (n === '정형철') return '정형철 목사님';
+  return n + ' 선생님';
+}
 
 function roomOrVehicleOf(type, id, key) {
   const g = (state[key] || []).find(x => (x.members || []).some(m => m.type === type && m.id === id));
@@ -1540,7 +1559,7 @@ function renderTeachers() {
     list.innerHTML = teachers.slice().sort(byName).map(t => {
       const kids = (state.participants || []).filter(p => getAssignedTeacherName(p.id) === t.name);
       return personRowHtml({
-        name: t.name,
+        name: teacherTitle(t.name),
         sub: t.gender || '',
         roles: t.roles,
         extra: assignInfoHtml('teacher', t.id) +
@@ -2212,7 +2231,7 @@ function renderItemCards(dayList, isPast = false) {
       html += `
         <div class="item-card ${catClass} ${pastClass}">
           <div class="card-top">
-            <span class="date-text">📅 ${escapeHtml(dateFormatted)} ${ddayBadge}</span>
+            <span class="date-text">🗓️ ${escapeHtml(dateFormatted)} ${ddayBadge}</span>
             <div class="tag-wrap">
               <span class="tag-cat ${catClass}">${escapeHtml(mainCat)}</span>
               ${(it.categories && it.categories.length > 1) ? it.categories.slice(1).map(c => `<span class="tag-cat default">${escapeHtml(c)}</span>`).join('') : ''}
@@ -2224,6 +2243,7 @@ function renderItemCards(dayList, isPast = false) {
               ${it.place ? `<span class="dot">·</span><span>${escapeHtml(it.place)}</span>` : ''}
             </div>
             <div class="content-text">${escapeHtml(it.activity)}</div>
+            ${it.description ? `<div class="content-desc">${escapeHtml(it.description)}</div>` : ''}
           </div>
           ${canEdit ? `<div class="ps-actions"><button onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button><button class="del" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
         </div>
@@ -2282,10 +2302,11 @@ function addPrepScheduleEntry() {
   const date = getDateValue('ps-date');
   const place = document.getElementById('ps-item-place').value.trim();
   const activity = document.getElementById('ps-item-activity').value.trim();
+  const description = document.getElementById('ps-item-description').value.trim();
   const categories = Array.from(document.querySelectorAll('.ps-cat-box:checked')).map(el => el.value);
-  if (!date || !activity) { alert('날짜와 활동 내용을 입력해주세요.'); return; }
+  if (!date || !activity) { alert('날짜와 제목을 입력해주세요.'); return; }
 
-  upsertDayItem('prepSchedule', date, { time: getTimeValue('ps-item'), place, activity, categories },
+  upsertDayItem('prepSchedule', date, { time: getTimeValue('ps-item'), place, activity, description, categories },
     document.getElementById('ps-edit-day-id').value, document.getElementById('ps-edit-item-idx').value);
 
   cancelPrepScheduleEdit();
@@ -2304,6 +2325,7 @@ function startEditPrepScheduleItem(dayId, itemIdx) {
   setTimeValue('ps-item', item.time);
   document.getElementById('ps-item-place').value = item.place || '';
   document.getElementById('ps-item-activity').value = item.activity || '';
+  document.getElementById('ps-item-description').value = item.description || '';
   const cats = item.categories || [];
   document.querySelectorAll('.ps-cat-box').forEach(box => {
     box.checked = cats.includes(box.value);
@@ -2319,6 +2341,7 @@ function cancelPrepScheduleEdit() {
   setTimeValue('ps-item', '');
   document.getElementById('ps-item-place').value = '';
   document.getElementById('ps-item-activity').value = '';
+  document.getElementById('ps-item-description').value = '';
   document.querySelectorAll('.ps-cat-box').forEach(box => box.checked = false);
   document.getElementById('ps-submit-btn').textContent = '준비 일정 추가';
   closeForm('prep-schedule-form');
@@ -2498,12 +2521,12 @@ function syncPersonalChecklistDropdown() {
   const me = people.find(x => x.key === supplyPersonKey);
   select.innerHTML = '<option value=""></option>' + people.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
   select.value = me ? me.key : '';
-  const label = x => x.role === 'teacher' ? `${x.name} 선생님` : `${x.name}님`;
+  const label = x => x.role === 'teacher' ? teacherTitle(x.name) : `${x.name}님`;
 
   if (me) {
     const teachers = people.filter(x => x.role === 'teacher');
     const students = people.filter(x => x.role === 'student');
-    const options = students.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌱 ${escapeHtml(x.sub || '')} ${escapeHtml(x.name)}</option>`).join('') + (teachers.length ? teachers.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌳 ${escapeHtml(x.name)} 선생님</option>`).join('') : '');
+    const options = students.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌱 ${escapeHtml(x.sub || '')} ${escapeHtml(x.name)}</option>`).join('') + (teachers.length ? teachers.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌳 ${escapeHtml(teacherTitle(x.name))}</option>`).join('') : '');
 
     picker.innerHTML = `
       <div class="supply-me-head">
@@ -2517,7 +2540,7 @@ function syncPersonalChecklistDropdown() {
     const pending = people.find(x => x.key === supplyPendingKey);
     const teachers = people.filter(x => x.role === 'teacher');
     const students = people.filter(x => x.role === 'student');
-    const options = students.map(x => `<option value="${x.key}">🌱 ${escapeHtml(x.sub || '')} ${escapeHtml(x.name)}</option>`).join('') + (teachers.length ? teachers.map(x => `<option value="${x.key}">🌳 ${escapeHtml(x.name)} 선생님</option>`).join('') : '');
+    const options = students.map(x => `<option value="${x.key}">🌱 ${escapeHtml(x.sub || '')} ${escapeHtml(x.name)}</option>`).join('') + (teachers.length ? teachers.map(x => `<option value="${x.key}">🌳 ${escapeHtml(teacherTitle(x.name))}</option>`).join('') : '');
     if (pending) {
       picker.innerHTML = `
         <div class="supply-confirm">
@@ -2951,7 +2974,7 @@ function bibleMembers() {
 }
 
 function bibleDisplayName(m) {
-  return m.role === 'teacher' ? `${m.name} 선생님` : `${m.name}님`;
+  return m.role === 'teacher' ? teacherTitle(m.name) : `${m.name}님`;
 }
 
 function selectBibleStudent(id) {
@@ -3274,18 +3297,24 @@ function recordBibleRead(bookKey, ch) {
 }
 
 function cancelTodayBibleRead() {
+  cancelBibleReadOn(bibleToday());
+}
+
+// 날짜를 지정해서 그 날의 읽음 기록만 취소 (오늘·이전 기록 모두 가능, 다른 날짜 기록은 그대로)
+function cancelBibleReadOn(dateStr) {
   if (!bibleDetail) return;
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  if (dateStr !== bibleToday() && !confirm(`${dateStr.replace(/-/g, '.')} 읽은 기록을 취소할까요?`)) return;
   const { bookKey, ch } = bibleDetail;
   const sid = bibleStudentId;
-  const today = bibleToday();
-  bibleLocalSet(sid, bookKey, ch, arr => arr.filter(d => d !== today));
-  closeBibleDetail();
+  bibleLocalSet(sid, bookKey, ch, arr => arr.filter(d => d !== dateStr));
   renderBible();
-  DOC_REF.update(bibleFieldPath(sid, bookKey, ch), firebase.firestore.FieldValue.arrayRemove(today))
+  if (bibleDates(sid, bookKey, ch).length) openBibleDetail(bookKey, ch);
+  else closeBibleDetail();
+  DOC_REF.update(bibleFieldPath(sid, bookKey, ch), firebase.firestore.FieldValue.arrayRemove(dateStr))
     .catch(e => {
       console.error('성경읽기 취소 저장 실패:', e);
-      bibleLocalSet(sid, bookKey, ch, arr => arr.includes(today) ? arr : [...arr, today]);
+      bibleLocalSet(sid, bookKey, ch, arr => arr.includes(dateStr) ? arr : [...arr, dateStr]);
       renderBible();
       alert('취소를 저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');
     });
@@ -3310,12 +3339,12 @@ function openBibleDetail(bookKey, ch) {
     <ul class="bb-history">
       ${dates.map(d => {
         const o = bibleDateObj(d);
-        return `<li><span class="bb-dot" style="background:${bibleColor(d)}; border-color:${bibleColor(d)}"></span>${d.replace(/-/g, '.')} <small>(${BIBLE_WEEK[o.getDay()]})</small>${d === today ? '<em>오늘</em>' : ''}</li>`;
+        return `<li><span class="bb-dot" style="background:${bibleColor(d)}; border-color:${bibleColor(d)}"></span>${d.replace(/-/g, '.')} <small>(${BIBLE_WEEK[o.getDay()]})</small>${d === today ? '<em>오늘</em>' : ''}<button type="button" class="bb-cancel-one" onclick="cancelBibleReadOn('${d}')">취소</button></li>`;
       }).join('')}
     </ul>
     <div class="bb-sheet-actions">
       ${readToday
-        ? '<button class="secondary" onclick="cancelTodayBibleRead()">오늘 기록 취소</button>'
+        ? ''
         : '<button class="primary" onclick="rereadBibleToday()">오늘 또 읽었어요</button>'}
       <button class="bb-close" onclick="closeBibleDetail()">닫기</button>
     </div>`;
@@ -3438,56 +3467,3 @@ window.onload = function() {
 
   // 상단 메뉴 탭이 헤더 높이에 맞춰 바로 아래에 붙도록
   const header = document.querySelector('header');
-  const nav = document.querySelector('nav.tabs');
-  const syncNavTop = () => { nav.style.top = `calc(env(safe-area-inset-top, 0px) + ${header.offsetHeight}px)`; };
-  syncNavTop();
-  // 글꼴 로딩·화면 회전 등으로 헤더 높이가 바뀌면 다시 맞춤
-  if (window.ResizeObserver) new ResizeObserver(syncNavTop).observe(header);
-  else window.addEventListener('resize', syncNavTop);
-
-  const tabs = document.querySelectorAll('nav.tabs button');
-  const panels = document.querySelectorAll('main section.panel');
-
-  tabs.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabs.forEach(b => b.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      const tabName = btn.getAttribute('data-tab');
-      const targetPanel = document.getElementById('panel-' + tabName);
-      if (targetPanel) targetPanel.classList.add('active');
-    });
-  });
-
-  // 저장된 탭과 스크롤 위치 복구
-  const savedTab = sessionStorage.getItem('activeTab') || 'feed';
-  const savedScroll = sessionStorage.getItem('scrollPosition') || 0;
-
-  const defaultTabBtn = document.querySelector(`nav.tabs button[data-tab="${savedTab}"]`) || document.querySelector('nav.tabs button[data-tab="feed"]');
-  if (defaultTabBtn) {
-    defaultTabBtn.click();
-    // 탭 클릭 후 스크롤 위치 복구
-    setTimeout(() => {
-      window.scrollTo(0, parseInt(savedScroll));
-    }, 50);
-  }
-
-  // 탭 전환 시 현재 위치 저장
-  tabs.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tabName = btn.getAttribute('data-tab');
-      sessionStorage.setItem('activeTab', tabName);
-      sessionStorage.setItem('scrollPosition', window.scrollY);
-    });
-  });
-
-  // 페이지 언로드 전에 스크롤 위치 저장
-  window.addEventListener('beforeunload', () => {
-    const activeTab = document.querySelector('nav.tabs button.active')?.getAttribute('data-tab');
-    if (activeTab) sessionStorage.setItem('activeTab', activeTab);
-    sessionStorage.setItem('scrollPosition', window.scrollY);
-  });
-};
-</script>
-</body>
-</html>
