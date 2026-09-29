@@ -1333,15 +1333,36 @@ function initFirebaseRealtimeSync() {
 }
 
 async function initFirebaseAuth() {
-  try {
-    await auth.signInAnonymously();
-    firebaseAuthReady = true;
-    initFirebaseRealtimeSync();
-  } catch (error) {
-    firebaseAuthReady = false;
-    console.error("Firebase 익명 인증 실패:", error);
-    showSyncAlert('⚠️ 서버 로그인에 실패했어요. 오류: ' + (error && error.code ? error.code : '') + ' ' + (error && error.message ? error.message : ''));
+  if (location.protocol === 'file:') {
+    showSyncAlert('⚠️ 파일을 직접 열면 데이터를 불러올 수 없어요. 배포된 주소(https://...)로 열어 주세요.');
   }
+  // 서버 응답이 오래 없을 때 알려줌
+  setTimeout(() => {
+    if (latestRemoteState === null && !document.getElementById('sync-alert')) {
+      showSyncAlert('⚠️ 서버 응답이 8초 넘게 없어요. (로그인: ' + (firebaseAuthReady ? '성공' : '대기 중/실패') + ') 인터넷 연결을 확인하고 새로고침해 보세요.');
+    }
+  }, 8000);
+  // 일시적인 네트워크 오류는 자동으로 다시 시도 (3초 간격, 최대 6번). 인터넷이 다시 연결되면 즉시 재시도
+  let tries = 0, started = false, busy = false;
+  const attempt = async () => {
+    if (started || busy) return;
+    busy = true;
+    try {
+      await auth.signInAnonymously();
+      firebaseAuthReady = true;
+      started = true;
+      initFirebaseRealtimeSync();
+    } catch (error) {
+      firebaseAuthReady = false;
+      console.error("Firebase 익명 인증 실패:", error);
+      const isNet = error && error.code === 'auth/network-request-failed';
+      showSyncAlert('⚠️ 서버 로그인에 실패했어요' + (isNet && tries < 6 ? ' — 다시 연결하는 중… ' : '. ') + '오류: ' + (error && error.code ? error.code : '') + ' ' + (error && error.message ? error.message : ''));
+      if (isNet && tries < 6) { tries++; setTimeout(() => { busy = false; attempt(); }, 3000); return; }
+    }
+    busy = false;
+  };
+  window.addEventListener('online', () => { if (!started) { tries = 0; attempt(); } });
+  attempt();
 }
 
 // 앱 설치 가이드 모달 제어 함수
