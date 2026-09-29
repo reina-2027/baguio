@@ -48,7 +48,7 @@
   :root {
     /* 탭별 색: 같은 밝기·채도로 맞춘 차분한 팔레트 (흰 글씨 대비 4.4:1 이상) */
     --c-feed: #B97340; --c-feed-deep: #6E401E; --c-feed-soft: #FFF3EA; --c-feed-line: #F4DCCB;
-    --c-bible: #597F68; --c-bible-deep: #385544; --c-bible-soft: #EDF5F0; --c-bible-line: #CFE3D6;
+    --c-english: #4A86B5; --c-english-deep: #24506F; --c-english-soft: #EAF3F9; --c-bible: #597F68; --c-bible-deep: #385544; --c-bible-soft: #EDF5F0; --c-bible-line: #CFE3D6;
     --c-prep: #CEAC64; --c-prep-deep: #533F0D; --c-prep-soft: #FAF3E5;    --c-participants: #747B46;--c-teachers: #7170A1;--c-assign: #378484;--c-flights: #4B7C9E;--c-schedule: #9B9389; --c-schedule-deep: #5F5B54; --c-schedule-soft: #FCF9F4; --c-schedule-line: #EFE9DC;
     --c-personal: #8D678E;--c-personal-soft: #F7ECF7; --c-personal-line: #E9D8E9;
     --c-shared: #7D766E;--bg: #f7f5f0;
@@ -120,6 +120,7 @@
   nav.tabs button[data-tab="schedule"].active { background: var(--c-schedule); border-color: var(--c-schedule); color: #FFFFFF; }
   nav.tabs button[data-tab="personal-supplies"].active { background: var(--c-personal); border-color: var(--c-personal); color: #FFFFFF; }
   nav.tabs button[data-tab="shared-supplies"].active { background: var(--c-shared); border-color: var(--c-shared); color: #FFFFFF; }
+  nav.tabs button[data-tab="english"].active { background: var(--c-english); border-color: var(--c-english); color: #FFFFFF; }
   nav.tabs button[data-tab="bible"].active { background: var(--c-bible); border-color: var(--c-bible); color: #FFFFFF; }
 
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
@@ -136,6 +137,7 @@
   #panel-schedule .card::before { background: var(--c-schedule); }
   #panel-personal-supplies .card::before { background: var(--c-personal); }
   #panel-shared-supplies .card::before { background: var(--c-shared); }
+  #panel-english .card::before { background: var(--c-english); }
   #panel-bible .card::before { background: var(--c-bible); }
 
   .card h2 { margin: 0 0 12px; font-size: 1.02rem; font-weight: 800; letter-spacing:-0.02em; }
@@ -303,6 +305,8 @@
 
   .person-list { display:flex; flex-direction:column; }
   .person-row { display:flex; align-items:center; gap:12px; padding:12px 4px; border-bottom:1px solid var(--border); }
+  .person-row.flash { background:var(--c-english-soft, #fbefea); animation:rowflash 2.4s ease-out; }
+  @keyframes rowflash { 0%,60% { background:#ffe9a8; } 100% { background:transparent; } }
   .person-row:last-child { border-bottom:none; }
   .person-row.clickable { cursor:pointer; border-radius:10px; }
   .person-row.clickable:active { background:var(--bg); }
@@ -489,6 +493,34 @@
   .notice.bible .notice-date { background:var(--c-bible); color:#fff; }
   .notice.bible .notice-author { color:var(--c-bible-deep); }
   .notice.bible .notice-title { color:var(--c-bible-deep); }
+  .en-step { border:1px solid var(--line, #e8e2d8); border-radius:14px; padding:14px; margin-bottom:12px; background:var(--card); }
+  .en-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .en-no { background:var(--c-english); color:#fff; font-weight:800; font-size:0.8rem; min-width:26px; height:26px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; }
+  .en-title { font-weight:800; font-size:1rem; flex:1; }
+  .en-text { font-size:1.08rem; line-height:1.6; font-weight:600; color:var(--c-english-deep); background:var(--c-english-soft); border-radius:10px; padding:10px 12px; }
+  .en-ko { margin-top:8px; font-size:0.92rem; line-height:1.6; color:var(--muted); display:none; }
+  .en-step.open .en-ko { display:block; }
+  .en-verse { margin-top:8px; font-size:0.82rem; font-weight:700; color:var(--c-english-deep); }
+  .en-tools { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .en-tools button { font-size:0.8rem; padding:6px 10px; border-radius:999px; border:1px solid var(--c-english); background:transparent; color:var(--c-english-deep); font-weight:700; cursor:pointer; }
+  .en-tools button.del { border-color:#c44; color:#c44; }
+  .en-modes { display:flex; gap:6px; margin-bottom:8px; }
+  .en-modes button { flex:1; padding:8px 4px; border-radius:999px; border:1px solid var(--c-english); background:transparent; color:var(--c-english-deep); font-weight:700; font-size:0.82rem; cursor:pointer; }
+  .en-modes button.on { background:var(--c-english); color:#fff; }
+  .en-blank { border-bottom:2px solid var(--c-english); color:transparent; cursor:pointer; }
+  .en-blank.show { color:inherit; border-bottom-color:transparent; }
+  .en-step { border-left:5px solid var(--c-english); }
+  .en-step.k-talk { border-left-color:#3E9AA6; }
+  .en-step.k-talk .en-no { background:#3E9AA6; }
+  .en-step.k-talk .en-text { background:#E8F5F6; color:#1F5F68; }
+  .en-sec.s-talk { color:#2A7A85; }
+  .en-sec { font-weight:800; font-size:0.9rem; color:var(--c-english-deep); margin:14px 2px 8px; }
+  .eg-now { background:var(--c-english-soft); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
+  .eg-now .t { font-weight:800; font-size:1.02rem; color:var(--c-english-deep); }
+  .eg-now .d { font-size:0.82rem; font-weight:700; color:var(--c-english); margin-top:4px; }
+  .eg-row { display:flex; align-items:center; gap:8px; padding:7px 2px; font-size:0.88rem; border-bottom:1px solid var(--border); }
+  .eg-row.past { color:var(--muted); text-decoration:line-through; }
+  .eg-row .x { margin-left:auto; border:none; background:none; color:#c44; font-weight:700; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -510,6 +542,7 @@
 <nav class="tabs">
   <button data-tab="feed">공지</button>
   <button data-tab="bible">성경읽기</button>
+  <button data-tab="english">영어전도</button>
   <button data-tab="prep-schedule">준비일정</button>
   <button data-tab="participants">학생</button>
   <button data-tab="teachers">교사</button>
@@ -527,8 +560,6 @@
     <div class="card">
       <div class="list-head"><h2>🌱 학생 명단</h2><span class="list-count" id="participant-count"></span></div>
       <input id="p-search-teacher" class="people-search" placeholder="🔍 이름, 학년, 담당, 방, 차량 검색" oninput="renderParticipants()" />
-      <div class="person-list" id="participant-list"></div>
-
       <div class="add-form collapsed" id="participant-form" style="display:none;">
         <button type="button" class="form-toggle" onclick="openForm('participant-form')">＋ 학생 추가</button>
         <input type="hidden" id="p-edit-id" value="" />
@@ -573,6 +604,8 @@
           <button class="danger-link" id="p-delete-btn" style="display:none;" onclick="deleteEditingPerson('participant')">삭제</button>
         </div>
       </div>
+      <div class="person-list" id="participant-list"></div>
+
     </div>
   </section>
 
@@ -797,6 +830,51 @@
     <div id="bible-root"></div>
   </section>
 
+  <!-- 영어전도 탭 -->
+  <section class="panel" id="panel-english">
+    <div class="card">
+      <h2>🎯 주차별 목표</h2>
+      <div id="english-goal-now"></div>
+      <div id="english-goal-list"></div>
+      <div class="add-form collapsed" id="english-goal-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('english-goal-form')">＋ 목표 추가</button>
+        <div><label>마감일</label><input id="eg-date" type="date" /></div>
+        <div><label>목표</label><input id="eg-text" placeholder="예: 사영리 법칙 1~2 암기" /></div>
+        <div class="form-actions">
+          <button class="primary" onclick="addEnglishGoal()">목표 등록</button>
+          <button class="secondary" onclick="closeForm('english-goal-form')">취소</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🗣️ 영어전도</h2>
+      <div class="en-modes" id="en-modes">
+        <button data-m="0" class="on">전체 보기</button>
+        <button data-m="1">빈칸</button>
+        <button data-m="2">안 보기</button>
+      </div>
+      <div class="bb-hint" style="text-align:left; margin:0 2px 12px;">가려진 단어는 눌러서 확인할 수 있어요.</div>
+      <div class="add-form collapsed" id="english-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('english-form')">＋ 카드 추가</button>
+        <input type="hidden" id="en-edit-id" value="" />
+        <div><label>종류</label>
+          <select id="en-kind"><option value="step">사영리 (단계)</option><option value="talk">실전 회화</option></select>
+        </div>
+        <div><label>순서 번호 (작은 숫자가 위로)</label><input id="en-no" type="number" inputmode="numeric" placeholder="예: 1" /></div>
+        <div><label>제목</label><input id="en-title" placeholder="예: Law 1 / 자기소개" /></div>
+        <div><label>영어 문장</label><textarea id="en-text" placeholder="영어 문장을 입력해주세요"></textarea></div>
+        <div><label>한글 뜻</label><textarea id="en-ko" placeholder="한글 뜻을 입력해주세요"></textarea></div>
+        <div><label>성경 구절 (선택)</label><input id="en-verse" placeholder="예: John 3:16" /></div>
+        <div class="form-actions">
+          <button class="primary" id="en-submit-btn" onclick="addEnglishStep()">등록</button>
+          <button class="secondary" onclick="cancelEnglishEdit()">취소</button>
+        </div>
+      </div>
+      <div id="english-list"></div>
+    </div>
+  </section>
+
   <!-- 6. 공지 탭 -->
   <section class="panel" id="panel-feed">
     <div class="card">
@@ -834,7 +912,6 @@
   <section class="panel" id="panel-teachers">
     <div class="card">
       <div class="list-head"><h2>🌳 교사 명단</h2><span class="list-count" id="teacher-count"></span></div>
-      <div class="person-list" id="teacher-list"></div>
       <div class="add-form collapsed" id="teacher-form" style="display:none;">
         <button type="button" class="form-toggle" onclick="openForm('teacher-form')">＋ 교사 추가</button>
         <input type="hidden" id="t-edit-id" value="" />
@@ -874,6 +951,7 @@
           <button class="danger-link" id="t-delete-btn" style="display:none;" onclick="deleteEditingPerson('teacher')">삭제</button>
         </div>
       </div>
+      <div class="person-list" id="teacher-list"></div>
     </div>
   </section>
 
@@ -1152,6 +1230,8 @@ let state = {
   schedule: [],
   prepSchedule: [],
   posts: [],
+  evangelism: [],
+  evangelismGoals: [],
   teachers: [],
   rooms: [],
   vehicles: [],
@@ -1266,6 +1346,8 @@ function buildSavePayload(remoteOverride = null) {
 function normalizeRemote(remote) {
   if (!remote.flightInfos) remote.flightInfos = [];
   if (!remote.prepSchedule) remote.prepSchedule = [];
+  if (!remote.evangelism) remote.evangelism = [];
+  if (!remote.evangelismGoals) remote.evangelismGoals = [];
   if (!remote.personalChecks) remote.personalChecks = {};
   if (!remote.personalChecklistData || !remote.personalChecklistData.length) {
     remote.personalChecklistData = cloneData(defaultPersonalChecklistData);
@@ -1299,7 +1381,7 @@ let backupItems = [];
 
 function hasMeaningfulData(d) {
   if (!d) return false;
-  const lists = ['participants', 'teachers', 'posts', 'prepSchedule', 'schedule', 'flightInfos', 'rooms', 'vehicles'];
+  const lists = ['participants', 'teachers', 'posts', 'evangelism', 'evangelismGoals', 'prepSchedule', 'schedule', 'flightInfos', 'rooms', 'vehicles'];
   return lists.some(k => Array.isArray(d[k]) && d[k].length > 0)
     || Object.keys(d.bibleReading || {}).length > 0
     || Object.keys(d.personalChecks || {}).length > 0;
@@ -1607,6 +1689,15 @@ function toggleAdminMode() {
 }
 
 async function saveToCloud() {
+  // 입력칸에 이름만 적어 두고 '추가' 버튼을 안 눌렀다면 그 학생·교사도 함께 저장
+  ['participant', 'teacher'].forEach(kind => {
+    const form = document.getElementById(kind + '-form');
+    const nameEl = document.getElementById((kind === 'participant' ? 'p' : 't') + '-name');
+    if (form && nameEl && !form.classList.contains('collapsed') && nameEl.value.trim()) {
+      if (kind === 'participant') submitParticipant(); else submitTeacher();
+    }
+  });
+
   if (!firebaseAuthReady || !auth.currentUser) {
     alert('Firebase 인증이 완료되지 않았습니다. 잠시 후 다시 시도해주세요.');
     return;
@@ -1714,9 +1805,9 @@ function assignInfoHtml(type, id) {
   return `<div class="p-info">🛏️ ${room} &nbsp;·&nbsp; 🚐 ${vehicle}</div>`;
 }
 
-function personRowHtml({ name, sub, roles, extra, onclick }) {
+function personRowHtml({ id, name, sub, roles, extra, onclick }) {
   return `
-    <div class="person-row${canEdit ? ' clickable' : ''}" ${canEdit ? `onclick="${onclick}"` : ''}>
+    <div class="person-row${canEdit ? ' clickable' : ''}" data-pid="${id || ''}" ${canEdit ? `onclick="${onclick}"` : ''}>
       <div class="p-body">
         <div class="p-line1">
           <span class="p-name">${escapeHtml(name)}</span>
@@ -1727,6 +1818,24 @@ function personRowHtml({ name, sub, roles, extra, onclick }) {
       </div>
       ${canEdit ? '<span class="p-chev">›</span>' : ''}
     </div>`;
+}
+
+// 방금 추가·수정한 사람 줄로 스크롤하고 잠깐 강조
+function flashPerson(id) {
+  setTimeout(() => {
+    const row = document.querySelector('.panel.active .person-row[data-pid="' + id + '"]') || document.querySelector('.person-row[data-pid="' + id + '"]');
+    if (!row) return;
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash');
+  }, 60);
+}
+
+// 새로 추가한 뒤에도 입력칸을 열어 둬서 이어서 계속 추가할 수 있게 함
+function keepFormOpenForNext(formId) {
+  const form = document.getElementById(formId);
+  form.classList.remove('collapsed');
+  const first = form.querySelector('input:not([type="hidden"]):not([type="checkbox"])');
+  if (first) first.focus({ preventScroll: true });
 }
 
 // 학생·교사·배정이 서로 연결되어 있어 함께 다시 그림
@@ -1757,6 +1866,7 @@ function renderParticipants() {
     list.innerHTML = '<div class="empty">검색 결과가 없어요.</div>';
   } else {
     list.innerHTML = filtered.map(p => personRowHtml({
+      id: p.id,
       name: p.name,
       sub: [p.grade, p.gender].filter(Boolean).join(' · '),
       roles: p.roles,
@@ -1785,10 +1895,15 @@ function submitParticipant() {
   } else {
     state.participants.push({ id: uid(), ...data });
   }
+  const flashId = editId || state.participants[state.participants.length - 1].id;
+  const searchBox = document.getElementById('p-search-teacher');
+  if (searchBox) searchBox.value = ''; // 검색어가 남아 있으면 새로 추가한 학생이 가려짐
   cancelParticipantEdit();
+  if (!editId) keepFormOpenForNext('participant-form');
   renderPeople();
   syncPersonalChecklistDropdown();
   markDirty('participants');
+  flashPerson(flashId);
 }
 
 function startEditParticipant(id) {
@@ -1842,6 +1957,7 @@ function renderTeachers() {
     list.innerHTML = teachers.slice().sort(byName).map(t => {
       const kids = (state.participants || []).filter(p => getAssignedTeacherName(p.id) === t.name);
       return personRowHtml({
+        id: t.id,
         name: teacherTitle(t.name),
         sub: t.gender || '',
         roles: t.roles,
@@ -1871,11 +1987,14 @@ function submitTeacher() {
   } else {
     state.teachers.push({ id: uid(), ...data });
   }
+  const flashId = editId || state.teachers[state.teachers.length - 1].id;
   cancelTeacherEdit();
+  if (!editId) keepFormOpenForNext('teacher-form');
   renderPeople();
   renderTeacherAuthorOptions();
   syncPersonalChecklistDropdown();
   markDirty('teachers');
+  flashPerson(flashId);
 }
 
 function startEditTeacher(id) {
@@ -2725,7 +2844,6 @@ function startEditPost(id) {
   
   const submitBtn = document.getElementById('post-submit-btn');
   if (submitBtn) submitBtn.textContent = '저장';
-  const cancelBtn = document.getElementById('post-cancel-btn');
   openForm('feed-form', true);
 }
 
@@ -2746,6 +2864,163 @@ function removePost(id) {
   state.posts = (state.posts || []).filter(p => p.id !== id);
   renderPosts();
   markDirty('posts');
+}
+
+// ===== 영어전도 =====
+let enMode = 0; // 0 전체 보기, 1 빈칸, 2 안 보기
+
+// 영어 문장을 단어별로 가려서 보여줌 (가린 단어는 눌러서 확인)
+function maskEnglish(text, mode) {
+  const esc = escapeHtml(text || '');
+  if (!mode) return esc;
+  return esc.replace(/[A-Za-z][A-Za-z']*/g, w => {
+    const hide = mode === 1 ? w.length >= 4 : true;
+    if (!hide) return w;
+    return `<span class="en-blank">${w}</span>`;
+  });
+}
+
+function enCardHtml(p) {
+  return `
+    <div class="en-step k-${p.kind === 'talk' ? 'talk' : 'step'}" id="en-${p.id}">
+      <div class="en-head"><span class="en-no">${escapeHtml(String(p.no ?? ''))}</span><span class="en-title">${escapeHtml(p.title || '')}</span></div>
+      <div class="en-text">${maskEnglish(p.text, enMode)}</div>
+      <div class="en-ko">${escapeHtml(p.ko || '')}</div>
+      ${p.verse ? `<div class="en-verse">📖 ${escapeHtml(p.verse)}</div>` : ''}
+      <div class="en-tools">
+        <button onclick="speakEnglish('${p.id}', 0.9)">🔊 듣기</button>
+        <button onclick="speakEnglish('${p.id}', 0.6)">🐢 천천히</button>
+        <button onclick="document.getElementById('en-${p.id}').classList.toggle('open')">한글 뜻</button>
+        ${canEdit ? `<button onclick="startEditEnglish('${p.id}')">수정</button><button class="del" onclick="removeEnglishStep('${p.id}')">삭제</button>` : ''}
+      </div>
+    </div>`;
+}
+
+function renderEnglish() {
+  const list = document.getElementById('english-list');
+  if (!list) return;
+  const sortFn = (a, b) => (Number(a.no) || 0) - (Number(b.no) || 0) || String(a.id).localeCompare(String(b.id));
+  const all = state.evangelism || [];
+  const steps = all.filter(p => p.kind !== 'talk').sort(sortFn);
+  const talks = all.filter(p => p.kind === 'talk').sort(sortFn);
+  list.innerHTML = all.length
+    ? (steps.length ? '<div class="en-sec">📖 사영리</div>' + steps.map(enCardHtml).join('') : '')
+      + (talks.length ? '<div class="en-sec s-talk">💬 실전 회화</div>' + talks.map(enCardHtml).join('') : '')
+    : '<div class="empty">아직 등록된 내용이 없어요.' + (canEdit ? ' 위에서 카드를 추가해 주세요.' : '') + '</div>';
+  document.querySelectorAll('#en-modes button').forEach(b => b.classList.toggle('on', Number(b.dataset.m) === enMode));
+  document.getElementById('english-form').style.display = canEdit ? 'block' : 'none';
+  renderEnglishGoals();
+}
+
+// 가려진 단어 누르면 보이기 / 모드 버튼
+document.addEventListener('click', function(e) {
+  const blank = e.target.closest && e.target.closest('.en-blank');
+  if (blank) { blank.classList.toggle('show'); return; }
+  const m = e.target.closest && e.target.closest('#en-modes button');
+  if (m) { enMode = Number(m.dataset.m); renderEnglish(); }
+});
+
+// ===== 주차별 목표 =====
+function renderEnglishGoals() {
+  const nowEl = document.getElementById('english-goal-now');
+  const listEl = document.getElementById('english-goal-list');
+  if (!nowEl || !listEl) return;
+  const goals = (state.evangelismGoals || []).slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  const today = bibleToday();
+  const current = goals.find(g => (g.date || '') >= today);
+  const dtxt = g => { const dp = dateParts(g.date); const diff = daysUntil(g.date); return `${dp ? dp.m + '/' + dp.d : escapeHtml(g.date || '')}까지${diff !== null ? ' · ' + ddayText(diff) : ''}`; };
+  nowEl.innerHTML = current
+    ? `<div class="eg-now"><div class="t">${escapeHtml(current.text || '')}</div><div class="d">🎯 이번 목표 · ${dtxt(current)}</div></div>`
+    : `<div class="empty">${goals.length ? '남은 목표가 없어요.' : '등록된 목표가 없어요.'}</div>`;
+  listEl.innerHTML = goals.filter(g => g !== current).map(g => `
+    <div class="eg-row${(g.date || '') < today ? ' past' : ''}"><span>${escapeHtml(g.text || '')}</span>
+    <span style="color:var(--muted);font-size:0.78rem;">${dtxt(g)}</span>
+    ${canEdit ? `<button class="x" onclick="removeEnglishGoal('${g.id}')">삭제</button>` : ''}</div>`).join('')
+    + (canEdit && current ? `<div class="eg-row"><span style="color:var(--muted)">이번 목표 삭제</span><button class="x" onclick="removeEnglishGoal('${current.id}')">삭제</button></div>` : '');
+  document.getElementById('english-goal-form').style.display = canEdit ? 'block' : 'none';
+}
+
+function addEnglishGoal() {
+  const date = document.getElementById('eg-date').value;
+  const text = document.getElementById('eg-text').value.trim();
+  if (!date) { alert('마감일을 선택해주세요.'); return; }
+  if (!text) { alert('목표를 입력해주세요.'); return; }
+  if (!state.evangelismGoals) state.evangelismGoals = [];
+  state.evangelismGoals.push({ id: uid(), date, text });
+  document.getElementById('eg-date').value = '';
+  document.getElementById('eg-text').value = '';
+  closeForm('english-goal-form');
+  renderEnglishGoals();
+  markDirty('evangelismGoals');
+}
+
+function removeEnglishGoal(id) {
+  if (!confirm('이 목표를 삭제할까요?')) return;
+  state.evangelismGoals = (state.evangelismGoals || []).filter(g => g.id !== id);
+  renderEnglishGoals();
+  markDirty('evangelismGoals');
+}
+
+function speakEnglish(id, rate) {
+  const p = (state.evangelism || []).find(x => x.id === id);
+  if (!p || !p.text) return;
+  if (!('speechSynthesis' in window)) { alert('이 기기에서는 음성 듣기를 지원하지 않아요.'); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(p.text);
+  u.lang = 'en-US';
+  u.rate = rate;
+  window.speechSynthesis.speak(u);
+}
+
+function addEnglishStep() {
+  const no = document.getElementById('en-no').value.trim();
+  const title = document.getElementById('en-title').value.trim();
+  const text = document.getElementById('en-text').value.trim();
+  const ko = document.getElementById('en-ko').value.trim();
+  const verse = document.getElementById('en-verse').value.trim();
+  const kind = document.getElementById('en-kind').value === 'talk' ? 'talk' : 'step';
+  const editId = document.getElementById('en-edit-id').value;
+  if (!title) { alert('제목을 입력해주세요.'); return; }
+  if (!text) { alert('영어 문장을 입력해주세요.'); return; }
+  if (!state.evangelism) state.evangelism = [];
+  const numNo = no === '' ? state.evangelism.filter(x => (x.kind || 'step') === kind).length + 1 : Number(no);
+  if (editId) {
+    const p = state.evangelism.find(x => x.id === editId);
+    if (p) Object.assign(p, { kind, no: numNo, title, text, ko, verse });
+  } else {
+    state.evangelism.push({ id: uid(), kind, no: numNo, title, text, ko, verse });
+  }
+  cancelEnglishEdit();
+  renderEnglish();
+  markDirty('evangelism');
+}
+
+function startEditEnglish(id) {
+  const p = (state.evangelism || []).find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('en-edit-id').value = id;
+  document.getElementById('en-kind').value = p.kind === 'talk' ? 'talk' : 'step';
+  document.getElementById('en-no').value = p.no ?? '';
+  document.getElementById('en-title').value = p.title || '';
+  document.getElementById('en-text').value = p.text || '';
+  document.getElementById('en-ko').value = p.ko || '';
+  document.getElementById('en-verse').value = p.verse || '';
+  document.getElementById('en-submit-btn').textContent = '저장';
+  openForm('english-form', true);
+}
+
+function cancelEnglishEdit() {
+  ['en-edit-id', 'en-no', 'en-title', 'en-text', 'en-ko', 'en-verse'].forEach(i => { document.getElementById(i).value = ''; });
+  document.getElementById('en-kind').value = 'step';
+  document.getElementById('en-submit-btn').textContent = '등록';
+  closeForm('english-form');
+}
+
+function removeEnglishStep(id) {
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+  state.evangelism = (state.evangelism || []).filter(x => x.id !== id);
+  renderEnglish();
+  markDirty('evangelism');
 }
 
 function setProgress(prefix, done, total) {
@@ -3183,6 +3458,7 @@ function renderAll() {
   renderSchedule();
   renderPrepSchedule();
   renderPosts();
+  renderEnglish();
   syncPersonalChecklistDropdown();
   renderSharedChecklist();
   renderBible();
@@ -3738,6 +4014,20 @@ function setupDateTimeAutoAdvance() {
     delete sel.dataset.prev;
   });
 }
+
+// 입력칸에서 엔터를 누르면 같은 양식의 다음 칸으로 이동 (여러 줄 입력칸·버튼은 제외)
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' || e.isComposing || e.shiftKey) return;
+  const el = e.target;
+  if (!el || el.tagName === 'TEXTAREA' || el.tagName === 'BUTTON' || !el.matches('input:not([type="checkbox"]):not([type="file"]):not([type="hidden"])')) return;
+  const form = el.closest('.add-form');
+  if (!form) return;
+  e.preventDefault();
+  const fields = Array.from(form.querySelectorAll('input:not([type="hidden"]):not([type="checkbox"]):not([type="file"]), textarea, select'))
+    .filter(f => !f.disabled && f.offsetParent !== null);
+  const next = fields[fields.indexOf(el) + 1];
+  if (next) next.focus(); else el.blur();
+});
 
 window.onload = function() {
   initFirebaseAuth();
