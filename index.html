@@ -113,14 +113,10 @@
   }
   nav.tabs button[data-tab="feed"].active { background: var(--c-feed); border-color: var(--c-feed); color: #FFFFFF; }
   nav.tabs button[data-tab="prep-schedule"].active { background: var(--c-prep); border-color: var(--c-prep); color: var(--c-prep-deep); }
-  nav.tabs button[data-tab="participants"].active { background: var(--c-participants); border-color: var(--c-participants); color: #FFFFFF; }
-  nav.tabs button[data-tab="teachers"].active { background: var(--c-teachers); border-color: var(--c-teachers); color: #FFFFFF; }
-  nav.tabs button[data-tab="assign"].active { background: var(--c-assign); border-color: var(--c-assign); color: #FFFFFF; }
-  nav.tabs button[data-tab="flights"].active { background: var(--c-flights); border-color: var(--c-flights); color: #FFFFFF; }
   nav.tabs button[data-tab="schedule"].active { background: var(--c-schedule); border-color: var(--c-schedule); color: #FFFFFF; }
-  nav.tabs button[data-tab="personal-supplies"].active { background: var(--c-personal); border-color: var(--c-personal); color: #FFFFFF; }
-  nav.tabs button[data-tab="shared-supplies"].active { background: var(--c-shared); border-color: var(--c-shared); color: #FFFFFF; }
-  nav.tabs button[data-tab="english"].active { background: var(--c-english); border-color: var(--c-english); color: #FFFFFF; }
+  nav.tabs button[data-tab="teams"].active { background: var(--c-english); border-color: var(--c-english); color: #FFFFFF; }
+  nav.tabs button[data-tab="roster"].active { background: var(--c-participants); border-color: var(--c-participants); color: #FFFFFF; }
+  nav.tabs button[data-tab="depart"].active { background: var(--c-flights); border-color: var(--c-flights); color: #FFFFFF; }
   nav.tabs button[data-tab="bible"].active { background: var(--c-bible); border-color: var(--c-bible); color: #FFFFFF; }
 
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
@@ -138,6 +134,7 @@
   #panel-personal-supplies .card::before { background: var(--c-personal); }
   #panel-shared-supplies .card::before { background: var(--c-shared); }
   #panel-english .card::before { background: var(--c-english); }
+  #panel-teams .card::before { background: var(--team-color, var(--c-english)); }
   #panel-bible .card::before { background: var(--c-bible); }
 
   .card h2 { margin: 0 0 12px; font-size: 1.02rem; font-weight: 800; letter-spacing:-0.02em; }
@@ -164,19 +161,14 @@
   /* 준비일정 카드 */
   .section-title { font-size:0.9rem; font-weight:800; color:var(--text); margin:4px 2px 10px; }
   .section-title.past { color:var(--muted); margin-top:22px; }
-  .item-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(40,30,20,0.04); }
+  .item-card { background:var(--card); border:1px solid var(--border); border-left:6px solid var(--cc, var(--c-prep)); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(40,30,20,0.04); }
   .item-card.past-card { background:var(--bg); opacity:0.75; box-shadow:none; }
   .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px; }
   .date-text { font-size:0.92rem; font-weight:800; color:var(--text); display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
   .tag-wrap { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:4px; }
   .tag-cat { display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:6px; background:var(--bg2); color:#5b5f55; }
-  .tag-cat::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--c-prep); }
-  .tag-cat.english::before { background:#3b7a57; }
-  .tag-cat.teacher::before { background:#3b7a8c; }
-  .tag-cat.worship::before { background:#b07070; }
-  .tag-cat.praise::before { background:var(--c-schedule); }
-  .tag-cat.balloon::before { background:#b99248; }
-  .tag-cat.taekwondo::before { background:#c97a4a; }
+  .tag-cat { background:color-mix(in srgb, var(--cc, #999) 14%, #fff); color:var(--cc-deep, #4a4a44); }
+  .tag-cat::before { display:none; }
   .dday-pill { display:inline-block; padding:1px 7px; border-radius:6px; background:var(--c-prep-soft); color:var(--c-prep-deep); font-size:0.72rem; font-weight:800; margin-left:4px; }
   .dday-pill.today { background:var(--c-prep); color:var(--c-prep-deep); }
   .dday-pill.after { background:var(--bg2); color:var(--muted); }
@@ -189,7 +181,7 @@
   .content-desc { font-size:0.87rem; color:var(--muted); margin-top:4px; line-height:1.55; white-space:pre-wrap; }
   /* 글자 단위로 줄바꿈 (단어 덩어리가 통째로 내려가지 않게) */
   .content-text, .content-desc, .p-info, .notice-title, .notice-text, .sch-activity-title, .sch-activity-desc, .item-name, .item-must-reason, .sch-next-title, .sch-next-meta { word-break:break-all; overflow-wrap:anywhere; }
-  .past-card .tag-cat::before { background:#b5b0a6; }
+  .past-card { --cc:#b5b0a6 !important; }
   .ps-actions { display:flex; justify-content:flex-end; gap:14px; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); }
   .ps-actions button { border:none; background:none; padding:0; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); }
   .ps-actions button.del { color:#b0504a; }
@@ -522,6 +514,35 @@
   .eg-row { display:flex; align-items:center; gap:8px; padding:7px 2px; font-size:0.88rem; border-bottom:1px solid var(--border); }
   .eg-row.past { color:var(--muted); text-decoration:line-through; }
   .eg-row .x { margin-left:auto; border:none; background:none; color:#c44; font-weight:700; cursor:pointer; }
+  /* 상단 서브 칩 (명단·출국준비·사역팀) */
+  .subtabs { display:flex; gap:6px; overflow-x:auto; padding:0 2px 12px; scrollbar-width:none; }
+  .subtabs::-webkit-scrollbar { display:none; }
+  .subtabs button { flex:0 0 auto; padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:#4d544e; font-size:0.86rem; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .subtabs button.on { background:var(--sc, var(--c-english)); border-color:var(--sc, var(--c-english)); color:#fff; }
+  /* 준비일정 필터 */
+  .ps-filter { display:flex; gap:6px; overflow-x:auto; padding:2px 0 4px; scrollbar-width:none; }
+  .ps-filter::-webkit-scrollbar { display:none; }
+  .ps-filter button { flex:0 0 auto; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:#4d544e; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .ps-filter button.on { background:var(--cc, var(--c-prep)); border-color:var(--cc, var(--c-prep)); color:#fff; }
+  details.ps-past > summary { cursor:pointer; font-size:0.9rem; font-weight:800; color:var(--muted); margin:22px 2px 10px; }
+  .ps-src { font-size:0.7rem; font-weight:700; color:var(--muted); margin-left:6px; }
+  /* 사역팀 */
+  .tm-next { border-radius:14px; padding:14px 16px; background:color-mix(in srgb, var(--cc) 12%, #fff); border:1px solid color-mix(in srgb, var(--cc) 35%, #fff); margin-bottom:10px; }
+  .tm-next .lab { font-size:0.75rem; font-weight:800; color:var(--cc-deep); }
+  .tm-next .when { font-size:1.15rem; font-weight:800; margin-top:4px; }
+  .tm-next .what { font-size:0.95rem; font-weight:600; margin-top:3px; white-space:pre-wrap; }
+  .tm-next .desc { font-size:0.86rem; color:var(--muted); margin-top:4px; white-space:pre-wrap; }
+  .tm-row { display:flex; gap:10px; align-items:baseline; padding:8px 2px; border-bottom:1px solid var(--border); font-size:0.88rem; }
+  .tm-row .d { font-weight:800; min-width:5.2em; }
+  .tm-row.past { color:var(--muted); }
+  .tm-row .acts { margin-left:auto; display:flex; gap:10px; }
+  .tm-row .acts button { border:none; background:none; padding:0; font-size:0.78rem; font-weight:700; color:var(--muted); cursor:pointer; font-family:inherit; }
+  .tm-row .acts button.del { color:#b0504a; }
+  .tl-btn { display:flex; align-items:center; gap:8px; padding:11px 14px; margin-bottom:8px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--text); font-weight:700; font-size:0.92rem; text-decoration:none; }
+  .tl-item .tl-del { border:none; background:none; color:#b0504a; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:inherit; padding:0 2px 8px; }
+  .tl-photo img { width:100%; border-radius:12px; display:block; margin-bottom:6px; background:var(--bg2); }
+  .tm-mem { display:inline-flex; gap:4px; align-items:center; padding:5px 11px; margin:0 6px 6px 0; border-radius:999px; background:var(--bg2); font-size:0.88rem; font-weight:600; }
+  .tm-mem small { font-size:0.85em; opacity:.8; }
 </style>
 </head>
 <body>
@@ -542,19 +563,17 @@
 
 <nav class="tabs">
   <button data-tab="feed">공지</button>
-  <button data-tab="bible">성경읽기</button>
-  <button data-tab="english">영어전도</button>
   <button data-tab="prep-schedule">준비일정</button>
-  <button data-tab="participants">학생</button>
-  <button data-tab="teachers">교사</button>
-  <button data-tab="assign">배정</button>
-  <button data-tab="flights">항공권</button>
+  <button data-tab="bible">성경읽기</button>
+  <button data-tab="teams">사역팀</button>
+  <button data-tab="roster">명단</button>
+  <button data-tab="depart">출국준비</button>
   <button data-tab="schedule">선교일정</button>
-  <button data-tab="personal-supplies">개인준비물</button>
-  <button data-tab="shared-supplies">공용준비물</button>
 </nav>
 
 <main>
+
+  <div class="subtabs" id="subtabs" style="display:none;"></div>
 
   <!-- 1. 학생 탭 -->
   <section class="panel" id="panel-participants">
@@ -691,7 +710,7 @@
         <div><label>제목</label><input id="ps-item-activity" placeholder="예: 준비 모임" /></div>
         <div><label>내용 (선택)</label><textarea id="ps-item-description" placeholder="세부 내용을 입력하세요"></textarea></div>
         <div>
-          <label>분류</label>
+          <label>분류 (체크 없으면 전체 모임)</label>
           <div class="pill-group">
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="교사" /><span>교사</span></label>
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="워십" /><span>워십</span></label>
@@ -708,6 +727,7 @@
         </div>
       </div>
 
+      <div class="ps-filter" id="ps-filter"></div>
       <div id="prep-schedule-list" style="margin-top:12px;"></div>
     </div>
   </section>
@@ -832,6 +852,51 @@
   </section>
 
   <!-- 영어전도 탭 -->
+  <!-- 사역팀 탭 (팀 칩은 상단 subtabs) -->
+  <section class="panel" id="panel-teams">
+    <div class="card">
+      <h2 id="team-title">사역팀</h2>
+      <div id="team-next"></div>
+      <div class="add-form collapsed" id="tm-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('tm-form')">＋ 모임 추가</button>
+        <input type="hidden" id="tm-edit-day-id" value="" />
+        <input type="hidden" id="tm-edit-item-idx" value="" />
+        <div><label>날짜</label><div data-dt="date" data-p="tm-date"></div></div>
+        <div class="grid">
+          <div><label>시간</label><div data-dt="time" data-p="tm-item"></div></div>
+          <div><label>장소</label><input id="tm-place" placeholder="예: 본당 / 연습실" /></div>
+        </div>
+        <div><label>제목</label><input id="tm-title" placeholder="예: 정기 연습" /></div>
+        <div><label>내용 (선택)</label><textarea id="tm-desc" placeholder="준비물, 안내사항 등"></textarea></div>
+        <div class="bb-hint" style="text-align:left;">등록하면 준비일정에도 이 팀 표시와 함께 올라가요.</div>
+        <div class="form-actions">
+          <button class="primary" id="tm-submit-btn" onclick="addTeamMeeting()">모임 등록</button>
+          <button class="secondary" onclick="cancelTeamMeetingEdit()">취소</button>
+        </div>
+      </div>
+      <div id="team-meetings"></div>
+    </div>
+    <div class="card">
+      <h2>👥 팀원</h2>
+      <div id="team-members"></div>
+      <div class="bb-hint" style="text-align:left; margin-top:8px;">학생·교사 등록의 "담당"에서 이 팀을 체크하면 자동으로 나와요.</div>
+    </div>
+    <div class="card">
+      <h2>📎 자료</h2>
+      <div id="team-links"></div>
+      <div class="add-form collapsed" id="tl-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('tl-form')">＋ 자료 링크 추가</button>
+        <div><label>이름</label><input id="tl-title" placeholder="예: 연습 영상 / 악보 PDF" /></div>
+        <div><label>링크 (드라이브·유튜브 주소)</label><input id="tl-url" placeholder="https://" inputmode="url" /></div>
+        <label class="role-check" style="align-self:flex-start;"><input type="checkbox" id="tl-photo" /><span>사진 (카드에 바로 표시)</span></label>
+        <div class="form-actions">
+          <button class="primary" onclick="addTeamLink()">자료 등록</button>
+          <button class="secondary" onclick="closeForm('tl-form')">취소</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="panel" id="panel-english">
     <div class="card">
       <h2>🎯 주차별 목표</h2>
@@ -887,6 +952,15 @@
         <div><label>날짜 (비워두면 오늘 날짜)</label><input type="date" id="post-date" /></div>
         <div><label>제목</label><input id="post-title" placeholder="예: 준비모임 안내" /></div>
         <div><label>내용</label><textarea id="post-text" placeholder="공지 내용을 입력해주세요"></textarea></div>
+        <label class="role-check" style="align-self:flex-start;"><input type="checkbox" id="pp-on" onchange="togglePostSched()" /><span>🗓️ 준비일정에도 등록</span></label>
+        <div id="pp-box" style="display:none; flex-direction:column; gap:10px;">
+          <div><label>일정 날짜</label><div data-dt="date" data-p="pp-date"></div></div>
+          <div class="grid">
+            <div><label>시간</label><div data-dt="time" data-p="pp-item"></div></div>
+            <div><label>장소</label><input id="pp-place" placeholder="예: 본당" /></div>
+          </div>
+          <div><label>분류 (체크 없으면 전체 모임)</label><div class="pill-group" id="pp-cats"></div></div>
+        </div>
         <div class="form-actions">
           <button class="primary" id="post-submit-btn" onclick="addPost()">공지 등록</button>
           <button class="secondary" id="post-cancel-btn" onclick="cancelPostEdit()">취소</button>
@@ -1233,6 +1307,7 @@ let state = {
   posts: [],
   evangelism: [],
   evangelismGoals: [],
+  teamLinks: [],
   teachers: [],
   rooms: [],
   vehicles: [],
@@ -1349,6 +1424,7 @@ function normalizeRemote(remote) {
   if (!remote.prepSchedule) remote.prepSchedule = [];
   if (!remote.evangelism) remote.evangelism = [];
   if (!remote.evangelismGoals) remote.evangelismGoals = [];
+  if (!remote.teamLinks) remote.teamLinks = [];
   if (!remote.personalChecks) remote.personalChecks = {};
   if (!remote.personalChecklistData || !remote.personalChecklistData.length) {
     remote.personalChecklistData = cloneData(defaultPersonalChecklistData);
@@ -1382,7 +1458,7 @@ let backupItems = [];
 
 function hasMeaningfulData(d) {
   if (!d) return false;
-  const lists = ['participants', 'teachers', 'posts', 'evangelism', 'evangelismGoals', 'prepSchedule', 'schedule', 'flightInfos', 'rooms', 'vehicles'];
+  const lists = ['participants', 'teachers', 'posts', 'evangelism', 'evangelismGoals', 'teamLinks', 'prepSchedule', 'schedule', 'flightInfos', 'rooms', 'vehicles'];
   return lists.some(k => Array.isArray(d[k]) && d[k].length > 0)
     || Object.keys(d.bibleReading || {}).length > 0
     || Object.keys(d.personalChecks || {}).length > 0;
@@ -1767,7 +1843,37 @@ function renderDday() {
 }
 
 // ===== 공통 도우미 =====
+// ===== 사역팀·준비일정 공통 =====
+const TEAMS = ['영어전도', '워십', '무언극', '태권도', '풍선아트', '복음팔찌'];
+const TEAM_STYLE = {
+  '전체 모임': { icon: '🏫', c: '#4E7D62', d: '#2F5A44' },
+  '교사':     { icon: '🌳', c: '#7170A1', d: '#4A4977' },
+  '워십':     { icon: '🎵', c: '#D9822B', d: '#8A4E10' },
+  '무언극':   { icon: '🎭', c: '#B0507A', d: '#7A2F52' },
+  '태권도':   { icon: '🥋', c: '#A0783C', d: '#6B4C1C' },
+  '풍선아트': { icon: '🎈', c: '#CF5C5C', d: '#8F3030' },
+  '영어전도': { icon: '🗣️', c: '#4A86B5', d: '#24506F' },
+  '복음팔찌': { icon: '📿', c: '#3E9AA6', d: '#1F6068' }
+};
+const catStyle = c => TEAM_STYLE[c] || TEAM_STYLE['전체 모임'];
+
+// 링크 주소 정리: http/https만 허용 (javascript: 등 차단)
+function safeUrl(u) {
+  u = String(u || '').trim();
+  if (!u) return '';
+  if (/^[a-z][a-z0-9+.-]*:/i.test(u) && !/^https?:\/\//i.test(u)) return '';
+  if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  try { return new URL(u).href; } catch (e) { return ''; }
+}
+function driveThumb(u) {
+  const m = /drive\.google\.com\/.*?(?:\/d\/|[?&]id=)([\w-]{10,})/.exec(u || '');
+  return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : '';
+}
+
 const byName = (a, b) => (a.name || '').localeCompare(b.name || '', 'ko');
+// 숫자(1<2<10)·영문·가나다 순 자연 정렬 (방·차량 이름, 배정 인원 정렬용)
+const natCollator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
+const byNatName = (a, b) => natCollator.compare(a.name || '', b.name || '');
 
 // 교사 호칭: 기본 "선생님", 예외 신승=전도사님 / 정형철=목사님 (저장된 이름은 그대로 두고 화면에서만 붙임)
 function teacherTitle(name) {
@@ -2105,11 +2211,12 @@ function getUnassignedOptions(type) {
   const assigned = new Set();
   (state[type] || []).forEach(g => (g.members || []).forEach(m => assigned.add(`${m.type}:${m.id}`)));
   const people = [
-    ...(state.participants || []).map(p => ({ type: 'participant', id: p.id, name: '🌱 ' + p.name })),
+    ...(state.participants || []).map(p => ({ type: 'participant', id: p.id, name: '🌱 ' + p.name + (p.grade ? ' · ' + p.grade : '') })),
     ...(state.teachers || []).map(t => ({ type: 'teacher', id: t.id, name: '🌳 ' + t.name }))
   ];
   return people
     .filter(p => !assigned.has(`${p.type}:${p.id}`))
+    .sort((a, b) => (a.type === b.type ? 0 : a.type === 'teacher' ? -1 : 1) || byNatName(a, b))
     .map(p => `<option value="${p.type}:${p.id}">${escapeHtml(p.name)}</option>`)
     .join('');
 }
@@ -2152,9 +2259,11 @@ function toggleGroupEdit(type, id) {
 }
 
 function renderGroupCards(type, groups) {
-  return groups.map(g => {
-    // 교사를 먼저 표시
-    const members = (g.members || []).slice().sort((a, b) => (a.type === b.type ? 0 : a.type === 'teacher' ? -1 : 1));
+  return groups.slice().sort(byNatName).map(g => {
+    // 교사를 먼저, 그다음 학생 (각각 이름순)
+    const nameOf = m => m.type === 'teacher' ? teacherName(m.id) : participantName(m.id);
+    const members = (g.members || []).slice().sort((a, b) =>
+      (a.type === b.type ? 0 : a.type === 'teacher' ? -1 : 1) || natCollator.compare(nameOf(a), nameOf(b)));
     const tCnt = members.filter(m => m.type === 'teacher').length;
     const editing = canEdit && openGroupEdits.has(type + ':' + g.id);
     return `
@@ -2348,6 +2457,7 @@ function startEditFlight(id) {
   setTimeValue('fi-arr', fi.arrTime || '');
   document.getElementById('fi-submit-btn').textContent = '저장';
   document.getElementById('fi-cancel-btn').style.display = 'inline-block';
+  showView('depart', 'flights');
   document.getElementById('panel-flights').scrollIntoView({behavior:'smooth'});
 }
 
@@ -2611,17 +2721,11 @@ function calcDdayBadge(dateStr) {
   return `<span class="dday-pill${cls}">${ddayText(diff)}</span>`;
 }
 
-// 카테고리에 따른 CSS 클래스 반환 함수 (두 번째 파일 스타일 연동)
-function getCategoryClass(catName) {
-  if (!catName) return 'default';
-  if (catName.includes('영어')) return 'english';
-  if (catName.includes('교사')) return 'teacher';
-  if (catName.includes('워십')) return 'worship';
-  if (catName.includes('무언극')) return 'praise';
-  if (catName.includes('풍선')) return 'balloon';
-  if (catName.includes('태권도')) return 'taekwondo';
-  return 'default';
-}
+let psFilter = 'all';
+
+// 일정 항목의 분류 (없으면 전체 모임)
+const itemCats = it => (it.categories && it.categories.length) ? it.categories : ['전체 모임'];
+const itemMatchesFilter = it => psFilter === 'all' || itemCats(it).includes(psFilter);
 
 function renderItemCards(dayList, isPast = false) {
   let html = '';
@@ -2630,24 +2734,25 @@ function renderItemCards(dayList, isPast = false) {
     const dateFormatted = formatScheduleDate(s.date);
 
     (s.items || []).slice().sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99')).forEach(it => {
+      if (!itemMatchesFilter(it)) return;
       const idx = s.items.indexOf(it);
-      const mainCat = (it.categories && it.categories.length > 0) ? it.categories[0] : '준비일정';
-      const catClass = getCategoryClass(mainCat);
+      const cats = itemCats(it);
+      const st = catStyle(cats[0]);
       const pastClass = isPast ? 'past-card' : '';
 
       html += `
-        <div class="item-card ${catClass} ${pastClass}">
+        <div class="item-card ${pastClass}" style="--cc:${st.c}; --cc-deep:${st.d};">
           <div class="card-top">
             <span class="date-text">🗓️ ${escapeHtml(dateFormatted)} ${ddayBadge}</span>
             <div class="tag-wrap">
-              <span class="tag-cat ${catClass}">${escapeHtml(mainCat)}</span>
-              ${(it.categories && it.categories.length > 1) ? it.categories.slice(1).map(c => `<span class="tag-cat default">${escapeHtml(c)}</span>`).join('') : ''}
+              ${cats.map(c => { const cs = catStyle(c); return `<span class="tag-cat" style="--cc:${cs.c}; --cc-deep:${cs.d};">${cs.icon} ${escapeHtml(c)}</span>`; }).join('')}
             </div>
           </div>
           <div class="card-body">
             <div class="info-row">
               <span class="time-text">${escapeHtml(formatTimeKo(it.time))}</span>
               ${it.place ? `<span class="dot">·</span><span>${escapeHtml(it.place)}</span>` : ''}
+              ${it.postId ? '<span class="ps-src">📢 공지에서 등록</span>' : ''}
             </div>
             <div class="content-text">${escapeHtml(it.activity)}</div>
             ${it.description ? `<div class="content-desc">${escapeHtml(it.description)}</div>` : ''}
@@ -2660,11 +2765,22 @@ function renderItemCards(dayList, isPast = false) {
   return html;
 }
 
+function renderPsFilter() {
+  const box = document.getElementById('ps-filter');
+  if (!box) return;
+  const keys = ['all', '전체 모임', '교사', ...TEAMS];
+  box.innerHTML = keys.map(k => {
+    const st = k === 'all' ? { c: '#5c6560', icon: '' } : catStyle(k);
+    return `<button class="${psFilter === k ? 'on' : ''}" style="--cc:${st.c};" data-k="${k}">${k === 'all' ? '전체' : st.icon + ' ' + k}</button>`;
+  }).join('');
+}
+
 function renderPrepSchedule() {
   const list = document.getElementById('prep-schedule-list');
   if(!list) return;
   const prepSchedule = state.prepSchedule || [];
-  
+  renderPsFilter();
+
   document.getElementById('prep-schedule-form').style.display = canEdit ? 'flex' : 'none';
 
   if (!prepSchedule.length) {
@@ -2672,37 +2788,21 @@ function renderPrepSchedule() {
     return;
   }
 
-  const todayObj = new Date();
-  todayObj.setHours(0, 0, 0, 0);
-  const yyyy = todayObj.getFullYear();
-  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
-  const dd = String(todayObj.getDate()).padStart(2, '0');
-  const todayStr = `${yyyy}-${mm}-${dd}`;
+  const todayStr = bibleToday();
+  const weekEnd = new Date(); weekEnd.setHours(0, 0, 0, 0); weekEnd.setDate(weekEnd.getDate() + 6);
+  const weekEndStr = `${weekEnd.getFullYear()}-${String(weekEnd.getMonth() + 1).padStart(2, '0')}-${String(weekEnd.getDate()).padStart(2, '0')}`;
 
-  const upcoming = prepSchedule.filter(s => (s.date || '') >= todayStr).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-  const past = prepSchedule.filter(s => (s.date || '') < todayStr).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const byDateAsc = (a, b) => (a.date || '').localeCompare(b.date || '');
+  const hasMatch = s => (s.items || []).some(itemMatchesFilter);
+  const week = prepSchedule.filter(s => (s.date || '') >= todayStr && (s.date || '') <= weekEndStr && hasMatch(s)).sort(byDateAsc);
+  const later = prepSchedule.filter(s => (s.date || '') > weekEndStr && hasMatch(s)).sort(byDateAsc);
+  const past = prepSchedule.filter(s => (s.date || '') < todayStr && hasMatch(s)).sort((a, b) => byDateAsc(b, a));
 
   let html = '';
-
-  if (upcoming.length > 0) {
-    html += `
-      <div class="section-title">📌 앞으로 일정</div>
-      ${renderItemCards(upcoming, false)}
-    `;
-  }
-
-  if (past.length > 0) {
-    html += `
-      <div class="section-title past">⌛ 지나간 일정</div>
-      ${renderItemCards(past, true)}
-    `;
-  }
-
-  if (!upcoming.length && !past.length) {
-    html = '<div class="empty">등록된 준비 일정이 없어요.</div>';
-  }
-
-  list.innerHTML = html;
+  if (week.length) html += `<div class="section-title">📍 이번 주</div>${renderItemCards(week, false)}`;
+  if (later.length) html += `<div class="section-title"${week.length ? ' style="margin-top:18px;"' : ''}>📌 앞으로 일정</div>${renderItemCards(later, false)}`;
+  if (past.length) html += `<details class="ps-past"><summary>⌛ 지나간 일정 (${past.reduce((n, s) => n + (s.items || []).filter(itemMatchesFilter).length, 0)})</summary>${renderItemCards(past, true)}</details>`;
+  list.innerHTML = html || '<div class="empty">이 종류의 일정이 없어요.</div>';
 }
 
 function addPrepScheduleEntry() {
@@ -2806,6 +2906,28 @@ function renderPosts() {
   document.getElementById('feed-form').style.display = canEdit ? 'block' : 'none';
 }
 
+// 공지와 연결된 준비일정 항목 찾기
+function findPrepByPost(postId) {
+  for (const day of (state.prepSchedule || [])) {
+    const idx = (day.items || []).findIndex(it => it.postId === postId);
+    if (idx >= 0) return { day, idx, item: day.items[idx] };
+  }
+  return null;
+}
+
+function togglePostSched() {
+  document.getElementById('pp-box').style.display = document.getElementById('pp-on').checked ? 'flex' : 'none';
+}
+
+function resetPostSched() {
+  document.getElementById('pp-on').checked = false;
+  setDateValue('pp-date', '');
+  setTimeValue('pp-item', '');
+  document.getElementById('pp-place').value = '';
+  document.querySelectorAll('.pp-cat-box').forEach(b => { b.checked = false; });
+  togglePostSched();
+}
+
 function addPost() {
   const author = document.getElementById('post-author').value;
   const title = document.getElementById('post-title').value.trim();
@@ -2819,7 +2941,12 @@ function addPost() {
 
   const date = dateInput || bibleToday();
 
+  const ppOn = document.getElementById('pp-on').checked;
+  const ppDate = ppOn ? getDateValue('pp-date') : '';
+  if (ppOn && !ppDate) { alert('준비일정에 올릴 날짜를 입력해주세요.'); return; }
+
   if (!state.posts) state.posts = [];
+  const postId = editId || uid();
 
   if (editId) {
     const post = state.posts.find(p => p.id === editId);
@@ -2830,7 +2957,30 @@ function addPost() {
       post.text = text;
     }
   } else {
-    state.posts.push({ id: uid(), author, title, date, text });
+    state.posts.push({ id: postId, author, title, date, text });
+  }
+
+  // 준비일정에도 등록 (연결된 일정이 이미 있으면 그 일정을 수정)
+  const linked = findPrepByPost(postId);
+  if (ppOn) {
+    const item = {
+      time: getTimeValue('pp-item'),
+      place: document.getElementById('pp-place').value.trim(),
+      activity: title,
+      description: text,
+      categories: Array.from(document.querySelectorAll('.pp-cat-box:checked')).map(el => el.value),
+      postId
+    };
+    upsertDayItem('prepSchedule', ppDate, item, linked ? linked.day.id : '', linked ? linked.idx : '');
+    markDirty('prepSchedule');
+    renderPrepSchedule();
+  } else if (linked && confirm('이 공지와 연결된 준비일정도 함께 삭제할까요?\n(취소를 누르면 일정은 그대로 두고 연결만 끊어져요)')) {
+    removeDayItem('prepSchedule', linked.day.id, linked.idx);
+    markDirty('prepSchedule');
+    renderPrepSchedule();
+  } else if (linked) {
+    delete linked.item.postId;
+    markDirty('prepSchedule');
   }
 
   cancelPostEdit();
@@ -2846,7 +2996,19 @@ function startEditPost(id) {
   document.getElementById('post-date').value = post.date || '';
   document.getElementById('post-title').value = post.title || '';
   document.getElementById('post-text').value = post.text || '';
-  
+
+  resetPostSched();
+  const linked = findPrepByPost(id);
+  if (linked) {
+    document.getElementById('pp-on').checked = true;
+    setDateValue('pp-date', linked.day.date || '');
+    setTimeValue('pp-item', linked.item.time);
+    document.getElementById('pp-place').value = linked.item.place || '';
+    const cs = linked.item.categories || [];
+    document.querySelectorAll('.pp-cat-box').forEach(b => { b.checked = cs.includes(b.value); });
+    togglePostSched();
+  }
+
   const submitBtn = document.getElementById('post-submit-btn');
   if (submitBtn) submitBtn.textContent = '저장';
   openForm('feed-form', true);
@@ -2858,7 +3020,8 @@ function cancelPostEdit() {
   document.getElementById('post-date').value = '';
   document.getElementById('post-title').value = '';
   document.getElementById('post-text').value = '';
-  
+  resetPostSched();
+
   const submitBtn = document.getElementById('post-submit-btn');
   if (submitBtn) submitBtn.textContent = '공지 등록';
   closeForm('feed-form');
@@ -2866,6 +3029,16 @@ function cancelPostEdit() {
 
 function removePost(id) {
   if(!confirm('정말 삭제하시겠습니까?')) return;
+  const linked = findPrepByPost(id);
+  if (linked) {
+    if (confirm('이 공지와 연결된 준비일정도 함께 삭제할까요?\n(취소를 누르면 일정은 그대로 남아요)')) {
+      removeDayItem('prepSchedule', linked.day.id, linked.idx);
+    } else {
+      delete linked.item.postId;
+    }
+    markDirty('prepSchedule');
+    renderPrepSchedule();
+  }
   state.posts = (state.posts || []).filter(p => p.id !== id);
   renderPosts();
   markDirty('posts');
@@ -3026,6 +3199,159 @@ function removeEnglishStep(id) {
   state.evangelism = (state.evangelism || []).filter(x => x.id !== id);
   renderEnglish();
   markDirty('evangelism');
+}
+
+// ===== 사역팀 =====
+let curTeam = TEAMS[0];
+
+// 이 팀 분류가 붙은 준비일정 항목 (날짜·시간순)
+function teamMeetings(team) {
+  const out = [];
+  (state.prepSchedule || []).forEach(day => (day.items || []).forEach((it, idx) => {
+    if ((it.categories || []).includes(team)) out.push({ day, idx, it });
+  }));
+  return out.sort((a, b) => ((a.day.date || '') + (a.it.time || '99:99')).localeCompare((b.day.date || '') + (b.it.time || '99:99')));
+}
+
+function renderTeams() {
+  const panel = document.getElementById('panel-teams');
+  if (!panel) return;
+  const team = curTeam;
+  const st = catStyle(team);
+  panel.style.setProperty('--team-color', st.c);
+  panel.style.setProperty('--cc', st.c);
+  panel.style.setProperty('--cc-deep', st.d);
+  document.getElementById('team-title').textContent = `${st.icon} ${team}`;
+
+  // 모임
+  const today = bibleToday();
+  const all = teamMeetings(team);
+  const upcoming = all.filter(m => (m.day.date || '') >= today);
+  const past = all.filter(m => (m.day.date || '') < today).reverse();
+  const acts = m => canEdit ? `<span class="acts"><button onclick="startEditTeamMeeting('${m.day.id}', ${m.idx})">수정</button><button class="del" onclick="removeTeamMeeting('${m.day.id}', ${m.idx})">삭제</button></span>` : '';
+  const dshort = d => { const p = dateParts(d); return p ? `${p.m}/${p.d}(${p.w})` : escapeHtml(d || ''); };
+  const row = (m, cls) => `<div class="tm-row ${cls}"><span class="d">${dshort(m.day.date)}</span><span>${escapeHtml(formatTimeKo(m.it.time))} · <b>${escapeHtml(m.it.activity || '')}</b>${m.it.place ? ' · ' + escapeHtml(m.it.place) : ''}</span>${acts(m)}</div>`;
+
+  const next = upcoming[0];
+  document.getElementById('team-next').innerHTML = next ? `
+    <div class="tm-next">
+      <div class="lab">다음 모임 ${calcDdayBadge(next.day.date)}</div>
+      <div class="when">${dshort(next.day.date)} ${escapeHtml(formatTimeKo(next.it.time))}</div>
+      <div class="what">${escapeHtml(next.it.activity || '')}${next.it.place ? ' · 📍 ' + escapeHtml(next.it.place) : ''}</div>
+      ${next.it.description ? `<div class="desc">${escapeHtml(next.it.description)}</div>` : ''}
+      ${canEdit ? `<div class="tm-row" style="border:none; padding:6px 0 0;">${acts(next)}</div>` : ''}
+    </div>` : '<div class="empty">예정된 모임이 없어요.</div>';
+  document.getElementById('team-meetings').innerHTML =
+    (upcoming.length > 1 ? `<div class="section-title" style="margin-top:12px;">이후 모임</div>${upcoming.slice(1).map(m => row(m, '')).join('')}` : '')
+    + (past.length ? `<details class="ps-past"><summary>⌛ 지난 모임 (${past.length})</summary>${past.map(m => row(m, 'past')).join('')}</details>` : '');
+  document.getElementById('tm-form').style.display = canEdit ? 'flex' : 'none';
+
+  // 팀원
+  const ts = (state.teachers || []).filter(t => (t.roles || []).includes(team)).sort(byNatName);
+  const ps = (state.participants || []).filter(p => (p.roles || []).includes(team)).sort(byNatName);
+  document.getElementById('team-members').innerHTML = (ts.length || ps.length)
+    ? ts.map(t => `<span class="tm-mem">🌳 ${escapeHtml(teacherTitle(t.name))}</span>`).join('')
+      + ps.map(p => `<span class="tm-mem">🌱 ${escapeHtml(p.name)}${p.grade ? ` <small>${escapeHtml(p.grade)}</small>` : ''}</span>`).join('')
+    : '<div class="empty">아직 이 팀을 담당으로 체크한 사람이 없어요.</div>';
+
+  // 자료 링크
+  const links = (state.teamLinks || []).filter(l => l.team === team);
+  document.getElementById('team-links').innerHTML = links.length ? links.map(l => {
+    const url = safeUrl(l.url);
+    if (!url) return '';
+    const del = canEdit ? `<button class="tl-del" onclick="removeTeamLink('${l.id}')">삭제</button>` : '';
+    if (l.photo) {
+      return `<div class="tl-item tl-photo"><a href="${escapeHtml(url)}" target="_blank" rel="noopener"><img loading="lazy" src="${escapeHtml(driveThumb(url) || url)}" alt="${escapeHtml(l.title || '')}"></a><div style="font-weight:700; margin-bottom:6px;">${escapeHtml(l.title || '')}</div>${del}</div>`;
+    }
+    const icon = /youtu\.?be/i.test(url) ? '▶️' : '📎';
+    return `<div class="tl-item"><a class="tl-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener">${icon} ${escapeHtml(l.title || url)}</a>${del}</div>`;
+  }).join('') : '<div class="empty">등록된 자료가 없어요.</div>';
+  document.getElementById('tl-form').style.display = canEdit ? 'flex' : 'none';
+}
+
+function addTeamMeeting() {
+  const date = getDateValue('tm-date');
+  const title = document.getElementById('tm-title').value.trim();
+  if (!date || !title) { alert('날짜와 제목을 입력해주세요.'); return; }
+  const editDay = document.getElementById('tm-edit-day-id').value;
+  const editIdx = document.getElementById('tm-edit-item-idx').value;
+  let cats = [curTeam];
+  if (editDay !== '' && editIdx !== '') {
+    const old = ((state.prepSchedule || []).find(d => d.id === editDay) || {}).items;
+    const oldItem = old && old[editIdx];
+    if (oldItem) cats = Array.from(new Set([...(oldItem.categories || []), curTeam]));
+  }
+  const item = {
+    time: getTimeValue('tm-item'),
+    place: document.getElementById('tm-place').value.trim(),
+    activity: title,
+    description: document.getElementById('tm-desc').value.trim(),
+    categories: cats
+  };
+  // 공지에서 연결된 일정이면 연결 정보 유지
+  if (editDay !== '' && editIdx !== '') {
+    const oldItem = (((state.prepSchedule || []).find(d => d.id === editDay) || {}).items || [])[editIdx];
+    if (oldItem && oldItem.postId) item.postId = oldItem.postId;
+  }
+  upsertDayItem('prepSchedule', date, item, editDay, editIdx === '' ? '' : Number(editIdx));
+  cancelTeamMeetingEdit();
+  markDirty('prepSchedule');
+  renderTeams();
+  renderPrepSchedule();
+}
+
+function startEditTeamMeeting(dayId, idx) {
+  const day = (state.prepSchedule || []).find(d => d.id === dayId);
+  const it = day && day.items && day.items[idx];
+  if (!it) return;
+  document.getElementById('tm-edit-day-id').value = dayId;
+  document.getElementById('tm-edit-item-idx').value = idx;
+  setDateValue('tm-date', day.date || '');
+  setTimeValue('tm-item', it.time);
+  document.getElementById('tm-place').value = it.place || '';
+  document.getElementById('tm-title').value = it.activity || '';
+  document.getElementById('tm-desc').value = it.description || '';
+  document.getElementById('tm-submit-btn').textContent = '저장';
+  openForm('tm-form', true);
+}
+
+function cancelTeamMeetingEdit() {
+  document.getElementById('tm-edit-day-id').value = '';
+  document.getElementById('tm-edit-item-idx').value = '';
+  setDateValue('tm-date', '');
+  setTimeValue('tm-item', '');
+  ['tm-place', 'tm-title', 'tm-desc'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('tm-submit-btn').textContent = '모임 등록';
+  closeForm('tm-form');
+}
+
+function removeTeamMeeting(dayId, idx) {
+  if (!confirm('이 모임을 삭제할까요? 준비일정에서도 함께 사라져요.')) return;
+  removeDayItem('prepSchedule', dayId, idx);
+  markDirty('prepSchedule');
+  renderTeams();
+  renderPrepSchedule();
+}
+
+function addTeamLink() {
+  const title = document.getElementById('tl-title').value.trim();
+  const url = safeUrl(document.getElementById('tl-url').value);
+  if (!title) { alert('이름을 입력해주세요.'); return; }
+  if (!url) { alert('올바른 링크(https://...)를 입력해주세요.'); return; }
+  if (!state.teamLinks) state.teamLinks = [];
+  state.teamLinks.push({ id: uid(), team: curTeam, title, url, photo: document.getElementById('tl-photo').checked });
+  ['tl-title', 'tl-url'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('tl-photo').checked = false;
+  closeForm('tl-form');
+  markDirty('teamLinks');
+  renderTeams();
+}
+
+function removeTeamLink(id) {
+  if (!confirm('이 자료를 삭제할까요?')) return;
+  state.teamLinks = (state.teamLinks || []).filter(l => l.id !== id);
+  markDirty('teamLinks');
+  renderTeams();
 }
 
 function setProgress(prefix, done, total) {
@@ -3464,6 +3790,7 @@ function renderAll() {
   renderPrepSchedule();
   renderPosts();
   renderEnglish();
+  renderTeams();
   syncPersonalChecklistDropdown();
   renderSharedChecklist();
   renderBible();
@@ -4034,6 +4361,65 @@ document.addEventListener('keydown', function(e) {
   if (next) next.focus(); else el.blur();
 });
 
+// ===== 탭·서브 칩 화면 전환 =====
+const VIEWS = {
+  'feed':          [{ id: 'feed', panels: ['feed'] }],
+  'prep-schedule': [{ id: 'prep-schedule', panels: ['prep-schedule'] }],
+  'bible':         [{ id: 'bible', panels: ['bible'] }],
+  'teams':         TEAMS.map(t => ({ id: t, label: TEAM_STYLE[t].icon + ' ' + t, color: TEAM_STYLE[t].c, panels: t === '영어전도' ? ['teams', 'english'] : ['teams'] })),
+  'roster':        [{ id: 'participants', label: '🌱 학생', panels: ['participants'] }, { id: 'teachers', label: '🌳 교사', panels: ['teachers'] }, { id: 'assign', label: '🛏️ 배정', panels: ['assign'] }],
+  'depart':        [{ id: 'personal-supplies', label: '🧳 개인준비물', panels: ['personal-supplies'] }, { id: 'shared-supplies', label: '📦 공용준비물', panels: ['shared-supplies'] }, { id: 'flights', label: '✈️ 항공권', panels: ['flights'] }],
+  'schedule':      [{ id: 'schedule', panels: ['schedule'] }]
+};
+const SUB_KEY = 'baguio_subtabs';
+function loadSubs() { try { return JSON.parse(localStorage.getItem(SUB_KEY) || '{}'); } catch (e) { return {}; } }
+function saveSub(top, sub) { try { const o = loadSubs(); o[top] = sub; localStorage.setItem(SUB_KEY, JSON.stringify(o)); } catch (e) {} }
+
+// 예전 탭 이름(participants, flights, english 등)으로 저장된 값을 [상단탭, 서브]로 변환
+function resolveLegacyTab(key) {
+  if (VIEWS[key]) return [key, null];
+  for (const top of Object.keys(VIEWS)) {
+    const sub = VIEWS[top].find(x => x.id === key);
+    if (sub) return [top, sub.id];
+  }
+  if (key === 'english') return ['teams', '영어전도'];
+  return ['feed', null];
+}
+
+function showView(top, sub) {
+  if (!VIEWS[top]) top = 'feed';
+  const subs = VIEWS[top];
+  const cur = subs.find(x => x.id === sub) || subs.find(x => x.id === loadSubs()[top]) || subs[0];
+  saveSub(top, cur.id);
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === top));
+  document.querySelectorAll('main section.panel').forEach(p => p.classList.remove('active'));
+  cur.panels.forEach(pid => { const el = document.getElementById('panel-' + pid); if (el) el.classList.add('active'); });
+  const bar = document.getElementById('subtabs');
+  if (subs.length > 1) {
+    bar.innerHTML = subs.map(x => `<button class="${x.id === cur.id ? 'on' : ''}" data-top="${top}" data-sub="${escapeHtml(x.id)}"${x.color ? ` style="--sc:${x.color};"` : ''}>${escapeHtml(x.label)}</button>`).join('');
+    bar.style.display = 'flex';
+  } else {
+    bar.innerHTML = '';
+    bar.style.display = 'none';
+  }
+  if (top === 'teams') { curTeam = cur.id; renderTeams(); }
+  try { sessionStorage.setItem('activeTab', top); } catch (e) {}
+}
+
+// 날짜·시간 입력칸(년/월/일, 오전·오후/시/분)을 자리표시자에 채움
+function injectDateTimeFields() {
+  document.querySelectorAll('[data-dt]').forEach(el => {
+    const p = el.dataset.p;
+    el.classList.add('date-parts');
+    el.innerHTML = el.dataset.dt === 'date'
+      ? `<input type="tel" inputmode="numeric" maxlength="4" placeholder="YYYY" class="dp-y" id="${p}-y" /><span>년</span><input type="tel" inputmode="numeric" maxlength="2" placeholder="MM" class="dp-m" id="${p}-m" /><span>월</span><input type="tel" inputmode="numeric" maxlength="2" placeholder="DD" class="dp-d" id="${p}-d" /><span>일</span>`
+      : `<select id="${p}-ampm" class="dp-ampm"><option value="오전">오전</option><option value="오후">오후</option></select><input type="tel" inputmode="numeric" maxlength="2" placeholder="시" class="dp-m" id="${p}-hour" /><span>시</span><input type="tel" inputmode="numeric" maxlength="2" placeholder="분" class="dp-m" id="${p}-minute" /><span>분</span>`;
+  });
+  const cats = document.getElementById('pp-cats');
+  if (cats) cats.innerHTML = ['교사', ...TEAMS].map(c => `<label class="role-check"><input type="checkbox" class="pp-cat-box" value="${c}" /><span>${c}</span></label>`).join('');
+}
+injectDateTimeFields();
+
 window.onload = function() {
   initFirebaseAuth();
   setupDateTimeAutoAdvance();
@@ -4049,40 +4435,31 @@ window.onload = function() {
   else window.addEventListener('resize', syncNavTop);
 
   const tabs = document.querySelectorAll('nav.tabs button');
-  const panels = document.querySelectorAll('main section.panel');
 
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
-      tabs.forEach(b => b.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      const tabName = btn.getAttribute('data-tab');
-      const targetPanel = document.getElementById('panel-' + tabName);
-      if (targetPanel) targetPanel.classList.add('active');
+      showView(btn.getAttribute('data-tab'));
+      try { sessionStorage.setItem('scrollPosition', window.scrollY); } catch (e) {}
     });
   });
 
-  // 저장된 탭과 스크롤 위치 복구
-  const savedTab = sessionStorage.getItem('activeTab') || 'feed';
-  const savedScroll = sessionStorage.getItem('scrollPosition') || 0;
-
-  const defaultTabBtn = document.querySelector(`nav.tabs button[data-tab="${savedTab}"]`) || document.querySelector('nav.tabs button[data-tab="feed"]');
-  if (defaultTabBtn) {
-    defaultTabBtn.click();
-    // 탭 클릭 후 스크롤 위치 복구
-    setTimeout(() => {
-      window.scrollTo(0, parseInt(savedScroll));
-    }, 50);
-  }
-
-  // 탭 전환 시 현재 위치 저장
-  tabs.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tabName = btn.getAttribute('data-tab');
-      sessionStorage.setItem('activeTab', tabName);
-      sessionStorage.setItem('scrollPosition', window.scrollY);
-    });
+  document.getElementById('subtabs').addEventListener('click', e => {
+    const b = e.target.closest('button[data-sub]');
+    if (b) showView(b.dataset.top, b.dataset.sub);
   });
+
+  document.getElementById('ps-filter').addEventListener('click', e => {
+    const b = e.target.closest('button[data-k]');
+    if (b) { psFilter = b.dataset.k; renderPrepSchedule(); }
+  });
+
+  // 저장된 탭과 스크롤 위치 복구 (예전 탭 이름으로 저장된 값도 새 구성으로 변환)
+  let savedTab = 'feed';
+  try { savedTab = sessionStorage.getItem('activeTab') || 'feed'; } catch (e) {}
+  const savedScroll = (() => { try { return sessionStorage.getItem('scrollPosition') || 0; } catch (e) { return 0; } })();
+  const [t0, s0] = resolveLegacyTab(savedTab);
+  showView(t0, s0);
+  setTimeout(() => { window.scrollTo(0, parseInt(savedScroll)); }, 50);
 
   // 페이지 언로드 전에 스크롤 위치 저장
   window.addEventListener('beforeunload', () => {
