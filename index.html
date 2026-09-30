@@ -4474,7 +4474,7 @@ window.onload = function() {
     swipeOk = false;
     if (e.touches.length !== 1) return;
     const t = e.target;
-    if (t.closest('input, select, textarea, nav.tabs, .bb-modal, .bb-history, #schedule-date-filter, .chips, #teacher-select-modal, [style*="overflow-x"]')) return;
+    if (t.closest('input, select, textarea, nav.tabs, .bb-modal, .bb-history, #schedule-date-filter, .chips, .ps-filter, .subtabs, #teacher-select-modal, [style*="overflow-x"]')) return;
     if (document.querySelector('.bb-modal.show')) return;
     const tm = document.getElementById('teacher-select-modal');
     if (tm && tm.style.display === 'flex') return;
