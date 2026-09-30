@@ -382,7 +382,8 @@
 
   /* 전체 가독성 다듬기 (기능 영향 없음) */
   header .badge, .admin-btn { white-space:nowrap; }
-  nav.tabs { scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  nav.tabs { scrollbar-width:none; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; }
+  html, body { overscroll-behavior-x:none; }
   nav.tabs::-webkit-scrollbar { display:none; }
   button { -webkit-tap-highlight-color:transparent; }
   button.primary:active, button.secondary:active { transform:translateY(1px); }
@@ -515,12 +516,12 @@
   .eg-row.past { color:var(--muted); text-decoration:line-through; }
   .eg-row .x { margin-left:auto; border:none; background:none; color:#c44; font-weight:700; cursor:pointer; }
   /* 상단 서브 칩 (명단·출국준비·사역팀) */
-  .subtabs { display:flex; gap:6px; overflow-x:auto; padding:0 2px 12px; scrollbar-width:none; }
+  .subtabs { display:flex; gap:6px; overflow-x:auto; overscroll-behavior-x:contain; padding:0 2px 12px; scrollbar-width:none; }
   .subtabs::-webkit-scrollbar { display:none; }
   .subtabs button { flex:0 0 auto; padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:#4d544e; font-size:0.86rem; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
   .subtabs button.on { background:var(--sc, var(--c-english)); border-color:var(--sc, var(--c-english)); color:#fff; }
   /* 준비일정 필터 */
-  .ps-filter { display:flex; gap:6px; overflow-x:auto; padding:2px 0 4px; scrollbar-width:none; }
+  .ps-filter { display:flex; gap:6px; overflow-x:auto; overscroll-behavior-x:contain; padding:2px 0 4px; scrollbar-width:none; }
   .ps-filter::-webkit-scrollbar { display:none; }
   .ps-filter button { flex:0 0 auto; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:#4d544e; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
   .ps-filter button.on { background:var(--cc, var(--c-prep)); border-color:var(--cc, var(--c-prep)); color:#fff; }
@@ -538,11 +539,35 @@
   .tm-row .acts { margin-left:auto; display:flex; gap:10px; }
   .tm-row .acts button { border:none; background:none; padding:0; font-size:0.78rem; font-weight:700; color:var(--muted); cursor:pointer; font-family:inherit; }
   .tm-row .acts button.del { color:#b0504a; }
+  .att-ed { display:flex; flex-direction:column; gap:8px; }
+  .att-row { display:grid; grid-template-columns:1fr 1.4fr; gap:8px; }
+  .att-row2 { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .att-chip { display:flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--border); border-radius:10px; background:var(--card); font-size:0.88rem; }
+  .att-chip span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .att-chip button { border:none; background:none; color:#c0392b; font-size:1.1rem; cursor:pointer; }
+  .att-view { margin-top:10px; }
+  .att-view .tl-btn { margin-bottom:6px; padding:9px 12px; font-size:0.86rem; }
   .tl-btn { display:flex; align-items:center; gap:8px; padding:11px 14px; margin-bottom:8px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--text); font-weight:700; font-size:0.92rem; text-decoration:none; }
   .tl-item .tl-del { border:none; background:none; color:#b0504a; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:inherit; padding:0 2px 8px; }
   .tl-photo img { width:100%; border-radius:12px; display:block; margin-bottom:6px; background:var(--bg2); }
   .tm-mem { display:inline-flex; gap:4px; align-items:center; padding:5px 11px; margin:0 6px 6px 0; border-radius:999px; background:var(--bg2); font-size:0.88rem; font-weight:600; }
   .tm-mem small { font-size:0.85em; opacity:.8; }
+  /* 관리모드: 입력·수정 영역과 등록된 목록을 눈에 띄게 구분 */
+  body.admin .add-form:not(.collapsed) { background:#fdf7e9; border:1.5px solid #e6d19a !important; border-radius:14px; padding:14px !important; margin:12px 0 20px !important; box-shadow:0 2px 8px rgba(160,120,30,0.08); }
+  body.admin .add-form:not(.collapsed)::before { content:'✏️ 입력 · 수정'; font-size:0.82rem; font-weight:800; color:#8a6a1f; padding-bottom:6px; border-bottom:1px dashed #e6d19a; margin-bottom:2px; }
+  body.admin .add-form.collapsed { border-top:none !important; padding-top:0 !important; margin:12px 0 16px !important; }
+  body.admin .form-toggle { background:#fdf7e9; border:1.5px dashed #d9b95c; color:#8a6a1f; }
+  body.admin :is(#participant-list, #teacher-list, #feed-list, #prep-schedule-list, #schedule-list, #rooms-list, #vehicles-list, #flightinfo-list, #english-list, #team-meetings)::before { display:block; font-size:0.8rem; font-weight:800; color:var(--muted); padding-top:12px; margin-bottom:10px; border-top:2px solid var(--border); }
+  body.admin #participant-list::before { content:'📋 등록된 학생'; }
+  body.admin #teacher-list::before { content:'📋 등록된 교사'; }
+  body.admin #feed-list::before { content:'📋 등록된 공지'; }
+  body.admin #prep-schedule-list::before { content:'📋 등록된 일정'; }
+  body.admin #schedule-list::before { content:'📋 등록된 선교일정'; }
+  body.admin #rooms-list::before { content:'📋 등록된 방'; }
+  body.admin #vehicles-list::before { content:'📋 등록된 차량'; }
+  body.admin #flightinfo-list::before { content:'📋 등록된 항공권'; }
+  body.admin #english-list::before { content:'📋 등록된 카드'; }
+  body.admin #team-meetings:not(:empty)::before { content:'📋 등록된 모임'; }
 </style>
 </head>
 <body>
@@ -719,6 +744,18 @@
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="태권도" /><span>태권도</span></label>
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="영어전도" /><span>영어전도</span></label>
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="복음팔찌" /><span>복음팔찌</span></label>
+          </div>
+        </div>
+        <div class="att-ed" data-kind="ps">
+          <label>📎 첨부 (구글드라이브·유튜브 링크)</label>
+          <div class="att-list"></div>
+          <div class="att-row">
+            <input class="att-name" placeholder="이름 (예: 악보 PDF)" />
+            <input class="att-url" placeholder="링크 붙여넣기" inputmode="url" />
+          </div>
+          <div class="att-row2">
+            <label class="role-check"><input type="checkbox" class="att-photo" /><span>사진으로 보이기</span></label>
+            <button type="button" class="secondary" onclick="addAtt('ps')">＋ 첨부 추가</button>
           </div>
         </div>
         <div class="form-actions">
@@ -960,6 +997,18 @@
             <div><label>장소</label><input id="pp-place" placeholder="예: 본당" /></div>
           </div>
           <div><label>분류 (체크 없으면 전체 모임)</label><div class="pill-group" id="pp-cats"></div></div>
+        </div>
+        <div class="att-ed" data-kind="post">
+          <label>📎 첨부 (구글드라이브·유튜브 링크)</label>
+          <div class="att-list"></div>
+          <div class="att-row">
+            <input class="att-name" placeholder="이름 (예: 안내문 PDF)" />
+            <input class="att-url" placeholder="링크 붙여넣기" inputmode="url" />
+          </div>
+          <div class="att-row2">
+            <label class="role-check"><input type="checkbox" class="att-photo" /><span>사진으로 보이기</span></label>
+            <button type="button" class="secondary" onclick="addAtt('post')">＋ 첨부 추가</button>
+          </div>
         </div>
         <div class="form-actions">
           <button class="primary" id="post-submit-btn" onclick="addPost()">공지 등록</button>
@@ -1870,6 +1919,52 @@ function driveThumb(u) {
   return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000` : '';
 }
 
+// ── 첨부 링크 (공지·준비일정) ──
+const attState = { post: [], ps: [] };
+function attBox(kind) { return document.querySelector(`.att-ed[data-kind="${kind}"]`); }
+function renderAttEditor(kind) {
+  const box = attBox(kind); if (!box) return;
+  box.querySelector('.att-list').innerHTML = attState[kind].map((a, i) =>
+    `<div class="att-chip"><span>${a.photo ? '🖼️' : /youtu/i.test(a.url) ? '▶️' : '📎'} ${escapeHtml(a.name)}</span><button type="button" onclick="removeAtt('${kind}',${i})" aria-label="삭제">×</button></div>`).join('');
+}
+function addAtt(kind) {
+  const box = attBox(kind); if (!box) return;
+  const url = safeUrl(box.querySelector('.att-url').value);
+  let name = box.querySelector('.att-name').value.trim();
+  if (!url) { alert('올바른 링크를 붙여넣어 주세요.'); return; }
+  if (!name) name = /youtu/i.test(url) ? '영상' : '첨부 파일';
+  attState[kind].push({ name, url, photo: box.querySelector('.att-photo').checked });
+  box.querySelector('.att-url').value = '';
+  box.querySelector('.att-name').value = '';
+  box.querySelector('.att-photo').checked = false;
+  renderAttEditor(kind);
+}
+function removeAtt(kind, i) { attState[kind].splice(i, 1); renderAttEditor(kind); }
+function setAtt(kind, list) {
+  attState[kind] = (list || []).map(a => ({ name: a.name, url: a.url, photo: !!a.photo }));
+  const box = attBox(kind);
+  if (box) { box.querySelector('.att-url').value = ''; box.querySelector('.att-name').value = ''; box.querySelector('.att-photo').checked = false; }
+  renderAttEditor(kind);
+}
+// 저장 직전: 링크칸에 적어두고 "추가"를 안 눌렀어도 함께 저장
+function collectAtt(kind) {
+  const box = attBox(kind);
+  if (box && box.querySelector('.att-url').value.trim()) addAtt(kind);
+  return attState[kind].map(a => ({ name: a.name, url: a.url, photo: a.photo }));
+}
+function attListHtml(list) {
+  const arr = (list || []).filter(a => a && safeUrl(a.url));
+  if (!arr.length) return '';
+  return `<div class="att-view">${arr.map(a => {
+    const u = safeUrl(a.url);
+    if (a.photo) {
+      const src = driveThumb(u) || u;
+      return `<a class="tl-photo" href="${escapeHtml(u)}" target="_blank" rel="noopener"><img src="${escapeHtml(src)}" alt="${escapeHtml(a.name)}" loading="lazy"></a>`;
+    }
+    return `<a class="tl-btn" href="${escapeHtml(u)}" target="_blank" rel="noopener">${/youtu/i.test(u) ? '▶️' : '📎'} ${escapeHtml(a.name)}</a>`;
+  }).join('')}</div>`;
+}
+
 const byName = (a, b) => (a.name || '').localeCompare(b.name || '', 'ko');
 // 숫자(1<2<10)·영문·가나다 순 자연 정렬 (방·차량 이름, 배정 인원 정렬용)
 const natCollator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' });
@@ -2756,6 +2851,7 @@ function renderItemCards(dayList, isPast = false) {
             </div>
             <div class="content-text">${escapeHtml(it.activity)}</div>
             ${it.description ? `<div class="content-desc">${escapeHtml(it.description)}</div>` : ''}
+            ${attListHtml(it.attachments)}
           </div>
           ${canEdit ? `<div class="ps-actions"><button onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button><button class="del" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
         </div>
@@ -2813,8 +2909,17 @@ function addPrepScheduleEntry() {
   const categories = Array.from(document.querySelectorAll('.ps-cat-box:checked')).map(el => el.value);
   if (!date || !activity) { alert('날짜와 제목을 입력해주세요.'); return; }
 
-  upsertDayItem('prepSchedule', date, { time: getTimeValue('ps-item'), place, activity, description, categories },
-    document.getElementById('ps-edit-day-id').value, document.getElementById('ps-edit-item-idx').value);
+  const psItem = { time: getTimeValue('ps-item'), place, activity, description, categories };
+  const psAtt = collectAtt('ps');
+  if (psAtt.length) psItem.attachments = psAtt;
+  // 공지에서 연결된 일정이면 연결 정보 유지
+  const psDayId = document.getElementById('ps-edit-day-id').value, psIdx = document.getElementById('ps-edit-item-idx').value;
+  if (psDayId !== '' && psIdx !== '') {
+    const o = (((state.prepSchedule || []).find(d => d.id === psDayId) || {}).items || [])[psIdx];
+    if (o && o.postId) psItem.postId = o.postId;
+    if (o && o.src) psItem.src = o.src;
+  }
+  upsertDayItem('prepSchedule', date, psItem, psDayId, psIdx === '' ? '' : Number(psIdx));
 
   cancelPrepScheduleEdit();
   renderPrepSchedule();
@@ -2837,6 +2942,7 @@ function startEditPrepScheduleItem(dayId, itemIdx) {
   document.querySelectorAll('.ps-cat-box').forEach(box => {
     box.checked = cats.includes(box.value);
   });
+  setAtt('ps', item.attachments);
   document.getElementById('ps-submit-btn').textContent = '저장';
   openForm('prep-schedule-form', true);
 }
@@ -2850,6 +2956,7 @@ function cancelPrepScheduleEdit() {
   document.getElementById('ps-item-activity').value = '';
   document.getElementById('ps-item-description').value = '';
   document.querySelectorAll('.ps-cat-box').forEach(box => box.checked = false);
+  setAtt('ps', []);
   document.getElementById('ps-submit-btn').textContent = '준비 일정 추가';
   closeForm('prep-schedule-form');
 }
@@ -2897,6 +3004,7 @@ function renderPosts() {
           </div>
           ${p.title ? `<div class="notice-title">${escapeHtml(p.title)}</div>` : ''}
           <div class="notice-text">${escapeHtml(p.text || '')}</div>
+          ${attListHtml(p.attachments)}
           ${canEdit ? `<div class="notice-foot"><span></span><div class="notice-actions">${p.kind === 'bible' ? '' : `<button onclick="startEditPost('${p.id}')">수정</button>`}<button class="del" onclick="removePost('${p.id}')">삭제</button></div></div>` : ''}
         </div>
       </article>
@@ -2944,6 +3052,7 @@ function addPost() {
   const ppOn = document.getElementById('pp-on').checked;
   const ppDate = ppOn ? getDateValue('pp-date') : '';
   if (ppOn && !ppDate) { alert('준비일정에 올릴 날짜를 입력해주세요.'); return; }
+  const atts = collectAtt('post');
 
   if (!state.posts) state.posts = [];
   const postId = editId || uid();
@@ -2955,9 +3064,12 @@ function addPost() {
       post.title = title;
       post.date = date;
       post.text = text;
+      if (atts.length) post.attachments = atts; else delete post.attachments;
     }
   } else {
-    state.posts.push({ id: postId, author, title, date, text });
+    const np = { id: postId, author, title, date, text };
+    if (atts.length) np.attachments = atts;
+    state.posts.push(np);
   }
 
   // 준비일정에도 등록 (연결된 일정이 이미 있으면 그 일정을 수정)
@@ -2971,6 +3083,7 @@ function addPost() {
       categories: Array.from(document.querySelectorAll('.pp-cat-box:checked')).map(el => el.value),
       postId
     };
+    if (atts.length) item.attachments = atts;
     upsertDayItem('prepSchedule', ppDate, item, linked ? linked.day.id : '', linked ? linked.idx : '');
     markDirty('prepSchedule');
     renderPrepSchedule();
@@ -2996,6 +3109,7 @@ function startEditPost(id) {
   document.getElementById('post-date').value = post.date || '';
   document.getElementById('post-title').value = post.title || '';
   document.getElementById('post-text').value = post.text || '';
+  setAtt('post', post.attachments);
 
   resetPostSched();
   const linked = findPrepByPost(id);
@@ -3020,6 +3134,7 @@ function cancelPostEdit() {
   document.getElementById('post-date').value = '';
   document.getElementById('post-title').value = '';
   document.getElementById('post-text').value = '';
+  setAtt('post', []);
   resetPostSched();
 
   const submitBtn = document.getElementById('post-submit-btn');
@@ -3292,6 +3407,7 @@ function addTeamMeeting() {
   if (editDay !== '' && editIdx !== '') {
     const oldItem = (((state.prepSchedule || []).find(d => d.id === editDay) || {}).items || [])[editIdx];
     if (oldItem && oldItem.postId) item.postId = oldItem.postId;
+    if (oldItem && oldItem.attachments) item.attachments = oldItem.attachments;
   }
   upsertDayItem('prepSchedule', date, item, editDay, editIdx === '' ? '' : Number(editIdx));
   cancelTeamMeetingEdit();
@@ -3783,6 +3899,7 @@ function markDirty(field) {
 }
 
 function renderAll() {
+  document.body.classList.toggle('admin', !!canEdit);
   renderDday();
   renderPeople();
   renderFlightInfo();
