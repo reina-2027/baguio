@@ -17,8 +17,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -117,6 +118,7 @@
   nav.tabs button[data-tab="teams"].active { background: var(--c-english); border-color: var(--c-english); color: #FFFFFF; }
   nav.tabs button[data-tab="roster"].active { background: var(--c-participants); border-color: var(--c-participants); color: #FFFFFF; }
   nav.tabs button[data-tab="depart"].active { background: var(--c-flights); border-color: var(--c-flights); color: #FFFFFF; }
+  nav.tabs button[data-tab="files"].active { background: var(--c-bible); border-color: var(--c-bible); color: #FFFFFF; }
   nav.tabs button[data-tab="bible"].active { background: var(--c-bible); border-color: var(--c-bible); color: #FFFFFF; }
 
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
@@ -426,6 +428,18 @@
   .bb-me-count b { font-size:1.6rem; color:var(--text); font-weight:800; margin-right:2px; }
   .bb-me-count span { float:right; margin-top:10px; font-weight:800; color:var(--c-bible-deep); }
   .bb-done-all { margin-top:12px; text-align:center; font-weight:800; color:var(--c-bible-deep); background:var(--c-bible-soft); border-radius:12px; padding:10px; }
+  .tc-row { padding:12px 0; border-top:1px solid var(--border); }
+  .tc-row:first-of-type { border-top:none; }
+  .tc-top { display:flex; align-items:baseline; gap:6px; }
+  .tc-top small { color:var(--muted); font-weight:600; font-size:0.74rem; }
+  .tc-last { margin-left:auto; font-size:0.76rem; font-weight:700; color:var(--c-bible-deep); }
+  .tc-last.none { color:#B0507A; }
+  .tc-mid { display:flex; align-items:center; gap:8px; margin-top:6px; }
+  .tc-mid span { font-size:0.74rem; color:var(--muted); font-weight:600; white-space:nowrap; }
+  .tc-dots { display:flex; gap:6px; margin-top:8px; }
+  .tc-dot { width:14px; height:14px; border-radius:50%; border:1.5px solid var(--border); background:#fff; }
+  .tc-dot.on { background:var(--c-bible); border-color:var(--c-bible); }
+  .tc-dot.fut { border-style:dashed; opacity:.5; }
   .bb-week { margin-top:16px; padding-top:14px; border-top:1px dashed var(--border); }
   .bb-week-label { font-size:0.78rem; font-weight:700; color:var(--muted); margin-bottom:8px; }
   .bb-week-dots { display:flex; justify-content:space-between; }
@@ -539,6 +553,73 @@
   .tm-row .acts { margin-left:auto; display:flex; gap:10px; }
   .tm-row .acts button { border:none; background:none; padding:0; font-size:0.78rem; font-weight:700; color:var(--muted); cursor:pointer; font-family:inherit; }
   .tm-row .acts button.del { color:#b0504a; }
+  .rsvp { margin-top:10px; padding-top:8px; border-top:1px dashed var(--border); }
+  .rsvp-btns { display:flex; gap:8px; margin-bottom:6px; }
+  .rsvp-btns button { flex:1; padding:9px 6px; border-radius:11px; border:1.5px solid var(--border); background:var(--card); color:var(--text); font-weight:800; font-size:0.88rem; cursor:pointer; font-family:inherit; }
+  .rsvp-btns button.on.yes { background:#E4F1E8; border-color:#4E7D62; color:#2F5A44; }
+  .rsvp-btns button.on.no { background:#F9E6E4; border-color:#C0584F; color:#8F3030; }
+  .rsvp-edit-row{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:4px 0;border-bottom:1px dashed #e5e5e5;flex-wrap:wrap}
+.rsvp-edit-row .rn{font-size:13px;font-weight:600}
+.rsvp-edit-row .rb button{font-size:12px;padding:4px 8px;margin-left:3px;border:1px solid #ccc;background:#fff;border-radius:12px;cursor:pointer}
+.rsvp-edit-row .rb button.on.yes{background:#d4f5dd;border-color:#2e9e57}
+.rsvp-edit-row .rb button.on.no{background:#fde0e0;border-color:#c0392b}
+.rsvp-edit-row .rb button.on{background:#eee;border-color:#888}
+  .rsvp-copy{margin-top:6px;font-size:12px;padding:6px 10px;border:1px solid #bbb;background:#fff;border-radius:12px;cursor:pointer}
+  .att-row{display:grid;grid-template-columns:1.6fr .6fr .6fr .8fr .8fr;gap:4px;padding:6px 2px;border-bottom:1px solid var(--border);font-size:13px;text-align:center}
+  .att-row span:first-child{text-align:left;font-weight:600}.att-row i{font-size:10px;color:var(--muted);font-style:normal}
+  .att-row.head{font-weight:800;color:var(--muted);font-size:12px}.att-row .warn{color:#c0392b;font-weight:800}
+  .file-row{border:1px solid var(--border);border-radius:12px;margin:6px 0;padding:0 10px;background:var(--card)}
+  .file-row summary{display:flex;gap:8px;align-items:center;padding:10px 0;cursor:pointer;list-style:none}
+  .file-row .ft{display:flex;flex-direction:column;font-weight:700;font-size:14px;min-width:0;word-break:break-all}
+  .file-row .ft small{font-weight:400;color:var(--muted);font-size:11px}
+  .file-row[open]{padding-bottom:10px}
+  #panel-files .card::before{background:var(--c-bible)}
+.rsvp-sum { font-size:0.8rem; color:var(--muted); font-weight:600; }
+  .rsvp-sum b { color:var(--text); }
+  .rsvp-names { margin-top:6px; font-size:0.8rem; line-height:1.6; }
+  .rsvp-names summary { cursor:pointer; font-weight:700; color:var(--muted); }
+  .rsvp-names div { word-break:break-all; }
+  .cm-btn { border:none; background:none; padding:0; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--c-feed-deep, #6E401E); }
+  .cm-box { margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); }
+  .cm-item { padding:8px 10px; border-radius:10px; background:var(--bg); margin-bottom:6px; font-size:0.86rem; line-height:1.55; }
+  .cm-item.t { background:var(--sky-soft); }
+  .cm-top { display:flex; align-items:baseline; gap:6px; }
+  .cm-top b { font-size:0.82rem; }
+  .cm-top small { color:var(--muted); font-size:0.7rem; font-weight:600; }
+  .cm-top button { margin-left:auto; border:none; background:none; color:#c0392b; font-size:0.74rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .cm-text { white-space:pre-wrap; word-break:break-all; overflow-wrap:anywhere; margin-top:2px; }
+  .cm-thread { margin-bottom:8px; }
+  .cm-thread .cm-item { margin-bottom:4px; }
+  .cm-item.re { margin-left:18px; border-left:3px solid var(--border); border-radius:4px 10px 10px 4px; }
+  .cm-item.t.re { border-left-color:var(--sky); }
+  .cm-item.gone { color:var(--muted); font-style:italic; background:transparent; border:1px dashed var(--border); }
+  .cm-to { color:var(--sky); font-weight:700; }
+  .cm-re-btn { border:none; background:none; padding:2px 0 0; font-size:0.74rem; font-weight:700; color:var(--muted); cursor:pointer; font-family:inherit; }
+  .cm-re-form { margin-left:18px; }
+  .cm-form { display:flex; gap:6px; margin-top:8px; }
+  .cm-form input { flex:1; min-width:0; }
+  .cm-form button { white-space:nowrap; }
+  .cm-note { font-size:0.76rem; color:var(--muted); line-height:1.5; margin-top:6px; }
+  .pv { margin-bottom:12px; }
+  .pv-title { font-size:0.84rem; font-weight:800; margin:0 2px 6px; }
+  .pv iframe { display:block; width:100%; border:0; border-radius:12px; background:var(--bg2); }
+  .pv.video iframe { aspect-ratio:16/9; }
+  .pv.doc iframe { height:420px; }
+  .pv.folder iframe { height:360px; }
+  .pv-open { display:inline-block; margin-top:4px; font-size:0.76rem; font-weight:700; color:var(--muted); text-decoration:none; }
+  .att-view .pv { margin-bottom:10px; }
+  .p-code { margin-top:4px; font-size:0.72rem; font-weight:700; color:#8a6a1f; }
+  .me-chip { border:1px solid rgba(255,255,255,0.55); background:rgba(255,255,255,0.18); color:inherit; border-radius:999px; padding:2px 10px; font-size:0.74rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .me-list { max-height:46vh; overflow-y:auto; margin-top:10px; }
+  .me-search { width:100%; }
+  .role-edit-btn { align-self:flex-start; margin-top:8px; padding:6px 12px; border:1px dashed #d9b95c; background:#fdf7e9; color:#8a6a1f; border-radius:999px; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .role-editor { margin-top:8px; padding:12px; border:1.5px solid #e6d19a; border-radius:12px; background:#fffdf6; display:flex; flex-direction:column; gap:8px; }
+  .role-editor .re-row { display:flex; gap:6px; align-items:center; }
+  .role-editor .re-row input { flex:1; min-width:0; }
+  .role-editor .re-row button { border:1px solid var(--border); background:var(--card); border-radius:9px; padding:7px 10px; font-size:0.82rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .role-editor .re-row button.del { color:#c0392b; }
+  .role-editor .re-lock { flex:1; padding:8px 10px; font-size:0.88rem; color:var(--muted); background:var(--bg2); border-radius:9px; }
+  .role-editor .re-hint { font-size:0.76rem; color:var(--muted); line-height:1.5; }
   .att-ed { display:flex; flex-direction:column; gap:8px; }
   .att-row { display:grid; grid-template-columns:1fr 1.4fr; gap:8px; }
   .att-row2 { display:flex; align-items:center; justify-content:space-between; gap:8px; }
@@ -546,6 +627,7 @@
   .att-chip span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .att-chip button { border:none; background:none; color:#c0392b; font-size:1.1rem; cursor:pointer; }
   .att-view { margin-top:10px; }
+  a.photo-fail { display:block; padding:11px 14px; margin-bottom:8px; border:1px dashed #d9b95c; border-radius:12px; background:#fdf7e9; color:#8a6a1f; font-size:0.84rem; font-weight:700; text-decoration:none; line-height:1.5; }
   .att-view .tl-btn { margin-bottom:6px; padding:9px 12px; font-size:0.86rem; }
   .tl-btn { display:flex; align-items:center; gap:8px; padding:11px 14px; margin-bottom:8px; border:1px solid var(--border); border-radius:12px; background:var(--card); color:var(--text); font-weight:700; font-size:0.92rem; text-decoration:none; }
   .tl-item .tl-del { border:none; background:none; color:#b0504a; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:inherit; padding:0 2px 8px; }
@@ -578,6 +660,7 @@
     <div class="sub">
       <span class="badge" id="dday-badge">D-day 계산중</span>
       <span>출발일: <span id="trip-date-text">2027-01-10</span></span>
+      <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">👤 이름 선택</button>
     </div>
   </div>
   <div style="display:flex; gap:6px; align-items:center;">
@@ -594,6 +677,7 @@
   <button data-tab="roster">명단</button>
   <button data-tab="depart">출국준비</button>
   <button data-tab="schedule">선교일정</button>
+  <button data-tab="files">자료</button>
 </nav>
 
 <main>
@@ -633,14 +717,9 @@
         </div>
         <div>
           <label>담당</label>
-          <div class="pill-group">
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="워십" /><span>워십</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="무언극" /><span>무언극</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="풍선아트" /><span>풍선아트</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="태권도" /><span>태권도</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="영어전도" /><span>영어전도</span></label>
-            <label class="role-check"><input type="checkbox" class="p-role-box" value="복음팔찌" /><span>복음팔찌</span></label>
-          </div>
+          <div class="pill-group" id="role-boxes-student"></div>
+          <button type="button" class="role-edit-btn" onclick="toggleRoleEditor('student')">⚙️ 담당 버튼 편집</button>
+          <div class="role-editor" id="role-editor-student" style="display:none;"></div>
         </div>
 
         <div class="form-actions">
@@ -738,12 +817,11 @@
           <label>분류 (체크 없으면 전체 모임)</label>
           <div class="pill-group">
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="교사" /><span>교사</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="복음팔찌" /><span>복음팔찌</span></label>
+            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="태권도" /><span>태권도</span></label>
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="워십" /><span>워십</span></label>
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="무언극" /><span>무언극</span></label>
             <label class="role-check"><input type="checkbox" class="ps-cat-box" value="풍선아트" /><span>풍선아트</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="태권도" /><span>태권도</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="영어전도" /><span>영어전도</span></label>
-            <label class="role-check"><input type="checkbox" class="ps-cat-box" value="복음팔찌" /><span>복음팔찌</span></label>
           </div>
         </div>
         <div class="att-ed" data-kind="ps">
@@ -1018,6 +1096,13 @@
       <div id="feed-list" class="feed-list"></div>
     </div>
 
+    <!-- 참석 현황 (교사·관리자에게만 보임) -->
+    <div class="card" id="attend-card" style="display:none;">
+      <h2>📊 참석 현황</h2>
+      <div class="bb-hint" style="text-align:left; margin:-4px 2px 10px;">지난 일정(오늘 이전) 기준이에요. 참석률 = 참석 ÷ 응답 대상이었던 지난 일정 수. 미응답이 많은 순으로 보여요.</div>
+      <div id="attend-list"></div>
+    </div>
+
     <!-- 데이터 백업 (관리모드에서만 보임) -->
     <div class="card" id="backup-card" style="display:none;">
       <h2>🛟 데이터 백업</h2>
@@ -1027,8 +1112,21 @@
         <button type="button" class="secondary" onclick="downloadBackupFile()">📥 백업 파일 내려받기</button>
         <button type="button" class="secondary" onclick="document.getElementById('backup-file').click()">📤 백업 파일로 복원</button>
         <input type="file" id="backup-file" accept=".json,application/json" style="display:none;" onchange="restoreFromFile(this)">
+        <button type="button" class="secondary" onclick="downloadAttendanceCsv()">📊 참석 기록 내려받기 (엑셀용 CSV)</button>
+        <button type="button" class="secondary" onclick="downloadRsvpCommentsJson()">🗂️ 참석·댓글 전체 기록 내려받기 (백업용)</button>
+        <button type="button" class="secondary" id="purge-en-btn" onclick="purgeEnglish()" style="display:none;">🧹 영어전도 저장 데이터 삭제</button>
       </div>
       <div class="bb-hint" style="text-align:left; margin:10px 2px 0;">앱을 여는 기기가 30분마다 내용이 바뀐 경우에만 서버에 백업 사본을 남겨요(저장 직후에도 남겨요). 가끔 "백업 파일 내려받기"로 내 컴퓨터에도 보관해 두면 더 안전해요.</div>
+    </div>
+  </section>
+
+  <!-- 자료 모음 탭 -->
+  <section class="panel" id="panel-files">
+    <div class="card">
+      <h2>📎 자료 모음</h2>
+      <div class="bb-hint" style="text-align:left; margin:-4px 2px 10px;">공지·준비일정·사역팀에 올린 파일과 링크를 한곳에 모아 보여줘요. 제목을 누르면 미리보기가 열려요.</div>
+      <input id="files-search" class="people-search" placeholder="🔍 자료 이름, 공지·일정 제목 검색" oninput="renderFiles()" />
+      <div id="files-list"></div>
     </div>
   </section>
 
@@ -1051,23 +1149,9 @@
         </div>
         <div>
           <label>담당</label>
-          <div class="pill-group">
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="총괄" /><span>총괄</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="보험" /><span>보험</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="회계" /><span>회계</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="앱관리" /><span>앱관리</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="워십" /><span>워십</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="무언극" /><span>무언극</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="풍선아트" /><span>풍선아트</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="태권도" /><span>태권도</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="영어전도" /><span>영어전도</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="복음팔찌" /><span>복음팔찌</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="조식" /><span>조식</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="선물" /><span>선물</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="의료" /><span>의료</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="입국서류" /><span>입국서류</span></label>
-            <label class="role-check"><input type="checkbox" class="t-role-box" value="부모소통" /><span>부모소통</span></label>
-          </div>
+          <div class="pill-group" id="role-boxes-teacher"></div>
+          <button type="button" class="role-edit-btn" onclick="toggleRoleEditor('teacher')">⚙️ 담당 버튼 편집</button>
+          <div class="role-editor" id="role-editor-teacher" style="display:none;"></div>
         </div>
         <div class="form-actions">
           <button class="primary" id="t-submit-btn" onclick="submitTeacher()">교사 추가</button>
@@ -1237,6 +1321,9 @@
 </div>
 
 <!-- 성경읽기: 장 상세(읽은 날짜) 팝업 -->
+<div id="me-modal" class="bb-modal" onclick="if (event.target === this && meCanClose()) closeMeModal()">
+  <div class="bb-sheet" id="me-body"></div>
+</div>
 <div id="bible-detail-modal" class="bb-modal" onclick="if (event.target === this) closeBibleDetail()">
   <div class="bb-sheet" id="bible-detail-body"></div>
 </div>
@@ -1592,6 +1679,8 @@ function renderBackupCard() {
   const st = document.getElementById('backup-status');
   if (!st) return;
   const empty = latestRemoteState && !hasMeaningfulData(latestRemoteState);
+  const pb = document.getElementById('purge-en-btn');
+  if (pb) pb.style.display = ((state.evangelism || []).length || (state.evangelismGoals || []).length) ? '' : 'none';
   st.textContent = (empty ? '⚠️ 서버 데이터가 비어 있어요. "자동 백업에서 복원"을 확인해 보세요.  ' : '') + backupInfo;
 }
 
@@ -1702,6 +1791,8 @@ function restoreFromList(i) {
 }
 
 function initFirebaseRealtimeSync() {
+  initCommentsSync();
+  initRsvpSync();
   DOC_REF.onSnapshot((doc) => {
     if (doc.exists) {
       const remote = normalizeRemote(doc.data());
@@ -1772,7 +1863,10 @@ async function initFirebaseAuth() {
     if (started || busy) return;
     busy = true;
     try {
-      await auth.signInAnonymously();
+      // 이미 로그인돼 있으면(저장된 로그인) 서버 왕복 없이 바로 진행
+      let existing = null;
+      try { existing = await new Promise(res => { const un = auth.onAuthStateChanged(u => { un(); res(u); }); setTimeout(() => res(null), 2500); }); } catch (e) {}
+      if (!existing) await auth.signInAnonymously();
       firebaseAuthReady = true;
       started = true;
       initFirebaseRealtimeSync();
@@ -1893,7 +1987,7 @@ function renderDday() {
 
 // ===== 공통 도우미 =====
 // ===== 사역팀·준비일정 공통 =====
-const TEAMS = ['영어전도', '워십', '무언극', '태권도', '풍선아트', '복음팔찌'];
+const TEAMS = ['복음팔찌', '태권도', '워십', '무언극', '풍선아트'];
 const TEAM_STYLE = {
   '전체 모임': { icon: '🏫', c: '#4E7D62', d: '#2F5A44' },
   '교사':     { icon: '🌳', c: '#7170A1', d: '#4A4977' },
@@ -1913,6 +2007,17 @@ function safeUrl(u) {
   if (/^[a-z][a-z0-9+.-]*:/i.test(u) && !/^https?:\/\//i.test(u)) return '';
   if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
   try { return new URL(u).href; } catch (e) { return ''; }
+}
+// 사진 불러오기 실패 시: 다른 주소로 한 번 더 시도 → 그래도 안 되면 안내 버튼으로 바꿈
+function photoFail(img) {
+  const alt = img.dataset.alt;
+  if (alt && !img.dataset.tried) { img.dataset.tried = '1'; img.src = alt; return; }
+  const a = img.closest('a');
+  if (a) { a.classList.add('photo-fail'); a.textContent = '🖼️ 사진을 불러오지 못했어요 — 눌러서 열기 (드라이브 공유가 "링크가 있는 모든 사용자"인지 확인)'; }
+}
+function driveAlt(u) {
+  const m = /drive\.google\.com\/.*?(?:\/d\/|[?&]id=)([\w-]{10,})/.exec(u || '');
+  return m ? `https://lh3.googleusercontent.com/d/${m[1]}=w1000` : '';
 }
 function driveThumb(u) {
   const m = /drive\.google\.com\/.*?(?:\/d\/|[?&]id=)([\w-]{10,})/.exec(u || '');
@@ -1952,17 +2057,43 @@ function collectAtt(kind) {
   if (box && box.querySelector('.att-url').value.trim()) addAtt(kind);
   return attState[kind].map(a => ({ name: a.name, url: a.url, photo: a.photo }));
 }
+
+// 링크 종류를 알아내 화면 안에서 바로 미리보기 (유튜브·드라이브 파일/폴더·구글 문서/시트/슬라이드·이미지)
+function previewInfo(u) {
+  let m;
+  if ((m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{6,})/i.exec(u)))
+    return { kind: 'video', src: `https://www.youtube-nocookie.com/embed/${m[1]}` };
+  if ((m = /drive\.google\.com\/drive\/(?:u\/\d+\/)?folders\/([\w-]{10,})/i.exec(u)))
+    return { kind: 'folder', src: `https://drive.google.com/embeddedfolderview?id=${m[1]}#list` };
+  if ((m = /drive\.google\.com\/(?:file\/d\/|open\?(?:.*&)?id=|uc\?(?:.*&)?id=)([\w-]{10,})/i.exec(u)))
+    return { kind: 'doc', src: `https://drive.google.com/file/d/${m[1]}/preview` };
+  if ((m = /docs\.google\.com\/(document|spreadsheets|presentation)\/d\/([\w-]{10,})/i.exec(u)))
+    return { kind: 'doc', src: `https://docs.google.com/${m[1]}/d/${m[2]}/${m[1] === 'presentation' ? 'embed' : 'preview'}` };
+  if ((m = /docs\.google\.com\/forms\/d\/(?:e\/)?([\w-]{10,})/i.exec(u)))
+    return { kind: 'doc', src: u.replace(/\/(viewform|edit)?(\?.*)?$/, '') + '/viewform?embedded=true' };
+  if (/\.(jpe?g|png|gif|webp|bmp|avif)(\?.*)?$/i.test(u)) return { kind: 'img', src: u };
+  return null;
+}
+function previewHtml(url, name, photo) {
+  const u = safeUrl(url);
+  if (!u) return '';
+  const label = escapeHtml(name || '');
+  const open = `<a class="pv-open" href="${escapeHtml(u)}" target="_blank" rel="noopener">↗ 새 창에서 열기</a>`;
+  const head = label ? `<div class="pv-title">${label}</div>` : '';
+  const info = previewInfo(u);
+  if (photo || (info && info.kind === 'img')) {
+    const src = driveThumb(u) || (info && info.kind === 'img' ? info.src : u);
+    return `<div class="pv">${head}<a class="tl-photo" href="${escapeHtml(u)}" target="_blank" rel="noopener"><img src="${escapeHtml(src)}" data-alt="${escapeHtml(driveAlt(u))}" onerror="photoFail(this)" referrerpolicy="no-referrer" alt="${label}" loading="lazy"></a></div>`;
+  }
+  if (info) {
+    return `<div class="pv ${info.kind}">${head}<iframe src="${escapeHtml(info.src)}" loading="lazy" allowfullscreen allow="fullscreen; autoplay; encrypted-media; picture-in-picture" referrerpolicy="no-referrer" title="${label || '미리보기'}"></iframe>${open}</div>`;
+  }
+  return `<a class="tl-btn" href="${escapeHtml(u)}" target="_blank" rel="noopener">🔗 ${label || escapeHtml(u)}</a>`;
+}
 function attListHtml(list) {
   const arr = (list || []).filter(a => a && safeUrl(a.url));
   if (!arr.length) return '';
-  return `<div class="att-view">${arr.map(a => {
-    const u = safeUrl(a.url);
-    if (a.photo) {
-      const src = driveThumb(u) || u;
-      return `<a class="tl-photo" href="${escapeHtml(u)}" target="_blank" rel="noopener"><img src="${escapeHtml(src)}" alt="${escapeHtml(a.name)}" loading="lazy"></a>`;
-    }
-    return `<a class="tl-btn" href="${escapeHtml(u)}" target="_blank" rel="noopener">${/youtu/i.test(u) ? '▶️' : '📎'} ${escapeHtml(a.name)}</a>`;
-  }).join('')}</div>`;
+  return `<div class="att-view">${arr.map(a => previewHtml(a.url, a.name, a.photo)).join('')}</div>`;
 }
 
 const byName = (a, b) => (a.name || '').localeCompare(b.name || '', 'ko');
@@ -2010,6 +2141,92 @@ function assignInfoHtml(type, id) {
   return `<div class="p-info">🛏️ ${room} &nbsp;·&nbsp; 🚐 ${vehicle}</div>`;
 }
 
+
+// ===== 담당(역할) 버튼 편집 =====
+const DEFAULT_ROLES = {
+  student: ['복음팔찌', '태권도', '워십', '무언극', '풍선아트'],
+  teacher: ['총괄', '보험', '회계', '앱관리', '복음팔찌', '태권도', '워십', '무언극', '풍선아트', '조식', '선물', '의료', '입국서류', '부모소통']
+};
+const ROLE_PEOPLE = { student: 'participants', teacher: 'teachers' };
+function getRoleOptions(kind) {
+  const o = state.roleOptions && state.roleOptions[kind];
+  return Array.isArray(o) ? o : DEFAULT_ROLES[kind];
+}
+function setRoleOptions(kind, list) {
+  if (!state.roleOptions) state.roleOptions = {};
+  // 한쪽만 바꿔도 다른 쪽이 기본값으로 비지 않도록 둘 다 채워 저장
+  ['student', 'teacher'].forEach(k => { if (!Array.isArray(state.roleOptions[k])) state.roleOptions[k] = DEFAULT_ROLES[k].slice(); });
+  state.roleOptions[kind] = list;
+  markDirty('roleOptions');
+}
+function renderRoleBoxes(kind, extra) {
+  const box = document.getElementById('role-boxes-' + kind);
+  if (!box) return;
+  const cls = kind === 'student' ? 'p-role-box' : 't-role-box';
+  const checked = new Set(Array.from(box.querySelectorAll('.' + cls + ':checked')).map(e => e.value));
+  (extra || []).forEach(r => checked.add(r));
+  const opts = getRoleOptions(kind).slice();
+  checked.forEach(r => { if (!opts.includes(r)) opts.push(r); }); // 목록에서 빠진 담당도 이 사람에게 붙어 있으면 보이게
+  box.innerHTML = opts.map(r => `<label class="role-check"><input type="checkbox" class="${cls}" value="${escapeHtml(r)}"${checked.has(r) ? ' checked' : ''} /><span>${escapeHtml(r)}</span></label>`).join('');
+}
+function renderRoleBoxesAll() { renderRoleBoxes('student'); renderRoleBoxes('teacher'); }
+function toggleRoleEditor(kind) {
+  const ed = document.getElementById('role-editor-' + kind);
+  if (!ed) return;
+  if (ed.style.display === 'none') { renderRoleEditor(kind); ed.style.display = 'flex'; } else ed.style.display = 'none';
+}
+function renderRoleEditor(kind) {
+  const ed = document.getElementById('role-editor-' + kind);
+  const list = getRoleOptions(kind);
+  const who = kind === 'student' ? '학생' : '교사';
+  ed.innerHTML = list.map((r, i) => TEAMS.includes(r)
+    ? `<div class="re-row"><div class="re-lock">🔒 ${escapeHtml(r)} <span style="font-size:0.74rem;">(사역팀 탭과 연결돼 고정)</span></div></div>`
+    : `<div class="re-row"><input value="${escapeHtml(r)}" onchange="renameRole('${kind}',${i},this.value)" /><button type="button" class="del" onclick="deleteRole('${kind}',${i})">삭제</button></div>`).join('')
+    + `<div class="re-row"><input id="re-new-${kind}" placeholder="새 담당 이름" onkeydown="if(event.key==='Enter'){event.preventDefault();addRole('${kind}');}" /><button type="button" onclick="addRole('${kind}')">＋ 추가</button></div>`
+    + `<div class="re-hint">이름을 바꾸면 이미 그 담당이 붙은 ${who}에게도 같이 바뀌어요. 삭제하면 ${who}에게서도 그 담당이 빠져요. 바꾼 뒤 맨 아래 저장 버튼을 눌러야 서버에 반영돼요.</div>`
+    + `<div class="re-row"><button type="button" onclick="toggleRoleEditor('${kind}')" style="flex:1;">닫기</button></div>`;
+}
+function addRole(kind) {
+  const inp = document.getElementById('re-new-' + kind);
+  const name = (inp.value || '').trim();
+  if (!name) return;
+  const list = getRoleOptions(kind);
+  if (list.includes(name)) { alert('이미 있는 담당이에요.'); return; }
+  setRoleOptions(kind, [...list, name]);
+  renderRoleBoxes(kind, [name]); renderRoleEditor(kind);
+  const n = document.getElementById('re-new-' + kind); if (n) n.focus();
+}
+function renameRole(kind, i, val) {
+  const list = getRoleOptions(kind).slice();
+  const old = list[i], name = (val || '').trim();
+  if (TEAMS.includes(old)) return; // 사역팀 이름은 고정
+  if (!name || name === old) { renderRoleEditor(kind); return; }
+  if (list.includes(name)) { alert('이미 있는 담당이에요.'); renderRoleEditor(kind); return; }
+  list[i] = name;
+  const key = ROLE_PEOPLE[kind];
+  let n = 0;
+  (state[key] || []).forEach(p => { if ((p.roles || []).includes(old)) { p.roles = p.roles.map(r => r === old ? name : r); n++; } });
+  setRoleOptions(kind, list);
+  if (n) markDirty(key);
+  renderRoleBoxes(kind); renderRoleEditor(kind); renderPeople();
+}
+function deleteRole(kind, i) {
+  const list = getRoleOptions(kind).slice();
+  const old = list[i];
+  if (TEAMS.includes(old)) return; // 사역팀 이름은 고정
+  const key = ROLE_PEOPLE[kind];
+  const users = (state[key] || []).filter(p => (p.roles || []).includes(old));
+  if (!confirm(`'${old}' 담당 버튼을 삭제할까요?` + (users.length ? `\n이 담당이 붙은 ${users.length}명에게서도 빠져요.` : ''))) return;
+  list.splice(i, 1);
+  users.forEach(p => { p.roles = p.roles.filter(r => r !== old); });
+  setRoleOptions(kind, list);
+  if (users.length) markDirty(key);
+  // 편집 중인 체크 상태에서도 제거
+  const cls = kind === 'student' ? 'p-role-box' : 't-role-box';
+  document.querySelectorAll('.' + cls).forEach(b => { if (b.value === old) b.closest('label').remove(); });
+  renderRoleBoxes(kind); renderRoleEditor(kind); renderPeople();
+}
+
 function personRowHtml({ id, name, sub, roles, extra, onclick }) {
   return `
     <div class="person-row${canEdit ? ' clickable' : ''}" data-pid="${id || ''}" ${canEdit ? `onclick="${onclick}"` : ''}>
@@ -2020,6 +2237,7 @@ function personRowHtml({ id, name, sub, roles, extra, onclick }) {
         </div>
         ${roles && roles.length ? `<div class="p-tags">${roles.map(r => `<span class="p-tag">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
         ${extra}
+        ${canEdit && id ? `<div class="p-code">🔑 해제코드 ${meCode(((state.participants || []).some(x => x.id === id) ? 'p_' : 't_') + id)}</div>` : ''}
       </div>
       ${canEdit ? '<span class="p-chev">›</span>' : ''}
     </div>`;
@@ -2119,7 +2337,9 @@ function startEditParticipant(id) {
   document.getElementById('p-gender').value = p.gender || '';
   document.getElementById('p-grade').value = p.grade || '';
   const roles = p.roles || [];
+  renderRoleBoxes('student');
   document.querySelectorAll('.p-role-box').forEach(box => { box.checked = roles.includes(box.value); });
+  renderRoleBoxes('student', roles);
   document.getElementById('p-submit-btn').textContent = '저장';
   document.getElementById('p-delete-btn').style.display = 'inline-block';
   openForm('participant-form', true);
@@ -2150,6 +2370,7 @@ function renderTeacherAuthorOptions() {
   const teachers = (state.teachers || []).slice().sort(byName);
   sel.innerHTML = '<option value="">작성자 선택</option>' + teachers.map(t => `<option value="${escapeHtml(t.name)}">${escapeHtml(t.name)}</option>`).join('');
   if (teachers.some(t => t.name === current)) sel.value = current;
+  applyMeAuthor();
 }
 
 function renderTeachers() {
@@ -2209,7 +2430,9 @@ function startEditTeacher(id) {
   document.getElementById('t-name').value = t.name || '';
   document.getElementById('t-gender').value = t.gender || '';
   const roles = t.roles || [];
+  renderRoleBoxes('teacher');
   document.querySelectorAll('.t-role-box').forEach(box => { box.checked = roles.includes(box.value); });
+  renderRoleBoxes('teacher', roles);
   document.getElementById('t-submit-btn').textContent = '저장';
   document.getElementById('t-delete-btn').style.display = 'inline-block';
   openForm('teacher-form', true);
@@ -2712,6 +2935,12 @@ function renderSchedule() {
 // 날짜별로 묶인 일정(state.schedule / state.prepSchedule)에 항목 추가·수정
 function upsertDayItem(key, date, itemData, editDayId, editIdx) {
   if (!state[key]) state[key] = [];
+  // 참석 확인 등을 붙일 수 있도록 일정마다 바뀌지 않는 고유 번호(rid)를 유지·부여
+  if (key === 'prepSchedule') {
+    const od = (editDayId !== '' && editIdx !== '') ? state[key].find(s => s.id === editDayId) : null;
+    const oi = od && od.items && od.items[editIdx];
+    itemData.rid = (oi && (oi.rid || itemKey(od, oi))) || itemData.rid || uid();
+  }
   if (editDayId !== '' && editIdx !== '') {
     const oldDay = state[key].find(s => s.id === editDayId);
     if (!oldDay || !oldDay.items || !oldDay.items[editIdx]) return;
@@ -2816,6 +3045,8 @@ function calcDdayBadge(dateStr) {
   return `<span class="dday-pill${cls}">${ddayText(diff)}</span>`;
 }
 
+// 지난 일정 접기 상태: 기본은 펼침, 사용자가 접으면 다시 그려도 유지
+const pastOpen = { ps: true, tm: true };
 let psFilter = 'all';
 
 // 일정 항목의 분류 (없으면 전체 모임)
@@ -2852,6 +3083,7 @@ function renderItemCards(dayList, isPast = false) {
             <div class="content-text">${escapeHtml(it.activity)}</div>
             ${it.description ? `<div class="content-desc">${escapeHtml(it.description)}</div>` : ''}
             ${attListHtml(it.attachments)}
+            ${rsvpPlaceholder(s, it, isPast)}
           </div>
           ${canEdit ? `<div class="ps-actions"><button onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button><button class="del" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
         </div>
@@ -2897,8 +3129,9 @@ function renderPrepSchedule() {
   let html = '';
   if (week.length) html += `<div class="section-title">📍 이번 주</div>${renderItemCards(week, false)}`;
   if (later.length) html += `<div class="section-title"${week.length ? ' style="margin-top:18px;"' : ''}>📌 앞으로 일정</div>${renderItemCards(later, false)}`;
-  if (past.length) html += `<details class="ps-past"><summary>⌛ 지나간 일정 (${past.reduce((n, s) => n + (s.items || []).filter(itemMatchesFilter).length, 0)})</summary>${renderItemCards(past, true)}</details>`;
+  if (past.length) html += `<details class="ps-past"${pastOpen.ps ? ' open' : ''} ontoggle="pastOpen.ps=this.open"><summary>⌛ 지나간 일정 (${past.reduce((n, s) => n + (s.items || []).filter(itemMatchesFilter).length, 0)})</summary>${renderItemCards(past, true)}</details>`;
   list.innerHTML = html || '<div class="empty">이 종류의 일정이 없어요.</div>';
+  renderRsvpBlocks();
 }
 
 function addPrepScheduleEntry() {
@@ -2982,6 +3215,398 @@ function dateParts(d) {
   return { m: +m[2], d: +m[3], w: ['일','월','화','수','목','금','토'][dt.getDay()] };
 }
 
+
+
+// ===== 참석/불참 확인 =====
+// 일정(준비일정·사역팀 모임)마다 "참석/불참"을 한 번 눌러 알림. 일정 데이터와 따로(rsvp_data) 저장하므로 서로 덮어쓰지 않음.
+const RSVP_REF = db.collection('baguio_youth_mission').doc('rsvp_data');
+let rsvpData = {};
+function hash36(s) { let x = 2166136261; for (let i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x.toString(36); }
+// 일정의 고유 키: rid가 있으면 그것, 예전에 만든 일정(rid 없음)은 날짜id+시간+제목으로 만든 키
+function itemKey(day, it) { return it.rid || ('L' + day.id + '_' + hash36((it.time || '') + '|' + (it.activity || ''))); }
+
+function initRsvpSync() {
+  RSVP_REF.onSnapshot(doc => { rsvpData = doc.exists ? (doc.data() || {}) : {}; renderRsvpBlocks(); },
+    err => { rsvpData = {}; renderRsvpBlocks(err && err.code); });
+}
+
+// 이 일정에 응답해야 하는 사람들 (전체 모임=모두, 교사=교사, 사역팀=그 담당 학생·교사)
+function rsvpAudience(cats) {
+  const out = new Map();
+  const st = state.participants || [], te = state.teachers || [];
+  const add = (arr, pre, role) => arr.forEach(x => out.set(pre + x.id, { key: pre + x.id, name: x.name, role }));
+  if (!cats.length || cats.includes('전체 모임')) { add(st, 'p_', 'student'); add(te, 't_', 'teacher'); return out; }
+  cats.forEach(c => {
+    if (c === '교사') add(te, 't_', 'teacher');
+    else { add(st.filter(x => (x.roles || []).includes(c)), 'p_', 'student'); add(te.filter(x => (x.roles || []).includes(c)), 't_', 'teacher'); }
+  });
+  return out;
+}
+
+function rsvpPlaceholder(day, it, past) {
+  const cats = (it.categories && it.categories.length) ? it.categories : ['전체 모임'];
+  return `<div class="rsvp" data-rk="${escapeHtml(itemKey(day, it))}" data-cats="${escapeHtml(cats.join('|'))}" data-past="${past ? 1 : 0}"></div>`;
+}
+
+function renderRsvpBlocks(err) {
+  const me = meFind(meKey);
+  const staff = canEdit || (me && me.role === 'teacher');
+  document.querySelectorAll('.rsvp[data-rk]').forEach(el => {
+    const key = el.dataset.rk, past = el.dataset.past === '1';
+    const cats = (el.dataset.cats || '').split('|').filter(Boolean);
+    const ans = rsvpData['r_' + key] || {};
+    const aud = rsvpAudience(cats);
+    const yes = [], no = [];
+    Object.keys(ans).forEach(k => { const a = ans[k]; if (!a) return; const who = (aud.get(k) || {}).name || a.who || ''; (a.s === 'yes' ? yes : a.s === 'no' ? no : []).push({ key: k, name: who }); });
+    const answered = new Set([...yes, ...no].map(x => x.key));
+    const none = Array.from(aud.values()).filter(x => !answered.has(x.key));
+    const mine = me ? (ans[meKey] || {}).s : '';
+    const btns = (!past && cmCanWrite())
+      ? `<div class="rsvp-btns"><button class="${mine === 'yes' ? 'on yes' : ''}" onclick="setRsvp('${escapeHtml(key)}','yes')">✅ 참석</button><button class="${mine === 'no' ? 'on no' : ''}" onclick="setRsvp('${escapeHtml(key)}','no')">❌ 불참</button></div>`
+      : (!past && meKey === 'guest' ? '<div class="cm-note" style="margin:0 0 4px;">👀 학부모 보기 모드에서는 참석 표시를 할 수 없어요.</div>' : (!past && !me ? '<div class="cm-note" style="margin:0 0 4px;">참석 표시는 위의 "👤 이름 선택" 후 할 수 있어요.</div>' : ''));
+    const copyBtn = (staff && !past && none.length) ? `<button type="button" class="rsvp-copy" onclick="copyRsvpReminder('${escapeHtml(key)}')">📋 미응답자 알림 문구 복사</button>` : '';
+    let names = '';
+    if (canEdit) {
+      // 관리모드: 사람별로 참석/불참/미응답을 직접 고칠 수 있음 (지난 일정도 가능)
+      const rows = new Map();
+      aud.forEach(x => rows.set(x.key, x.name));
+      Object.keys(ans).forEach(k => { if (ans[k] && !rows.has(k)) rows.set(k, ans[k].who || k); });
+      const ek = escapeHtml(key);
+      const rowHtml = Array.from(rows.entries()).map(([k, nm]) => {
+        const a = ans[k] || {}, c = a.s;
+        const ak = escapeHtml(k), an = escapeHtml(nm);
+        const b = (v, lab, cls) => `<button class="${c === v ? 'on ' + cls : ''}" onclick="adminSetRsvp('${ek}','${ak}','${v}')">${lab}</button>`;
+        return `<div class="rsvp-edit-row"><span class="rn">${an}${a.by === 'admin' ? ' <i title="관리자가 수정함">✏️</i>' : ''}</span><span class="rb">${b('yes','✅ 참석','yes')}${b('no','❌ 불참','no')}${b('','⏳ 미응답','')}</span></div>`;
+      }).join('') || '<div class="cm-note">대상자가 없어요.</div>';
+      names = `<details class="rsvp-names" ${openRsvpEdit.has(key) ? 'open' : ''} ontoggle="toggleRsvpEdit('${escapeHtml(key)}',this.open)"><summary>✏️ 명단 보기·수정 (관리자)</summary>
+        <div class="cm-note" style="margin:4px 0;">지난 일정도 고칠 수 있어요. 바꾸면 기록에 바로 반영돼요.</div>${rowHtml}${copyBtn}</details>`;
+    } else if (staff) {
+      names = `<details class="rsvp-names"><summary>명단 보기</summary>
+        <div><b>✅ 참석 (${yes.length})</b> ${yes.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>
+        <div><b>❌ 불참 (${no.length})</b> ${no.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>
+        <div><b>⏳ 미응답 (${none.length})</b> ${none.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>${copyBtn}</details>`;
+    }
+    el.dataset.none = none.length;
+    el.innerHTML = `${btns}<div class="rsvp-sum">✅ 참석 <b>${yes.length}</b> · ❌ 불참 <b>${no.length}</b> · ⏳ 미응답 <b>${none.length}</b>${err ? ' <span style="color:#c0392b;">(확인 불가: ' + escapeHtml(String(err)) + ')</span>' : ''}</div>${names}`;
+  });
+  renderAttendance();
+}
+
+let openRsvpEdit = new Set();
+function toggleRsvpEdit(key, open) { if (open) openRsvpEdit.add(key); else openRsvpEdit.delete(key); }
+
+// 관리자가 특정 사람의 응답을 고침. s='' 이면 응답 지움(미응답)
+function adminSetRsvp(key, personKey, s) {
+  if (!canEdit) return;
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  const f = 'r_' + key;
+  const cur = (rsvpData[f] || {})[personKey];
+  if ((cur ? cur.s : '') === s) return;
+  const prev = cur ? { ...cur } : null;
+  const who = (rsvpAudience(['전체 모임']).get(personKey) || {}).name || (cur && cur.who) || personKey;
+  const apply = v => { rsvpData[f] = { ...(rsvpData[f] || {}) }; if (v) rsvpData[f][personKey] = v; else delete rsvpData[f][personKey]; renderRsvpBlocks(); };
+  const entry = { s, who, at: Date.now(), by: 'admin' };
+  apply(s ? entry : null);
+  const op = s
+    ? RSVP_REF.set({ [f]: { [personKey]: entry } }, { merge: true })
+    : RSVP_REF.update({ [`${f}.${personKey}`]: firebase.firestore.FieldValue.delete() });
+  op.catch(e => {
+    apply(prev);
+    alert(e && e.code === 'permission-denied' ? '서버 설정(보안 규칙) 때문에 저장되지 않아요. (permission-denied)' : '저장하지 못했어요. 인터넷 연결을 확인해 주세요.');
+  });
+}
+
+function setRsvp(key, s) {
+  const me = meFind(meKey);
+  if (!me) { alert('먼저 이름을 선택해 주세요.'); return; }
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  const f = 'r_' + key;
+  const cur = (rsvpData[f] || {})[meKey];
+  const cancel = cur && cur.s === s;   // 같은 걸 다시 누르면 취소
+  const prev = cur ? { ...cur } : null;
+  const apply = v => { rsvpData[f] = { ...(rsvpData[f] || {}) }; if (v) rsvpData[f][meKey] = v; else delete rsvpData[f][meKey]; renderRsvpBlocks(); };
+  const entry = { s, who: me.name, at: Date.now() };
+  apply(cancel ? null : entry);
+  const op = cancel
+    ? RSVP_REF.update({ [`${f}.${meKey}`]: firebase.firestore.FieldValue.delete() })
+    : RSVP_REF.set({ [f]: { [meKey]: entry } }, { merge: true });
+  op.catch(e => {
+    apply(prev);
+    alert(e && e.code === 'permission-denied' ? '서버 설정(보안 규칙) 때문에 저장되지 않아요.\n관리자에게 알려 주세요. (permission-denied)' : '저장하지 못했어요. 인터넷 연결을 확인해 주세요.');
+  });
+}
+
+
+// ===== 일정 목록 / 참석 현황 / 내려받기 / 알림 문구 =====
+function allRsvpItems() {
+  const out = [];
+  (state.prepSchedule || []).forEach(day => (day.items || []).forEach(it => {
+    const cats = (it.categories && it.categories.length) ? it.categories : ['전체 모임'];
+    const d = daysUntil(day.date);
+    out.push({ day, it, key: itemKey(day, it), cats, past: d !== null && d < 0 });
+  }));
+  out.sort((a, b) => (a.day.date || '').localeCompare(b.day.date || '') || (a.it.time || '').localeCompare(b.it.time || ''));
+  return out;
+}
+function itemLabel(x) {
+  const dp = dateParts(x.day.date);
+  return (dp ? `${dp.m}/${dp.d}(${dp.w})` : (x.day.date || '')) + (x.it.time ? ' ' + x.it.time : '') + ' ' + (x.it.activity || '');
+}
+
+function renderAttendance() {
+  const card = document.getElementById('attend-card'), box = document.getElementById('attend-list');
+  if (!card || !box) return;
+  const me = meFind(meKey);
+  const staff = canEdit || (me && me.role === 'teacher');
+  card.style.display = staff ? 'block' : 'none';
+  if (!staff) return;
+  const stat = new Map();
+  const get = (k, name, role) => { if (!stat.has(k)) stat.set(k, { key: k, name, role, y: 0, n: 0, none: 0, total: 0 }); return stat.get(k); };
+  const items = allRsvpItems().filter(x => x.past);
+  items.forEach(x => {
+    const aud = rsvpAudience(x.cats), ans = rsvpData['r_' + x.key] || {};
+    aud.forEach(a => {
+      const r = get(a.key, a.name, a.role); r.total++;
+      const s = (ans[a.key] || {}).s;
+      if (s === 'yes') r.y++; else if (s === 'no') r.n++; else r.none++;
+    });
+  });
+  if (!items.length) { box.innerHTML = '<div class="empty">아직 지난 일정이 없어요.</div>'; return; }
+  const rows = Array.from(stat.values()).filter(r => r.total).sort((a, b) => b.none - a.none || b.n - a.n || (a.name || '').localeCompare(b.name || '', 'ko'));
+  box.innerHTML = `<div class="att-tbl"><div class="att-row head"><span>이름</span><span>참석</span><span>불참</span><span>미응답</span><span>참석률</span></div>`
+    + rows.map(r => `<div class="att-row"><span>${escapeHtml(r.name)}${r.role === 'teacher' ? ' <i>교사</i>' : ''}</span><span>${r.y}</span><span>${r.n}</span><span class="${r.none ? 'warn' : ''}">${r.none}</span><span>${Math.round(r.y / r.total * 100)}%</span></div>`).join('')
+    + `</div><div class="bb-hint" style="text-align:left; margin-top:6px;">지난 일정 ${items.length}개 기준 · 관리모드에서 고친 응답도 반영돼요.</div>`;
+}
+
+function csvCell(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+function saveBlob(text, mime, name) {
+  const blob = new Blob([text], { type: mime });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function downloadAttendanceCsv() {
+  if (!canEdit) return;
+  const head = ['날짜', '시간', '일정', '대상', '이름', '구분', '응답', '응답시각', '관리자수정'];
+  const lines = [head.map(csvCell).join(',')];
+  allRsvpItems().forEach(x => {
+    const aud = rsvpAudience(x.cats), ans = rsvpData['r_' + x.key] || {};
+    const rows = new Map();
+    aud.forEach(a => rows.set(a.key, { name: a.name, role: a.role }));
+    Object.keys(ans).forEach(k => { if (ans[k] && !rows.has(k)) rows.set(k, { name: ans[k].who || k, role: k.startsWith('t_') ? 'teacher' : 'student' }); });
+    rows.forEach((r, k) => {
+      const a = ans[k] || {};
+      const st = a.s === 'yes' ? '참석' : a.s === 'no' ? '불참' : '미응답';
+      const at = a.at ? new Date(a.at).toLocaleString('ko-KR') : '';
+      lines.push([x.day.date, x.it.time || '', x.it.activity || '', x.cats.join('/'), r.name, r.role === 'teacher' ? '교사' : '학생', st, at, a.by === 'admin' ? 'O' : ''].map(csvCell).join(','));
+    });
+  });
+  saveBlob('﻿' + lines.join('\r\n'), 'text/csv;charset=utf-8', `baguio_attendance_${bibleToday()}.csv`);
+}
+function downloadRsvpCommentsJson() {
+  if (!canEdit) return;
+  const data = { exportedAt: new Date().toISOString(), note: '참석(rsvp_data)·댓글(comments_data) 기록 사본. 앱의 "백업 파일로 복원"에는 쓰이지 않아요(기록 보관용).', rsvp: rsvpData, comments: commentsData };
+  saveBlob(JSON.stringify(data, null, 2), 'application/json', `baguio_rsvp_comments_${bibleToday()}.json`);
+}
+
+function copyText(t) {
+  const done = () => alert('복사했어요. 단톡방에 붙여넣기 하세요.');
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(done, () => fallback()); return; }
+  fallback();
+  function fallback() {
+    const ta = document.createElement('textarea'); ta.value = t; ta.style.cssText = 'position:fixed;opacity:0;';
+    document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    ta.remove();
+    if (ok) done(); else prompt('아래 글을 길게 눌러 복사하세요.', t);
+  }
+}
+function copyRsvpReminder(key) {
+  const x = allRsvpItems().find(i => i.key === key);
+  if (!x) return;
+  const aud = rsvpAudience(x.cats), ans = rsvpData['r_' + key] || {};
+  const none = Array.from(aud.values()).filter(a => !(ans[a.key] && ans[a.key].s)).map(a => a.role === 'teacher' ? teacherTitle(a.name) : a.name);
+  if (!none.length) { alert('미응답자가 없어요.'); return; }
+  copyText(`[참석 확인] ${itemLabel(x)}\n아직 응답하지 않은 사람: ${none.join(', ')}\n앱에서 ✅ 참석 / ❌ 불참을 눌러 주세요 🙏\n${location.origin}/`);
+}
+
+// 자료 모음
+function renderFiles() {
+  const box = document.getElementById('files-list');
+  if (!box) return;
+  const q = ((document.getElementById('files-search') || {}).value || '').trim().toLowerCase();
+  const groups = { '📢 공지': [], '🗓️ 준비일정': [], '👥 사역팀 자료': [] };
+  (state.posts || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || '')).forEach(p => (p.attachments || []).forEach(a => groups['📢 공지'].push({ a, src: (p.title || (p.text || '').slice(0, 20) || '공지') + ' · ' + (p.date || '') })));
+  allRsvpItems().slice().reverse().forEach(x => (x.it.attachments || []).forEach(a => groups['🗓️ 준비일정'].push({ a, src: itemLabel(x) })));
+  (state.teamLinks || []).forEach(l => groups['👥 사역팀 자료'].push({ a: { name: l.title, url: l.url, photo: l.photo }, src: l.team || '' }));
+  let total = 0;
+  const html = Object.keys(groups).map(g => {
+    const arr = groups[g].filter(e => e.a && safeUrl(e.a.url) && (!q || ((e.a.name || '') + ' ' + e.src).toLowerCase().includes(q)));
+    if (!arr.length) return '';
+    total += arr.length;
+    return `<div class="en-sec">${g} (${arr.length})</div>` + arr.map(e => {
+      const info = previewInfo(safeUrl(e.a.url));
+      const ic = e.a.photo || (info && info.kind === 'img') ? '🖼️' : info && info.kind === 'video' ? '▶️' : info ? '📄' : '🔗';
+      return `<details class="file-row"><summary><span class="fi">${ic}</span><span class="ft">${escapeHtml(e.a.name || safeUrl(e.a.url))}<small>${escapeHtml(e.src)}</small></span></summary>${previewHtml(e.a.url, '', e.a.photo)}</details>`;
+    }).join('');
+  }).join('');
+  box.innerHTML = total ? html : `<div class="empty">${q ? '검색 결과가 없어요.' : '아직 올라온 자료가 없어요.'}</div>`;
+}
+
+// 영어전도 저장 데이터 삭제 (관리자). 지우기 전에 백업 파일을 먼저 내려받음
+function purgeEnglish() {
+  if (!canEdit) return;
+  const n = (state.evangelism || []).length, g = (state.evangelismGoals || []).length;
+  if (!n && !g) { alert('지울 영어전도 데이터가 없어요.'); return; }
+  if (!confirm(`영어전도 카드 ${n}개, 주차별 목표 ${g}개를 삭제할까요?\n\n먼저 현재 전체 데이터의 백업 파일이 자동으로 내려받아져요.`)) return;
+  downloadBackupFile();
+  setTimeout(() => {
+    if (!confirm('백업 파일이 내려받아졌는지 확인하셨나요?\n확인했다면 [확인]을 눌러 삭제하세요.\n(삭제 후 화면 아래 저장 버튼을 눌러야 서버에 반영돼요)')) return;
+    state.evangelism = []; state.evangelismGoals = [];
+    markDirty('evangelism'); markDirty('evangelismGoals');
+    renderEnglish(); renderBackupCard();
+    alert('삭제했어요. 화면 아래 "저장"을 눌러 서버에 반영해 주세요.');
+  }, 300);
+}
+
+// ===== 공지 댓글 =====
+// 공지 본문(shared_data)과 완전히 분리된 문서(comments_data)에 저장 → 댓글 때문에 기존 데이터가 덮어써질 일이 없음.
+// 댓글 하나씩 arrayUnion으로 추가하므로 여러 명이 동시에 써도 섞이지 않음.
+const COMMENTS_REF = db.collection('baguio_youth_mission').doc('comments_data');
+let commentsData = {};          // { c_<공지id>: [ {id, key, who, role, text, at} ] }
+let commentsReady = false, commentsError = '';
+let openComments = new Set();   // 펼쳐 둔 공지
+let lastCommentAt = 0;
+
+function cmField(postId) { return 'c_' + postId; }
+function cmList(postId) { const a = commentsData[cmField(postId)]; return Array.isArray(a) ? a.slice().sort((x, y) => (x.at || 0) - (y.at || 0)) : []; }
+function cmCanWrite() { const m = meFind(meKey); return !!m && meKey !== 'guest'; }   // 이름을 고른 학생·선생님만
+
+function initCommentsSync() {
+  COMMENTS_REF.onSnapshot(doc => {
+    commentsData = doc.exists ? (doc.data() || {}) : {};
+    commentsReady = true; commentsError = '';
+    renderCommentLists();
+  }, err => {
+    commentsError = (err && err.code) || 'error';
+    commentsReady = true;
+    renderCommentLists();
+  });
+}
+
+function fmtCmTime(ts) {
+  const d = new Date(ts || 0); if (!ts || isNaN(d)) return '';
+  const now = Date.now(), diff = Math.floor((now - ts) / 60000);
+  if (diff < 1) return '방금'; if (diff < 60) return diff + '분 전'; if (diff < 1440) return Math.floor(diff / 60) + '시간 전';
+  return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+// 댓글 목록·개수만 다시 그림 (입력칸에 쓰던 글은 그대로 유지)
+let replyTo = null;   // { post, root, name } — 지금 답글 입력칸이 열려 있는 댓글
+function cmItemHtml(pid, c, isReply, me) {
+  const mine = me && c.key === meKey;
+  const canReply = cmCanWrite();
+  return `<div class="cm-item${c.role === 'teacher' ? ' t' : ''}${isReply ? ' re' : ''}"><div class="cm-top"><b>${escapeHtml(c.who || '')}${c.role === 'teacher' ? ' 🌳' : ''}</b><small>${fmtCmTime(c.at)}</small>${(mine || canEdit) ? `<button onclick="deleteComment('${escapeHtml(pid)}','${escapeHtml(c.id)}')">삭제</button>` : ''}</div>
+    <div class="cm-text">${c.to ? `<span class="cm-to">@${escapeHtml(c.to)}</span> ` : ''}${escapeHtml(c.text || '')}</div>
+    ${canReply ? `<button class="cm-re-btn" onclick="startReply('${escapeHtml(pid)}','${escapeHtml(isReply ? c.parent : c.id)}','${escapeHtml(c.who || '')}', ${isReply ? 'true' : 'false'})">↩ 답글</button>` : ''}</div>`;
+}
+function cmReplyForm(pid, root) {
+  if (!replyTo || replyTo.post !== pid || replyTo.root !== root) return '';
+  return `<div class="cm-form cm-re-form"><input class="cm-reply-input" maxlength="300" placeholder="${replyTo.to ? '@' + escapeHtml(replyTo.to) + ' 님에게 답글' : '답글을 적어 주세요'}" onkeydown="if(event.key==='Enter'){event.preventDefault();addComment('${escapeHtml(pid)}',true);}" /><button class="primary" onclick="addComment('${escapeHtml(pid)}',true)">답글</button><button class="secondary" onclick="cancelReply()">취소</button></div>`;
+}
+function renderCommentLists() {
+  document.querySelectorAll('[data-cm-post]').forEach(box => {
+    const pid = box.dataset.cmPost;
+    const list = cmList(pid);
+    const btn = document.querySelector(`[data-cm-btn="${pid}"]`);
+    if (btn) btn.textContent = `💬 댓글${list.length ? ' ' + list.length : ''}`;
+    const el = box.querySelector('.cm-list');
+    if (!el) return;
+    // 답글 입력 중인 글 보존
+    const oldIn = el.querySelector('.cm-reply-input');
+    const keepVal = oldIn ? oldIn.value : '', hadFocus = oldIn && document.activeElement === oldIn;
+    const me = meFind(meKey);
+    if (commentsError) {
+      el.innerHTML = `<div class="cm-note">⚠️ 댓글을 불러오지 못했어요 (${escapeHtml(commentsError)}). 서버 권한 설정을 확인해 주세요.</div>`;
+      return;
+    }
+    if (!list.length) { el.innerHTML = '<div class="cm-note">아직 댓글이 없어요.</div>'; return; }
+    // 댓글(위)과 그 답글(아래, 들여쓰기). 원 댓글이 삭제된 답글은 "삭제된 댓글" 아래로 모음
+    const ids = new Set(list.map(c => c.id));
+    const roots = list.filter(c => !c.parent);
+    const kids = {};
+    list.filter(c => c.parent).forEach(c => { (kids[c.parent] = kids[c.parent] || []).push(c); });
+    Object.keys(kids).forEach(k => { if (!ids.has(k)) roots.push({ id: k, deleted: true, at: kids[k][0].at }); });
+    roots.sort((a, b) => (a.at || 0) - (b.at || 0));
+    el.innerHTML = roots.map(r => `<div class="cm-thread">${r.deleted
+        ? '<div class="cm-item gone">삭제된 댓글이에요</div>'
+        : cmItemHtml(pid, r, false, me)}
+      ${(kids[r.id] || []).map(k => cmItemHtml(pid, k, true, me)).join('')}${cmReplyForm(pid, r.id)}</div>`).join('');
+    const ni = el.querySelector('.cm-reply-input');
+    if (ni) { ni.value = keepVal || (replyTo && replyTo.prefill) || ''; if (replyTo) replyTo.prefill = ''; if (hadFocus || (replyTo && replyTo.fresh)) { ni.focus(); if (replyTo) replyTo.fresh = false; } }
+  });
+}
+function startReply(pid, root, name, isReply) {
+  replyTo = { post: pid, root, to: isReply ? name : '', fresh: true };
+  renderCommentLists();
+}
+function cancelReply() { replyTo = null; renderCommentLists(); }
+
+function toggleComments(postId) {
+  if (openComments.has(postId)) openComments.delete(postId); else openComments.add(postId);
+  const box = document.querySelector(`[data-cm-post="${postId}"]`);
+  if (box) box.style.display = openComments.has(postId) ? 'block' : 'none';
+  if (openComments.has(postId)) renderCommentLists();
+}
+
+function commentBoxHtml(postId) {
+  const form = cmCanWrite()
+    ? `<div class="cm-form"><input id="cmi-${escapeHtml(postId)}" maxlength="300" placeholder="궁금한 점이나 확인할 내용을 적어 주세요" onkeydown="if(event.key==='Enter'){event.preventDefault();addComment('${escapeHtml(postId)}');}" /><button class="primary" onclick="addComment('${escapeHtml(postId)}')">등록</button></div>`
+    : `<div class="cm-note">${meKey === 'guest' ? '👀 학부모 보기 모드에서는 댓글을 읽기만 할 수 있어요.' : '댓글을 쓰려면 위의 "👤 이름 선택"에서 내 이름을 먼저 골라 주세요.'}</div>`;
+  return `<div class="cm-box" data-cm-post="${escapeHtml(postId)}" style="display:${openComments.has(postId) ? 'block' : 'none'};"><div class="cm-list"></div>${form}</div>`;
+}
+
+function addComment(postId, isReply) {
+  const inp = isReply ? document.querySelector(`[data-cm-post="${postId}"] .cm-reply-input`) : document.getElementById('cmi-' + postId);
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  const me = meFind(meKey);
+  if (!me) { alert('먼저 이름을 선택해 주세요.'); return; }
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  if (Date.now() - lastCommentAt < 3000) { alert('잠시 후에 다시 써 주세요.'); return; }
+  lastCommentAt = Date.now();
+  const c = { id: uid(), key: meKey, who: me.name, role: me.role, text: text.slice(0, 300), at: Date.now() };
+  if (isReply && replyTo && replyTo.post === postId) { c.parent = replyTo.root; if (replyTo.to) c.to = replyTo.to; }
+  inp.value = '';
+  const f = cmField(postId);
+  const prevReply = replyTo;
+  if (isReply) replyTo = null;
+  commentsData[f] = (commentsData[f] || []).concat([c]);
+  renderCommentLists();
+  COMMENTS_REF.set({ [f]: firebase.firestore.FieldValue.arrayUnion(c) }, { merge: true }).catch(e => {
+    commentsData[f] = (commentsData[f] || []).filter(x => x.id !== c.id);
+    if (isReply) replyTo = prevReply;
+    renderCommentLists();
+    const again = isReply ? document.querySelector(`[data-cm-post="${postId}"] .cm-reply-input`) : document.getElementById('cmi-' + postId);
+    if (again) again.value = text;
+    alert(e && e.code === 'permission-denied'
+      ? '서버 설정(보안 규칙) 때문에 댓글이 저장되지 않아요.\n관리자에게 알려 주세요. (permission-denied)'
+      : '댓글을 저장하지 못했어요.\n' + (e && e.code ? e.code : '인터넷 연결을 확인해 주세요'));
+  });
+}
+
+function deleteComment(postId, cid) {
+  const f = cmField(postId);
+  const c = (commentsData[f] || []).find(x => x.id === cid);
+  if (!c) return;
+  if (!(canEdit || c.key === meKey)) return;
+  if (!confirm('이 댓글을 삭제할까요?')) return;
+  // 내용이 똑같은 객체를 찾아 arrayRemove (다른 댓글은 건드리지 않음)
+  COMMENTS_REF.update({ [f]: firebase.firestore.FieldValue.arrayRemove(c) }).catch(e => alert('삭제하지 못했어요.\n' + (e && e.code ? e.code : '')));
+}
+
 function renderPosts() {
   const list = document.getElementById('feed-list');
   if(!list) return;
@@ -3005,6 +3630,8 @@ function renderPosts() {
           ${p.title ? `<div class="notice-title">${escapeHtml(p.title)}</div>` : ''}
           <div class="notice-text">${escapeHtml(p.text || '')}</div>
           ${attListHtml(p.attachments)}
+          <div style="margin-top:8px;"><button class="cm-btn" data-cm-btn="${escapeHtml(p.id)}" onclick="toggleComments('${escapeHtml(p.id)}')">💬 댓글</button></div>
+          ${commentBoxHtml(p.id)}
           ${canEdit ? `<div class="notice-foot"><span></span><div class="notice-actions">${p.kind === 'bible' ? '' : `<button onclick="startEditPost('${p.id}')">수정</button>`}<button class="del" onclick="removePost('${p.id}')">삭제</button></div></div>` : ''}
         </div>
       </article>
@@ -3012,6 +3639,7 @@ function renderPosts() {
     }).join('');
   }
   document.getElementById('feed-form').style.display = canEdit ? 'block' : 'none';
+  renderCommentLists();
 }
 
 // 공지와 연결된 준비일정 항목 찾기
@@ -3136,6 +3764,7 @@ function cancelPostEdit() {
   document.getElementById('post-text').value = '';
   setAtt('post', []);
   resetPostSched();
+  applyMeAuthor();
 
   const submitBtn = document.getElementById('post-submit-btn');
   if (submitBtn) submitBtn.textContent = '공지 등록';
@@ -3354,12 +3983,14 @@ function renderTeams() {
       <div class="when">${dshort(next.day.date)} ${escapeHtml(formatTimeKo(next.it.time))}</div>
       <div class="what">${escapeHtml(next.it.activity || '')}${next.it.place ? ' · 📍 ' + escapeHtml(next.it.place) : ''}</div>
       ${next.it.description ? `<div class="desc">${escapeHtml(next.it.description)}</div>` : ''}
+      ${rsvpPlaceholder(next.day, next.it, false)}
       ${canEdit ? `<div class="tm-row" style="border:none; padding:6px 0 0;">${acts(next)}</div>` : ''}
     </div>` : '<div class="empty">예정된 모임이 없어요.</div>';
   document.getElementById('team-meetings').innerHTML =
     (upcoming.length > 1 ? `<div class="section-title" style="margin-top:12px;">이후 모임</div>${upcoming.slice(1).map(m => row(m, '')).join('')}` : '')
-    + (past.length ? `<details class="ps-past"><summary>⌛ 지난 모임 (${past.length})</summary>${past.map(m => row(m, 'past')).join('')}</details>` : '');
+    + (past.length ? `<details class="ps-past"${pastOpen.tm ? ' open' : ''} ontoggle="pastOpen.tm=this.open"><summary>⌛ 지난 모임 (${past.length})</summary>${past.map(m => row(m, 'past')).join('')}</details>` : '');
   document.getElementById('tm-form').style.display = canEdit ? 'flex' : 'none';
+  renderRsvpBlocks();
 
   // 팀원
   const ts = (state.teachers || []).filter(t => (t.roles || []).includes(team)).sort(byNatName);
@@ -3375,11 +4006,7 @@ function renderTeams() {
     const url = safeUrl(l.url);
     if (!url) return '';
     const del = canEdit ? `<button class="tl-del" onclick="removeTeamLink('${l.id}')">삭제</button>` : '';
-    if (l.photo) {
-      return `<div class="tl-item tl-photo"><a href="${escapeHtml(url)}" target="_blank" rel="noopener"><img loading="lazy" src="${escapeHtml(driveThumb(url) || url)}" alt="${escapeHtml(l.title || '')}"></a><div style="font-weight:700; margin-bottom:6px;">${escapeHtml(l.title || '')}</div>${del}</div>`;
-    }
-    const icon = /youtu\.?be/i.test(url) ? '▶️' : '📎';
-    return `<div class="tl-item"><a class="tl-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener">${icon} ${escapeHtml(l.title || url)}</a>${del}</div>`;
+    return `<div class="tl-item">${previewHtml(url, l.title || '', l.photo)}${del}</div>`;
   }).join('') : '<div class="empty">등록된 자료가 없어요.</div>';
   document.getElementById('tl-form').style.display = canEdit ? 'flex' : 'none';
 }
@@ -3498,13 +4125,14 @@ let supplyPendingKey = '';
 
 function setSupplyPerson(key) {
   supplyPersonKey = key || '';
+  if (typeof meFollow === 'function' && supplyPersonKey) meFollow(supplyPersonKey);
   try {
     if (supplyPersonKey) localStorage.setItem(SUPPLY_PERSON_KEY, supplyPersonKey);
     else localStorage.removeItem(SUPPLY_PERSON_KEY);
   } catch (e) { /* 저장소를 못 쓰는 브라우저에서도 이번 화면에서는 동작 */ }
 }
 
-function selectSupplyPerson(key) { supplyPendingKey = key; syncPersonalChecklistDropdown(); }
+function selectSupplyPerson(key) { if (meLocked() && key !== meKey) return; supplyPendingKey = key; syncPersonalChecklistDropdown(); }
 function confirmSupplyPerson() { setSupplyPerson(supplyPendingKey); supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
 function cancelSupplySelect() { supplyPendingKey = ''; syncPersonalChecklistDropdown(); }
 
@@ -3515,12 +4143,192 @@ function supplyPeople() {
   ];
 }
 
+
+// ===== 나는 누구인가요? (로그인 아님 · 이 기기에만 기억) =====
+const ME_KEY = 'baguio_me';
+let meKey = (() => { try { return localStorage.getItem(ME_KEY) || ''; } catch (e) { return ''; } })(); // 'p_학생id' | 't_교사id' | 'guest'
+let mePending = '';
+let meSynced = false;
+let meAsked = false;      // 이번 접속에서 이미 물어봤는지
+let meForced = false;     // 처음 선택 중이면 바깥을 눌러도 안 닫힘
+
+function meList() { return supplyPeople(); } // key = p_/t_ + id
+function meFind(key) { return meList().find(x => x.key === key) || null; }
+function meCanClose() { return !meForced; }
+// 학부모(보기 전용): 이름을 고르지 않고 '학부모'로 선택한 경우 (관리모드면 해당 없음)
+// 학부모가 고른 자녀 (이 기기에만 기억, 보기 전용)
+const KIDS_KEY = 'baguio_parent_kids';
+let parentKids = (() => { try { const a = JSON.parse(localStorage.getItem(KIDS_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } })();
+let meMode = 'me';
+function saveKids() { try { localStorage.setItem(KIDS_KEY, JSON.stringify(parentKids)); } catch (e) {} }
+function kidList() { return parentKids.map(id => (state.participants || []).find(p => p.id === id)).filter(Boolean); }
+function addKid(id) { if (!parentKids.includes(id)) parentKids.push(id); saveKids(); closeMeModal(); renderBible(); syncPersonalChecklistDropdown(); }
+function removeKid(id) { if (!confirm('이 아이를 목록에서 뺄까요?')) return; parentKids = parentKids.filter(x => x !== id); saveKids(); renderBible(); syncPersonalChecklistDropdown(); }
+function openKidModal() { meForced = false; mePending = ''; meMode = 'kid'; renderMeModal(); document.getElementById('me-modal').classList.add('show'); }
+function meParent() { return meKey === 'guest' && !canEdit; }
+const PARENT_NOTE = '👀 학부모 보기 모드예요. 내용을 보기만 할 수 있고 체크나 수정은 안 돼요.';
+
+// 잠금: 한 번 고른 이름은 이 기기에서 못 바꿈 (관리모드이거나 해제코드를 입력하면 풀림)
+const ME_LOCK_KEY = 'baguio_me_locked';
+let meLockedFlag = (() => { try { return localStorage.getItem(ME_LOCK_KEY) === '1'; } catch (e) { return false; } })();
+function meLocked() { return !canEdit && meLockedFlag && !!meKey && meKey !== 'guest' && !!meFind(meKey); }
+function setMeLock(on) {
+  meLockedFlag = !!on;
+  try { if (on) localStorage.setItem(ME_LOCK_KEY, '1'); else localStorage.removeItem(ME_LOCK_KEY); } catch (e) {}
+}
+// 해제코드: 사람마다 정해진 4자리 숫자 (관리모드 명단에서 확인)
+function meCode(key) {
+  let x = 2166136261;
+  const s = 'baguio-unlock-' + key;
+  for (let i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; }
+  return String(1000 + (x % 9000));
+}
+function tryUnlockMe() {
+  const v = (document.getElementById('me-code').value || '').trim();
+  if (v !== meCode(meKey)) { alert('코드가 맞지 않아요. 선생님께 해제코드를 물어보세요.'); return; }
+  setMeLock(false);
+  mePending = '';
+  renderMeChip(); syncPersonalChecklistDropdown(); renderBible(); renderPosts();
+  renderMeModal();
+}
+
+function setMe(key) {
+  meKey = key || '';
+  try { if (meKey) localStorage.setItem(ME_KEY, meKey); else localStorage.removeItem(ME_KEY); } catch (e) {}
+  // 성경읽기·개인준비물에도 같은 이름 적용 (손님이면 비움)
+  const pk = (meKey && meKey !== 'guest') ? meKey : '';
+  setSupplyPerson(pk);
+  bibleSetStudent(pk ? pk.slice(2) : '');
+  supplyPendingKey = ''; biblePendingId = '';
+  renderMeChip(); applyMeAuthor();
+  syncPersonalChecklistDropdown(); renderBible();
+  renderPosts(); // 이름을 고르면 공지 댓글 입력칸이 바로 열리도록
+  renderRsvpBlocks();
+}
+
+// 성경읽기·개인준비물에서 이름을 바꿨을 때도 전체 이름을 같이 맞춤
+function meFollow(key) {
+  if (!key || key === meKey) return;
+  meKey = key;
+  try { localStorage.setItem(ME_KEY, meKey); } catch (e) {}
+  setMeLock(true);
+  renderMeChip(); applyMeAuthor();
+  renderPosts(); renderRsvpBlocks();
+}
+
+function renderMeChip() {
+  const el = document.getElementById('me-chip');
+  if (!el) return;
+  if (meKey === 'guest') { el.textContent = '👤 학부모'; return; }
+  const m = meFind(meKey);
+  el.textContent = m ? '👤 ' + m.name + (meLocked() ? ' 🔒' : '') : '👤 이름 선택';
+}
+
+function applyMeAuthor() {
+  const sel = document.getElementById('post-author');
+  if (!sel || sel.value || document.getElementById('post-edit-id').value) return;
+  const m = meFind(meKey);
+  if (m && m.role === 'teacher' && Array.from(sel.options).some(o => o.value === m.name)) sel.value = m.name;
+}
+
+// 예전에 성경읽기·개인준비물에서 고른 이름이 있으면 이어받기
+function meAdoptLegacy() {
+  if (meKey) return;
+  if (supplyPersonKey && meFind(supplyPersonKey)) { meFollow(supplyPersonKey); return; }
+  if (bibleStudentId) {
+    const k = ((state.participants || []).some(p => p.id === bibleStudentId) ? 'p_' : 't_') + bibleStudentId;
+    if (meFind(k)) meFollow(k);
+  }
+}
+
+function meCheck() {
+  if (latestRemoteState === null) return;           // 명단 로딩 전엔 묻지 않음
+  meAdoptLegacy();
+  // 접속 후 처음 한 번: 전체 이름과 성경읽기·개인준비물 이름이 어긋나 있으면 맞춤
+  if (!meSynced && meKey && meKey !== 'guest' && meFind(meKey)) {
+    meSynced = true;
+    if (!supplyPersonKey) setSupplyPerson(meKey);
+    if (!bibleStudentId) bibleSetStudent(meKey.slice(2));
+    syncPersonalChecklistDropdown(); renderBible();
+  }
+  renderMeChip();
+  if (!meKey && !meAsked && !document.getElementById('me-modal').classList.contains('show')) {
+    meAsked = true; meForced = true; openMeModal(true);
+  }
+}
+
+function openMeModal(first) {
+  meMode = 'me';
+  meForced = !!first;
+  mePending = '';
+  renderMeModal();
+  document.getElementById('me-modal').classList.add('show');
+}
+function closeMeModal() { meForced = false; meMode = 'me'; document.getElementById('me-modal').classList.remove('show'); }
+
+function renderMeModal() {
+  const box = document.getElementById('me-body');
+  const people = meList();
+  if (meMode === 'kid') {
+    const kids = (state.participants || []).slice().sort(byName).filter(p => !parentKids.includes(p.id));
+    box.innerHTML = `<h2 style="margin:0 0 4px;">👪 우리 아이 고르기</h2>
+      <div class="bb-sub" style="margin:0 0 8px;">아이 이름을 누르면 성경읽기·개인준비물 현황을 볼 수 있어요 (보기만 가능)</div>
+      <input class="me-search" placeholder="🔍 이름 검색" oninput="meFilter(this.value)" />
+      <div class="me-list" id="me-list">${kids.length ? `<div class="bb-picker">${kids.map(k => `<button class="bb-pick" data-n="${escapeHtml(k.name)}" onclick="addKid('${k.id}')"><span>${escapeHtml(k.name)}</span>${k.grade ? `<small>${escapeHtml(k.grade)}</small>` : ''}</button>`).join('')}</div>` : '<div class="empty">고를 수 있는 학생이 없어요.</div>'}</div>
+      <div class="bb-sheet-actions" style="margin-top:12px;"><button class="bb-close" onclick="closeMeModal()">닫기</button></div>`;
+    return;
+  }
+  const pend = meFind(mePending);
+  if (meLocked() && !pend) {
+    const mm = meFind(meKey);
+    box.innerHTML = `<h2 style="margin:0 0 4px;">🔒 이름이 잠겨 있어요</h2>
+      <div class="bb-sub" style="margin:0 0 10px;">지금: <b>${escapeHtml(mm.name)}</b> · 한 번 고른 이름은 바꿀 수 없어요. 잘못 골랐다면 선생님께 해제코드(숫자 4자리)를 받아 입력하세요.</div>
+      <input id="me-code" class="me-search" inputmode="numeric" maxlength="4" placeholder="해제코드 4자리" onkeydown="if(event.key==='Enter')tryUnlockMe()" />
+      <div class="bb-sheet-actions" style="margin-top:12px;"><button class="bb-close" onclick="closeMeModal()">닫기</button><button class="primary" onclick="tryUnlockMe()">해제</button></div>`;
+    return;
+  }
+  if (pend) {
+    const nm = pend.role === 'teacher' ? teacherTitle(pend.name) : `${pend.name}님`;
+    box.innerHTML = `<div class="bb-confirm-q">${escapeHtml(nm)}이 맞나요?</div>
+      <div class="bb-sub" style="margin:0 0 16px;">성경읽기·개인준비물에 이 이름이 쓰여요.<br><b>한 번 정하면 직접 바꿀 수 없어요.</b> 꼭 내 이름인지 확인하세요.</div>
+      <div class="bb-sheet-actions"><button class="bb-close" onclick="mePending='';renderMeModal()">다시 고를게요</button><button class="primary" onclick="confirmMe()">네, 맞아요</button></div>`;
+    return;
+  }
+  const st = people.filter(x => x.role === 'student'), te = people.filter(x => x.role === 'teacher');
+  const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
+  const cur = meKey ? (meKey === 'guest' ? '학부모' : (meFind(meKey) || {}).name || '') : '';
+  box.innerHTML = `<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : '이름 바꾸기'}</h2>
+    <div class="bb-sub" style="margin:0 0 8px;">${meForced ? '학생·선생님은 내 이름을 한 번만 골라 두세요. 학부모님은 아래 "학부모"를 누르면 보기만 할 수 있어요' : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
+    ${people.length ? '<input class="me-search" placeholder="🔍 이름 검색" oninput="meFilter(this.value)" />' : ''}
+    <div class="me-list" id="me-list">
+      ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
+    </div>
+    <div class="bb-sheet-actions" style="margin-top:12px;">
+      <button class="bb-close" onclick="chooseGuest()">👀 학부모(보기만)</button>
+      ${meForced ? '<button class="bb-close" onclick="closeMeModal()">나중에</button>' : '<button class="bb-close" onclick="closeMeModal()">닫기</button>'}
+    </div>`;
+}
+function meFilter(q) {
+  q = (q || '').trim();
+  document.querySelectorAll('#me-list .bb-pick').forEach(b => { b.style.display = !q || (b.dataset.n || '').includes(q) ? '' : 'none'; });
+}
+function pickMe(key) { mePending = key; renderMeModal(); }
+function confirmMe() { const k = mePending; mePending = ''; setMeLock(true); setMe(k); closeMeModal(); }
+function chooseGuest() { mePending = ''; setMe('guest'); setMeLock(false); closeMeModal(); renderAll(); }
+
 function syncPersonalChecklistDropdown() {
   const select = document.getElementById('studentChecklistSelect');
   const picker = document.getElementById('personal-picker');
   const progress = document.getElementById('personal-progress');
   if (!select || !picker) return;
 
+  if (meParent()) {
+    picker.innerHTML = `<div class="bb-hint" style="text-align:left; margin:0 2px 8px;">${PARENT_NOTE}<br>${kidList().length ? '우리 아이가 챙긴 준비물 현황이에요.' : '아래는 가져가야 할 준비물 목록이에요.'}</div>
+      <div class="bb-sheet-actions" style="margin:0 0 10px;"><button class="bb-close" onclick="openKidModal()">＋ ${kidList().length ? '다른 아이 추가' : '우리 아이 고르기'}</button></div>`;
+    if (progress) progress.style.display = 'none';
+    renderPersonalChecklist();
+    return;
+  }
   const people = supplyPeople();
   const me = people.find(x => x.key === supplyPersonKey);
   select.innerHTML = '<option value=""></option>' + people.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
@@ -3532,7 +4340,9 @@ function syncPersonalChecklistDropdown() {
     const students = people.filter(x => x.role === 'student');
     const options = students.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌱 ${escapeHtml(x.sub || '')} ${escapeHtml(x.name)}</option>`).join('') + (teachers.length ? teachers.map(x => `<option value="${x.key}"${x.key === me.key ? ' selected' : ''}>🌳 ${escapeHtml(teacherTitle(x.name))}</option>`).join('') : '');
 
-    picker.innerHTML = `
+    if (meLocked()) {
+      picker.innerHTML = `<div class="supply-me-head"><div class="supply-q" style="margin:0;">${escapeHtml(label(me))}의 준비물 <span style="font-size:0.74rem;color:var(--muted);">🔒</span></div></div>`;
+    } else picker.innerHTML = `
       <div class="supply-me-head">
         <div class="supply-select-wrap" style="flex:1; margin:0;">
           <select class="supply-select" onchange="if (this.value && this.value !== '${me.key}') selectSupplyPerson(this.value)">
@@ -3603,6 +4413,32 @@ function renderPersonalChecklist() {
 
   if (adminCard) adminCard.style.display = canEdit ? 'block' : 'none';
 
+  if (meParent()) {
+    const data = state.personalChecklistData || defaultPersonalChecklistData;
+    const kids = kidList();
+    if (kids.length) {
+      container.innerHTML = kids.map(k => {
+        const checks = (state.personalChecks || {})['p_' + k.id] || {};
+        let tot = 0, done = 0;
+        data.forEach(cat => (cat.items || []).forEach(it => { tot++; if (checks[it.id]) done++; }));
+        return `<div class="card" style="margin-bottom:14px;"><div class="category-title"><span>${escapeHtml(k.name)}의 준비물</span><span style="font-size:0.8rem;color:var(--muted);">${done}/${tot}</span></div>
+          ${data.map(cat => `<div class="bb-group-label">${escapeHtml(cat.category)}</div><ul class="item-list">${(cat.items || []).map(it => `
+            <li class="item-row ${checks[it.id] ? 'checked' : ''}" style="cursor:default;"><div class="item-left"><div class="custom-checkbox"></div><div><span class="item-name">${escapeHtml(it.name)}</span></div></div></li>`).join('')}</ul>`).join('')}
+        </div>`;
+      }).join('');
+      return;
+    }
+    container.innerHTML = data.map(cat => `
+      <div class="card" style="margin-bottom:14px;">
+        <div class="category-title"><span>${escapeHtml(cat.category)}</span></div>
+        <ul class="item-list">${(cat.items || []).map(item => { const must = supplyMust(item); return `
+          <li class="item-row" style="cursor:default;"><div class="item-left"><div class="custom-checkbox" style="visibility:hidden;"></div><div>
+            <span class="item-name">${escapeHtml(item.name)}</span>${must && must.reason ? `<div class="item-must-reason">${escapeHtml(must.reason)}</div>` : ''}</div></div>
+            <div style="display:flex; align-items:center; gap:6px;">${supplyMustBadge(must)}</div></li>`; }).join('')}</ul>
+      </div>`).join('');
+    return;
+  }
+
   const personKey = select.value;
   if (!personKey) {
     container.innerHTML = '';
@@ -3663,6 +4499,7 @@ function renderPersonalChecklist() {
 
 // 누를 때 그 사람·그 항목 칸만 바로 저장 (다른 사람 체크를 덮어쓰지 않음, 저장 버튼 필요 없음)
 function togglePersonalItem(personKey, itemId) {
+  if (meParent()) return;
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
   if (!state.personalChecks) state.personalChecks = {};
   if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
@@ -3763,6 +4600,7 @@ function renderSharedChecklist() {
 }
 
 function openTeacherModalForSharedItem(itemId) {
+  if (meParent()) { alert('학부모 보기 모드에서는 체크할 수 없어요.'); return; }
   activeSharedItemIdForCheck = itemId;
   const modal = document.getElementById('teacher-select-modal');
   if (modal) {
@@ -3809,6 +4647,7 @@ function renderModalTeacherList() {
 }
 
 function selectTeacherForSharedItem(teacherName) {
+  if (meParent()) return;
   if (!activeSharedItemIdForCheck) return;
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 시도해 주세요.'); return; }
   if (!state.sharedChecks) state.sharedChecks = {};
@@ -3901,6 +4740,8 @@ function markDirty(field) {
 function renderAll() {
   document.body.classList.toggle('admin', !!canEdit);
   renderDday();
+  renderRoleBoxesAll();
+  meCheck();
   renderPeople();
   renderFlightInfo();
   renderSchedule();
@@ -3912,6 +4753,8 @@ function renderAll() {
   renderSharedChecklist();
   renderBible();
   renderBackupCard();
+  renderFiles();
+  renderAttendance();
 }
 
 // ===== 성경읽기 =====
@@ -3965,6 +4808,7 @@ const BIBLE_WEEK = ['주', '월', '화', '수', '목', '금', '토']; // 일요�
 
 function bibleSetStudent(id) {
   bibleStudentId = id || '';
+  if (typeof meFollow === 'function' && bibleStudentId) meFollow(((state.participants || []).some(p => p.id === bibleStudentId) ? 'p_' : 't_') + bibleStudentId);
   try {
     if (bibleStudentId) localStorage.setItem(BIBLE_STUDENT_KEY, bibleStudentId);
     else localStorage.removeItem(BIBLE_STUDENT_KEY);
@@ -3986,6 +4830,7 @@ function bibleDisplayName(m) {
 }
 
 function selectBibleStudent(id) {
+  if (meLocked() && meKey.slice(2) !== id) return;
   biblePendingId = id;
   renderBible();
 }
@@ -4003,6 +4848,7 @@ function cancelBibleSelect() {
 }
 
 function changeBibleStudent() {
+  if (meLocked()) { openMeModal(); return; }
   bibleSetStudent('');
   biblePendingId = '';
   renderBible();
@@ -4141,6 +4987,62 @@ function bibleBar(pct, cls = '') {
   return `<div class="bb-bar ${cls}"><i style="width:${Math.max(0, Math.min(100, pct))}%"></i></div>`;
 }
 
+
+
+// 학부모용: 내가 고른 자녀의 성경읽기 현황 (보기 전용)
+function parentKidsBibleHtml() {
+  const kids = kidList();
+  const today = bibleToday();
+  const weekStart = bibleAddDays(today, -bibleDateObj(today).getDay());
+  const card = kids.map(k => {
+    const set = bibleReadDateSet(k.id);
+    const cnt = bibleStudentCount(k.id);
+    const pct = Math.round((cnt / BIBLE_TOTAL) * 100);
+    const dots = [];
+    for (let i = 0; i < 7; i++) {
+      const d = bibleAddDays(weekStart, i);
+      dots.push(`<span class="tc-dot${set.has(d) ? ' on' : ''}${d > today ? ' fut' : ''}" title="${BIBLE_WEEK[i]}"></span>`);
+    }
+    const last = Array.from(set).sort().pop();
+    const lastTxt = last ? (bibleDayDiff(last, today) === 0 ? '오늘 읽음' : `${bibleDayDiff(last, today)}일 전에 읽음`) : '아직 시작 전';
+    const books = BIBLE_BOOKS.map(b => { const c = bibleBookCount(k.id, b); return `<div class="bb-book-row"><span class="bb-book-name">${b.name}</span>${bibleBar(Math.round(c / b.chapters * 100))}<span class="bb-book-pct">${c}/${b.chapters}</span></div>`; }).join('');
+    return `<div class="tc-row"><div class="tc-top"><b>${escapeHtml(k.name)}</b><small>${escapeHtml(k.grade || '')}</small><span class="tc-last${last ? '' : ' none'}">${lastTxt}</span>
+        <button class="bb-change" style="margin-left:6px;" onclick="removeKid('${k.id}')">빼기</button></div>
+      <div class="tc-mid">${bibleBar(pct)}<span>${cnt}/${BIBLE_TOTAL}장 · ${pct}%</span></div>
+      <div class="tc-dots">${dots.join('')}</div>
+      <div class="bb-book-bars" style="margin-top:10px;">${books}</div></div>`;
+  }).join('');
+  return `<div class="card tc-card"><h2>👪 우리 아이 성경읽기</h2>
+    ${kids.length ? `<div class="bb-sub" style="margin:-4px 0 6px;">점은 이번 주(주일~토) 읽은 날이에요</div>${card}` : '<div class="bb-sub" style="margin:0 0 6px;">아이를 고르면 읽기 현황을 볼 수 있어요.</div>'}
+    <div class="bb-sheet-actions" style="margin-top:10px;"><button class="bb-close" onclick="openKidModal()">＋ ${kids.length ? '다른 아이 추가' : '우리 아이 고르기'}</button></div></div>`;
+}
+
+// 담당 선생님용: 내가 배정된 방의 학생들 성경읽기 현황
+function bibleTeacherCard(me) {
+  if (!me || me.role !== 'teacher') return '';
+  const kids = (state.participants || []).filter(p => getAssignedTeacherName(p.id) === me.name).sort(byName);
+  const today = bibleToday();
+  const weekStart = bibleAddDays(today, -bibleDateObj(today).getDay());
+  const rows = kids.map(k => {
+    const set = bibleReadDateSet(k.id);
+    const cnt = bibleStudentCount(k.id);
+    const pct = Math.round((cnt / BIBLE_TOTAL) * 100);
+    const dots = [];
+    for (let i = 0; i < 7; i++) {
+      const d = bibleAddDays(weekStart, i);
+      dots.push(`<span class="tc-dot${set.has(d) ? ' on' : ''}${d > today ? ' fut' : ''}" title="${BIBLE_WEEK[i]}"></span>`);
+    }
+    const last = Array.from(set).sort().pop();
+    const lastTxt = last ? (bibleDayDiff(last, today) === 0 ? '오늘 읽음' : `${bibleDayDiff(last, today)}일 전`) : '아직 시작 전';
+    return `<div class="tc-row"><div class="tc-top"><b>${escapeHtml(k.name)}</b><small>${escapeHtml(k.grade || '')}</small><span class="tc-last${last ? '' : ' none'}">${lastTxt}</span></div>
+      <div class="tc-mid">${bibleBar(pct)}<span>${cnt}/${BIBLE_TOTAL}장 · ${pct}%</span></div>
+      <div class="tc-dots">${dots.join('')}</div></div>`;
+  }).join('');
+  return `<div class="card tc-card"><h2>🌳 내 담당 학생 성경읽기</h2>
+    <div class="bb-sub" style="margin:-4px 0 6px;">배정 탭에서 내가 담당으로 묶인 학생이에요 · 점은 이번 주(주일~토) 읽은 날</div>
+    ${kids.length ? rows : '<div class="empty">배정된 학생이 아직 없어요.</div>'}</div>`;
+}
+
 function renderBible() {
   const root = document.getElementById('bible-root');
   if (!root) return;
@@ -4165,6 +5067,13 @@ function renderBible() {
     </div>`;
 
   const me = members.find(m => m.id === bibleStudentId);
+
+  if (meParent()) {
+    html += parentKidsBibleHtml();
+    html += `<div class="bb-hint" style="margin-top:14px;">${PARENT_NOTE}</div>`;
+    root.innerHTML = html;
+    return;
+  }
 
   if (!me) {
     const pending = members.find(m => m.id === biblePendingId);
@@ -4219,7 +5128,7 @@ function renderBible() {
     <div class="card bb-me">
       <div class="bb-me-head">
         <div class="bb-me-name">${escapeHtml(bibleDisplayName(me))}의 성경읽기</div>
-        <button class="bb-change" onclick="changeBibleStudent()">↺ 이름 다시 선택</button>
+        ${meLocked() ? '' : '<button class="bb-change" onclick="changeBibleStudent()">↺ 이름 다시 선택</button>'}
       </div>
       <div class="bb-me-count"><b>${myCount}</b> / ${BIBLE_TOTAL}장 <span>${myPct}%</span></div>
       ${bibleBar(myPct, 'big')}
@@ -4259,12 +5168,13 @@ function renderBible() {
       </div>`;
   }).join('');
 
+  html = html.replace('<div class="card bb-me">', bibleTeacherCard(me) + '<div class="card bb-me">');
   html += '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
   root.innerHTML = html;
 }
 
 function onBibleChapter(bookKey, ch) {
-  if (!bibleStudentId) return;
+  if (meParent() || !bibleStudentId) return;
   if (bibleDates(bibleStudentId, bookKey, ch).length) openBibleDetail(bookKey, ch);
   else recordBibleRead(bookKey, ch);
 }
@@ -4281,6 +5191,7 @@ function bibleLocalSet(sid, bookKey, ch, fn) {
 }
 
 function recordBibleRead(bookKey, ch) {
+  if (meParent() || !bibleStudentId) return;
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
   const sid = bibleStudentId;
   const today = bibleToday();
@@ -4483,10 +5394,11 @@ const VIEWS = {
   'feed':          [{ id: 'feed', panels: ['feed'] }],
   'prep-schedule': [{ id: 'prep-schedule', panels: ['prep-schedule'] }],
   'bible':         [{ id: 'bible', panels: ['bible'] }],
-  'teams':         TEAMS.map(t => ({ id: t, label: TEAM_STYLE[t].icon + ' ' + t, color: TEAM_STYLE[t].c, panels: t === '영어전도' ? ['teams', 'english'] : ['teams'] })),
+  'teams':         TEAMS.map(t => ({ id: t, label: TEAM_STYLE[t].icon + ' ' + t, color: TEAM_STYLE[t].c, panels: ['teams'] })),
   'roster':        [{ id: 'participants', label: '🌱 학생', panels: ['participants'] }, { id: 'teachers', label: '🌳 교사', panels: ['teachers'] }, { id: 'assign', label: '🛏️ 배정', panels: ['assign'] }],
   'depart':        [{ id: 'personal-supplies', label: '🧳 개인준비물', panels: ['personal-supplies'] }, { id: 'shared-supplies', label: '📦 공용준비물', panels: ['shared-supplies'] }, { id: 'flights', label: '✈️ 항공권', panels: ['flights'] }],
-  'schedule':      [{ id: 'schedule', panels: ['schedule'] }]
+  'schedule':      [{ id: 'schedule', panels: ['schedule'] }],
+  'files':         [{ id: 'files', panels: ['files'] }]
 };
 const SUB_KEY = 'baguio_subtabs';
 function loadSubs() { try { return JSON.parse(localStorage.getItem(SUB_KEY) || '{}'); } catch (e) { return {}; } }
@@ -4499,7 +5411,7 @@ function resolveLegacyTab(key) {
     const sub = VIEWS[top].find(x => x.id === key);
     if (sub) return [top, sub.id];
   }
-  if (key === 'english') return ['teams', '영어전도'];
+  if (key === 'english') return ['teams', null];
   return ['feed', null];
 }
 
@@ -4520,6 +5432,7 @@ function showView(top, sub) {
     bar.style.display = 'none';
   }
   if (top === 'teams') { curTeam = cur.id; renderTeams(); }
+  if (top === 'files') renderFiles();
   try { sessionStorage.setItem('activeTab', top); } catch (e) {}
 }
 
@@ -4537,8 +5450,15 @@ function injectDateTimeFields() {
 }
 injectDateTimeFields();
 
+// 로딩 체감 개선: 이미지·폰트까지 다 받길 기다리지 않고 바로 서버 연결 시작
+initFirebaseAuth();
+// 지난번에 받아 둔 내용을 먼저 보여줌 (읽기 전용 미리보기 — 서버 데이터가 오면 바로 교체, 저장에는 절대 쓰이지 않음)
+try {
+  const lg = readLastGoodLocal();
+  if (lg && latestRemoteState === null && !dirty && !canEdit) { state = normalizeRemote(cloneData(lg.data)); renderAll(); }
+} catch (e) { /* 미리보기 실패는 무시 */ }
+
 window.onload = function() {
-  initFirebaseAuth();
   setupDateTimeAutoAdvance();
   setInterval(renderSchedule, 60000); // 선교일정 '지금' 표시 갱신
 
