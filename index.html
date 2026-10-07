@@ -2237,7 +2237,7 @@ function personRowHtml({ id, name, sub, roles, extra, onclick }) {
         </div>
         ${roles && roles.length ? `<div class="p-tags">${roles.map(r => `<span class="p-tag">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
         ${extra}
-        ${canEdit && id ? `<div class="p-code">🔑 해제코드 ${meCode(((state.participants || []).some(x => x.id === id) ? 'p_' : 't_') + id)}</div>` : ''}
+        ${canEdit && id ? `<div class="p-code">🔑 확인·해제 코드 ${meCode(((state.participants || []).some(x => x.id === id) ? 'p_' : 't_') + id)}</div>` : ''}
       </div>
       ${canEdit ? '<span class="p-chev">›</span>' : ''}
     </div>`;
@@ -3599,12 +3599,28 @@ function addComment(postId, isReply) {
 
 function deleteComment(postId, cid) {
   const f = cmField(postId);
-  const c = (commentsData[f] || []).find(x => x.id === cid);
+  const list = commentsData[f] || [];
+  const c = list.find(x => x.id === cid);
   if (!c) return;
   if (!(canEdit || c.key === meKey)) return;
   if (!confirm('이 댓글을 삭제할까요?')) return;
-  // 내용이 똑같은 객체를 찾아 arrayRemove (다른 댓글은 건드리지 않음)
-  COMMENTS_REF.update({ [f]: firebase.firestore.FieldValue.arrayRemove(c) }).catch(e => alert('삭제하지 못했어요.\n' + (e && e.code ? e.code : '')));
+  const gone = new Set([cid]);
+  const prev = list.slice();
+  // 화면에서 먼저 지움 (실패하면 되돌림)
+  commentsData[f] = list.filter(x => !gone.has(x.id));
+  renderCommentLists();
+  // 객체 전체가 똑같아야 지워지는 arrayRemove 대신, 문서를 읽어 id로 골라 지우는 방식 (더 확실함)
+  db.runTransaction(async tx => {
+    const snap = await tx.get(COMMENTS_REF);
+    const cur = snap.exists ? (snap.data()[f] || []) : [];
+    tx.set(COMMENTS_REF, { [f]: cur.filter(x => !gone.has(x.id)) }, { merge: true });
+  }).catch(e => {
+    commentsData[f] = prev;
+    renderCommentLists();
+    alert(e && e.code === 'permission-denied'
+      ? '서버 설정(보안 규칙) 때문에 삭제되지 않아요. (permission-denied)'
+      : '삭제하지 못했어요.\n' + (e && e.code ? e.code : '인터넷 연결을 확인해 주세요.'));
+  });
 }
 
 function renderPosts() {
@@ -4162,9 +4178,26 @@ let parentKids = (() => { try { const a = JSON.parse(localStorage.getItem(KIDS_K
 let meMode = 'me';
 function saveKids() { try { localStorage.setItem(KIDS_KEY, JSON.stringify(parentKids)); } catch (e) {} }
 function kidList() { return parentKids.map(id => (state.participants || []).find(p => p.id === id)).filter(Boolean); }
+// 아이를 고르면 먼저 그 아이의 확인 코드(4자리, 관리모드 명단의 🔑 코드)를 입력해야 추가됨
+function pickKid(id) { kidPending = id; renderMeModal(); }
+function confirmKid() {
+  const el = document.getElementById('kid-code');
+  const v = ((el && el.value) || '').trim();
+  if (Date.now() < kidLockUntil) { alert('틀린 횟수가 많아서 잠시 쉬었다가 해 주세요. (1분)'); return; }
+  if (v !== meCode('p_' + kidPending)) {
+    kidFails++;
+    if (kidFails >= 5) { kidFails = 0; kidLockUntil = Date.now() + 60000; alert('5번 틀려서 1분 동안 입력할 수 없어요.\n코드는 담당 선생님께 물어보세요.'); }
+    else alert('코드가 맞지 않아요. 아이 확인 코드는 선생님께 물어보세요.');
+    return;
+  }
+  kidFails = 0;
+  const id = kidPending; kidPending = '';
+  addKid(id);
+}
 function addKid(id) { if (!parentKids.includes(id)) parentKids.push(id); saveKids(); closeMeModal(); renderBible(); syncPersonalChecklistDropdown(); }
 function removeKid(id) { if (!confirm('이 아이를 목록에서 뺄까요?')) return; parentKids = parentKids.filter(x => x !== id); saveKids(); renderBible(); syncPersonalChecklistDropdown(); }
-function openKidModal() { meForced = false; mePending = ''; meMode = 'kid'; renderMeModal(); document.getElementById('me-modal').classList.add('show'); }
+let kidPending = '', kidFails = 0, kidLockUntil = 0;
+function openKidModal() { meForced = false; mePending = ''; kidPending = ''; meMode = 'kid'; renderMeModal(); document.getElementById('me-modal').classList.add('show'); }
 function meParent() { return meKey === 'guest' && !canEdit; }
 const PARENT_NOTE = '👀 학부모 보기 모드예요. 내용을 보기만 할 수 있고 체크나 수정은 안 돼요.';
 
@@ -4269,12 +4302,21 @@ function closeMeModal() { meForced = false; meMode = 'me'; document.getElementBy
 function renderMeModal() {
   const box = document.getElementById('me-body');
   const people = meList();
+  if (meMode === 'kid' && kidPending) {
+    const k = (state.participants || []).find(x => x.id === kidPending);
+    if (!k) { kidPending = ''; renderMeModal(); return; }
+    box.innerHTML = `<h2 style="margin:0 0 4px;">🔑 ${escapeHtml(k.name)} 확인 코드</h2>
+      <div class="bb-sub" style="margin:0 0 10px;">우리 아이가 맞는지 확인하는 숫자 4자리예요. 선생님께 받은 코드를 입력해 주세요.</div>
+      <input id="kid-code" class="me-search" inputmode="numeric" maxlength="4" placeholder="확인 코드 4자리" onkeydown="if(event.key==='Enter')confirmKid()" />
+      <div class="bb-sheet-actions" style="margin-top:12px;"><button class="bb-close" onclick="kidPending='';renderMeModal()">다시 고를게요</button><button class="primary" onclick="confirmKid()">확인</button></div>`;
+    return;
+  }
   if (meMode === 'kid') {
     const kids = (state.participants || []).slice().sort(byName).filter(p => !parentKids.includes(p.id));
     box.innerHTML = `<h2 style="margin:0 0 4px;">👪 우리 아이 고르기</h2>
-      <div class="bb-sub" style="margin:0 0 8px;">아이 이름을 누르면 성경읽기·개인준비물 현황을 볼 수 있어요 (보기만 가능)</div>
+      <div class="bb-sub" style="margin:0 0 8px;">아이 이름을 누르고 선생님께 받은 확인 코드(4자리)를 입력하면 성경읽기·개인준비물 현황을 볼 수 있어요 (보기만 가능)</div>
       <input class="me-search" placeholder="🔍 이름 검색" oninput="meFilter(this.value)" />
-      <div class="me-list" id="me-list">${kids.length ? `<div class="bb-picker">${kids.map(k => `<button class="bb-pick" data-n="${escapeHtml(k.name)}" onclick="addKid('${k.id}')"><span>${escapeHtml(k.name)}</span>${k.grade ? `<small>${escapeHtml(k.grade)}</small>` : ''}</button>`).join('')}</div>` : '<div class="empty">고를 수 있는 학생이 없어요.</div>'}</div>
+      <div class="me-list" id="me-list">${kids.length ? `<div class="bb-picker">${kids.map(k => `<button class="bb-pick" data-n="${escapeHtml(k.name)}" onclick="pickKid('${k.id}')"><span>${escapeHtml(k.name)}</span>${k.grade ? `<small>${escapeHtml(k.grade)}</small>` : ''}</button>`).join('')}</div>` : '<div class="empty">고를 수 있는 학생이 없어요.</div>'}</div>
       <div class="bb-sheet-actions" style="margin-top:12px;"><button class="bb-close" onclick="closeMeModal()">닫기</button></div>`;
     return;
   }
@@ -5017,10 +5059,12 @@ function parentKidsBibleHtml() {
     <div class="bb-sheet-actions" style="margin-top:10px;"><button class="bb-close" onclick="openKidModal()">＋ ${kids.length ? '다른 아이 추가' : '우리 아이 고르기'}</button></div></div>`;
 }
 
-// 담당 선생님용: 내가 배정된 방의 학생들 성경읽기 현황
+let bibleStaffOpen = false;
+// 선생님(·관리자)용: 전체 학생의 성경읽기 현황 (오래 안 읽은 학생이 위로). 학생에게는 안 보임
 function bibleTeacherCard(me) {
-  if (!me || me.role !== 'teacher') return '';
-  const kids = (state.participants || []).filter(p => getAssignedTeacherName(p.id) === me.name).sort(byName);
+  if (!canEdit && !(me && me.role === 'teacher')) return '';
+  const lastOf = k => Array.from(bibleReadDateSet(k.id)).sort().pop() || '';
+  const kids = (state.participants || []).slice().sort((x, y) => lastOf(x).localeCompare(lastOf(y)) || byName(x, y));
   const today = bibleToday();
   const weekStart = bibleAddDays(today, -bibleDateObj(today).getDay());
   const rows = kids.map(k => {
@@ -5038,9 +5082,9 @@ function bibleTeacherCard(me) {
       <div class="tc-mid">${bibleBar(pct)}<span>${cnt}/${BIBLE_TOTAL}장 · ${pct}%</span></div>
       <div class="tc-dots">${dots.join('')}</div></div>`;
   }).join('');
-  return `<div class="card tc-card"><h2>🌳 내 담당 학생 성경읽기</h2>
-    <div class="bb-sub" style="margin:-4px 0 6px;">배정 탭에서 내가 담당으로 묶인 학생이에요 · 점은 이번 주(주일~토) 읽은 날</div>
-    ${kids.length ? rows : '<div class="empty">배정된 학생이 아직 없어요.</div>'}</div>`;
+  return `<div class="card tc-card"><details ${bibleStaffOpen ? 'open' : ''} ontoggle="bibleStaffOpen=this.open"><summary style="cursor:pointer;font-weight:800;font-size:1.05rem;">🌳 전체 학생 성경읽기 (${kids.length}명) <small style="font-weight:400;color:var(--muted);">눌러서 열기</small></summary>
+    <div class="bb-sub" style="margin:6px 0 6px;">선생님만 볼 수 있어요 · 오래 안 읽은 학생이 위에 나와요 · 점은 이번 주(주일~토) 읽은 날</div>
+    ${kids.length ? rows : '<div class="empty">등록된 학생이 아직 없어요.</div>'}</details></div>`;
 }
 
 function renderBible() {
@@ -5106,6 +5150,7 @@ function renderBible() {
                ${teachersList.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${teachersList.map(pickBtn).join('')}</div>` : ''}`}
         </div>`;
     }
+    html += bibleTeacherCard(null);
     root.innerHTML = html;
     return;
   }
