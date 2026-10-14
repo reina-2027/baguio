@@ -413,7 +413,7 @@
   .bb-comm-pct span { font-size:1.2rem; margin-left:2px; }
   .bb-book-bars { display:flex; flex-direction:column; gap:8px; margin-top:16px; text-align:left; }
   .bb-book-row { display:flex; align-items:center; gap:10px; }
-  .bb-book-name { width:60px; font-size:0.8rem; font-weight:700; color:#5b5f55; flex-shrink:0; }
+  .bb-book-name { width:86px; font-size:0.8rem; font-weight:700; color:#5b5f55; flex-shrink:0; }
   .bb-book-pct { width:36px; text-align:right; font-size:0.78rem; font-weight:700; color:var(--muted); flex-shrink:0; }
   .bb-note { margin-top:12px; font-size:0.72rem; color:var(--muted); }
   .bb-sub { font-size:0.82rem; color:var(--muted); margin:-6px 0 14px; }
@@ -5619,6 +5619,17 @@ function bibleCommunity() {
     overallSum += total / BIBLE_TOTAL;
   });
   result.overall = Math.round((overallSum / students.length) * 100);
+  // 큰 숫자: 오늘까지 읽기로 한 분량(일정표 기준)에서 각자 얼마나 읽었는지의 평균. 앞서 읽은 사람은 100%까지만 반영
+  result.planned = biblePlannedOn(bibleToday());
+  result.overallPlan = 0; result.studentPlan = 0; result.teacherPlan = 0;
+  if (result.planned > 0) {
+    let planSum = 0;
+    const roleSum = { student: 0, teacher: 0 };
+    students.forEach(p => { const v = Math.min(bibleStudentCount(p.id), result.planned) / result.planned; planSum += v; roleSum[p.role] = (roleSum[p.role] || 0) + v; });
+    result.overallPlan = Math.round((planSum / students.length) * 100);
+    result.studentPlan = result.studentCount ? Math.round((roleSum.student / result.studentCount) * 100) : 0;
+    result.teacherPlan = result.teacherCount ? Math.round((roleSum.teacher / result.teacherCount) * 100) : 0;
+  }
   BIBLE_BOOKS.forEach(b => { result.books[b.key] = Math.round((bookSum[b.key] / students.length) * 100); });
   return result;
 }
@@ -5890,17 +5901,13 @@ function renderBible() {
     <div class="card bb-community">
       <div class="bb-period">${biblePeriodText()}</div>
       <div class="bb-comm-title">📖 우리 함께 읽고 있어요</div>
-      <div class="bb-comm-pct">${comm.overall}<span>%</span></div>
-      ${bibleBar(comm.overall, 'big')}
+      <div class="bb-comm-pct">${comm.overallPlan}<span>%</span></div>
+      ${bibleBar(comm.overallPlan, 'big')}
+      <div class="bb-note" style="margin:2px 0 8px;">${comm.count ? (comm.planned > 0 ? `오늘까지 읽을 ${comm.planned}장 기준 전체 달성률` : '아직 시작 전이에요') : '등록된 사람이 없어요'}</div>
       <div class="bb-book-bars">
-        ${BIBLE_BOOKS.map(b => `
-          <div class="bb-book-row">
-            <span class="bb-book-name">${b.name}</span>
-            ${bibleBar(comm.books[b.key])}
-            <span class="bb-book-pct">${comm.books[b.key]}%</span>
-          </div>`).join('')}
+        ${comm.studentCount ? `<div class="bb-book-row"><span class="bb-book-name">학생 (${comm.studentCount}명)</span>${bibleBar(comm.studentPlan)}<span class="bb-book-pct">${comm.studentPlan}%</span></div>` : ''}
+        ${comm.teacherCount ? `<div class="bb-book-row"><span class="bb-book-name">교사 (${comm.teacherCount}명)</span>${bibleBar(comm.teacherPlan)}<span class="bb-book-pct">${comm.teacherPlan}%</span></div>` : ''}
       </div>
-      <div class="bb-note">${comm.count ? `학생 ${comm.studentCount}명 · 선생님 ${comm.teacherCount}명의 진행률을 평균한 값이에요` : '등록된 사람이 없어요'}</div>
     </div>`;
 
   const me = members.find(m => m.id === bibleStudentId);
