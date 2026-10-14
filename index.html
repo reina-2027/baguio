@@ -6160,6 +6160,7 @@ function notifyUnseen() {
 function notifyBibleNudge() {
   const m = meFind(meKey);
   if (!m || meKey === 'guest' || canEdit) return false;
+  if (!sawMeaningfulData) return false;   // 서버 기록이 오기 전엔 '안 읽음'으로 오판하지 않음 (새로고침 때 깜빡임 방지)
   const t = bibleToday();
   if (t < BIBLE_PERIOD.start || t > BIBLE_PERIOD.end) return false;
   return !bibleReadDateSet(meKey.slice(2)).has(t);
@@ -6201,7 +6202,7 @@ function notifyPaint() {
   const chips = [];
   if (n.feed && top !== 'feed') chips.push(`<button onclick="showView('feed')">${canEdit ? '💬 새 댓글' : '📢 새 공지'} <b>${n.feed}</b></button>`);
   if (n.prep && top !== 'prep-schedule') chips.push(`<button onclick="showView('prep-schedule')">📅 새 준비일정 <b>${n.prep}</b></button>`);
-  if (bible && top !== 'bible') { const pt = biblePlanText(bibleTodayPlan() || []); chips.push(`<button onclick="showView('bible')">📖 ${pt ? '오늘 읽을 곳: ' + escapeHtml(pt) : '오늘 성경읽기를 아직 안 했어요'}</button>`); }
+  { const t0 = bibleToday(); const pt = (t0 >= BIBLE_PERIOD.start && t0 <= BIBLE_PERIOD.end) ? biblePlanText(bibleTodayPlan() || []) : ''; if (pt && top !== 'bible') chips.push(`<button onclick="showView('bible')">📖 오늘 읽을 곳: ${escapeHtml(pt)}</button>`); }
   bar.innerHTML = chips.join('');
   bar.classList.toggle('on', chips.length > 0);
 }
