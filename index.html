@@ -5682,9 +5682,9 @@ function bibleGuideHtml(myCount) {
 
 
 // ----- 오늘 읽을 곳 (일정표: 주일 2장·월~토 1장, 마태→마가→누가→요한 순서) + 읽기 링크(개역개정) -----
-const BIBLE_LINK_CODES = { matthew: 'MAT', mark: 'MRK', luke: 'LUK', john: 'JHN' };
-const BIBLE_LINK_BASE = 'https://www.bible.com/ko/bible/88/';   // 개역개정(KRV). 주소 형식은 여기서만 고치면 모든 링크가 바뀜
-function bibleLink(bookKey, ch) { return `${BIBLE_LINK_BASE}${BIBLE_LINK_CODES[bookKey]}.${ch}.KRV`; }
+const BIBLE_LINK_CODES = { matthew: 'mat', mark: 'mrk', luke: 'luk', john: 'jhn' };   // 대한성서공회 책 코드
+const BIBLE_LINK_BASE = 'https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE';   // 대한성서공회 개역개정(GAE). 주소 형식은 여기서만 고치면 모든 링크가 바뀜
+function bibleLink(bookKey, ch) { return `${BIBLE_LINK_BASE}&book=${BIBLE_LINK_CODES[bookKey]}&chap=${ch}&sec=1`; }
 function bibleChapterAt(n) {   // 1~89번째 장 → { book, ch }
   let left = n;
   for (const b of BIBLE_BOOKS) { if (left <= b.chapters) return { book: b, ch: left }; left -= b.chapters; }
