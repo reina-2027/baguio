@@ -766,7 +766,7 @@
   <button data-tab="prep-schedule">준비일정</button>
   <button data-tab="bible">성경읽기</button>
   <button data-tab="teams">사역팀</button>
-  <button data-tab="academy">학원시간</button>
+  <button data-tab="academy">주말일정</button>
   <button data-tab="roster">명단</button>
   <button data-tab="depart">출국준비</button>
   <button data-tab="schedule">선교일정</button>
@@ -1220,8 +1220,8 @@
   <!-- 학원시간 탭 -->
   <section class="panel" id="panel-academy">
     <div class="card">
-      <h2>⏰ 학원 시간 알려주기</h2>
-      <div class="ac-note" style="margin:-4px 0 14px;">사역팀 연습은 <b>토요일·주일</b>에 해요. <b>학원 시간을 최대한 피해서</b> 잡으려고 해요.<br>토·주일에 있는 학원·과외·레슨처럼 빠질 수 없는 일정을 <b>15분 단위</b>로 알려 주세요. 이동 시간도 포함해서요! 입력하면 바로 저장돼요.</div>
+      <h2>⏰ 주말 일정 알려주기</h2>
+      <div class="ac-note" style="margin:-4px 0 14px;">사역팀 연습은 <b>토요일·주일</b>에 해요. <b>다른 일정을 최대한 피해서</b> 잡으려고 해요.<br>토·주일에 있는 학원·과외·레슨처럼 빠질 수 없는 일정을 <b>15분 단위</b>로 알려 주세요. 이동 시간도 포함해서요! 입력하면 바로 저장돼요.</div>
       <div id="academy-picker"></div>
     </div>
 
@@ -1234,7 +1234,7 @@
       </div>
 
       <div class="card" id="ac-add-card">
-        <h2 id="ac-add-title">➕ 학원·과외 추가</h2>
+        <h2 id="ac-add-title">➕ 주말일정 추가</h2>
         <div class="ac-label">① 요일</div>
         <div class="ac-days" id="ac-day-chips"></div>
         <div class="ac-label">② 시간 (15분 단위)</div>
@@ -4535,7 +4535,7 @@ function renderMeModal() {
   const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
   const cur = meKey ? (meKey === 'guest' ? '학부모' : (meFind(meKey) || {}).name || '') : '';
   box.innerHTML = `<h2 style="margin:0 0 4px;">${meNotice ? '📢 우리 아이 이름을 골라 주세요' : meForced ? '👋 누구신가요?' : '이름 바꾸기'}</h2>
-    <div class="bb-sub" style="margin:0 0 8px;">${meNotice ? '학부모 "보기만" 방식이 없어졌어요.<br>아래에서 <b>우리 아이 이름</b>을 한 번만 골라 주세요. 이 이름으로 학원시간을 기록할 수 있어요.' : meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">👪 <b>학부모님은 우리 아이 이름</b>을 골라 주세요.<br>이 이름으로 학원시간을 기록할 수 있어요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
+    <div class="bb-sub" style="margin:0 0 8px;">${meNotice ? '학부모 "보기만" 방식이 없어졌어요.<br>아래에서 <b>우리 아이 이름</b>을 한 번만 골라 주세요. 이 이름으로 주말일정을 기록할 수 있어요.' : meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">👪 <b>학부모님은 우리 아이 이름</b>을 골라 주세요.<br>이 이름으로 주말일정을 기록할 수 있어요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
     <div class="me-list" id="me-list">
       ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
     </div>
@@ -5011,7 +5011,7 @@ function acAnswered(rec, period) {
 function acBusyReason(rec, period, day, m, defSchool = '') {
   const pr = acPeriodRec(rec, period);
   const hit = (pr.entries || []).find(en => (en.days || []).includes(day) && acMin(en.start) <= m && m < acMin(en.end));
-  if (hit) return hit.label || '학원';
+  if (hit) return hit.label || '일정';
   const school = (rec && rec.schoolEnd) || defSchool; // 학교 시간을 안 적은 학생은 16:30까지 학교로 계산
   if (period === 'sem' && day < 5 && school && m < acMin(school)) return '학교';
   return '';
@@ -5100,7 +5100,7 @@ function acRenderEditMode() {
   if (!card) return;
   const on = !!acEditId;
   card.classList.toggle('editing', on);
-  document.getElementById('ac-add-title').textContent = on ? '✏️ 일정 수정' : '➕ 학원·과외 추가';
+  document.getElementById('ac-add-title').textContent = on ? '✏️ 일정 수정' : '➕ 주말일정 추가';
   document.getElementById('ac-add-btn').textContent = on ? '수정 완료' : '추가하기';
   document.getElementById('ac-cancel-btn').style.display = on ? '' : 'none';
 }
@@ -5108,7 +5108,7 @@ function acRenderEditMode() {
 function acRemoveEntry(id) {
   const pr0 = acPeriodRec(acRec(acCurrentKey()), academyPeriod);
   const en = (pr0.entries || []).find(x => x.id === id);
-  if (en && !confirm(`${acDaysText(en.days)} ${en.start}~${en.end} ${en.label || '학원'}\n이 일정을 지울까요?`)) return;
+  if (en && !confirm(`${acDaysText(en.days)} ${en.start}~${en.end} ${en.label || '일정'}\n이 일정을 지울까요?`)) return;
   if (acEditId === id) { acEditId = null; acAddDays.clear(); document.getElementById('ac-label').value = ''; acRenderDayChips(); }
   acUpdatePeriod(pr => { pr.entries = pr.entries.filter(en => en.id !== id); });
 }
@@ -5116,7 +5116,7 @@ function acRemoveEntry(id) {
 function acSetStatus(status) {
   const pr = acPeriodRec(acRec(acCurrentKey()), academyPeriod);
   if ((pr.entries || []).length && status) {
-    if (!confirm('입력한 학원 일정이 지워져요. 괜찮을까요?')) return;
+    if (!confirm('입력한 주말일정이 지워져요. 괜찮을까요?')) return;
   }
   acUpdatePeriod(p => {
     p.status = p.status === status ? '' : status;
@@ -5288,22 +5288,22 @@ function acRenderEditor(me) {
       <div class="ac-entry${en.id === acEditId ? ' editing' : ''}">
         <div class="ac-entry-main" style="cursor:pointer;" onclick="acStartEdit('${en.id}')">
           <div class="ac-entry-days">${acDaysText(acActiveDays(en.days))} · ${en.start} ~ ${en.end}</div>
-          <div class="ac-entry-sub">${escapeHtml(en.label || '학원')}</div>
+          <div class="ac-entry-sub">${escapeHtml(en.label || '일정')}</div>
         </div>
         <button class="ac-entry-edit" onclick="acStartEdit('${en.id}')">수정</button>
         <button class="ac-entry-del" onclick="acRemoveEntry('${en.id}')" aria-label="삭제">×</button>
       </div>`).join('');
   } else if (pr.status === 'none') {
-    list.innerHTML = `<div class="empty">${isSem ? '학기 중' : '방학'}에는 학원이 없어요 👍</div>`;
+    list.innerHTML = `<div class="empty">자유일정이에요 👍</div>`;
   } else if (pr.status === 'unknown') {
     list.innerHTML = '<div class="empty">방학 시간표가 나오면 다시 입력해 주세요 🙏</div>';
   } else {
-    list.innerHTML = '<div class="empty">위에서 학원·과외를 추가해 주세요.<br>학원이 없으면 ‘안 다녀요’ 버튼을 눌러 주세요.</div>';
+    list.innerHTML = '<div class="empty">위에서 주말일정을 추가해 주세요.<br>일정이 없으면 ‘자유일정’ 버튼을 눌러 주세요.</div>';
   }
 
   // 상태 버튼
   const noneSlot = document.getElementById('ac-none-slot');
-  if (noneSlot) noneSlot.innerHTML = `<button class="ac-pill${pr.status === 'none' ? ' on' : ''}" onclick="acSetStatus('none')">${pr.status === 'none' ? '✓ ' : ''}${isSem ? '학기 중' : '방학에는'} 학원 안 다녀요</button>`;
+  if (noneSlot) noneSlot.innerHTML = `<button class="ac-pill${pr.status === 'none' ? ' on' : ''}" onclick="acSetStatus('none')">${pr.status === 'none' ? '✓ ' : ''}자유일정</button>`;
   const btns = [];
   if (!isSem) btns.push(`<button class="ac-pill${pr.status === 'unknown' ? ' on' : ''}" onclick="acSetStatus('unknown')">아직 몰라요</button>`);
   const semEntries = acPeriodRec(rec, 'sem').entries || [];
@@ -5319,7 +5319,7 @@ function acRenderEditor(me) {
     const first = prev !== r;
     if (r === '학교') return { cls: 'school', text: first ? '학교' : '', title: '학교' };
     return { cls: 'busy' + (first ? ' first' : ''), text: first ? escapeHtml(r) : '', title: r };
-  }) + `<div class="ac-legend"><span><i style="background:var(--c-academy)"></i>학원·과외</span><span><i style="background:var(--bg); border:1px solid var(--border)"></i>가능</span></div>`;
+  }) + `<div class="ac-legend"><span><i style="background:var(--c-academy)"></i>주말일정</span><span><i style="background:var(--bg); border:1px solid var(--border)"></i>가능</span></div>`;
 
 }
 
@@ -5393,7 +5393,7 @@ function acRenderAdmin(people) {
     const pr = acPeriodRec(rec, period);
     let st;
     if (!acAnswered(rec, period)) st = '<span class="ac-todo">미응답</span>';
-    else if (pr.status === 'none') st = '<span class="ac-done">학원 없음</span>';
+    else if (pr.status === 'none') st = '<span class="ac-done">자유일정</span>';
     else if (pr.status === 'unknown') st = '<span class="ac-todo">아직 몰라요</span>';
     else st = '<span class="ac-done">✓</span>';
     const ens = (pr.entries || []).filter(en => acActiveDays(en.days).length).map(en => `${acDaysText(acActiveDays(en.days))} ${en.start}~${en.end} ${escapeHtml(en.label || '')}`).join(' / ');
