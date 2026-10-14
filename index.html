@@ -5850,10 +5850,12 @@ let bibleStaffOpen = false;
 function bibleTeacherCard(me) {
   if (!canEdit && !(me && me.role === 'teacher')) return '';
   const lastOf = k => Array.from(bibleReadDateSet(k.id)).sort().pop() || '';
-  const kids = (state.participants || []).slice().sort((x, y) => lastOf(x).localeCompare(lastOf(y)) || byName(x, y));
+  const sortList = arr => arr.slice().sort((x, y) => lastOf(x).localeCompare(lastOf(y)) || byName(x, y));
+  const kids = sortList(state.participants || []);
+  const teachers = sortList(state.teachers || []);
   const today = bibleToday();
   const weekStart = bibleAddDays(today, -bibleDateObj(today).getDay());
-  const rows = kids.map(k => {
+  const rowOf = (k, sub) => {
     const set = bibleReadDateSet(k.id);
     const cnt = bibleStudentCount(k.id);
     const pct = Math.round((cnt / BIBLE_TOTAL) * 100);
@@ -5864,13 +5866,18 @@ function bibleTeacherCard(me) {
     }
     const last = Array.from(set).sort().pop();
     const lastTxt = last ? (bibleDayDiff(last, today) === 0 ? '오늘 읽음' : `${bibleDayDiff(last, today)}일 전`) : '아직 시작 전';
-    return `<div class="tc-row"><div class="tc-top"><b>${escapeHtml(k.name)}</b><small>${escapeHtml(k.grade || '')}</small><span class="tc-last${last ? '' : ' none'}">${lastTxt}</span></div>
+    return `<div class="tc-row"><div class="tc-top"><b>${escapeHtml(k.name)}</b><small>${escapeHtml(sub || '')}</small><span class="tc-last${last ? '' : ' none'}">${lastTxt}</span></div>
       <div class="tc-mid">${bibleBar(pct)}<span>${cnt}/${BIBLE_TOTAL}장 · ${pct}%</span></div>
       <div class="tc-dots">${dots.join('')}</div></div>`;
-  }).join('');
-  return `<div class="card tc-card"><details ${bibleStaffOpen ? 'open' : ''} ontoggle="bibleStaffOpen=this.open"><summary style="cursor:pointer;font-weight:800;font-size:1.05rem;">🌳 전체 학생 성경읽기 (${kids.length}명) <small style="font-weight:400;color:var(--muted);">눌러서 열기</small></summary>
-    <div class="bb-sub" style="margin:6px 0 6px;">선생님만 볼 수 있어요 · 오래 안 읽은 학생이 위에 나와요 · 점은 이번 주(주일~토) 읽은 날</div>
-    ${kids.length ? rows : '<div class="empty">등록된 학생이 아직 없어요.</div>'}</details></div>`;
+  };
+  const kidRows = kids.map(k => rowOf(k, k.grade || '')).join('');
+  const TITLES = { '정형철': '목사님', '신승': '전도사님' };   // 직분 표시 (여기에 이름: '직분' 으로 추가)
+  const teacherRows = teachers.map(k => rowOf(k, TITLES[(k.name || '').trim()] || '선생님')).join('');
+  const groupLabel = (txt, n) => `<div class="bb-today-label" style="margin:12px 0 2px;">${txt} ${n}명</div>`;
+  return `<div class="card tc-card"><details ${bibleStaffOpen ? 'open' : ''} ontoggle="bibleStaffOpen=this.open"><summary style="cursor:pointer;font-weight:800;font-size:1.05rem;">🌳 전체 학생·선생님 성경읽기 (${kids.length + teachers.length}명) <small style="font-weight:400;color:var(--muted);">눌러서 열기</small></summary>
+    <div class="bb-sub" style="margin:6px 0 6px;">선생님만 볼 수 있어요 · 오래 안 읽은 사람이 위에 나와요 · 점은 이번 주(주일~토) 읽은 날</div>
+    ${groupLabel('학생', kids.length)}${kids.length ? kidRows : '<div class="empty">등록된 학생이 아직 없어요.</div>'}
+    ${groupLabel('선생님', teachers.length)}${teachers.length ? teacherRows : '<div class="empty">등록된 선생님이 아직 없어요.</div>'}</details></div>`;
 }
 
 function renderBible() {
