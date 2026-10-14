@@ -109,6 +109,13 @@
   nav.tabs {
     display: flex; gap: 6px; padding: 10px 12px; overflow-x: auto; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 70px; z-index: 9;
   }
+  nav.tabs button { position:relative; }
+  nav.tabs button[data-badge]::after { content:attr(data-badge); position:absolute; top:-5px; right:-3px; min-width:17px; height:17px; padding:0 4px; box-sizing:border-box; border-radius:999px; background:#E5484D; color:#fff; font-size:0.68rem; font-weight:800; line-height:17px; text-align:center; box-shadow:0 0 0 2px var(--card); }
+  #notify-bar { display:none; gap:6px; flex-wrap:wrap; padding:8px 12px; background:#FFF8E6; border-bottom:1px solid #F1DFAE; }
+  #notify-bar.on { display:flex; }
+  #notify-bar button { border:1px solid #E8C86A; background:#fff; color:#6B4E00; border-radius:999px; padding:6px 12px; font-size:0.82rem; font-weight:700; font-family:inherit; cursor:pointer; }
+  #notify-bar button b { color:#E5484D; }
+  .new-tag { display:inline-block; background:#E5484D; color:#fff; border-radius:6px; padding:1px 6px; font-size:0.68rem; font-weight:800; margin-left:6px; vertical-align:middle; }
   nav.tabs button {
     flex: 0 0 auto; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); color: #4d544e; font-size: 0.88rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s;
   }
@@ -475,6 +482,20 @@
   .bb-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(40px, 1fr)); gap:6px; margin-top:12px; }
   .bb-ch { position:relative; aspect-ratio:1; min-height:40px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:#8b8f84; font-size:0.9rem; font-weight:700; font-family:inherit; cursor:pointer; padding:0; transition:transform .1s; }
   .bb-ch:active { transform:scale(0.92); }
+  .bb-ch.plan { outline:2.5px solid var(--c-bible); outline-offset:1px; color:var(--c-bible-deep); }
+  .bb-today { background:var(--c-bible-soft); border:1.5px solid var(--c-bible-line); }
+  .bb-today-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .bb-today-title { font-size:1.02rem; font-weight:800; color:var(--c-bible-deep); }
+  .bb-today-date { font-size:0.78rem; color:var(--muted); font-weight:700; }
+  .bb-today-row { display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--c-bible-line); border-radius:12px; padding:10px 12px; margin-top:6px; }
+  .bb-today-row.done { opacity:.7; }
+  .bb-today-row .bt-name { flex:1; font-weight:800; font-size:0.98rem; }
+  .bb-today-row .bt-tag { font-size:0.7rem; font-weight:800; color:#b4572f; background:#fbece4; border-radius:6px; padding:1px 6px; margin-left:6px; vertical-align:middle; }
+  .bb-today-row a.bt-read { text-decoration:none; font-size:0.82rem; font-weight:800; color:var(--c-bible-deep); border:1.5px solid var(--c-bible); border-radius:999px; padding:6px 11px; white-space:nowrap; }
+  .bb-today-row button.bt-done { font-family:inherit; font-size:0.82rem; font-weight:800; color:#fff; background:var(--c-bible); border:none; border-radius:999px; padding:7px 12px; cursor:pointer; white-space:nowrap; }
+  .bb-today-row .bt-ok { font-size:0.82rem; font-weight:800; color:var(--c-bible-deep); white-space:nowrap; }
+  .bb-today-sub { margin-top:10px; font-size:0.82rem; color:var(--muted); line-height:1.5; }
+  .bb-today-label { margin-top:10px; font-size:0.78rem; font-weight:800; color:#b4572f; }
   .bb-ch.read { color:#fff; border-color:transparent; box-shadow:0 1px 2px rgba(0,0,0,0.08); }
   .bb-multi { position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; background:#fff; opacity:0.9; }
   .bb-hint { font-size:0.74rem; color:var(--muted); text-align:center; margin:4px 8px 8px; line-height:1.5; word-break:break-all; }
@@ -605,6 +626,11 @@
   .pv iframe { display:block; width:100%; border:0; border-radius:12px; background:var(--bg2); }
   .pv.video iframe { aspect-ratio:16/9; }
   .pv.doc iframe { height:420px; }
+  .pv-ctl { display:flex; gap:8px; margin-top:6px; }
+  .pv-ctl button { font-size:0.8rem; font-weight:800; padding:7px 12px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:var(--text, #333); cursor:pointer; }
+  .pv-ctl .pv-pg { display:none; font-weight:700; color:var(--muted); }
+  .pv-fit { position:relative; overflow:hidden; border-radius:12px; background:#fff; }
+  .pv-fit iframe { position:absolute; top:0; left:0; max-width:none; transform-origin:0 0; border-radius:0; }
   .pv.folder iframe { height:360px; }
   .pv-open { display:inline-block; margin-top:4px; font-size:0.76rem; font-weight:700; color:var(--muted); text-decoration:none; }
   .att-view .pv { margin-bottom:10px; }
@@ -650,6 +676,72 @@
   body.admin #flightinfo-list::before { content:'📋 등록된 항공권'; }
   body.admin #english-list::before { content:'📋 등록된 카드'; }
   body.admin #team-meetings:not(:empty)::before { content:'📋 등록된 모임'; }
+  /* ===== 학원시간 탭 ===== */
+  :root { --c-academy: #A85F7A; --c-academy-deep: #6B3A4D; --c-academy-soft: #F8EBF0; --c-academy-line: #EDD3DD; }
+  nav.tabs button[data-tab="academy"].active { background: var(--c-academy); border-color: var(--c-academy); color: #FFFFFF; }
+  #panel-academy .card::before { background: var(--c-academy); }
+  #panel-academy .supply-select { border-color: var(--c-academy-line); background: var(--c-academy-soft); }
+  #panel-academy .supply-select-wrap::after { color: var(--c-academy); }
+  .ac-seg { display:flex; gap:4px; padding:4px; margin-bottom:14px; background:var(--card); border-radius:14px; box-shadow:0 3px 16px rgba(28,56,61,0.07); }
+  .ac-seg button { flex:1; border:none; background:transparent; padding:10px 6px; border-radius:10px; font-size:0.88rem; font-weight:800; color:var(--muted); font-family:inherit; cursor:pointer; }
+  .ac-seg button.on { background:var(--c-academy); color:#fff; }
+  .ac-label { font-size:0.8rem; font-weight:800; color:var(--muted); margin:0 0 6px; }
+  .ac-days { display:flex; gap:5px; margin-bottom:14px; }
+  .ac-day { flex:1; min-width:0; padding:10px 0; border-radius:10px; border:1.5px solid var(--c-academy-line); background:var(--card); color:var(--text); font-size:0.88rem; font-weight:800; font-family:inherit; cursor:pointer; }
+  .ac-day.on { background:var(--c-academy); border-color:var(--c-academy); color:#fff; }
+  .ac-time-row { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+  .ac-time-row span { color:var(--muted); font-weight:800; }
+  .ac-sel, .ac-input { flex:1; min-width:0; width:100%; padding:11px 12px; border-radius:11px; border:1.5px solid var(--border); background:var(--card); color:var(--text); font-size:0.95rem; font-weight:700; font-family:inherit; }
+  textarea.ac-input { font-weight:500; resize:vertical; min-height:70px; }
+  .ac-btn-row { display:flex; gap:8px; align-items:stretch; margin-top:12px; }
+  .ac-btn-row .ac-add-btn { flex:1; margin-top:0; }
+  .ac-btn-row .ac-pill { height:100%; border-radius:10px; }
+  .ac-add-btn { width:100%; margin-top:12px; background:var(--c-academy) !important; }
+  .ac-entry { display:flex; align-items:center; gap:10px; padding:11px 12px; margin-bottom:8px; border-radius:12px; background:var(--c-academy-soft); border:1px solid var(--c-academy-line); }
+  .ac-entry-main { flex:1; min-width:0; }
+  .ac-entry-days { font-weight:800; color:var(--c-academy-deep); font-size:0.92rem; }
+  .ac-entry-sub { font-size:0.8rem; color:var(--muted); margin-top:2px; }
+  .ac-entry.editing { outline:2px solid var(--c-academy); }
+  .ac-entry-edit { border:1px solid var(--c-academy-line); background:var(--card); color:var(--c-academy-deep); font-size:0.78rem; font-weight:800; border-radius:8px; padding:5px 9px; cursor:pointer; font-family:inherit; }
+  #ac-add-card.editing { box-shadow:0 0 0 2px var(--c-academy), 0 3px 16px rgba(28,56,61,0.07); }
+  .ac-entry-del { border:none; background:transparent; color:var(--muted); font-size:1.2rem; line-height:1; padding:4px 6px; cursor:pointer; }
+  .ac-status { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+  .ac-pill { border:1.5px solid var(--border); background:var(--card); color:var(--text); border-radius:999px; padding:8px 14px; font-size:0.84rem; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap; }
+  .ac-pill.on { background:var(--c-academy-deep); border-color:var(--c-academy-deep); color:#fff; }
+  .ac-pill.sm { padding:6px 12px; font-size:0.8rem; }
+  .ac-done { display:inline-flex; align-items:center; gap:4px; font-size:0.78rem; font-weight:800; color:var(--ok); background:#E8F3EA; padding:3px 9px; border-radius:999px; }
+  .ac-todo { display:inline-flex; align-items:center; gap:4px; font-size:0.78rem; font-weight:800; color:var(--warn); background:#FBEEE4; padding:3px 9px; border-radius:999px; }
+  .ac-grid-wrap { overflow:hidden; }
+  .ac-grid { width:100%; border-collapse:separate; border-spacing:2px 0; table-layout:fixed; }
+  .ac-grid th { font-size:0.74rem; font-weight:800; color:var(--muted); padding:2px 0 6px; }
+  .ac-grid .ac-tcol { width:38px; text-align:right; padding:0 4px 0 0 !important; font-size:0.64rem; font-weight:700; color:var(--muted); vertical-align:top; background:transparent !important; line-height:1; }
+  .ac-grid td { height:13px; line-height:13px; padding:0 2px; background:var(--bg); font-size:0.66rem; font-weight:800; color:#fff; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-top:1px solid transparent; }
+  .ac-grid tr.qtr .ac-tcol { font-weight:500; opacity:.62; }
+  .ac-grid tr.hour .ac-tcol { font-weight:800; color:var(--text); }
+  .ac-grid tr.hour td:not(.ac-tcol) { border-top-color:var(--border); }
+  .ac-grid td.busy { background:var(--c-academy); border-top-color:transparent; }
+  .ac-grid td.busy.first { border-top-color:var(--card); }
+  .ac-grid td.school { background:#DEDACF; color:#8a8579; border-top-color:transparent; }
+  .ac-grid td.heat { color:var(--text); font-size:0.7rem; cursor:pointer; }
+  .ac-grid td.sel { outline:2px solid var(--text); outline-offset:-2px; }
+  .ac-legend { display:flex; gap:12px; flex-wrap:wrap; font-size:0.74rem; color:var(--muted); margin-top:10px; }
+  .ac-legend i { display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-2px; margin-right:4px; }
+  .ac-detail { margin-top:12px; padding:11px 13px; border-radius:12px; background:var(--c-academy-soft); font-size:0.84rem; line-height:1.55; }
+  .ac-rec { padding:11px 13px; border-radius:12px; border:1px solid var(--border); margin-bottom:8px; font-size:0.84rem; line-height:1.5; }
+  .ac-rec-head { display:flex; align-items:baseline; gap:8px; }
+  .ac-rec-time { font-weight:800; font-size:0.95rem; }
+  .ac-rec-n { margin-left:auto; font-weight:800; color:var(--ok); white-space:nowrap; }
+  .ac-rec-miss { color:var(--muted); font-size:0.8rem; margin-top:2px; }
+  .ac-stat { display:flex; gap:8px; margin-bottom:12px; }
+  .ac-stat div { flex:1; text-align:center; padding:10px 4px; border-radius:12px; background:var(--bg); }
+  .ac-stat b { display:block; font-size:1.2rem; }
+  .ac-stat span { font-size:0.74rem; color:var(--muted); font-weight:700; }
+  .ac-filter { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:10px; }
+  .ac-resp { font-size:0.82rem; padding:8px 0; border-bottom:1px dashed var(--border); }
+  .ac-resp:last-child { border-bottom:none; }
+  .ac-resp-name { font-weight:800; }
+  .ac-note { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+
 </style>
 </head>
 <body>
@@ -674,11 +766,14 @@
   <button data-tab="prep-schedule">준비일정</button>
   <button data-tab="bible">성경읽기</button>
   <button data-tab="teams">사역팀</button>
+  <button data-tab="academy">학원시간</button>
   <button data-tab="roster">명단</button>
   <button data-tab="depart">출국준비</button>
   <button data-tab="schedule">선교일정</button>
   <button data-tab="files">자료</button>
 </nav>
+
+<div id="notify-bar" role="status"></div>
 
 <main>
 
@@ -833,6 +928,7 @@
           </div>
           <div class="att-row2">
             <label class="role-check"><input type="checkbox" class="att-photo" /><span>사진으로 보이기</span></label>
+            <input type="number" class="att-pages" min="1" max="80" inputmode="numeric" placeholder="문서 쪽수" style="width:90px;" />
             <button type="button" class="secondary" onclick="addAtt('ps')">＋ 첨부 추가</button>
           </div>
         </div>
@@ -1085,6 +1181,7 @@
           </div>
           <div class="att-row2">
             <label class="role-check"><input type="checkbox" class="att-photo" /><span>사진으로 보이기</span></label>
+            <input type="number" class="att-pages" min="1" max="80" inputmode="numeric" placeholder="문서 쪽수" style="width:90px;" />
             <button type="button" class="secondary" onclick="addAtt('post')">＋ 첨부 추가</button>
           </div>
         </div>
@@ -1118,6 +1215,53 @@
       </div>
       <div class="bb-hint" style="text-align:left; margin:10px 2px 0;">앱을 여는 기기가 30분마다 내용이 바뀐 경우에만 서버에 백업 사본을 남겨요(저장 직후에도 남겨요). 가끔 "백업 파일 내려받기"로 내 컴퓨터에도 보관해 두면 더 안전해요.</div>
     </div>
+  </section>
+
+  <!-- 학원시간 탭 -->
+  <section class="panel" id="panel-academy">
+    <div class="card">
+      <h2>⏰ 학원 시간 알려주기</h2>
+      <div class="ac-note" style="margin:-4px 0 14px;">사역팀 연습은 <b>토요일·주일</b>에 해요. <b>학원 시간을 최대한 피해서</b> 잡으려고 해요.<br>토·주일에 있는 학원·과외·레슨처럼 빠질 수 없는 일정을 <b>15분 단위</b>로 알려 주세요. 이동 시간도 포함해서요! 입력하면 바로 저장돼요.</div>
+      <div id="academy-picker"></div>
+    </div>
+
+    <div class="ac-seg" id="academy-period-seg"></div>
+
+    <div id="academy-editor" style="display:none;">
+      <div class="card" id="academy-school-card">
+        <h2>🏫 평일 학교 끝나는 시간</h2>
+        <select class="ac-sel" id="ac-school-end" onchange="acSetSchoolEnd(this.value)"></select>
+      </div>
+
+      <div class="card" id="ac-add-card">
+        <h2 id="ac-add-title">➕ 학원·과외 추가</h2>
+        <div class="ac-label">① 요일</div>
+        <div class="ac-days" id="ac-day-chips"></div>
+        <div class="ac-label">② 시간 (15분 단위)</div>
+        <div class="ac-time-row">
+          <select class="ac-sel" id="ac-start"></select>
+          <span>~</span>
+          <select class="ac-sel" id="ac-end"></select>
+        </div>
+        <div class="ac-label">③ 일정명</div>
+        <input class="ac-input" id="ac-label" maxlength="12" placeholder="예: 수학학원, 영어과외, 피아노" />
+        <div class="ac-btn-row"><button class="primary ac-add-btn" id="ac-add-btn" onclick="acAddEntry()">추가하기</button><span id="ac-none-slot"></span></div>
+        <button class="bb-close" id="ac-cancel-btn" style="display:none; width:100%; margin-top:8px;" onclick="acCancelEdit()">수정 취소</button>
+      </div>
+
+      <div class="card">
+        <h2 style="display:flex; align-items:center; gap:8px;">📋 내 일정 <span id="ac-my-state"></span></h2>
+        <div id="ac-my-list"></div>
+        <div class="ac-status" id="ac-status-btns"></div>
+      </div>
+
+      <div class="card">
+        <h2>🗓 한눈에 보기</h2>
+        <div class="ac-grid-wrap" id="ac-my-grid"></div>
+      </div>
+    </div>
+
+    <div id="academy-admin" style="display:none;"></div>
   </section>
 
   <!-- 자료 모음 탭 -->
@@ -1586,7 +1730,7 @@ function showSyncAlert(msg) {
 }
 
 // ===== 데이터 백업 =====
-// 자동 백업: 앱을 여는 기기가 6시간 단위로 한 번씩 서버에 사본(backup_날짜_시간대)을 만듦 (이미 있으면 건너뜀)
+// 자동 백업: 앱을 여는 기기가 30분 단위로 한 번씩, 내용이 바뀐 경우에만 서버에 사본(backup_날짜_시각)을 만듦 (이미 있으면 건너뜀)
 // 복원: 관리모드에서 자동 백업 목록 또는 내려받은 파일로 복원
 const BACKUP_COLLECTION = 'baguio_youth_mission';
 let backupInfo = '자동 백업 대기 중';
@@ -1670,6 +1814,30 @@ async function maybeAutoBackup(remote, exactMinute) {
   }
   backupBusy = false;
   renderBackupCard();
+}
+
+// 오래된 백업 정리: 7일이 지난 백업은 지우되, 가장 최근 10개는 항상 남김. 관리모드에서 하루 한 번만 확인.
+// (Firestore 규칙에서 backup_ 문서의 삭제를 허용해야 동작함. 막혀 있으면 아무것도 지우지 않고 안내만 표시)
+const BACKUP_KEEP_DAYS = 7, BACKUP_KEEP_MIN = 10;
+async function pruneOldBackups() {
+  if (!canEdit || !firebaseAuthReady || backupBusy) return;
+  const key = 'baguio_last_prune', today = bibleToday();
+  try { if (localStorage.getItem(key) === today) return; } catch (e) {}
+  try {
+    const cutoff = new Date(Date.now() - BACKUP_KEEP_DAYS * 86400000).toISOString();
+    const keepSnap = await db.collection(BACKUP_COLLECTION).orderBy('_backupAt', 'desc').limit(BACKUP_KEEP_MIN).get();
+    const keep = new Set(); keepSnap.forEach(s => keep.add(s.id));
+    const oldSnap = await db.collection(BACKUP_COLLECTION).where('_backupAt', '<', cutoff).limit(400).get();
+    const batch = db.batch(); let n = 0;
+    oldSnap.forEach(s => { if (s.id.indexOf('backup_') === 0 && !keep.has(s.id)) { batch.delete(s.ref); n++; } });
+    if (n) await batch.commit();
+    try { localStorage.setItem(key, today); } catch (e) {}
+    if (n) { backupInfo += ` · ${BACKUP_KEEP_DAYS}일이 지난 백업 ${n}개를 정리했어요`; renderBackupCard(); }
+  } catch (e) {
+    console.warn('오래된 백업 정리 실패:', e);
+    try { localStorage.setItem(key, today); } catch (e2) {}
+    if (e && e.code === 'permission-denied') { backupInfo += ' · (오래된 백업 정리는 Firestore 규칙에서 백업 삭제를 허용해야 해요)'; renderBackupCard(); }
+  }
 }
 
 function renderBackupCard() {
@@ -1806,6 +1974,7 @@ function initFirebaseRealtimeSync() {
 
       latestRemoteState = cloneData(remote);
       bibleReading = cloneData(remote.bibleReading || {});
+      academyTimes = cloneData(remote.academyTimes || {});
 
       if (!dirty) {
         state = cloneData(remote);
@@ -1821,6 +1990,7 @@ function initFirebaseRealtimeSync() {
         renderPersonalChecklist();
         renderSharedChecklist();
         renderBible();
+        renderAcademy();
       }
     } else {
       // [중요] 서버 확인 전(캐시)에 온 "문서 없음"은 진짜가 아님. 예전에는 이때 기본값을 서버에 써서 실제 데이터를 덮어썼음.
@@ -1906,6 +2076,7 @@ function toggleAdminMode() {
     canEdit = true;
     document.getElementById('admin-login-btn').classList.add('active');
     renderAll();
+    setTimeout(pruneOldBackups, 4000);
   } else if (pw !== null) {
     alert('비밀번호가 틀렸습니다.');
   }
@@ -2030,7 +2201,7 @@ function attBox(kind) { return document.querySelector(`.att-ed[data-kind="${kind
 function renderAttEditor(kind) {
   const box = attBox(kind); if (!box) return;
   box.querySelector('.att-list').innerHTML = attState[kind].map((a, i) =>
-    `<div class="att-chip"><span>${a.photo ? '🖼️' : /youtu/i.test(a.url) ? '▶️' : '📎'} ${escapeHtml(a.name)}</span><button type="button" onclick="removeAtt('${kind}',${i})" aria-label="삭제">×</button></div>`).join('');
+    `<div class="att-chip"><span>${a.photo ? '🖼️' : /youtu/i.test(a.url) ? '▶️' : '📎'} ${escapeHtml(a.name)}</span><input type="number" min="1" max="80" inputmode="numeric" value="${a.pages || ''}" placeholder="쪽수" title="문서 쪽수 (전체 펼쳐 보기)" style="width:62px;" onchange="setAttPages('${kind}',${i},this.value)"><button type="button" onclick="removeAtt('${kind}',${i})" aria-label="삭제">×</button></div>`).join('');
 }
 function addAtt(kind) {
   const box = attBox(kind); if (!box) return;
@@ -2038,15 +2209,20 @@ function addAtt(kind) {
   let name = box.querySelector('.att-name').value.trim();
   if (!url) { alert('올바른 링크를 붙여넣어 주세요.'); return; }
   if (!name) name = /youtu/i.test(url) ? '영상' : '첨부 파일';
-  attState[kind].push({ name, url, photo: box.querySelector('.att-photo').checked });
+  const item = { name, url, photo: box.querySelector('.att-photo').checked };
+  const pn = pgNum(box.querySelector('.att-pages').value); if (pn) item.pages = pn;
+  attState[kind].push(item);
+  box.querySelector('.att-pages').value = '';
   box.querySelector('.att-url').value = '';
   box.querySelector('.att-name').value = '';
   box.querySelector('.att-photo').checked = false;
   renderAttEditor(kind);
 }
+function pgNum(v) { const n = parseInt(v, 10); return n >= 1 && n <= 80 ? n : 0; }
+function setAttPages(kind, i, v) { const n = pgNum(v); if (n) attState[kind][i].pages = n; else delete attState[kind][i].pages; }
 function removeAtt(kind, i) { attState[kind].splice(i, 1); renderAttEditor(kind); }
 function setAtt(kind, list) {
-  attState[kind] = (list || []).map(a => ({ name: a.name, url: a.url, photo: !!a.photo }));
+  attState[kind] = (list || []).map(a => { const o = { name: a.name, url: a.url, photo: !!a.photo }; if (pgNum(a.pages)) o.pages = pgNum(a.pages); return o; });
   const box = attBox(kind);
   if (box) { box.querySelector('.att-url').value = ''; box.querySelector('.att-name').value = ''; box.querySelector('.att-photo').checked = false; }
   renderAttEditor(kind);
@@ -2055,7 +2231,7 @@ function setAtt(kind, list) {
 function collectAtt(kind) {
   const box = attBox(kind);
   if (box && box.querySelector('.att-url').value.trim()) addAtt(kind);
-  return attState[kind].map(a => ({ name: a.name, url: a.url, photo: a.photo }));
+  return attState[kind].map(a => { const o = { name: a.name, url: a.url, photo: a.photo }; if (a.pages) o.pages = a.pages; return o; });
 }
 
 // 링크 종류를 알아내 화면 안에서 바로 미리보기 (유튜브·드라이브 파일/폴더·구글 문서/시트/슬라이드·이미지)
@@ -2074,7 +2250,7 @@ function previewInfo(u) {
   if (/\.(jpe?g|png|gif|webp|bmp|avif)(\?.*)?$/i.test(u)) return { kind: 'img', src: u };
   return null;
 }
-function previewHtml(url, name, photo) {
+function previewHtml(url, name, photo, pages) {
   const u = safeUrl(url);
   if (!u) return '';
   const label = escapeHtml(name || '');
@@ -2086,14 +2262,72 @@ function previewHtml(url, name, photo) {
     return `<div class="pv">${head}<a class="tl-photo" href="${escapeHtml(u)}" target="_blank" rel="noopener"><img src="${escapeHtml(src)}" data-alt="${escapeHtml(driveAlt(u))}" onerror="photoFail(this)" referrerpolicy="no-referrer" alt="${label}" loading="lazy"></a></div>`;
   }
   if (info) {
-    return `<div class="pv ${info.kind}">${head}<iframe src="${escapeHtml(info.src)}" loading="lazy" allowfullscreen allow="fullscreen; autoplay; encrypted-media; picture-in-picture" referrerpolicy="no-referrer" title="${label || '미리보기'}"></iframe>${open}</div>`;
+    const frame = `<iframe src="${escapeHtml(info.src)}" loading="lazy" allowfullscreen allow="fullscreen; autoplay; encrypted-media; picture-in-picture" referrerpolicy="no-referrer" title="${label || '미리보기'}"></iframe>`;
+    // 문서(PDF·구글 문서)는 넓은 화면 크기로 그려서 줄여 보여줌 → 옆으로 밀지 않고 한 화면에 다 보임
+    return `<div class="pv ${info.kind}">${head}${info.kind === 'doc' ? (pgNum(pages)
+      ? `<div class="pv-fit" data-src="${escapeHtml(info.src)}" data-pages="${pgNum(pages)}">${frame}</div>`
+      : `<div class="pv-fit" data-src="${escapeHtml(info.src)}">${frame}</div><div class="pv-ctl"><button type="button" class="pv-exp" onclick="togglePvFull(this)"></button><button type="button" class="pv-pg" onclick="setPvPages(this)">쪽수 변경</button></div>`) : frame}${open}</div>`;
   }
   return `<a class="tl-btn" href="${escapeHtml(u)}" target="_blank" rel="noopener">🔗 ${label || escapeHtml(u)}</a>`;
 }
+// 문서 미리보기: 넓은 화면(500px 기준)으로 그린 뒤 칸 너비에 맞게 줄임. 뷰어의 어두운 좌·우 여백(왼쪽 틈, 오른쪽 스크롤바)은 잘라냄
+const PV_LAYOUT_W = 500, PV_CROP_L = 26, PV_CROP_R = 34;
+// 전체 펼치기: 뷰어 안에서 쪽을 넘기지 않고, 문서 길이만큼 칸을 키워 모든 쪽이 이어서 보이게 함 (쪽수는 한 번 물어보고 기억)
+const PV_PAGES_KEY = 'baguio_pv_pages';
+let pvPages = (() => { try { return JSON.parse(localStorage.getItem(PV_PAGES_KEY) || '{}') || {}; } catch (e) { return {}; } })();
+let pvOpen = new Set();
+function savePvPages() { try { localStorage.setItem(PV_PAGES_KEY, JSON.stringify(pvPages)); } catch (e) {} }
+function askPvPages(src) {
+  const v = prompt('이 문서는 모두 몇 쪽인가요? (그 길이만큼 펼쳐 보여줘요)', pvPages[src] || '10');
+  if (v === null) return false;
+  const n = parseInt(v, 10);
+  if (!(n >= 1 && n <= 80)) { alert('1~80 사이 숫자로 입력해 주세요.'); return false; }
+  pvPages[src] = n; savePvPages();
+  return true;
+}
+function togglePvFull(btn) {
+  const box = btn.closest('.pv').querySelector('.pv-fit'); const src = box.dataset.src;
+  if (pvOpen.has(src)) pvOpen.delete(src);
+  else { if (!pvPages[src] && !askPvPages(src)) return; pvOpen.add(src); }
+  fitPv();
+}
+function setPvPages(btn) {
+  const src = btn.closest('.pv').querySelector('.pv-fit').dataset.src;
+  if (askPvPages(src)) { pvOpen.add(src); fitPv(); }
+}
+function fitPv() {
+  document.querySelectorAll('.pv-fit').forEach(box => {
+    const w = box.clientWidth;
+    if (!w) return;
+    const f = box.firstElementChild, src = box.dataset.src;
+    const fixed = pgNum(box.dataset.pages);
+    const n = fixed || (pvOpen.has(src) && pvPages[src]) || 0;
+    const open = !!n;
+    const vis = PV_LAYOUT_W - PV_CROP_L - PV_CROP_R;          // 잘라낸 뒤 보이는 폭
+    const sc = Math.min(1, w / vis);
+    const h = Math.round(w * (open ? 1.45 * n : 1.4));
+    box.style.height = h + 'px';
+    f.style.width = Math.round(w / sc + PV_CROP_L + PV_CROP_R) + 'px';   // 칸이 넓으면 그만큼 키워서 빈 곳이 없게
+    f.style.height = Math.round(h / sc) + 'px';
+    f.style.transform = `translateX(${-PV_CROP_L * sc}px) scale(${sc})`;
+    const ctl = box.parentElement.querySelector('.pv-ctl');
+    if (ctl) {
+      ctl.querySelector('.pv-exp').textContent = open ? '▲ 접기' : '📖 전체 펼쳐 보기';
+      ctl.querySelector('.pv-pg').style.display = open ? 'inline-block' : 'none';
+    }
+  });
+}
+let pvTimer = 0;
+function schedFitPv() { cancelAnimationFrame(pvTimer); pvTimer = requestAnimationFrame(fitPv); }
+window.addEventListener('resize', schedFitPv);
+document.addEventListener('toggle', schedFitPv, true);
+new MutationObserver(schedFitPv).observe(document.body, { childList: true, subtree: true });
+schedFitPv();
+
 function attListHtml(list) {
   const arr = (list || []).filter(a => a && safeUrl(a.url));
   if (!arr.length) return '';
-  return `<div class="att-view">${arr.map(a => previewHtml(a.url, a.name, a.photo)).join('')}</div>`;
+  return `<div class="att-view">${arr.map(a => previewHtml(a.url, a.name, a.photo, a.pages)).join('')}</div>`;
 }
 
 const byName = (a, b) => (a.name || '').localeCompare(b.name || '', 'ko');
@@ -2237,7 +2471,7 @@ function personRowHtml({ id, name, sub, roles, extra, onclick }) {
         </div>
         ${roles && roles.length ? `<div class="p-tags">${roles.map(r => `<span class="p-tag">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
         ${extra}
-        ${canEdit && id ? `<div class="p-code">🔑 확인·해제 코드 ${meCode(((state.participants || []).some(x => x.id === id) ? 'p_' : 't_') + id)}</div>` : ''}
+        ${canEdit && id ? `<div class="p-code">🔑 해제 코드 ${meCode(((state.participants || []).some(x => x.id === id) ? 'p_' : 't_') + id)}</div>` : ''}
       </div>
       ${canEdit ? '<span class="p-chev">›</span>' : ''}
     </div>`;
@@ -3076,7 +3310,7 @@ function renderItemCards(dayList, isPast = false) {
           </div>
           <div class="card-body">
             <div class="info-row">
-              <span class="time-text">${escapeHtml(formatTimeKo(it.time))}</span>
+              <span class="time-text">${escapeHtml(formatTimeKo(it.time))}</span>${notifyFresh.q.has(itemKey(s, it)) ? '<span class="notice-new">NEW</span>' : ''}
               ${it.place ? `<span class="dot">·</span><span>${escapeHtml(it.place)}</span>` : ''}
               ${it.postId ? '<span class="ps-src">📢 공지에서 등록</span>' : ''}
             </div>
@@ -3263,7 +3497,7 @@ function renderRsvpBlocks(err) {
     const mine = me ? (ans[meKey] || {}).s : '';
     const btns = (!past && cmCanWrite())
       ? `<div class="rsvp-btns"><button class="${mine === 'yes' ? 'on yes' : ''}" onclick="setRsvp('${escapeHtml(key)}','yes')">✅ 참석</button><button class="${mine === 'no' ? 'on no' : ''}" onclick="setRsvp('${escapeHtml(key)}','no')">❌ 불참</button></div>`
-      : (!past && meKey === 'guest' ? '<div class="cm-note" style="margin:0 0 4px;">👀 학부모 보기 모드에서는 참석 표시를 할 수 없어요.</div>' : (!past && !me ? '<div class="cm-note" style="margin:0 0 4px;">참석 표시는 위의 "👤 이름 선택" 후 할 수 있어요.</div>' : ''));
+      : (!past && !me ? '<div class="cm-note" style="margin:0 0 4px;">참석 표시는 위의 "👤 이름 선택" 후 할 수 있어요.</div>' : '');
     const copyBtn = (staff && !past && none.length) ? `<button type="button" class="rsvp-copy" onclick="copyRsvpReminder('${escapeHtml(key)}')">📋 미응답자 알림 문구 복사</button>` : '';
     let names = '';
     if (canEdit) {
@@ -3448,7 +3682,7 @@ function renderFiles() {
     return `<div class="en-sec">${g} (${arr.length})</div>` + arr.map(e => {
       const info = previewInfo(safeUrl(e.a.url));
       const ic = e.a.photo || (info && info.kind === 'img') ? '🖼️' : info && info.kind === 'video' ? '▶️' : info ? '📄' : '🔗';
-      return `<details class="file-row"><summary><span class="fi">${ic}</span><span class="ft">${escapeHtml(e.a.name || safeUrl(e.a.url))}<small>${escapeHtml(e.src)}</small></span></summary>${previewHtml(e.a.url, '', e.a.photo)}</details>`;
+      return `<details class="file-row"><summary><span class="fi">${ic}</span><span class="ft">${escapeHtml(e.a.name || safeUrl(e.a.url))}<small>${escapeHtml(e.src)}</small></span></summary>${previewHtml(e.a.url, '', e.a.photo, e.a.pages)}</details>`;
     }).join('');
   }).join('');
   box.innerHTML = total ? html : `<div class="empty">${q ? '검색 결과가 없어요.' : '아직 올라온 자료가 없어요.'}</div>`;
@@ -3488,6 +3722,7 @@ function initCommentsSync() {
     commentsData = doc.exists ? (doc.data() || {}) : {};
     commentsReady = true; commentsError = '';
     renderCommentLists();
+    notifyRefresh();
   }, err => {
     commentsError = (err && err.code) || 'error';
     commentsReady = true;
@@ -3563,7 +3798,7 @@ function toggleComments(postId) {
 function commentBoxHtml(postId) {
   const form = cmCanWrite()
     ? `<div class="cm-form"><input id="cmi-${escapeHtml(postId)}" maxlength="300" placeholder="궁금한 점이나 확인할 내용을 적어 주세요" onkeydown="if(event.key==='Enter'){event.preventDefault();addComment('${escapeHtml(postId)}');}" /><button class="primary" onclick="addComment('${escapeHtml(postId)}')">등록</button></div>`
-    : `<div class="cm-note">${meKey === 'guest' ? '👀 학부모 보기 모드에서는 댓글을 읽기만 할 수 있어요.' : '댓글을 쓰려면 위의 "👤 이름 선택"에서 내 이름을 먼저 골라 주세요.'}</div>`;
+    : '<div class="cm-note">댓글을 쓰려면 위의 "👤 이름 선택"에서 내 이름을 먼저 골라 주세요.</div>';
   return `<div class="cm-box" data-cm-post="${escapeHtml(postId)}" style="display:${openComments.has(postId) ? 'block' : 'none'};"><div class="cm-list"></div>${form}</div>`;
 }
 
@@ -3641,7 +3876,7 @@ function renderPosts() {
         <div class="notice-main">
           <div class="notice-top">
             <span class="notice-author">${escapeHtml(p.author || '관리자')}</span>
-            ${diff !== null && diff <= 0 && diff > -3 ? '<span class="notice-new">NEW</span>' : ''}
+            ${canEdit ? (diff !== null && diff <= 0 && diff > -3 ? '<span class="notice-new">NEW</span>' : '') : (notifyFresh.p.has(p.id) ? '<span class="notice-new">NEW</span>' : '')}
           </div>
           ${p.title ? `<div class="notice-title">${escapeHtml(p.title)}</div>` : ''}
           <div class="notice-text">${escapeHtml(p.text || '')}</div>
@@ -4167,39 +4402,12 @@ let mePending = '';
 let meSynced = false;
 let meAsked = false;      // 이번 접속에서 이미 물어봤는지
 let meForced = false;     // 처음 선택 중이면 바깥을 눌러도 안 닫힘
+let meNotice = false;     // 예전 '학부모' 사용자에게 아이 이름 선택을 안내하는 중
 
 function meList() { return supplyPeople(); } // key = p_/t_ + id
 function meFind(key) { return meList().find(x => x.key === key) || null; }
 function meCanClose() { return !meForced; }
-// 학부모(보기 전용): 이름을 고르지 않고 '학부모'로 선택한 경우 (관리모드면 해당 없음)
-// 학부모가 고른 자녀 (이 기기에만 기억, 보기 전용)
-const KIDS_KEY = 'baguio_parent_kids';
-let parentKids = (() => { try { const a = JSON.parse(localStorage.getItem(KIDS_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } })();
-let meMode = 'me';
-function saveKids() { try { localStorage.setItem(KIDS_KEY, JSON.stringify(parentKids)); } catch (e) {} }
-function kidList() { return parentKids.map(id => (state.participants || []).find(p => p.id === id)).filter(Boolean); }
-// 아이를 고르면 먼저 그 아이의 확인 코드(4자리, 관리모드 명단의 🔑 코드)를 입력해야 추가됨
-function pickKid(id) { kidPending = id; renderMeModal(); }
-function confirmKid() {
-  const el = document.getElementById('kid-code');
-  const v = ((el && el.value) || '').trim();
-  if (Date.now() < kidLockUntil) { alert('틀린 횟수가 많아서 잠시 쉬었다가 해 주세요. (1분)'); return; }
-  if (v !== meCode('p_' + kidPending)) {
-    kidFails++;
-    if (kidFails >= 5) { kidFails = 0; kidLockUntil = Date.now() + 60000; alert('5번 틀려서 1분 동안 입력할 수 없어요.\n코드는 담당 선생님께 물어보세요.'); }
-    else alert('코드가 맞지 않아요. 아이 확인 코드는 선생님께 물어보세요.');
-    return;
-  }
-  kidFails = 0;
-  const id = kidPending; kidPending = '';
-  addKid(id);
-}
-function addKid(id) { if (!parentKids.includes(id)) parentKids.push(id); saveKids(); closeMeModal(); renderBible(); syncPersonalChecklistDropdown(); }
-function removeKid(id) { if (!confirm('이 아이를 목록에서 뺄까요?')) return; parentKids = parentKids.filter(x => x !== id); saveKids(); renderBible(); syncPersonalChecklistDropdown(); }
-let kidPending = '', kidFails = 0, kidLockUntil = 0;
-function openKidModal() { meForced = false; mePending = ''; kidPending = ''; meMode = 'kid'; renderMeModal(); document.getElementById('me-modal').classList.add('show'); }
-function meParent() { return meKey === 'guest' && !canEdit; }
-const PARENT_NOTE = '👀 학부모 보기 모드예요. 내용을 보기만 할 수 있고 체크나 수정은 안 돼요.';
+// (예전 '학부모' 선택은 없어짐: meKey === 'guest'로 남아 있는 기기는 접속할 때 아이 이름을 고르도록 안내만 함)
 
 // 잠금: 한 번 고른 이름은 이 기기에서 못 바꿈 (관리모드이거나 해제코드를 입력하면 풀림)
 const ME_LOCK_KEY = 'baguio_me_locked';
@@ -4237,6 +4445,8 @@ function setMe(key) {
   syncPersonalChecklistDropdown(); renderBible();
   renderPosts(); // 이름을 고르면 공지 댓글 입력칸이 바로 열리도록
   renderRsvpBlocks();
+  renderAcademy();
+  notifyRefresh();
 }
 
 // 성경읽기·개인준비물에서 이름을 바꿨을 때도 전체 이름을 같이 맞춤
@@ -4246,7 +4456,7 @@ function meFollow(key) {
   try { localStorage.setItem(ME_KEY, meKey); } catch (e) {}
   setMeLock(true);
   renderMeChip(); applyMeAuthor();
-  renderPosts(); renderRsvpBlocks();
+  renderPosts(); renderRsvpBlocks(); renderAcademy();
 }
 
 function renderMeChip() {
@@ -4288,38 +4498,23 @@ function meCheck() {
   if (!meKey && !meAsked && !document.getElementById('me-modal').classList.contains('show')) {
     meAsked = true; meForced = true; openMeModal(true);
   }
+  // 예전에 '학부모(보기만)'를 골랐던 기기: 아이 이름을 고를 때까지 접속할 때마다 안내 (고르면 그 아이 이름으로 바뀌고 안내는 사라짐)
+  if (meKey === 'guest' && !canEdit && !meAsked && !document.getElementById('me-modal').classList.contains('show')) {
+    meAsked = true; meNotice = true; openMeModal(true);
+  }
 }
 
 function openMeModal(first) {
-  meMode = 'me';
   meForced = !!first;
   mePending = '';
   renderMeModal();
   document.getElementById('me-modal').classList.add('show');
 }
-function closeMeModal() { meForced = false; meMode = 'me'; document.getElementById('me-modal').classList.remove('show'); }
+function closeMeModal() { meForced = false; meNotice = false; document.getElementById('me-modal').classList.remove('show'); }
 
 function renderMeModal() {
   const box = document.getElementById('me-body');
   const people = meList();
-  if (meMode === 'kid' && kidPending) {
-    const k = (state.participants || []).find(x => x.id === kidPending);
-    if (!k) { kidPending = ''; renderMeModal(); return; }
-    box.innerHTML = `<h2 style="margin:0 0 4px;">🔑 ${escapeHtml(k.name)} 확인 코드</h2>
-      <div class="bb-sub" style="margin:0 0 10px;">우리 아이가 맞는지 확인하는 숫자 4자리예요. 선생님께 받은 코드를 입력해 주세요.</div>
-      <input id="kid-code" class="me-search" inputmode="numeric" maxlength="4" placeholder="확인 코드 4자리" onkeydown="if(event.key==='Enter')confirmKid()" />
-      <div class="bb-sheet-actions" style="margin-top:12px;"><button class="bb-close" onclick="kidPending='';renderMeModal()">다시 고를게요</button><button class="primary" onclick="confirmKid()">확인</button></div>`;
-    return;
-  }
-  if (meMode === 'kid') {
-    const kids = (state.participants || []).slice().sort(byName).filter(p => !parentKids.includes(p.id));
-    box.innerHTML = `<h2 style="margin:0 0 4px;">👪 우리 아이 고르기</h2>
-      <div class="bb-sub" style="margin:0 0 8px;">아이 이름을 누르고 선생님께 받은 확인 코드(4자리)를 입력하면 성경읽기·개인준비물 현황을 볼 수 있어요 (보기만 가능)</div>
-      <input class="me-search" placeholder="🔍 이름 검색" oninput="meFilter(this.value)" />
-      <div class="me-list" id="me-list">${kids.length ? `<div class="bb-picker">${kids.map(k => `<button class="bb-pick" data-n="${escapeHtml(k.name)}" onclick="pickKid('${k.id}')"><span>${escapeHtml(k.name)}</span>${k.grade ? `<small>${escapeHtml(k.grade)}</small>` : ''}</button>`).join('')}</div>` : '<div class="empty">고를 수 있는 학생이 없어요.</div>'}</div>
-      <div class="bb-sheet-actions" style="margin-top:12px;"><button class="bb-close" onclick="closeMeModal()">닫기</button></div>`;
-    return;
-  }
   const pend = meFind(mePending);
   if (meLocked() && !pend) {
     const mm = meFind(meKey);
@@ -4339,24 +4534,17 @@ function renderMeModal() {
   const st = people.filter(x => x.role === 'student'), te = people.filter(x => x.role === 'teacher');
   const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
   const cur = meKey ? (meKey === 'guest' ? '학부모' : (meFind(meKey) || {}).name || '') : '';
-  box.innerHTML = `<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : '이름 바꾸기'}</h2>
-    <div class="bb-sub" style="margin:0 0 8px;">${meForced ? '학생·선생님은 내 이름을 한 번만 골라 두세요. 학부모님은 아래 "학부모"를 누르면 보기만 할 수 있어요' : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
-    ${people.length ? '<input class="me-search" placeholder="🔍 이름 검색" oninput="meFilter(this.value)" />' : ''}
+  box.innerHTML = `<h2 style="margin:0 0 4px;">${meNotice ? '📢 우리 아이 이름을 골라 주세요' : meForced ? '👋 누구신가요?' : '이름 바꾸기'}</h2>
+    <div class="bb-sub" style="margin:0 0 8px;">${meNotice ? '학부모 "보기만" 방식이 없어졌어요.<br>아래에서 <b>우리 아이 이름</b>을 한 번만 골라 주세요. 이 이름으로 학원시간을 기록할 수 있어요.' : meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">👪 <b>학부모님은 우리 아이 이름</b>을 골라 주세요.<br>이 이름으로 학원시간을 기록할 수 있어요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
     <div class="me-list" id="me-list">
       ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
     </div>
     <div class="bb-sheet-actions" style="margin-top:12px;">
-      <button class="bb-close" onclick="chooseGuest()">👀 학부모(보기만)</button>
       ${meForced ? '<button class="bb-close" onclick="closeMeModal()">나중에</button>' : '<button class="bb-close" onclick="closeMeModal()">닫기</button>'}
     </div>`;
 }
-function meFilter(q) {
-  q = (q || '').trim();
-  document.querySelectorAll('#me-list .bb-pick').forEach(b => { b.style.display = !q || (b.dataset.n || '').includes(q) ? '' : 'none'; });
-}
 function pickMe(key) { mePending = key; renderMeModal(); }
 function confirmMe() { const k = mePending; mePending = ''; setMeLock(true); setMe(k); closeMeModal(); }
-function chooseGuest() { mePending = ''; setMe('guest'); setMeLock(false); closeMeModal(); renderAll(); }
 
 function syncPersonalChecklistDropdown() {
   const select = document.getElementById('studentChecklistSelect');
@@ -4364,13 +4552,6 @@ function syncPersonalChecklistDropdown() {
   const progress = document.getElementById('personal-progress');
   if (!select || !picker) return;
 
-  if (meParent()) {
-    picker.innerHTML = `<div class="bb-hint" style="text-align:left; margin:0 2px 8px;">${PARENT_NOTE}<br>${kidList().length ? '우리 아이가 챙긴 준비물 현황이에요.' : '아래는 가져가야 할 준비물 목록이에요.'}</div>
-      <div class="bb-sheet-actions" style="margin:0 0 10px;"><button class="bb-close" onclick="openKidModal()">＋ ${kidList().length ? '다른 아이 추가' : '우리 아이 고르기'}</button></div>`;
-    if (progress) progress.style.display = 'none';
-    renderPersonalChecklist();
-    return;
-  }
   const people = supplyPeople();
   const me = people.find(x => x.key === supplyPersonKey);
   select.innerHTML = '<option value=""></option>' + people.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
@@ -4455,31 +4636,6 @@ function renderPersonalChecklist() {
 
   if (adminCard) adminCard.style.display = canEdit ? 'block' : 'none';
 
-  if (meParent()) {
-    const data = state.personalChecklistData || defaultPersonalChecklistData;
-    const kids = kidList();
-    if (kids.length) {
-      container.innerHTML = kids.map(k => {
-        const checks = (state.personalChecks || {})['p_' + k.id] || {};
-        let tot = 0, done = 0;
-        data.forEach(cat => (cat.items || []).forEach(it => { tot++; if (checks[it.id]) done++; }));
-        return `<div class="card" style="margin-bottom:14px;"><div class="category-title"><span>${escapeHtml(k.name)}의 준비물</span><span style="font-size:0.8rem;color:var(--muted);">${done}/${tot}</span></div>
-          ${data.map(cat => `<div class="bb-group-label">${escapeHtml(cat.category)}</div><ul class="item-list">${(cat.items || []).map(it => `
-            <li class="item-row ${checks[it.id] ? 'checked' : ''}" style="cursor:default;"><div class="item-left"><div class="custom-checkbox"></div><div><span class="item-name">${escapeHtml(it.name)}</span></div></div></li>`).join('')}</ul>`).join('')}
-        </div>`;
-      }).join('');
-      return;
-    }
-    container.innerHTML = data.map(cat => `
-      <div class="card" style="margin-bottom:14px;">
-        <div class="category-title"><span>${escapeHtml(cat.category)}</span></div>
-        <ul class="item-list">${(cat.items || []).map(item => { const must = supplyMust(item); return `
-          <li class="item-row" style="cursor:default;"><div class="item-left"><div class="custom-checkbox" style="visibility:hidden;"></div><div>
-            <span class="item-name">${escapeHtml(item.name)}</span>${must && must.reason ? `<div class="item-must-reason">${escapeHtml(must.reason)}</div>` : ''}</div></div>
-            <div style="display:flex; align-items:center; gap:6px;">${supplyMustBadge(must)}</div></li>`; }).join('')}</ul>
-      </div>`).join('');
-    return;
-  }
 
   const personKey = select.value;
   if (!personKey) {
@@ -4541,7 +4697,6 @@ function renderPersonalChecklist() {
 
 // 누를 때 그 사람·그 항목 칸만 바로 저장 (다른 사람 체크를 덮어쓰지 않음, 저장 버튼 필요 없음)
 function togglePersonalItem(personKey, itemId) {
-  if (meParent()) return;
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
   if (!state.personalChecks) state.personalChecks = {};
   if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
@@ -4642,7 +4797,6 @@ function renderSharedChecklist() {
 }
 
 function openTeacherModalForSharedItem(itemId) {
-  if (meParent()) { alert('학부모 보기 모드에서는 체크할 수 없어요.'); return; }
   activeSharedItemIdForCheck = itemId;
   const modal = document.getElementById('teacher-select-modal');
   if (modal) {
@@ -4689,7 +4843,6 @@ function renderModalTeacherList() {
 }
 
 function selectTeacherForSharedItem(teacherName) {
-  if (meParent()) return;
   if (!activeSharedItemIdForCheck) return;
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 시도해 주세요.'); return; }
   if (!state.sharedChecks) state.sharedChecks = {};
@@ -4794,9 +4947,511 @@ function renderAll() {
   syncPersonalChecklistDropdown();
   renderSharedChecklist();
   renderBible();
+  renderAcademy();
   renderBackupCard();
   renderFiles();
   renderAttendance();
+  notifyRefresh();
+}
+
+// ===== 학원시간 =====
+// 저장 위치: 기존 문서(shared_data)의 새 필드 academyTimes
+//   academyTimes.{사람키 p_학생id | t_교사id} = {
+//     schoolEnd: '16:30',                       // 평일 학교 끝나는 시간 (학기 중 계산에만 사용)
+//     memo: '',
+//     sem: { entries: [{ id, days:[0..6], start:'18:00', end:'20:30', label:'수학' }], status: '' | 'none' },
+//     vac: { entries: [...], status: '' | 'none' | 'unknown' },
+//     updatedAt: ISO 문자열
+//   }
+// 한 사람 칸만 바로 저장하므로 다른 사람 기록이나 기존 데이터와 섞이지 않음 (저장 버튼 필요 없음)
+const AC_DAYS = ['월', '화', '수', '목', '금', '토', '주일'];
+const AC_ACTIVE = [5, 6];   // 토요일·주일만 입력 (평일은 사용 안 함. 예전에 저장된 평일 일정은 지우지 않고 화면·계산에서만 제외)
+const acActiveDays = days => (days || []).filter(d => AC_ACTIVE.includes(d));
+const AC_START = 9 * 60;   // 09:00
+const AC_END = 23 * 60;    // 23:00
+const AC_STEP = 15;
+const AC_PERIODS = [
+  { key: 'sem', label: '학기 중', long: '학기 중 (지금 ~ 겨울방학 전)' },
+  { key: 'vac', label: '겨울방학', long: '겨울방학 (특강 포함)' }
+];
+const AC_TEAM_ORDER = TEAMS;
+
+let academyTimes = {};
+let academyPeriod = 'sem';
+let academyPersonKey = '';   // 관리모드에서 고른 사람 (일반 사용자는 맨 위 '이름 선택'으로 고른 본인)
+let acAddDays = new Set();
+let acTeam = '전체';
+let acWithTeachers = false;
+let acWinSlots = 120 / AC_STEP; // 추천 연습 길이 (기본 2시간)
+let acSelCell = null; // { d, m }
+let acSelectsReady = false;
+let acEditId = null; // 수정 중인 일정 id
+
+const acMin = t => { const [h, m] = String(t || '0:0').split(':').map(Number); return h * 60 + m; };
+const acFmt = m => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+const acSlots = () => { const a = []; for (let m = AC_START; m < AC_END; m += AC_STEP) a.push(m); return a; };
+const acPeriodInfo = () => AC_PERIODS.find(p => p.key === academyPeriod) || AC_PERIODS[0];
+
+function acPeople() {
+  return [
+    ...(state.participants || []).slice().sort(byName).map(p => ({ key: 'p_' + p.id, name: p.name, sub: p.grade || '', roles: p.roles || [], role: 'student' })),
+    ...(state.teachers || []).slice().sort(byName).map(t => ({ key: 't_' + t.id, name: t.name, sub: '', roles: t.roles || [], role: 'teacher' }))
+  ];
+}
+const acDisplayName = x => x.role === 'teacher' ? teacherTitle(x.name) : x.name;
+const acRec = key => academyTimes[key] || {};
+const acPeriodRec = (rec, period) => (rec && rec[period]) || { entries: [], status: '' };
+
+function acAnswered(rec, period) {
+  const pr = rec && rec[period];
+  return !!pr && ((pr.entries || []).length > 0 || pr.status === 'none' || pr.status === 'unknown');
+}
+
+// 그 사람이 그 요일·시간(15분 칸)에 안 되는 이유. 되면 ''
+function acBusyReason(rec, period, day, m, defSchool = '') {
+  const pr = acPeriodRec(rec, period);
+  const hit = (pr.entries || []).find(en => (en.days || []).includes(day) && acMin(en.start) <= m && m < acMin(en.end));
+  if (hit) return hit.label || '학원';
+  const school = (rec && rec.schoolEnd) || defSchool; // 학교 시간을 안 적은 학생은 16:30까지 학교로 계산
+  if (period === 'sem' && day < 5 && school && m < acMin(school)) return '학교';
+  return '';
+}
+
+function acDaysText(days) {
+  const d = (days || []).slice().sort((a, b) => a - b);
+  if (d.join() === '0,1,2,3,4') return '평일(월~금)';
+  if (d.join() === '0,1,2,3,4,5') return '월~토';
+  return d.map(i => AC_DAYS[i]).join('·');
+}
+
+// ----- 저장 -----
+function acSave(key, rec) {
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 해 주세요.'); return false; }
+  const prev = academyTimes[key] ? cloneData(academyTimes[key]) : null;
+  rec.updatedAt = new Date().toISOString();
+  academyTimes[key] = cloneData(rec);
+  renderAcademy();
+  DOC_REF.update(new firebase.firestore.FieldPath('academyTimes', key), cloneData(rec))
+    .catch(e => {
+      console.error('학원시간 저장 실패:', e);
+      if (prev) academyTimes[key] = prev; else delete academyTimes[key];
+      renderAcademy();
+      alert('저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 해 주세요.');
+    });
+  return true;
+}
+
+function acUpdatePeriod(fn) {
+  const key = acCurrentKey();
+  if (!key) return false;
+  const rec = cloneData(acRec(key));
+  const pr = cloneData(acPeriodRec(rec, academyPeriod));
+  if (!pr.entries) pr.entries = [];
+  fn(pr, rec);
+  rec[academyPeriod] = pr;
+  return acSave(key, rec);
+}
+
+function acAddEntry() {
+  if (!acCurrentKey()) return;
+  const days = [...acAddDays].sort((a, b) => a - b);
+  if (!days.length) { alert('요일을 먼저 골라 주세요.'); return; }
+  const start = document.getElementById('ac-start').value;
+  const end = document.getElementById('ac-end').value;
+  if (acMin(end) <= acMin(start)) { alert('끝나는 시간이 시작 시간보다 늦어야 해요.'); return; }
+  const label = document.getElementById('ac-label').value.trim();
+  const editId = acEditId;
+  const ok = acUpdatePeriod(pr => {
+    const item = { id: editId || uid(), days, start, end, label };
+    const i = editId ? pr.entries.findIndex(en => en.id === editId) : -1;
+    if (i >= 0) pr.entries[i] = item; else pr.entries.push(item);
+    pr.status = '';
+  });
+  if (ok) acCancelEdit();
+}
+
+// 일정을 눌러 위 입력칸으로 불러와서 고치기
+function acStartEdit(id) {
+  const pr = acPeriodRec(acRec(acCurrentKey()), academyPeriod);
+  const en = (pr.entries || []).find(x => x.id === id);
+  if (!en) return;
+  acSetupSelects();
+  acEditId = id;
+  acAddDays = new Set(acActiveDays(en.days));
+  document.getElementById('ac-start').value = en.start;
+  document.getElementById('ac-end').value = en.end;
+  document.getElementById('ac-label').value = en.label || '';
+  acRenderDayChips();
+  renderAcademy();
+  document.getElementById('ac-add-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function acCancelEdit() {
+  acEditId = null;
+  acAddDays.clear();
+  const l = document.getElementById('ac-label');
+  if (l) l.value = '';
+  acRenderDayChips();
+  renderAcademy();
+}
+
+function acRenderEditMode() {
+  const card = document.getElementById('ac-add-card');
+  if (!card) return;
+  const on = !!acEditId;
+  card.classList.toggle('editing', on);
+  document.getElementById('ac-add-title').textContent = on ? '✏️ 일정 수정' : '➕ 학원·과외 추가';
+  document.getElementById('ac-add-btn').textContent = on ? '수정 완료' : '추가하기';
+  document.getElementById('ac-cancel-btn').style.display = on ? '' : 'none';
+}
+
+function acRemoveEntry(id) {
+  const pr0 = acPeriodRec(acRec(acCurrentKey()), academyPeriod);
+  const en = (pr0.entries || []).find(x => x.id === id);
+  if (en && !confirm(`${acDaysText(en.days)} ${en.start}~${en.end} ${en.label || '학원'}\n이 일정을 지울까요?`)) return;
+  if (acEditId === id) { acEditId = null; acAddDays.clear(); document.getElementById('ac-label').value = ''; acRenderDayChips(); }
+  acUpdatePeriod(pr => { pr.entries = pr.entries.filter(en => en.id !== id); });
+}
+
+function acSetStatus(status) {
+  const pr = acPeriodRec(acRec(acCurrentKey()), academyPeriod);
+  if ((pr.entries || []).length && status) {
+    if (!confirm('입력한 학원 일정이 지워져요. 괜찮을까요?')) return;
+  }
+  acUpdatePeriod(p => {
+    p.status = p.status === status ? '' : status;
+    if (p.status) p.entries = [];
+  });
+}
+
+function acCopyFromSem() {
+  const sem = acPeriodRec(acRec(acCurrentKey()), 'sem');
+  if (!(sem.entries || []).length) return;
+  acUpdatePeriod(pr => {
+    pr.entries = sem.entries.map(en => ({ ...cloneData(en), id: uid() }));
+    pr.status = '';
+  });
+}
+
+function acSetSchoolEnd(v) {
+  if (!acCurrentKey()) return;
+  const rec = cloneData(acRec(acCurrentKey()));
+  rec.schoolEnd = v || '';
+  acSave(acCurrentKey(), rec);
+}
+
+let acMemoIsDirty = false;
+function acMemoDirty(on) {
+  acMemoIsDirty = !!on;
+  const m = document.getElementById('ac-memo-msg');
+  if (m && on) m.textContent = '✏️ 아직 저장 전이에요. 아래 "메모 저장" 버튼을 눌러 주세요.';
+}
+function acSaveMemo() {
+  const el = document.getElementById('ac-memo');
+  if (!el || !acCurrentKey()) return;
+  if (acSetMemo(el.value) === false) return;
+  acMemoIsDirty = false;
+  const m = document.getElementById('ac-memo-msg');
+  if (m) m.textContent = '✓ 저장했어요';
+  setTimeout(() => { const mm = document.getElementById('ac-memo-msg'); if (mm && mm.textContent === '✓ 저장했어요') mm.textContent = ''; }, 2500);
+}
+function acSetMemo(v) {
+  if (!acCurrentKey()) return;
+  const rec = cloneData(acRec(acCurrentKey()));
+  rec.memo = String(v || '').trim();
+  return acSave(acCurrentKey(), rec);
+}
+
+// ----- 누구의 일정인가: 일반 사용자는 맨 위에서 고른 본인(이름 잠금 적용), 관리모드는 아무나 골라서 대신 입력 -----
+function acAdminPick(key) { academyPersonKey = key || ''; acEditId = null; acAddDays.clear(); const memo = document.getElementById('ac-memo'); if (memo) memo.dataset.for = ''; renderAcademy(); }
+function acCurrentKey() {
+  if (canEdit) return academyPersonKey;
+  return (meKey && meFind(meKey)) ? meKey : '';
+}
+function acIsStaff() { const m = meFind(meKey); return canEdit || (!!m && m.role === 'teacher'); }
+
+function acRenderPicker(people, me) {
+  const picker = document.getElementById('academy-picker');
+  if (!picker) return;
+  if (canEdit) {
+    const students = people.filter(x => x.role === 'student'), teachers = people.filter(x => x.role === 'teacher');
+    const options = sel => students.map(x => `<option value="${x.key}"${x.key === sel ? ' selected' : ''}>🌱 ${escapeHtml(x.sub)} ${escapeHtml(x.name)}</option>`).join('')
+      + teachers.map(x => `<option value="${x.key}"${x.key === sel ? ' selected' : ''}>🌳 ${escapeHtml(teacherTitle(x.name))}</option>`).join('');
+    picker.innerHTML = `<div class="supply-q">관리모드 · 누구의 일정을 입력할까요?</div>
+      <div class="supply-select-wrap"><select class="supply-select" onchange="acAdminPick(this.value)"><option value="">📝 이름 선택</option>${options(me ? me.key : '')}</select></div>`;
+    return;
+  }
+  if (me) {
+    picker.innerHTML = `<div class="bb-sub" style="margin:0;">👤 <b>${escapeHtml(acDisplayName(me))}</b>의 일정이에요</div>`;
+    return;
+  }
+  picker.innerHTML = `<div class="supply-q">누구의 일정인가요?</div>
+    <div class="bb-sub" style="margin:0 0 10px;">먼저 내 이름을 골라 주세요</div>
+    <button class="primary" style="background:var(--c-academy);" onclick="openMeModal(false)">👤 이름 선택</button>`;
+}
+
+// ----- 입력 화면 -----
+function acSetupSelects() {
+  if (acSelectsReady) return;
+  const s = document.getElementById('ac-start');
+  const e = document.getElementById('ac-end');
+  const school = document.getElementById('ac-school-end');
+  if (!s || !e || !school) return;
+  const opts = [];
+  for (let m = AC_START; m <= AC_END; m += AC_STEP) opts.push(m);
+  s.innerHTML = opts.slice(0, -1).map(m => `<option value="${acFmt(m)}">${acFmt(m)}</option>`).join('');
+  e.innerHTML = opts.slice(1).map(m => `<option value="${acFmt(m)}">${acFmt(m)}${m === AC_END ? ' (이후 포함)' : ''}</option>`).join('');
+  s.value = '16:00';
+  e.value = '18:00';
+  // 시작을 바꾸면 끝 시간이 자동으로 1시간 30분 뒤로 (끝이 시작보다 빠를 때만)
+  s.addEventListener('change', () => {
+    if (acMin(e.value) <= acMin(s.value)) e.value = acFmt(Math.min(AC_END, acMin(s.value) + 90));
+  });
+  let sch = '<option value="">선택해 주세요</option>';
+  for (let m = 13 * 60; m <= 18 * 60; m += AC_STEP) sch += `<option value="${acFmt(m)}">${acFmt(m)}</option>`;
+  school.innerHTML = sch;
+  acRenderDayChips();
+  acSelectsReady = true;
+}
+
+function acToggleDay(i) {
+  if (acAddDays.has(i)) acAddDays.delete(i); else acAddDays.add(i);
+  acRenderDayChips();
+}
+
+function acRenderDayChips() {
+  const box = document.getElementById('ac-day-chips');
+  if (!box) return;
+  box.innerHTML = AC_ACTIVE.map(i => `<button class="ac-day${acAddDays.has(i) ? ' on' : ''}" onclick="acToggleDay(${i})">${AC_DAYS[i]}</button>`).join('');
+}
+
+function acSetPeriod(p) {
+  academyPeriod = p;
+  acEditId = null;
+  acAddDays.clear();
+  acSelCell = null;
+  renderAcademy();
+}
+
+function acRenderPeriodSeg() {
+  const seg = document.getElementById('academy-period-seg');
+  if (!seg) return;
+  seg.innerHTML = AC_PERIODS.map(p => `<button class="${p.key === academyPeriod ? 'on' : ''}" onclick="acSetPeriod('${p.key}')">${p.label}</button>`).join('');
+}
+
+// 시간표 격자 (cell(d, m) → { cls, text, title, onclick })
+function acGridHtml(cell) {
+  const slots = acSlots();
+  let html = '<table class="ac-grid"><thead><tr><th class="ac-tcol"></th>' + AC_ACTIVE.map(i => `<th>${AC_DAYS[i]}</th>`).join('') + '</tr></thead><tbody>';
+  slots.forEach(m => {
+    const hour = m % 60 === 0;
+    html += `<tr class="${hour ? 'hour' : 'qtr'}"><td class="ac-tcol">${acFmt(m)}</td>`;
+    AC_ACTIVE.forEach(d => {
+      const c = cell(d, m) || {};
+      html += `<td class="${c.cls || ''}"${c.style ? ` style="${c.style}"` : ''}${c.title ? ` title="${escapeHtml(c.title)}"` : ''}${c.onclick ? ` onclick="${c.onclick}"` : ''}>${c.text || ''}</td>`;
+    });
+    html += '</tr>';
+  });
+  return html + '</tbody></table>';
+}
+
+function acRenderEditor(me) {
+  const editor = document.getElementById('academy-editor');
+  if (!editor) return;
+  editor.style.display = me ? '' : 'none';
+  if (!me) return;
+  acSetupSelects();
+
+  const rec = acRec(me.key);
+  const pr = acPeriodRec(rec, academyPeriod);
+  const isSem = academyPeriod === 'sem';
+
+  if (acEditId && !(pr.entries || []).some(en => en.id === acEditId)) acEditId = null;
+  acRenderEditMode();
+
+  // 학교 끝나는 시간 (학기 중 학생만)
+  document.getElementById('academy-school-card').style.display = 'none';   // 토·주일만 쓰므로 평일 학교 시간은 묻지 않음
+  const school = document.getElementById('ac-school-end');
+  if (document.activeElement !== school) school.value = rec.schoolEnd || '';
+
+  // 응답 상태
+  const answered = acAnswered(rec, academyPeriod);
+  document.getElementById('ac-my-state').innerHTML = answered
+    ? '<span class="ac-done">✓ 응답 완료</span>'
+    : '<span class="ac-todo">아직 응답 전</span>';
+
+  // 내 일정 목록
+  const entries = (pr.entries || []).filter(en => acActiveDays(en.days).length).slice().sort((a, b) => (acActiveDays(a.days)[0] - acActiveDays(b.days)[0]) || (acMin(a.start) - acMin(b.start)));
+  const list = document.getElementById('ac-my-list');
+  if (entries.length) {
+    list.innerHTML = entries.map(en => `
+      <div class="ac-entry${en.id === acEditId ? ' editing' : ''}">
+        <div class="ac-entry-main" style="cursor:pointer;" onclick="acStartEdit('${en.id}')">
+          <div class="ac-entry-days">${acDaysText(acActiveDays(en.days))} · ${en.start} ~ ${en.end}</div>
+          <div class="ac-entry-sub">${escapeHtml(en.label || '학원')}</div>
+        </div>
+        <button class="ac-entry-edit" onclick="acStartEdit('${en.id}')">수정</button>
+        <button class="ac-entry-del" onclick="acRemoveEntry('${en.id}')" aria-label="삭제">×</button>
+      </div>`).join('');
+  } else if (pr.status === 'none') {
+    list.innerHTML = `<div class="empty">${isSem ? '학기 중' : '방학'}에는 학원이 없어요 👍</div>`;
+  } else if (pr.status === 'unknown') {
+    list.innerHTML = '<div class="empty">방학 시간표가 나오면 다시 입력해 주세요 🙏</div>';
+  } else {
+    list.innerHTML = '<div class="empty">위에서 학원·과외를 추가해 주세요.<br>학원이 없으면 ‘안 다녀요’ 버튼을 눌러 주세요.</div>';
+  }
+
+  // 상태 버튼
+  const noneSlot = document.getElementById('ac-none-slot');
+  if (noneSlot) noneSlot.innerHTML = `<button class="ac-pill${pr.status === 'none' ? ' on' : ''}" onclick="acSetStatus('none')">${pr.status === 'none' ? '✓ ' : ''}${isSem ? '학기 중' : '방학에는'} 학원 안 다녀요</button>`;
+  const btns = [];
+  if (!isSem) btns.push(`<button class="ac-pill${pr.status === 'unknown' ? ' on' : ''}" onclick="acSetStatus('unknown')">아직 몰라요</button>`);
+  const semEntries = acPeriodRec(rec, 'sem').entries || [];
+  if (!isSem && !entries.length && semEntries.length) btns.push(`<button class="ac-pill" onclick="acCopyFromSem()">학기 중 일정 그대로 가져오기</button>`);
+  document.getElementById('ac-status-btns').innerHTML = btns.join('');
+
+  // 한눈에 보기
+  const grid = document.getElementById('ac-my-grid');
+  grid.innerHTML = acGridHtml((d, m) => {
+    const r = acBusyReason(rec, academyPeriod, d, m);
+    if (!r) return null;
+    const prev = m > AC_START ? acBusyReason(rec, academyPeriod, d, m - AC_STEP) : '';
+    const first = prev !== r;
+    if (r === '학교') return { cls: 'school', text: first ? '학교' : '', title: '학교' };
+    return { cls: 'busy' + (first ? ' first' : ''), text: first ? escapeHtml(r) : '', title: r };
+  }) + `<div class="ac-legend"><span><i style="background:var(--c-academy)"></i>학원·과외</span><span><i style="background:var(--bg); border:1px solid var(--border)"></i>가능</span></div>`;
+
+}
+
+// ----- 관리모드: 전체 결과 -----
+function acSetTeam(t) { acTeam = t; acSelCell = null; renderAcademy(); }
+function acToggleTeachers() { acWithTeachers = !acWithTeachers; acSelCell = null; renderAcademy(); }
+function acSetWin(n) { acWinSlots = Number(n) || 120 / AC_STEP; renderAcademy(); }
+function acPickCell(d, m) {
+  acSelCell = acSelCell && acSelCell.d === d && acSelCell.m === m ? null : { d, m };
+  renderAcademy();
+}
+
+function acTeams(people) {
+  const all = new Set();
+  people.forEach(x => (x.roles || []).forEach(r => all.add(r)));
+  return [...AC_TEAM_ORDER.filter(t => all.has(t)), ...[...all].filter(t => !AC_TEAM_ORDER.includes(t))];
+}
+
+function acRenderAdmin(people) {
+  const box = document.getElementById('academy-admin');
+  if (!box) return;
+  box.style.display = acIsStaff() ? '' : 'none';
+  if (!acIsStaff()) return;
+
+  const period = academyPeriod;
+  const target = people
+    .filter(x => acWithTeachers || x.role === 'student')
+    .filter(x => acTeam === '전체' || (x.roles || []).includes(acTeam));
+  const answered = target.filter(x => acAnswered(academyTimes[x.key], period));
+  const unknown = answered.filter(x => acPeriodRec(academyTimes[x.key], period).status === 'unknown');
+  const pool = answered.filter(x => acPeriodRec(academyTimes[x.key], period).status !== 'unknown');
+  const missing = target.filter(x => !acAnswered(academyTimes[x.key], period));
+  const busyAt = (d, m) => pool.map(x => ({ x, r: acBusyReason(academyTimes[x.key], period, d, m, x.role === 'student' ? '16:30' : '') })).filter(o => o.r);
+  const N = pool.length;
+
+  const teamBtns = ['전체', ...acTeams(people)].map(t => `<button class="ac-pill sm${acTeam === t ? ' on' : ''}" onclick="acSetTeam('${escapeHtml(t)}')">${escapeHtml(t)}</button>`).join('');
+
+  // 추천 시간: 연습 길이 동안 처음부터 끝까지 올 수 있는 인원이 많은 순 (같은 요일에 겹치는 시간은 하나만)
+  const slots = acSlots();
+  const wins = [];
+  if (N) {
+    AC_ACTIVE.forEach(d => {
+      for (let i = 0; i + acWinSlots <= slots.length; i++) {
+        const out = new Map();
+        for (let k = 0; k < acWinSlots; k++) busyAt(d, slots[i + k]).forEach(o => { if (!out.has(o.x.key)) out.set(o.x.key, o); });
+        wins.push({ d, s: slots[i], e: slots[i] + acWinSlots * AC_STEP, ok: N - out.size, out: [...out.values()] });
+      }
+    });
+  }
+  wins.sort((a, b) => (b.ok - a.ok) || (a.d - b.d) || (a.s - b.s));
+  const picked = [];
+  for (const w of wins) {
+    if (picked.length >= 6) break;
+    if (picked.some(p => p.d === w.d && w.s < p.e && p.s < w.e)) continue;
+    picked.push(w);
+  }
+  const winOpts = [60, 90, 120, 150, 180].map(min => `<option value="${min / AC_STEP}"${min / AC_STEP === acWinSlots ? ' selected' : ''}>${min % 60 ? Math.floor(min / 60) + '시간 반' : min / 60 + '시간'}</option>`).join('');
+  const whoText = o => `${escapeHtml(acDisplayName(o.x))}(${escapeHtml(o.r)})`;
+
+  // 선택한 칸 상세
+  let detail = '';
+  if (acSelCell && N) {
+    const b = busyAt(acSelCell.d, acSelCell.m);
+    detail = `<div class="ac-detail"><b>${AC_DAYS[acSelCell.d]} ${acFmt(acSelCell.m)}~${acFmt(acSelCell.m + AC_STEP)}</b> · ${N - b.length}/${N}명 가능<br>
+      ${b.length ? '안 되는 사람: ' + b.map(whoText).join(', ') : '모두 가능해요 🎉'}</div>`;
+  }
+
+  // 응답 목록
+  const respRows = target.map(x => {
+    const rec = academyTimes[x.key] || {};
+    const pr = acPeriodRec(rec, period);
+    let st;
+    if (!acAnswered(rec, period)) st = '<span class="ac-todo">미응답</span>';
+    else if (pr.status === 'none') st = '<span class="ac-done">학원 없음</span>';
+    else if (pr.status === 'unknown') st = '<span class="ac-todo">아직 몰라요</span>';
+    else st = '<span class="ac-done">✓</span>';
+    const ens = (pr.entries || []).filter(en => acActiveDays(en.days).length).map(en => `${acDaysText(acActiveDays(en.days))} ${en.start}~${en.end} ${escapeHtml(en.label || '')}`).join(' / ');
+    const extra = [period === 'sem' && rec.schoolEnd ? `학교 ~${rec.schoolEnd}` : '', ens].filter(Boolean).join('<br>');
+    return `<div class="ac-resp"><span class="ac-resp-name">${escapeHtml(acDisplayName(x))}</span> ${escapeHtml(x.sub || '')} ${st}${extra ? `<div class="ac-note" style="margin-top:3px;">${extra}</div>` : ''}</div>`;
+  }).join('');
+
+  box.innerHTML = `
+    <div class="card">
+      <h2>📊 전체 결과 · ${acPeriodInfo().long}</h2>
+      <div class="ac-filter chips">${teamBtns}</div>
+      <div class="ac-status" style="margin:0 0 12px;"><button class="ac-pill sm${acWithTeachers ? ' on' : ''}" onclick="acToggleTeachers()">교사도 포함</button></div>
+      <div class="ac-stat">
+        <div><b>${answered.length}/${target.length}</b><span>응답</span></div>
+        <div><b>${missing.length}</b><span>미응답</span></div>
+        ${period === 'vac' ? `<div><b>${unknown.length}</b><span>아직 몰라요</span></div>` : ''}
+      </div>
+      ${missing.length ? `<div class="ac-note" style="margin-bottom:4px;"><b>미응답:</b> ${missing.map(x => escapeHtml(acDisplayName(x))).join(', ')}</div>` : ''}
+      ${unknown.length ? `<div class="ac-note"><b>아직 몰라요(계산에서 빠짐):</b> ${unknown.map(x => escapeHtml(acDisplayName(x))).join(', ')}</div>` : ''}
+    </div>
+
+    <div class="card">
+      <h2 style="display:flex; align-items:center; gap:8px;">⭐ 추천 연습 시간
+        <select class="ac-sel" style="flex:0 0 auto; width:auto; margin-left:auto; padding:6px 10px; font-size:0.82rem;" onchange="acSetWin(this.value)">${winOpts}</select>
+      </h2>
+      ${!N ? '<div class="empty">아직 응답이 없어요.</div>' : picked.map(w => `
+        <div class="ac-rec">
+          <div class="ac-rec-head"><span class="ac-rec-time">${AC_DAYS[w.d]} ${acFmt(w.s)}~${acFmt(w.e)}</span><span class="ac-rec-n">${w.ok}/${N}명</span></div>
+          ${w.out.length ? `<div class="ac-rec-miss">빠지는 사람: ${w.out.map(whoText).join(', ')}</div>` : '<div class="ac-rec-miss">모두 가능해요 🎉</div>'}
+        </div>`).join('')}
+      <div class="ac-note">처음부터 끝까지 올 수 있는 인원 기준이에요. 응답한 ${N}명으로 계산했어요.</div>
+    </div>
+
+    <div class="card">
+      <h2>🗓 시간대별 가능 인원</h2>
+      ${!N ? '<div class="empty">아직 응답이 없어요.</div>' : acGridHtml((d, m) => {
+        const ok = N - busyAt(d, m).length;
+        const r = ok / N;
+        const sel = acSelCell && acSelCell.d === d && acSelCell.m === m;
+        return { cls: 'heat' + (sel ? ' sel' : ''), text: ok, style: `background:hsl(${Math.round(r * 125)}, 52%, ${90 - r * 12}%)`, onclick: `acPickCell(${d},${m})` };
+      }) + detail}
+      <div class="ac-note" style="margin-top:8px;">숫자 = 그 15분 칸에 올 수 있는 인원. 초록일수록 좋아요. 칸을 누르면 안 되는 사람이 보여요.</div>
+    </div>
+
+    <div class="card">
+      <h2>📋 응답 목록</h2>
+      ${respRows || '<div class="empty">대상이 없어요.</div>'}
+    </div>`;
+}
+
+function renderAcademy() {
+  if (!document.getElementById('panel-academy')) return;
+  const people = acPeople();
+  const me = people.find(x => x.key === acCurrentKey()) || null;
+  acRenderPeriodSeg();
+  acRenderPicker(people, me);
+  acRenderEditor(me);
+  acRenderAdmin(people);
 }
 
 // ===== 성경읽기 =====
@@ -5025,39 +5680,65 @@ function bibleGuideHtml(myCount) {
     </div>`;
 }
 
+
+// ----- 오늘 읽을 곳 (일정표: 주일 2장·월~토 1장, 마태→마가→누가→요한 순서) + 읽기 링크(개역개정) -----
+const BIBLE_LINK_CODES = { matthew: 'MAT', mark: 'MRK', luke: 'LUK', john: 'JHN' };
+const BIBLE_LINK_BASE = 'https://www.bible.com/ko/bible/88/';   // 개역개정(KRV). 주소 형식은 여기서만 고치면 모든 링크가 바뀜
+function bibleLink(bookKey, ch) { return `${BIBLE_LINK_BASE}${BIBLE_LINK_CODES[bookKey]}.${ch}.KRV`; }
+function bibleChapterAt(n) {   // 1~89번째 장 → { book, ch }
+  let left = n;
+  for (const b of BIBLE_BOOKS) { if (left <= b.chapters) return { book: b, ch: left }; left -= b.chapters; }
+  return null;
+}
+function bibleChapterRange(fromN, toN) { const a = []; for (let n = fromN; n <= toN; n++) { const c = bibleChapterAt(n); if (c) a.push(c); } return a; }
+function bibleTodayPlan() {   // 오늘 계획된 장들 (기간 밖이면 null)
+  const t = bibleToday();
+  if (t < BIBLE_PERIOD.start || t > BIBLE_PERIOD.end) return null;
+  const prev = biblePlannedOn(bibleAddDays(t, -1));
+  return bibleChapterRange(prev + 1, biblePlannedOn(t));
+}
+function bibleChapterLabel(c) { return `${c.book.name} ${c.ch}장`; }
+function biblePlanText(list) {   // 마태복음 5장 / 마태복음 5~6장
+  if (!list.length) return '';
+  if (list.length === 1) return bibleChapterLabel(list[0]);
+  const a = list[0], z = list[list.length - 1];
+  return a.book.key === z.book.key ? `${a.book.name} ${a.ch}~${z.ch}장` : `${bibleChapterLabel(a)}, ${bibleChapterLabel(z)}`;
+}
+function bibleTodayCardHtml(sid) {
+  const t = bibleToday();
+  if (t < BIBLE_PERIOD.start) return `<div class="card bb-today"><div class="bb-today-head"><span class="bb-today-title">📖 오늘 읽을 곳</span></div><div class="bb-today-sub">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요. 첫날은 주일이라 2장이에요!</div></div>`;
+  const plan = bibleTodayPlan();
+  if (!plan) return '';
+  const isRead = c => bibleDates(sid, c.book.key, c.ch).length > 0;
+  const row = (c, tag) => {
+    const done = isRead(c);
+    return `<div class="bb-today-row${done ? ' done' : ''}"><span class="bt-name">${bibleChapterLabel(c)}${!done && tag ? `<span class="bt-tag">${tag}</span>` : ''}</span>
+      <a class="bt-read" href="${bibleLink(c.book.key, c.ch)}" target="_blank" rel="noopener">📖 읽기</a>
+      ${done ? '<span class="bt-ok">✓ 읽음</span>' : `<button class="bt-done" onclick="bibleMarkRead('${c.book.key}', ${c.ch})">읽었어요</button>`}</div>`;
+  };
+  const prev = biblePlannedOn(bibleAddDays(t, -1));
+  const overdue = bibleChapterRange(1, prev).filter(c => !isRead(c));
+  const todayDone = plan.every(isRead);
+  const myCount = bibleStudentCount(sid);
+  const diff = myCount - biblePlannedOn(t);
+  const pace = diff > 0 ? `계획보다 <b>${diff}장 앞서 있어요</b> 👏` : diff === 0 ? '<b>계획대로 읽고 있어요</b>' : `계획보다 <b>${-diff}장 뒤처졌어요</b>. 천천히 따라잡아요`;
+  let html = `<div class="card bb-today"><div class="bb-today-head"><span class="bb-today-title">📖 오늘 읽을 곳</span><span class="bb-today-date">${bibleShortDate(t)}</span></div>`;
+  html += plan.map(c => row(c, '')).join('');
+  if (overdue.length) {
+    html += `<div class="bb-today-label">밀린 곳 ${overdue.length}장</div>` + overdue.slice(0, 3).map(c => row(c, '밀림')).join('');
+    if (overdue.length > 3) html += `<div class="bb-today-sub">그 밖에 ${overdue.length - 3}장이 더 있어요. 아래 장 번호에서 확인해요.</div>`;
+  }
+  if (todayDone && !overdue.length) html += '<div class="bb-today-sub" style="color:var(--c-bible-deep);font-weight:800;">🎉 오늘 분량을 다 읽었어요!</div>';
+  html += `<div class="bb-today-sub">${pace}</div></div>`;
+  return html;
+}
+function bibleMarkRead(bookKey, ch) { recordBibleRead(bookKey, ch); }
+
 function bibleBar(pct, cls = '') {
   return `<div class="bb-bar ${cls}"><i style="width:${Math.max(0, Math.min(100, pct))}%"></i></div>`;
 }
 
 
-
-// 학부모용: 내가 고른 자녀의 성경읽기 현황 (보기 전용)
-function parentKidsBibleHtml() {
-  const kids = kidList();
-  const today = bibleToday();
-  const weekStart = bibleAddDays(today, -bibleDateObj(today).getDay());
-  const card = kids.map(k => {
-    const set = bibleReadDateSet(k.id);
-    const cnt = bibleStudentCount(k.id);
-    const pct = Math.round((cnt / BIBLE_TOTAL) * 100);
-    const dots = [];
-    for (let i = 0; i < 7; i++) {
-      const d = bibleAddDays(weekStart, i);
-      dots.push(`<span class="tc-dot${set.has(d) ? ' on' : ''}${d > today ? ' fut' : ''}" title="${BIBLE_WEEK[i]}"></span>`);
-    }
-    const last = Array.from(set).sort().pop();
-    const lastTxt = last ? (bibleDayDiff(last, today) === 0 ? '오늘 읽음' : `${bibleDayDiff(last, today)}일 전에 읽음`) : '아직 시작 전';
-    const books = BIBLE_BOOKS.map(b => { const c = bibleBookCount(k.id, b); return `<div class="bb-book-row"><span class="bb-book-name">${b.name}</span>${bibleBar(Math.round(c / b.chapters * 100))}<span class="bb-book-pct">${c}/${b.chapters}</span></div>`; }).join('');
-    return `<div class="tc-row"><div class="tc-top"><b>${escapeHtml(k.name)}</b><small>${escapeHtml(k.grade || '')}</small><span class="tc-last${last ? '' : ' none'}">${lastTxt}</span>
-        <button class="bb-change" style="margin-left:6px;" onclick="removeKid('${k.id}')">빼기</button></div>
-      <div class="tc-mid">${bibleBar(pct)}<span>${cnt}/${BIBLE_TOTAL}장 · ${pct}%</span></div>
-      <div class="tc-dots">${dots.join('')}</div>
-      <div class="bb-book-bars" style="margin-top:10px;">${books}</div></div>`;
-  }).join('');
-  return `<div class="card tc-card"><h2>👪 우리 아이 성경읽기</h2>
-    ${kids.length ? `<div class="bb-sub" style="margin:-4px 0 6px;">점은 이번 주(주일~토) 읽은 날이에요</div>${card}` : '<div class="bb-sub" style="margin:0 0 6px;">아이를 고르면 읽기 현황을 볼 수 있어요.</div>'}
-    <div class="bb-sheet-actions" style="margin-top:10px;"><button class="bb-close" onclick="openKidModal()">＋ ${kids.length ? '다른 아이 추가' : '우리 아이 고르기'}</button></div></div>`;
-}
 
 let bibleStaffOpen = false;
 // 선생님(·관리자)용: 전체 학생의 성경읽기 현황 (오래 안 읽은 학생이 위로). 학생에게는 안 보임
@@ -5112,12 +5793,6 @@ function renderBible() {
 
   const me = members.find(m => m.id === bibleStudentId);
 
-  if (meParent()) {
-    html += parentKidsBibleHtml();
-    html += `<div class="bb-hint" style="margin-top:14px;">${PARENT_NOTE}</div>`;
-    root.innerHTML = html;
-    return;
-  }
 
   if (!me) {
     const pending = members.find(m => m.id === biblePendingId);
@@ -5192,6 +5867,7 @@ function renderBible() {
 
   html += bibleGuideHtml(myCount);
 
+  const planSet = new Set((bibleTodayPlan() || []).map(c => c.book.key + ':' + c.ch));
   html += BIBLE_BOOKS.map(b => {
     const cnt = bibleBookCount(sid, b);
     const done = cnt === b.chapters;
@@ -5199,7 +5875,7 @@ function renderBible() {
     for (let ch = 1; ch <= b.chapters; ch++) {
       const dates = bibleDates(sid, b.key, ch);
       const last = dates[dates.length - 1];
-      grid += `<button class="bb-ch${last ? ' read' : ''}" ${last ? `style="background:${bibleColor(last)}"` : ''} onclick="onBibleChapter('${b.key}', ${ch})" aria-label="${b.name} ${ch}장${last ? ' 읽음' : ''}">${ch}${dates.length > 1 ? '<i class="bb-multi"></i>' : ''}</button>`;
+      grid += `<button class="bb-ch${last ? ' read' : ''}${!last && planSet.has(b.key + ':' + ch) ? ' plan' : ''}" ${last ? `style="background:${bibleColor(last)}"` : ''} onclick="onBibleChapter('${b.key}', ${ch})" aria-label="${b.name} ${ch}장${last ? ' 읽음' : ''}">${ch}${dates.length > 1 ? '<i class="bb-multi"></i>' : ''}</button>`;
     }
     return `
       <div class="card bb-book${done ? ' done' : ''}">
@@ -5213,13 +5889,13 @@ function renderBible() {
       </div>`;
   }).join('');
 
-  html = html.replace('<div class="card bb-me">', bibleTeacherCard(me) + '<div class="card bb-me">');
+  html = html.replace('<div class="card bb-me">', bibleTodayCardHtml(sid) + bibleTeacherCard(me) + '<div class="card bb-me">');
   html += '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
   root.innerHTML = html;
 }
 
 function onBibleChapter(bookKey, ch) {
-  if (meParent() || !bibleStudentId) return;
+  if (!bibleStudentId) return;
   if (bibleDates(bibleStudentId, bookKey, ch).length) openBibleDetail(bookKey, ch);
   else recordBibleRead(bookKey, ch);
 }
@@ -5236,7 +5912,7 @@ function bibleLocalSet(sid, bookKey, ch, fn) {
 }
 
 function recordBibleRead(bookKey, ch) {
-  if (meParent() || !bibleStudentId) return;
+  if (!bibleStudentId) return;
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
   const sid = bibleStudentId;
   const today = bibleToday();
@@ -5443,6 +6119,7 @@ const VIEWS = {
   'roster':        [{ id: 'participants', label: '🌱 학생', panels: ['participants'] }, { id: 'teachers', label: '🌳 교사', panels: ['teachers'] }, { id: 'assign', label: '🛏️ 배정', panels: ['assign'] }],
   'depart':        [{ id: 'personal-supplies', label: '🧳 개인준비물', panels: ['personal-supplies'] }, { id: 'shared-supplies', label: '📦 공용준비물', panels: ['shared-supplies'] }, { id: 'flights', label: '✈️ 항공권', panels: ['flights'] }],
   'schedule':      [{ id: 'schedule', panels: ['schedule'] }],
+  'academy':       [{ id: 'academy', panels: ['academy'] }],
   'files':         [{ id: 'files', panels: ['files'] }]
 };
 const SUB_KEY = 'baguio_subtabs';
@@ -5459,6 +6136,77 @@ function resolveLegacyTab(key) {
   if (key === 'english') return ['teams', null];
   return ['feed', null];
 }
+
+
+// ===== 새 소식 알림 (이 기기 안에서만 동작: 서버 읽기·쓰기 추가 없음) =====
+// 공지·준비일정에 내가 아직 안 본 새 글 → 탭에 빨간 숫자 + 상단 안내, 성경읽기는 오늘 분량을 아직 안 했으면 안내.
+// 관리모드는 새 댓글만 알려 줌. '본 것' 기록은 이 기기(localStorage)에만 저장. 처음 열었을 때의 기존 글은 '이미 본 것'으로 처리.
+const NOTIFY_KEY = 'baguio_notify_seen_v1';
+let notifySeen = (() => { try { const o = JSON.parse(localStorage.getItem(NOTIFY_KEY) || 'null'); if (o && o.init) return { init: true, p: o.p || [], q: o.q || [], c: o.c || [] }; } catch (e) {} return { init: false, p: [], q: [], c: [] }; })();
+let notifyFresh = { p: new Set(), q: new Set() };   // 이번에 탭을 열면서 확인한 새 글 (새 글 표시 유지용)
+function notifySave() { try { localStorage.setItem(NOTIFY_KEY, JSON.stringify(notifySeen)); } catch (e) {} }
+function notifyCurrent() {
+  const p = (state.posts || []).filter(x => x.kind !== 'bible').map(x => x.id).filter(Boolean);
+  const q = allRsvpItems().filter(x => !x.past).map(x => x.key);
+  const c = [];
+  Object.keys(commentsData || {}).forEach(k => { if (k.indexOf('c_') === 0 && Array.isArray(commentsData[k])) commentsData[k].forEach(cm => { if (cm && cm.id && cm.key !== meKey) c.push(cm.id); }); });
+  return { p, q, c };
+}
+function notifyUnseen() {
+  const cur = notifyCurrent();
+  const miss = (ids, seen) => ids.filter(id => seen.indexOf(id) < 0);
+  return { p: miss(cur.p, notifySeen.p), q: miss(cur.q, notifySeen.q), c: miss(cur.c, notifySeen.c), cur };
+}
+function notifyBibleNudge() {
+  const m = meFind(meKey);
+  if (!m || meKey === 'guest' || canEdit) return false;
+  const t = bibleToday();
+  if (t < BIBLE_PERIOD.start || t > BIBLE_PERIOD.end) return false;
+  return !bibleReadDateSet(meKey.slice(2)).has(t);
+}
+function notifyMarkSeen(kind, ids) {
+  const set = new Set(notifySeen[kind]); ids.forEach(i => set.add(i)); notifySeen[kind] = [...set];
+}
+function notifyActiveTab() { const b = document.querySelector('nav.tabs button.active'); return b ? b.getAttribute('data-tab') : ''; }
+function notifyOpen(top) {
+  if (!notifySeen.init) return;
+  const u = notifyUnseen();
+  let changed = false;
+  if (top === 'feed') {
+    if (!canEdit && u.p.length) { u.p.forEach(i => notifyFresh.p.add(i)); notifyMarkSeen('p', u.p); changed = true; }
+    if (canEdit && u.c.length) { notifyMarkSeen('c', u.c); changed = true; }
+  }
+  if (top === 'prep-schedule' && !canEdit && u.q.length) { u.q.forEach(i => notifyFresh.q.add(i)); notifyMarkSeen('q', u.q); changed = true; }
+  if (changed) { notifySave(); try { renderPosts(); renderPrepSchedule(); } catch (e) {} }
+  notifyPaint();
+}
+function notifyRefresh() {
+  if (!sawMeaningfulData) return;                 // 서버 데이터가 아직 안 왔으면 기준을 잡지 않음
+  if (!notifySeen.init) {                         // 처음: 지금 있는 글은 모두 '이미 본 것'
+    const cur = notifyCurrent();
+    notifySeen = { init: true, p: cur.p, q: cur.q, c: cur.c }; notifySave();
+  }
+  const top = notifyActiveTab();
+  if (top === 'feed' || top === 'prep-schedule') notifyOpen(top);   // 보고 있는 탭에 새 글이 오면 바로 '본 것' 처리 (새 글 표시는 남김)
+  else notifyPaint();
+}
+function notifyPaint() {
+  const bar = document.getElementById('notify-bar'); if (!bar) return;
+  const u = notifyUnseen();
+  const n = { feed: canEdit ? u.c.length : u.p.length, prep: canEdit ? 0 : u.q.length };
+  const bible = notifyBibleNudge();
+  const set = (tab, v) => { const b = document.querySelector(`nav.tabs button[data-tab="${tab}"]`); if (!b) return; if (v) b.setAttribute('data-badge', v); else b.removeAttribute('data-badge'); };
+  set('feed', n.feed || ''); set('prep-schedule', n.prep || ''); set('bible', bible ? '!' : '');
+  const top = notifyActiveTab();
+  const chips = [];
+  if (n.feed && top !== 'feed') chips.push(`<button onclick="showView('feed')">${canEdit ? '💬 새 댓글' : '📢 새 공지'} <b>${n.feed}</b></button>`);
+  if (n.prep && top !== 'prep-schedule') chips.push(`<button onclick="showView('prep-schedule')">📅 새 준비일정 <b>${n.prep}</b></button>`);
+  if (bible && top !== 'bible') { const pt = biblePlanText(bibleTodayPlan() || []); chips.push(`<button onclick="showView('bible')">📖 ${pt ? '오늘 읽을 곳: ' + escapeHtml(pt) : '오늘 성경읽기를 아직 안 했어요'}</button>`); }
+  bar.innerHTML = chips.join('');
+  bar.classList.toggle('on', chips.length > 0);
+}
+
+{ const _rbOrig = renderBible; renderBible = function () { const r = _rbOrig.apply(this, arguments); try { notifyPaint(); } catch (e) {} return r; }; }
 
 function showView(top, sub) {
   if (!VIEWS[top]) top = 'feed';
@@ -5478,7 +6226,9 @@ function showView(top, sub) {
   }
   if (top === 'teams') { curTeam = cur.id; renderTeams(); }
   if (top === 'files') renderFiles();
+  if (top === 'academy') renderAcademy();
   try { sessionStorage.setItem('activeTab', top); } catch (e) {}
+  notifyOpen(top);
 }
 
 // 날짜·시간 입력칸(년/월/일, 오전·오후/시/분)을 자리표시자에 채움
