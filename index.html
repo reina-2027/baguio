@@ -513,6 +513,17 @@
   .fx-quick div { background:#F6F6F0; border-radius:10px; padding:8px 10px; font-size:0.85rem; font-weight:700; display:flex; justify-content:space-between; }
   .fx-mini { font-family:inherit; font-size:0.8rem; font-weight:800; border:1.5px solid var(--border); background:#fff; border-radius:999px; padding:6px 12px; cursor:pointer; color:var(--text); }
   .next-ev { margin:0 0 12px; background:#fff; border:1.5px solid #E3D2BD; border-radius:18px; padding:13px 16px; box-shadow:0 2px 10px rgba(0,0,0,.05); }
+  #prayer-list { display:flex; flex-direction:column; gap:12px; }
+  .pr-card { position:relative; background:#fff; border:1px solid #E6E0D4; border-radius:16px; padding:16px 18px 13px 22px; box-shadow:0 2px 8px rgba(60,50,30,.05); overflow:hidden; }
+  .pr-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:5px; background:#C9D5C4; }
+  .pr-card.latest { background:linear-gradient(180deg,#FFF8F1 0%,#fff 70%); border-color:#EBD3BD; }
+  .pr-card.latest::before { background:#D9915B; }
+  .pr-text { font-size:1.02rem; line-height:1.7; font-weight:600; color:#2f3a33; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
+  .pr-foot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:9px; border-top:1px dashed #E6E0D4; }
+  .pr-date { font-size:0.78rem; font-weight:700; color:#8c8f86; }
+  .pr-actions { display:flex; gap:14px; }
+  .pr-actions button { border:none; background:none; padding:0; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit; color:var(--muted); }
+  .pr-actions button.del { color:#b0504a; }
   .next-ev { cursor:pointer; }
   .ne-flash { animation:neflash 2.2s ease; }
   @keyframes neflash { 0%,60% { box-shadow:0 0 0 4px #E8B27A; } 100% { box-shadow:none; } }
@@ -713,7 +724,7 @@
   body.admin #teacher-list::before { content:'📋 등록된 교사'; }
   body.admin #feed-list::before { content:'📋 등록된 공지'; }
   body.admin #prep-schedule-list::before { content:'📋 등록된 일정'; }
-  body.admin #schedule-list::before { content:'📋 등록된 선교일정'; }
+  body.admin #schedule-list::before { content:'📋 등록된 현지일정'; }
   body.admin #rooms-list::before { content:'📋 등록된 방'; }
   body.admin #vehicles-list::before { content:'📋 등록된 차량'; }
   body.admin #flightinfo-list::before { content:'📋 등록된 항공권'; }
@@ -807,12 +818,13 @@
 <nav class="tabs">
   <button data-tab="feed">공지</button>
   <button data-tab="bible">성경읽기</button>
+  <button data-tab="prayer">기도제목</button>
   <button data-tab="prep-schedule">준비일정</button>
   <button data-tab="academy">주말일정</button>
   <button data-tab="teams">사역팀</button>
   <button data-tab="roster">명단</button>
   <button data-tab="depart">출국준비</button>
-  <button data-tab="schedule">선교일정</button>
+  <button data-tab="schedule">현지일정</button>
   <button data-tab="files">자료</button>
 </nav>
 
@@ -874,7 +886,7 @@
   <!-- 2. 선교일정 탭 -->
   <section class="panel" id="panel-schedule">
     <div class="card">
-      <h2>🗓️ 선교 일정</h2>
+      <h2>🗓️ 현지 일정</h2>
       <!-- 관리자 입력 폼을 상단으로 이동 -->
       <div class="add-form collapsed" id="schedule-form" style="display:none; margin-top:0; padding-top:0; border-top:none; margin-bottom:14px;">
         <button type="button" class="form-toggle" onclick="openForm('schedule-form')">＋ 일정 추가</button>
@@ -1120,6 +1132,24 @@
   <!-- 성경읽기 탭 -->
   <section class="panel" id="panel-bible">
     <div id="bible-root"></div>
+  </section>
+
+  <!-- 기도제목 탭 -->
+  <section class="panel" id="panel-prayer">
+    <div class="card">
+      <h2>🙏 공동 기도제목</h2>
+      <div class="bb-hint" style="text-align:left; margin:-2px 2px 10px;">바기오 선교를 위해 다 같이 기도해요.</div>
+      <div class="add-form collapsed" id="prayer-form" style="display:none;">
+        <button type="button" class="form-toggle" onclick="openForm('prayer-form')">＋ 기도제목 추가</button>
+        <input type="hidden" id="prayer-edit-id" value="" />
+        <div><label>기도제목 (300자까지)</label><textarea id="prayer-text" maxlength="300" placeholder="예: 비자와 항공권이 순조롭게 준비되도록"></textarea></div>
+        <div class="form-actions">
+          <button class="primary" id="prayer-submit-btn" onclick="addPrayer()">등록</button>
+          <button class="secondary" onclick="cancelPrayerEdit()">취소</button>
+        </div>
+      </div>
+      <div id="prayer-list"></div>
+    </div>
   </section>
 
   <!-- 영어전도 탭 -->
@@ -1652,6 +1682,7 @@ let state = {
   schedule: [],
   prepSchedule: [],
   posts: [],
+  prayers: [],
   evangelism: [],
   evangelismGoals: [],
   teamLinks: [],
@@ -1769,6 +1800,7 @@ function buildSavePayload(remoteOverride = null) {
 function normalizeRemote(remote) {
   if (!remote.flightInfos) remote.flightInfos = [];
   if (!remote.prepSchedule) remote.prepSchedule = [];
+  if (!remote.prayers) remote.prayers = [];
   if (!remote.evangelism) remote.evangelism = [];
   if (!remote.evangelismGoals) remote.evangelismGoals = [];
   if (!remote.teamLinks) remote.teamLinks = [];
@@ -3196,7 +3228,7 @@ function renderSchedule() {
     : sortedSchedule.filter(s => s.date === currentScheduleFilter);
 
   if (!filteredSchedule.length) {
-    list.innerHTML = '<div class="empty">등록된 선교 일정이 없어요.</div>';
+    list.innerHTML = '<div class="empty">등록된 현지 일정이 없어요.</div>';
   } else {
     list.innerHTML = filteredSchedule.map(s => {
       const dayNo = sortedSchedule.indexOf(s) + 1;
@@ -3923,6 +3955,53 @@ function deleteComment(postId, cid) {
       ? '서버 설정(보안 규칙) 때문에 삭제되지 않아요. (permission-denied)'
       : '삭제하지 못했어요.\n' + (e && e.code ? e.code : '인터넷 연결을 확인해 주세요.'));
   });
+}
+
+function prayerDate(d) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ''); if (!m) return d || '';
+  const o = new Date(+m[1], +m[2] - 1, +m[3]);
+  return `${+m[2]}월 ${+m[3]}일 (${BIBLE_WEEK[o.getDay()]})`;
+}
+function renderPrayers() {
+  const form = document.getElementById('prayer-form'), list = document.getElementById('prayer-list');
+  if (!list) return;
+  if (form) form.style.display = canEdit ? 'flex' : 'none';
+  const items = (state.prayers || []).slice().reverse().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  if (!items.length) { list.innerHTML = '<div class="empty">등록된 기도제목이 없어요.</div>'; return; }
+  list.innerHTML = items.map((p, i) => `<article class="pr-card${i === 0 ? ' latest' : ''}">
+    <div class="pr-text">${escapeHtml(p.text || '')}</div>
+    <div class="pr-foot"><span class="pr-date">${escapeHtml(prayerDate(p.date))}</span>${canEdit ? `<span class="pr-actions"><button onclick="startEditPrayer('${p.id}')">수정</button><button class="del" onclick="removePrayer('${p.id}')">삭제</button></span>` : ''}</div>
+  </article>`).join('');
+}
+function addPrayer() {
+  const text = document.getElementById('prayer-text').value.trim();
+  if (!text) { alert('기도제목을 입력해주세요.'); return; }
+  if (!state.prayers) state.prayers = [];
+  const editId = document.getElementById('prayer-edit-id').value;
+  const cur = editId && state.prayers.find(x => x.id === editId);
+  if (cur) cur.text = text; else state.prayers.push({ id: uid(), text, date: bibleToday() });
+  markDirty('prayers');
+  cancelPrayerEdit();
+  renderPrayers();
+}
+function startEditPrayer(id) {
+  const p = (state.prayers || []).find(x => x.id === id); if (!p) return;
+  document.getElementById('prayer-edit-id').value = id;
+  document.getElementById('prayer-text').value = p.text || '';
+  document.getElementById('prayer-submit-btn').textContent = '수정 완료';
+  openForm('prayer-form', true);
+}
+function cancelPrayerEdit() {
+  document.getElementById('prayer-edit-id').value = '';
+  document.getElementById('prayer-text').value = '';
+  document.getElementById('prayer-submit-btn').textContent = '등록';
+  document.getElementById('prayer-form').classList.add('collapsed');
+}
+function removePrayer(id) {
+  if (!confirm('이 기도제목을 삭제할까요?')) return;
+  state.prayers = (state.prayers || []).filter(x => x.id !== id);
+  markDirty('prayers');
+  renderPrayers();
 }
 
 function renderPosts() {
@@ -5002,6 +5081,7 @@ function renderAll() {
   renderSchedule();
   renderPrepSchedule();
   renderPosts();
+  renderPrayers();
   renderEnglish();
   renderTeams();
   syncPersonalChecklistDropdown();
@@ -6274,6 +6354,7 @@ const VIEWS = {
   'feed':          [{ id: 'feed', panels: ['feed'] }],
   'prep-schedule': [{ id: 'prep-schedule', panels: ['prep-schedule'] }],
   'bible':         [{ id: 'bible', panels: ['bible'] }],
+  'prayer':        [{ id: 'prayer', panels: ['prayer'] }],
   'teams':         TEAMS.map(t => ({ id: t, label: TEAM_STYLE[t].icon + ' ' + t, color: TEAM_STYLE[t].c, panels: ['teams'] })),
   'roster':        [{ id: 'participants', label: '🌱 학생', panels: ['participants'] }, { id: 'teachers', label: '🌳 교사', panels: ['teachers'] }, { id: 'assign', label: '🛏️ 배정', panels: ['assign'] }],
   'depart':        [{ id: 'personal-supplies', label: '🧳 개인준비물', panels: ['personal-supplies'] }, { id: 'shared-supplies', label: '📦 공용준비물', panels: ['shared-supplies'] }, { id: 'flights', label: '✈️ 항공권', panels: ['flights'] }, { id: 'fx', label: '💱 환율', panels: ['fx'] }],
