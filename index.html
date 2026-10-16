@@ -494,6 +494,8 @@
   .bb-today-row button.bt-done { font-family:inherit; font-size:0.82rem; font-weight:800; color:#fff; background:var(--c-bible); border:none; border-radius:999px; padding:7px 12px; cursor:pointer; white-space:nowrap; }
   .bb-today-row .bt-ok { font-size:0.82rem; font-weight:800; color:var(--c-bible-deep); white-space:nowrap; }
   .bb-today-sub { margin-top:10px; font-size:0.82rem; color:var(--muted); line-height:1.5; }
+  .bb-hl { background:linear-gradient(transparent 55%, #FFE9A0 55%); padding:0 2px; }
+  .bb-now-label { margin-top:2px; font-size:0.78rem; font-weight:800; color:#5f7a66; }
   .bb-today-label { margin-top:10px; font-size:0.78rem; font-weight:800; color:#b4572f; }
   .bb-ch.read { color:#fff; border-color:transparent; box-shadow:0 1px 2px rgba(0,0,0,0.08); }
   .bb-multi { position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; background:#fff; opacity:0.9; }
@@ -5823,12 +5825,11 @@ function bibleGuideHtml(myCount) {
         <div><b>월 ~ 토</b><span>하루 1장</span></div>
       </div>
       <div class="bb-guide-desc">한 주에 8장씩 읽으면 ${bibleShortDate(BIBLE_PERIOD.end)}에 89장을 모두 읽어요. 마지막 날은 요한복음 21장 한 장이에요.</div>
-      ${status}
       <div class="bb-guide-sub">마태 → 마가 → 누가 → 요한 순서로, 1장부터 차례대로</div>
       <ul class="bb-plan">
         ${ms.map(m => `<li><span>${m.book.icon} ${m.book.name}</span><em>${bibleShortDate(m.from)} ~ ${bibleShortDate(m.to)}</em></li>`).join('')}
       </ul>
-      <div class="bb-guide-tip">하루 놓쳤다면 다음 날 한 장 더 읽으면 금방 따라잡아요. 읽은 뒤에는 바로 장 번호를 눌러 기록해 주세요.</div>
+      <div class="bb-guide-tip">읽은 뒤에는 바로 장 번호를 눌러 기록해 주세요.</div>
     </div>`;
 }
 
@@ -5928,41 +5929,37 @@ function biblePlanText(list) {   // 마태복음 5장 / 마태복음 5~6장
   const a = list[0], z = list[list.length - 1];
   return a.book.key === z.book.key ? `${a.book.name} ${a.ch}~${z.ch}장` : `${bibleChapterLabel(a)}, ${bibleChapterLabel(z)}`;
 }
+function bibleNowChapter(sid) {   // 오늘 목표까지 아직 안 읽은 첫 장 (없으면 null)
+  const t = bibleToday();
+  if (t < BIBLE_PERIOD.start || t > BIBLE_PERIOD.end) return null;
+  return bibleChapterRange(1, biblePlannedOn(t)).find(c => bibleDates(sid, c.book.key, c.ch).length === 0) || null;
+}
 function bibleTodayCardHtml(sid) {
   const t = bibleToday();
   if (t < BIBLE_PERIOD.start) return `<div class="card bb-today"><div class="bb-today-head"><span class="bb-today-title">📖 오늘 읽을 장</span></div><div class="bb-today-sub">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요. 첫날은 주일이라 2장이에요!</div></div>`;
   const plan = bibleTodayPlan();
-  if (!plan) return '';
-  const isRead = c => bibleDates(sid, c.book.key, c.ch).length > 0;
-  const single = c => {
-    const done = isRead(c);
-    return `<div class="bb-today-row${done ? ' done' : ''}"><span class="bt-name">${bibleChapterLabel(c)}</span>
-      <button type="button" class="bt-read" onclick="bibleOpenReader('${c.book.key}', ${c.ch})">📖 읽기</button>
-      ${done ? '<span class="bt-ok">✓ 읽음</span>' : `<button class="bt-done" onclick="bibleMarkRead('${c.book.key}', ${c.ch})">읽었어요</button>`}</div>`;
-  };
-  // 오늘 분량이 2장 이상(주일)이면 한 줄로 합치고, 읽기는 아직 안 읽은 첫 장을 연다 (읽음 표시는 읽기 화면에서)
-  const todayRow = () => {
-    if (plan.length === 1) return single(plan[0]);
-    const doneN = plan.filter(isRead).length;
-    const first = plan.find(c => !isRead(c)) || plan[0];
-    return `<div class="bb-today-row${doneN === plan.length ? ' done' : ''}"><span class="bt-name">${biblePlanText(plan)}${doneN && doneN < plan.length ? `<span class="bt-tag">${doneN}/${plan.length}장 읽음</span>` : ''}</span>
-      <button type="button" class="bt-read" onclick="bibleOpenReader('${first.book.key}', ${first.ch})">📖 읽기</button>
-      ${doneN === plan.length ? '<span class="bt-ok">✓ 읽음</span>' : ''}</div>`;
-  };
-  const prev = biblePlannedOn(bibleAddDays(t, -1));
-  const overdue = bibleChapterRange(1, prev).filter(c => !isRead(c));
-  const todayDone = plan.every(isRead);
-  const myCount = bibleStudentCount(sid);
-  const diff = myCount - biblePlannedOn(t);
-  const pace = diff > 0 ? `오늘 분량보다 <b>${diff}장 앞서 있어요</b> 👏` : diff === 0 ? '<b>계획대로 읽고 있어요</b>' : `오늘 분량까지 <b>${-diff}장 남았어요</b>. 한 장씩 읽어 봐요. 🙂`;
-  let html = `<div class="card bb-today"><div class="bb-today-head"><span class="bb-today-title">📖 오늘 읽을 장</span><span class="bb-today-date">${bibleShortDate(t)}</span></div>`;
-  html += todayRow();
-  if (overdue.length) {
-    html += `<div class="bb-today-label">이어 읽을 장</div>` + single(overdue[0]);
+  if (!plan || !plan.length) return '';
+  const goal = plan[plan.length - 1];                                   // 오늘 목표 = 오늘 분량의 마지막 장
+  const upto = bibleChapterRange(1, biblePlannedOn(t));
+  const left = upto.filter(c => bibleDates(sid, c.book.key, c.ch).length === 0);
+  const now = left[0] || null;
+  const diff = bibleStudentCount(sid) - biblePlannedOn(t);
+  const readToday = bibleReadDateSet(sid).has(t);
+  const cheer = left.length === 1 ? '<b>마지막 한 장</b>이에요. 거의 다 왔어요! 🌱'
+    : readToday ? '잘하고 있어요! 한 장만 더 💪'
+    : '오늘도 한 장부터 시작해 봐요. 응원해요! 🙂';
+  let html = `<div class="card bb-today"><div class="bb-today-head"><span class="bb-today-title">📖 오늘은 <span class="bb-hl">${bibleChapterLabel(goal)}</span>까지</span><span class="bb-today-date">${bibleShortDate(t)}</span></div>`;
+  if (now) {
+    html += `<div class="bb-now-label">지금 읽을 장</div>
+      <div class="bb-today-row"><span class="bt-name">${bibleChapterLabel(now)}</span>
+        <button type="button" class="bt-read" onclick="bibleOpenReader('${now.book.key}', ${now.ch})">📖 읽기</button>
+        <button class="bt-done" onclick="bibleMarkRead('${now.book.key}', ${now.ch})">읽었어요</button></div>
+      <div class="bb-today-sub">${cheer}</div>`;
+  } else {
+    html += `<div class="bb-today-row done"><span class="bt-name" style="color:var(--c-bible-deep);">오늘 분량 완료! 🎉</span></div>
+      <div class="bb-today-sub">${diff > 0 ? `오늘 분량보다 <b>${diff}장 앞서 있어요</b> 👏 오늘도 수고했어요!` : '오늘도 수고했어요! 🎉'}</div>`;
   }
-  if (todayDone && !overdue.length) html += '<div class="bb-today-sub" style="color:var(--c-bible-deep);font-weight:800;">🎉 오늘 분량을 다 읽었어요!</div>';
-  html += `<div class="bb-today-sub">${pace}</div></div>`;
-  return html;
+  return html + '</div>';
 }
 function bibleMarkRead(bookKey, ch) { recordBibleRead(bookKey, ch); }
 
@@ -6015,20 +6012,43 @@ function renderBible() {
   const members = bibleMembers();
   const comm = bibleCommunity();
 
-  let html = `
+  const me = members.find(m => m.id === bibleStudentId);
+  const barsHtml = `<div class="bb-book-bars">
+        ${comm.studentCount ? `<div class="bb-book-row"><span class="bb-book-name">학생 (${comm.studentCount}명)</span>${bibleBar(comm.studentPlan)}<span class="bb-book-pct">${comm.studentPlan}%</span></div>` : ''}
+        ${comm.teacherCount ? `<div class="bb-book-row"><span class="bb-book-name">교사 (${comm.teacherCount}명)</span>${bibleBar(comm.teacherPlan)}<span class="bb-book-pct">${comm.teacherPlan}%</span></div>` : ''}
+      </div>`;
+  let html = '';
+  if (me) {
+    // 이름을 고른 사람: 내 달성률(오늘까지 읽을 분량 기준)을 크게, 그 아래에 학생·교사 막대
+    const myCount0 = bibleStudentCount(me.id);
+    const myPlanned0 = biblePlannedOn(bibleToday());
+    const myPct0 = myPlanned0 > 0 ? Math.round((Math.min(myCount0, myPlanned0) / myPlanned0) * 100) : 0;
+    const myNote = myPlanned0 > 0
+      ? `오늘까지 읽을 ${myPlanned0}장 중 <b>${Math.min(myCount0, myPlanned0)}장</b>을 읽었어요${myCount0 > myPlanned0 ? ` · ${myCount0 - myPlanned0}장 앞서 읽었어요 👏` : ''}`
+      : '아직 시작 전이에요';
+    html = `
+    <div class="card bb-community">
+      <div class="bb-period">${biblePeriodText()}</div>
+      <div class="bb-comm-title">📖 ${escapeHtml(bibleDisplayName(me))}의 성경읽기</div>
+      <div class="bb-comm-pct">${myPct0}<span>%</span></div>
+      ${bibleBar(myPct0, 'big')}
+      <div class="bb-note" style="margin:2px 0 8px;">${myNote}</div>
+      ${myCount0 === BIBLE_TOTAL ? '<div class="bb-done-all">✨ 4복음서 완독</div>' : ''}
+      ${meLocked() ? '' : '<button class="bb-change" onclick="changeBibleStudent()">↺ 이름 다시 선택</button>'}
+      ${barsHtml}
+    </div>`;
+  } else {
+    html = `
     <div class="card bb-community">
       <div class="bb-period">${biblePeriodText()}</div>
       <div class="bb-comm-title">📖 우리 함께 읽고 있어요</div>
       <div class="bb-comm-pct">${comm.overallPlan}<span>%</span></div>
       ${bibleBar(comm.overallPlan, 'big')}
       <div class="bb-note" style="margin:2px 0 8px;">${comm.count ? (comm.planned > 0 ? `오늘까지 읽을 ${comm.planned}장 기준 전체 달성률` : '아직 시작 전이에요') : '등록된 사람이 없어요'}</div>
-      <div class="bb-book-bars">
-        ${comm.studentCount ? `<div class="bb-book-row"><span class="bb-book-name">학생 (${comm.studentCount}명)</span>${bibleBar(comm.studentPlan)}<span class="bb-book-pct">${comm.studentPlan}%</span></div>` : ''}
-        ${comm.teacherCount ? `<div class="bb-book-row"><span class="bb-book-name">교사 (${comm.teacherCount}명)</span>${bibleBar(comm.teacherPlan)}<span class="bb-book-pct">${comm.teacherPlan}%</span></div>` : ''}
-      </div>
+      ${barsHtml}
     </div>`;
+  }
 
-  const me = members.find(m => m.id === bibleStudentId);
 
 
   if (!me) {
@@ -6074,35 +6094,7 @@ function renderBible() {
   const today = bibleToday();
   const readSet = bibleReadDateSet(sid);
 
-  // 이번 주: 주일(일요일)부터 토요일까지
-  const weekStart = bibleAddDays(today, -bibleDateObj(today).getDay());
-  const week = [];
-  for (let i = 0; i < 7; i++) {
-    const d = bibleAddDays(weekStart, i);
-    week.push({ d, read: readSet.has(d), label: BIBLE_WEEK[i], isToday: d === today, future: d > today });
-  }
-
-  html += `
-    <div class="card bb-me">
-      <div class="bb-me-head">
-        <div class="bb-me-name">${escapeHtml(bibleDisplayName(me))}의 성경읽기</div>
-        ${meLocked() ? '' : '<button class="bb-change" onclick="changeBibleStudent()">↺ 이름 다시 선택</button>'}
-      </div>
-      <div class="bb-me-count">${myPlanned > 0 ? `<b>${Math.min(myCount, myPlanned)}</b> / ${myPlanned}장 <span>${myPct}%</span>` : '<b>0</b> 아직 시작 전이에요 <span>0%</span>'}</div>
-      <div class="bb-note" style="margin:-2px 0 8px;text-align:left;">${myPlanned > 0 ? `오늘까지 읽을 분량 기준 달성률${myCount > myPlanned ? ` · 계획보다 ${myCount - myPlanned}장 앞서 읽었어요 👏` : ''}` : ''}</div>
-      ${bibleBar(myPct, 'big')}
-      ${myCount === BIBLE_TOTAL ? '<div class="bb-done-all">✨ 4복음서 완독</div>' : ''}
-      <div class="bb-week">
-        <div class="bb-week-label">이번 주</div>
-        <div class="bb-week-dots">
-          ${week.map(w => `
-            <div class="bb-day${w.read ? ' on' : ''}${w.isToday ? ' today' : ''}${w.future ? ' future' : ''}">
-              <span class="bb-dot" ${w.read ? `style="background:${bibleColor(w.d)}; border-color:${bibleColor(w.d)}"` : ''}></span>
-              <small>${w.label}</small>
-            </div>`).join('')}
-        </div>
-      </div>
-    </div>`;
+  html += bibleTodayCardHtml(sid) + bibleTeacherCard(me);
 
   html += bibleGuideHtml(myCount);
 
@@ -6128,7 +6120,6 @@ function renderBible() {
       </div>`;
   }).join('');
 
-  html = html.replace('<div class="card bb-me">', bibleTodayCardHtml(sid) + bibleTeacherCard(me) + '<div class="card bb-me">');
   html += '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
   root.innerHTML = html;
 }
@@ -6442,7 +6433,7 @@ function notifyPaint() {
   const chips = [];
   if (n.feed && top !== 'feed') chips.push(`<button onclick="showView('feed')">${canEdit ? '💬 새 댓글' : '📢 새 공지'} <b>${n.feed}</b></button>`);
   if (n.prep && top !== 'prep-schedule') chips.push(`<button onclick="showView('prep-schedule')">📅 새 준비일정 <b>${n.prep}</b></button>`);
-  if (bible && top !== 'bible') { const pt = biblePlanText(bibleTodayPlan() || []); if (pt) chips.push(`<button onclick="showView('bible')">📖 오늘 읽을 장: ${escapeHtml(pt)}</button>`); }   // 서버 기록이 온 뒤, 오늘 아직 안 읽은 사람에게만
+  if (bible && top !== 'bible') { const nc = bibleNowChapter(meKey.slice(2)); if (nc) chips.push(`<button onclick="showView('bible')">📖 지금 읽을 장: ${escapeHtml(bibleChapterLabel(nc))}</button>`); }   // 서버 기록이 온 뒤, 오늘 아직 안 읽은 사람에게만
   bar.innerHTML = chips.join('');
   bar.classList.toggle('on', chips.length > 0);
 }
