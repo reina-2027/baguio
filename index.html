@@ -127,6 +127,9 @@
   nav.tabs button[data-tab="depart"].active { background: var(--c-flights); border-color: var(--c-flights); color: #FFFFFF; }
   nav.tabs button[data-tab="files"].active { background: var(--c-bible); border-color: var(--c-bible); color: #FFFFFF; }
   nav.tabs button[data-tab="bible"].active { background: var(--c-bible); border-color: var(--c-bible); color: #FFFFFF; }
+  :root { --c-prayer: #7B6BA8; --c-prayer-deep: #4B3F73; --c-prayer-soft: #F6F3FB; --c-prayer-line: #DCD5EC; }
+  nav.tabs button[data-tab="prayer"].active { background: var(--c-prayer); border-color: var(--c-prayer); color: #FFFFFF; }
+  #panel-prayer .card::before { background: var(--c-prayer); }
 
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
   section.panel { display: none; }
@@ -512,14 +515,14 @@
   .fx-result small { color:var(--muted); font-weight:700; }
   .fx-info { font-size:0.8rem; color:var(--muted); line-height:1.6; margin-top:6px; }
   .fx-quick { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
-  .fx-quick div { background:#F6F6F0; border-radius:10px; padding:8px 10px; font-size:0.85rem; font-weight:700; display:flex; justify-content:space-between; }
+  .fx-quick div { background:#F6F6F0; border-radius:10px; padding:8px 8px; font-size:0.8rem; font-weight:700; display:flex; justify-content:space-between; gap:4px; white-space:nowrap; }
   .fx-mini { font-family:inherit; font-size:0.8rem; font-weight:800; border:1.5px solid var(--border); background:#fff; border-radius:999px; padding:6px 12px; cursor:pointer; color:var(--text); }
   .next-ev { margin:0 0 12px; background:#fff; border:1.5px solid #E3D2BD; border-radius:18px; padding:13px 16px; box-shadow:0 2px 10px rgba(0,0,0,.05); }
   #prayer-list { display:flex; flex-direction:column; gap:12px; }
   .pr-card { position:relative; background:#fff; border:1px solid #E6E0D4; border-radius:16px; padding:16px 18px 13px 22px; box-shadow:0 2px 8px rgba(60,50,30,.05); overflow:hidden; }
-  .pr-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:5px; background:#C9D5C4; }
-  .pr-card.latest { background:linear-gradient(180deg,#FFF8F1 0%,#fff 70%); border-color:#EBD3BD; }
-  .pr-card.latest::before { background:#D9915B; }
+  .pr-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--c-prayer-line); }
+  .pr-card.latest { background:linear-gradient(180deg,var(--c-prayer-soft) 0%,#fff 70%); border-color:var(--c-prayer-line); }
+  .pr-card.latest::before { background:var(--c-prayer); }
   .pr-text { font-size:1.02rem; line-height:1.7; font-weight:600; color:#2f3a33; white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; }
   .pr-foot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:9px; border-top:1px dashed #E6E0D4; }
   .pr-date { font-size:0.78rem; font-weight:700; color:#8c8f86; }
@@ -609,6 +612,8 @@
   /* 상단 서브 칩 (명단·출국준비·사역팀) */
   .subtabs { display:flex; gap:6px; overflow-x:auto; overscroll-behavior-x:contain; padding:0 2px 12px; scrollbar-width:none; }
   .subtabs::-webkit-scrollbar { display:none; }
+  .subtabs.grid3 { display:grid; grid-template-columns:repeat(3, 1fr); overflow:visible; }
+  .subtabs.grid3 button { flex:none; width:100%; padding:9px 4px; text-align:center; white-space:nowrap; }
   .subtabs button { flex:0 0 auto; padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:#4d544e; font-size:0.86rem; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
   .subtabs button.on { background:var(--sc, var(--c-english)); border-color:var(--sc, var(--c-english)); color:#fff; }
   /* 준비일정 필터 */
@@ -1038,14 +1043,13 @@
       <div class="fx-dir" id="fx-dir"></div>
       <div class="fx-row"><input id="fx-amount" type="text" inputmode="decimal" placeholder="금액 입력" oninput="fxCalc()" autocomplete="off" /><span class="fx-unit" id="fx-unit">원</span></div>
       <div class="fx-result" id="fx-result"></div>
-      <div class="fx-row"><span style="font-weight:800;font-size:0.85rem;white-space:nowrap;">수수료·마진</span><input id="fx-fee" type="text" inputmode="decimal" placeholder="0" oninput="fxCalc()" style="font-size:0.95rem;" /><span class="fx-unit">%</span></div>
       <div class="fx-info" id="fx-info"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
         <button type="button" class="fx-mini" onclick="fxRefresh(true)">🔄 환율 새로 불러오기</button>
         <button type="button" class="fx-mini" onclick="fxManualPrompt()">✏️ 환율 직접 입력</button>
       </div>
       <div class="fx-quick" id="fx-quick"></div>
-      <div class="fx-info">유럽중앙은행이 하루 한 번 발표하는 기준 환율이에요. 환전소·카드 환율과는 달라서 실제 금액은 조금 다를 수 있어요. 환전소가 기준보다 비싸게 팔면 수수료·마진 칸에 그 비율(%)을 넣어 보세요.</div>
+      <div class="fx-info">유럽중앙은행이 하루 한 번 발표하는 기준 환율이에요. 환전소·카드 환율과는 달라서 실제 금액은 조금 다를 수 있어요.</div>
     </div>
   </section>
 
@@ -3578,7 +3582,9 @@ function rsvpAudience(cats) {
   return out;
 }
 
+const RSVP_ON = false;   // 참석/불참 기능 켜기·끄기 (false: 화면에서 숨김, 기록은 그대로 보관)
 function rsvpPlaceholder(day, it, past) {
+  if (!RSVP_ON) return '';
   const cats = (it.categories && it.categories.length) ? it.categories : ['전체 모임'];
   return `<div class="rsvp" data-rk="${escapeHtml(itemKey(day, it))}" data-cats="${escapeHtml(cats.join('|'))}" data-past="${past ? 1 : 0}"></div>`;
 }
@@ -3693,8 +3699,8 @@ function renderAttendance() {
   if (!card || !box) return;
   const me = meFind(meKey);
   const staff = canEdit || (me && me.role === 'teacher');
-  card.style.display = staff ? 'block' : 'none';
-  if (!staff) return;
+  card.style.display = (RSVP_ON && staff) ? 'block' : 'none';
+  if (!RSVP_ON || !staff) return;
   const stat = new Map();
   const get = (k, name, role) => { if (!stat.has(k)) stat.set(k, { key: k, name, role, y: 0, n: 0, none: 0, total: 0 }); return stat.get(k); };
   const items = allRsvpItems().filter(x => x.past);
@@ -5829,7 +5835,7 @@ function bibleGuideHtml(myCount) {
       <ul class="bb-plan">
         ${ms.map(m => `<li><span>${m.book.icon} ${m.book.name}</span><em>${bibleShortDate(m.from)} ~ ${bibleShortDate(m.to)}</em></li>`).join('')}
       </ul>
-      <div class="bb-guide-tip">읽은 뒤에는 바로 장 번호를 눌러 기록해 주세요.</div>
+      <div class="bb-guide-tip">아래 읽은 장 번호를 누르면 오늘 날짜로 체크돼요 ✓ 체크된 장을 다시 누르면 읽은 날짜가 보여요.</div>
     </div>`;
 }
 
@@ -6488,12 +6494,11 @@ function fxManualPrompt() {
 }
 function fxCalc() {
   const f = fxS();
-  const amtEl = document.getElementById('fx-amount'), feeEl = document.getElementById('fx-fee'), out = document.getElementById('fx-result');
+  const amtEl = document.getElementById('fx-amount'), out = document.getElementById('fx-result');
   if (!amtEl || !out) return;
-  f.fee = feeEl.value; fxSave();
   const rate = fxRate();
   if (!rate) { out.innerHTML = '<small>환율을 불러오는 중이거나, 불러오지 못했어요.<br>아래 "환율 직접 입력"을 눌러 입력할 수 있어요.</small>'; return; }
-  const amt = fxNum(amtEl.value), fee = fxNum(feeEl.value) / 100, eff = rate * (1 + fee);   // 환전소가 비싸게 팔면 1페소가 eff원
+  const amt = fxNum(amtEl.value), eff = rate;
   if (f.dir === 'krw2php') out.innerHTML = amt ? `<b>${fxFmt(amt / eff)} 페소</b><small>${fxFmt(amt, 0)}원 ≈ 약 ${fxFmt(amt / eff)}페소</small>` : '<small>금액을 입력해 주세요</small>';
   else out.innerHTML = amt ? `<b>${fxFmt(amt * eff, 0)} 원</b><small>${fxFmt(amt)}페소 ≈ 약 ${fxFmt(amt * eff, 0)}원</small>` : '<small>금액을 입력해 주세요</small>';
 }
@@ -6502,7 +6507,6 @@ function fxRender() {
   const dirBox = document.getElementById('fx-dir'); if (!dirBox) return;
   dirBox.innerHTML = `<button type="button" class="${f.dir === 'krw2php' ? 'on' : ''}" onclick="fxSetDir('krw2php')">🇰🇷 원 → 🇵🇭 페소</button><button type="button" class="${f.dir === 'php2krw' ? 'on' : ''}" onclick="fxSetDir('php2krw')">🇵🇭 페소 → 🇰🇷 원</button>`;
   document.getElementById('fx-unit').textContent = f.dir === 'krw2php' ? '원' : '페소';
-  const feeEl = document.getElementById('fx-fee'); if (feeEl && document.activeElement !== feeEl) feeEl.value = f.fee || '';
   const rate = fxRate();
   const info = document.getElementById('fx-info');
   let t = '';
@@ -6512,7 +6516,7 @@ function fxRender() {
   else t = f.error ? '⚠️ 환율을 불러오지 못했어요. "환율 직접 입력"을 써 주세요.' : '';
   info.innerHTML = t;
   const q = document.getElementById('fx-quick');
-  if (q) q.innerHTML = rate ? [100, 500, 1000, 5000].map(n => `<div><span>${fxFmt(n, 0)}페소</span><span>약 ${fxFmt(n * rate * (1 + fxNum(f.fee) / 100), 0)}원</span></div>`).join('') : '';
+  if (q) q.innerHTML = rate ? [100, 500].map(n => `<div><span>${fxFmt(n, 0)}페소</span><span>약 ${fxFmt(n * rate, 0)}원</span></div>`).join('') : '';
   fxCalc();
 }
 function fxOnOpen() { fxRender(); fxRefresh(false); }
@@ -6572,7 +6576,8 @@ function showView(top, sub) {
   const bar = document.getElementById('subtabs');
   if (subs.length > 1) {
     bar.innerHTML = subs.map(x => `<button class="${x.id === cur.id ? 'on' : ''}" data-top="${top}" data-sub="${escapeHtml(x.id)}"${x.color ? ` style="--sc:${x.color};"` : ''}>${escapeHtml(x.label)}</button>`).join('');
-    bar.style.display = 'flex';
+    bar.classList.toggle('grid3', top === 'teams');
+    bar.style.display = top === 'teams' ? 'grid' : 'flex';
   } else {
     bar.innerHTML = '';
     bar.style.display = 'none';
