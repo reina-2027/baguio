@@ -5133,6 +5133,7 @@ const acActiveDays = days => (days || []).filter(d => AC_ACTIVE.includes(d));
 const AC_START = 9 * 60;   // 09:00
 const AC_END = 23 * 60;    // 23:00
 const AC_STEP = 15;
+const AC_REC_END = 22 * 60, AC_REC_LAST_START = 20 * 60 + 30;   // 추천 연습: 22:00 전에 끝나야 하고, 시작은 20:30 이후로 넘기지 않음
 const AC_BLOCKED = [{ d: 6, start: 9 * 60, end: 13 * 60 + 15 }];   // 주일 09:00~13:15 예배 시간: 연습 불가 (가능 인원 계산·추천에서 제외)
 const acBlocked = (d, m) => AC_BLOCKED.some(b => b.d === d && m >= b.start && m < b.end);
 const AC_PERIODS = [
@@ -5534,6 +5535,7 @@ function acRenderAdmin(people) {
         let hitBlocked = false;
         for (let k = 0; k < acWinSlots; k++) if (acBlocked(d, slots[i + k])) hitBlocked = true;
         if (hitBlocked) continue;   // 예배 시간과 겹치는 구간은 추천하지 않음
+        if (slots[i] > AC_REC_LAST_START || slots[i] + acWinSlots * AC_STEP > AC_REC_END) continue;   // 너무 늦은 시간은 추천하지 않음
         for (let k = 0; k < acWinSlots; k++) busyAt(d, slots[i + k]).forEach(o => { if (!out.has(o.x.key)) out.set(o.x.key, o); });
         wins.push({ d, s: slots[i], e: slots[i] + acWinSlots * AC_STEP, ok: N - out.size, out: [...out.values()] });
       }
@@ -5594,7 +5596,7 @@ function acRenderAdmin(people) {
           <div class="ac-rec-head"><span class="ac-rec-time">${AC_DAYS[w.d]} ${acFmt(w.s)}~${acFmt(w.e)}</span><span class="ac-rec-n">${w.ok}/${N}명</span></div>
           ${w.out.length ? `<div class="ac-rec-miss">빠지는 사람: ${w.out.map(whoText).join(', ')}</div>` : '<div class="ac-rec-miss">모두 가능해요 🎉</div>'}
         </div>`).join('')}
-      <div class="ac-note">처음부터 끝까지 올 수 있는 인원 기준이에요. 응답한 ${N}명으로 계산했어요.</div>
+      <div class="ac-note">처음부터 끝까지 올 수 있는 인원 기준이에요. 응답한 ${N}명으로 계산했어요. 추천은 밤 10시 전에 끝나고, 시작이 8시 30분을 넘기지 않는 시간만 보여드려요.</div>
     </div>
 
     <div class="card">
