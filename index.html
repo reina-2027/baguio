@@ -173,7 +173,7 @@
   /* 준비모임 카드 */
   .section-title { font-size:0.9rem; font-weight:800; color:var(--text); margin:4px 2px 10px; }
   .section-title.past { color:var(--muted); margin-top:22px; }
-  .item-card { background:var(--card); border:1px solid var(--border); border-left:6px solid var(--cc, var(--c-prep)); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(40,30,20,0.04); }
+  .item-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 3px rgba(40,30,20,0.04); }
   .item-card.past-card { background:var(--bg); opacity:0.75; box-shadow:none; }
   .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px; }
   .date-text { font-size:0.92rem; font-weight:800; color:var(--text); display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
@@ -188,6 +188,7 @@
   .info-row { display:flex; align-items:center; gap:6px; font-size:0.82rem; color:var(--muted); font-weight:600; flex-wrap:wrap; }
   .time-text { color:#94732B; font-weight:800; }
   .dot { color:#ccc; font-size:0.7rem; }
+  #prep-schedule-list .content-text { font-size:1.2rem; font-weight:800; line-height:1.35; margin-top:5px; }
   .content-text { font-size:0.98rem; font-weight:600; color:var(--text); margin-top:3px; white-space:pre-wrap; }
   .past-card .date-text, .past-card .content-text, .past-card .time-text { color:var(--muted); }
   .content-desc { font-size:0.87rem; color:var(--muted); margin-top:4px; line-height:1.55; white-space:pre-wrap; }
@@ -3487,7 +3488,7 @@ function renderPrepSchedule() {
   const past = prepSchedule.filter(s => (s.date || '') < todayStr && hasMatch(s)).sort((a, b) => byDateAsc(b, a));
 
   let html = '';
-  if (week.length) html += `<div class="section-title">📍 이번 주</div>${renderItemCards(week, false)}`;
+  if (week.length) html += `<div class="section-title">🔔 이번 주</div>${renderItemCards(week, false)}`;
   if (later.length) html += `<div class="section-title"${week.length ? ' style="margin-top:18px;"' : ''}>📌 앞으로 일정</div>${renderItemCards(later, false)}`;
   if (past.length) html += `<details class="ps-past"${pastOpen.ps ? ' open' : ''} ontoggle="pastOpen.ps=this.open"><summary>⌛ 지나간 일정 (${past.reduce((n, s) => n + (s.items || []).filter(itemMatchesFilter).length, 0)})</summary>${renderItemCards(past, true)}</details>`;
   list.innerHTML = html || '<div class="empty">이 종류의 일정이 없어요.</div>';
@@ -3625,7 +3626,7 @@ function renderRsvpBlocks(err) {
     const none = Array.from(aud.values()).filter(x => !answered.has(x.key));
     const mine = me ? (ans[meKey] || {}).s : '';
     const btns = (!past && cmCanWrite())
-      ? `<div class="rsvp-btns"><button class="${mine === 'yes' ? 'on yes' : ''}" onclick="setRsvp('${escapeHtml(key)}','yes')">✅ 참석</button><button class="${mine === 'no' ? 'on no' : ''}" onclick="setRsvp('${escapeHtml(key)}','no')">❌ 불참</button></div>`
+      ? `<div class="rsvp-btns"><button class="${mine === 'yes' ? 'on yes' : ''}" onclick="setRsvp('${escapeHtml(key)}','yes')">참석</button><button class="${mine === 'no' ? 'on no' : ''}" onclick="setRsvp('${escapeHtml(key)}','no')">불참</button></div>`
       : (!past && !me ? '<div class="cm-note" style="margin:0 0 4px;">참석 표시는 위의 "👤 이름 선택" 후 할 수 있어요.</div>' : '');
     const whyOf = k => { const a = ans[k]; return a && a.s === 'no' && a.why ? String(a.why) : ''; };
     const whyTxt = k => whyOf(k) ? ` <span style="color:#8F3030;font-weight:600;">· ${escapeHtml(whyOf(k))}</span>` : '';
@@ -3646,18 +3647,18 @@ function renderRsvpBlocks(err) {
         const a = ans[k] || {}, c = a.s;
         const ak = escapeHtml(k), an = escapeHtml(nm);
         const b = (v, lab, cls) => `<button class="${c === v ? 'on ' + cls : ''}" onclick="adminSetRsvp('${ek}','${ak}','${v}')">${lab}</button>`;
-        return `<div class="rsvp-edit-row"><span class="rn">${an}${a.by === 'admin' ? ' <i title="관리자가 수정함">✏️</i>' : ''}${whyTxt(k)}</span><span class="rb">${b('yes','✅ 참석','yes')}${b('no','❌ 불참','no')}${b('','⏳ 미응답','')}</span></div>`;
+        return `<div class="rsvp-edit-row"><span class="rn">${an}${a.by === 'admin' ? ' <i title="관리자가 수정함">✏️</i>' : ''}${whyTxt(k)}</span><span class="rb">${b('yes','참석','yes')}${b('no','불참','no')}${b('','미응답','')}</span></div>`;
       }).join('') || '<div class="cm-note">대상자가 없어요.</div>';
       names = `<details class="rsvp-names" ${openRsvpEdit.has(key) ? 'open' : ''} ontoggle="toggleRsvpEdit('${escapeHtml(key)}',this.open)"><summary>✏️ 명단 보기·수정 (관리자)</summary>
         <div class="cm-note" style="margin:4px 0;">지난 일정도 고칠 수 있어요. 바꾸면 기록에 바로 반영돼요.</div>${rowHtml}${copyBtn}</details>`;
     } else if (staff) {
       names = `<details class="rsvp-names"><summary>명단 보기</summary>
-        <div><b>✅ 참석 (${yes.length})</b> ${yes.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>
-        <div><b>❌ 불참 (${no.length})</b> ${no.map(x => escapeHtml(x.name) + whyTxt(x.key)).join(', ') || '-'}</div>
-        <div><b>⏳ 미응답 (${none.length})</b> ${none.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>${copyBtn}</details>`;
+        <div><b>참석 (${yes.length})</b> ${yes.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>
+        <div><b>불참 (${no.length})</b> ${no.map(x => escapeHtml(x.name) + whyTxt(x.key)).join(', ') || '-'}</div>
+        <div><b>미응답 (${none.length})</b> ${none.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>${copyBtn}</details>`;
     }
     el.dataset.none = none.length;
-    el.innerHTML = `${btns}${reasonBox}<div class="rsvp-sum">✅ 참석 <b>${yes.length}</b> · ❌ 불참 <b>${no.length}</b> · ⏳ 미응답 <b>${none.length}</b>${err ? ' <span style="color:#c0392b;">(확인 불가: ' + escapeHtml(String(err)) + ')</span>' : ''}</div>${names}`;
+    el.innerHTML = `${btns}${reasonBox}<div class="rsvp-sum">참석 <b>${yes.length}</b> · 불참 <b>${no.length}</b> · 미응답 <b>${none.length}</b>${err ? ' <span style="color:#c0392b;">(확인 불가: ' + escapeHtml(String(err)) + ')</span>' : ''}</div>${names}`;
   });
   renderAttendance();
 }
@@ -3821,7 +3822,7 @@ function copyRsvpReminder(key) {
   const aud = rsvpAudience(x.cats), ans = rsvpData['r_' + key] || {};
   const none = Array.from(aud.values()).filter(a => !(ans[a.key] && ans[a.key].s)).map(a => a.role === 'teacher' ? teacherTitle(a.name) : a.name);
   if (!none.length) { alert('미응답자가 없어요.'); return; }
-  copyText(`[참석 확인] ${itemLabel(x)}\n아직 응답하지 않은 사람: ${none.join(', ')}\n앱에서 ✅ 참석 / ❌ 불참을 눌러 주세요 🙏\n${location.origin}/`);
+  copyText(`[참석 확인] ${itemLabel(x)}\n아직 응답하지 않은 사람: ${none.join(', ')}\n앱에서 참석 / 불참을 눌러 주세요 🙏\n${location.origin}/`);
 }
 
 // 자료 모음
