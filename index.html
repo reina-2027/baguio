@@ -651,6 +651,12 @@
   .rsvp-why .wr { display:flex; gap:6px; }
   .rsvp-why input { flex:1; min-width:0; padding:9px 10px; border:1px solid #E6C9C6; border-radius:10px; font-size:0.9rem; font-family:inherit; background:#fff; }
   .rsvp-why button { flex:none; padding:8px 14px; border:none; border-radius:10px; background:#C0584F; color:#fff; font-weight:800; font-size:0.86rem; cursor:pointer; font-family:inherit; }
+  .rsvp-why button.ok { background:#3F8A5E; }
+  .rsvp-why.done { padding:9px 12px; background:#F7F4EE; border-color:#E5E1D5; }
+  .rsvp-why .vw { display:flex; align-items:center; gap:8px; }
+  .rsvp-why .vl { flex:none; font-size:0.76rem; font-weight:800; color:#8F3030; }
+  .rsvp-why .vt { flex:1; min-width:0; font-size:0.9rem; font-weight:600; color:var(--text); word-break:break-all; }
+  .rsvp-why .ed { flex:none; background:none; color:#8a5a2b; padding:4px 2px; font-size:0.82rem; font-weight:800; text-decoration:underline; }
   .rsvp-why .sv { margin-top:6px; font-size:0.78rem; color:#8F3030; }
   .rsvp-edit-row{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:4px 0;border-bottom:1px dashed #e5e5e5;flex-wrap:wrap}
 .rsvp-edit-row .rn{font-size:13px;font-weight:600}
@@ -3609,7 +3615,8 @@ function rsvpAudience(cats) {
 }
 
 const RSVP_ON = true;   // 참석/불참 기능 켜기·끄기 (false: 화면에서 숨김, 기록은 그대로 보관)
-let rsvpDraft = {};   // 불참 사유 입력 중인 글 (화면이 다시 그려져도 유지)
+let rsvpDraft = {};
+let rsvpEditing = {}, rsvpJustSaved = {};   // 불참 사유: 고치는 중 / 방금 저장함(잠깐 '저장됨 ✓' 표시)   // 불참 사유 입력 중인 글 (화면이 다시 그려져도 유지)
 function rsvpPlaceholder(day, it, past) {
   if (!RSVP_ON) return '';
   const cats = (it.categories && it.categories.length) ? it.categories : ['전체 모임'];
@@ -3636,8 +3643,13 @@ function renderRsvpBlocks(err) {
     const whyTxt = k => whyOf(k) ? ` <span style="color:#8F3030;font-weight:600;">· ${escapeHtml(whyOf(k))}</span>` : '';
     const myWhy = (me && mine === 'no') ? ((ans[meKey] || {}).why || '') : '';
     const draft = rsvpDraft[key] !== undefined ? rsvpDraft[key] : myWhy;
+    const myEntry = (me && mine === 'no') ? (ans[meKey] || {}) : {};
+    const viewMode = !!(myEntry.saved || myEntry.why) && !rsvpEditing[key] && !rsvpJustSaved[key];
+    const k1 = escapeHtml(key);
     const reasonBox = (!past && cmCanWrite() && mine === 'no')
-      ? `<div class="rsvp-why"><div class="q">못 오는 이유를 적어 주세요 <small>(선택 · 선생님께만 보여요)</small></div><div class="wr"><input type="text" maxlength="80" placeholder="예: 가족 여행이 있어요" value="${escapeHtml(draft)}" oninput="rsvpDraft['${escapeHtml(key)}']=this.value" onkeydown="if(event.key==='Enter'){this.blur();saveRsvpWhy('${escapeHtml(key)}');}"><button type="button" onclick="saveRsvpWhy('${escapeHtml(key)}')">저장</button></div>${myWhy && draft === myWhy ? `<div class="sv">✓ 저장됨: ${escapeHtml(myWhy)}</div>` : ''}</div>`
+      ? (viewMode
+        ? `<div class="rsvp-why done"><div class="vw"><span class="vl">불참 사유</span><span class="vt">${myWhy ? escapeHtml(myWhy) : '적지 않았어요'}</span><button type="button" class="ed" onclick="rsvpEditWhy('${k1}')">${myWhy ? '수정' : '이유 쓰기'}</button></div></div>`
+        : `<div class="rsvp-why"><div class="q">못 오는 이유를 적어 주세요 <small>(선택 · 선생님께만 보여요)</small></div><div class="wr"><input type="text" maxlength="80" placeholder="예: 가족 여행이 있어요" value="${escapeHtml(draft)}" oninput="rsvpDraft['${k1}']=this.value" onkeydown="if(event.key==='Enter'){this.blur();saveRsvpWhy('${k1}');}"><button type="button" class="${rsvpJustSaved[key] ? 'ok' : ''}" onclick="saveRsvpWhy('${k1}')">${rsvpJustSaved[key] ? '저장됨 ✓' : '저장'}</button></div></div>`)
       : '';
     const copyBtn = (staff && !past && none.length) ? `<button type="button" class="rsvp-copy" onclick="copyRsvpReminder('${escapeHtml(key)}')">📋 미응답자 알림 문구 복사</button>` : '';
     let names = '';
@@ -3691,6 +3703,10 @@ function adminSetRsvp(key, personKey, s) {
   });
 }
 
+function rsvpEditWhy(key) {
+  rsvpEditing[key] = true; renderRsvpBlocks();
+  const el = document.querySelector(`.rsvp[data-rk="${key}"] .rsvp-why input`); if (el) { el.focus(); const n = el.value.length; try { el.setSelectionRange(n, n); } catch (e) {} }
+}
 function saveRsvpWhy(key) {
   const me = meFind(meKey);
   if (!me) return;
@@ -3701,14 +3717,16 @@ function saveRsvpWhy(key) {
   const why = String(rsvpDraft[key] !== undefined ? rsvpDraft[key] : (cur.why || '')).trim().slice(0, 80);
   delete rsvpDraft[key];
   const prev = { ...cur };
-  const entry = { ...cur, at: Date.now() };
+  const entry = { ...cur, at: Date.now(), saved: true };
   if (why) entry.why = why; else delete entry.why;
+  delete rsvpEditing[key]; rsvpJustSaved[key] = true;
+  setTimeout(() => { delete rsvpJustSaved[key]; renderRsvpBlocks(); }, 1100);
   const apply = v => { rsvpData[f] = { ...(rsvpData[f] || {}), [meKey]: v }; renderRsvpBlocks(); };
   apply(entry);
   RSVP_REF.update({ [`${f}.${meKey}`]: entry })
     .catch(e => (e && e.code === 'not-found') ? RSVP_REF.set({ [f]: { [meKey]: entry } }, { merge: true }) : Promise.reject(e))
     .catch(e => {
-    apply(prev);
+    delete rsvpJustSaved[key]; apply(prev);
     alert(e && e.code === 'permission-denied' ? '서버 설정(보안 규칙) 때문에 저장되지 않아요.\n관리자에게 알려 주세요. (permission-denied)' : '저장하지 못했어요. 인터넷 연결을 확인해 주세요.');
   });
 }
@@ -3720,7 +3738,7 @@ function setRsvp(key, s) {
   const f = 'r_' + key;
   const cur = (rsvpData[f] || {})[meKey];
   const cancel = cur && cur.s === s;   // 같은 걸 다시 누르면 취소
-  delete rsvpDraft[key];
+  delete rsvpDraft[key]; delete rsvpEditing[key]; delete rsvpJustSaved[key];
   const prev = cur ? { ...cur } : null;
   const apply = v => { rsvpData[f] = { ...(rsvpData[f] || {}) }; if (v) rsvpData[f][meKey] = v; else delete rsvpData[f][meKey]; renderRsvpBlocks(); };
   const entry = { s, who: me.name, at: Date.now() };
