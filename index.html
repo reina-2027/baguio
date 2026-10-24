@@ -711,6 +711,7 @@
   .pv-fit { position:relative; overflow:hidden; border-radius:12px; background:#fff; }
   .pv-fit iframe { position:absolute; top:0; left:0; max-width:none; transform-origin:0 0; border-radius:0; }
   .pv.folder iframe { height:360px; }
+  .pv-asdoc { display:block; margin:-2px 0 2px auto; border:none; background:none; padding:2px 0; font-size:0.74rem; font-weight:700; color:#A59E90; cursor:pointer; font-family:inherit; text-decoration:underline; }
   .pv-open { display:inline-block; margin-top:4px; font-size:0.76rem; font-weight:700; color:var(--muted); text-decoration:none; }
   .att-view .pv { margin-bottom:10px; }
   .p-code { margin-top:4px; font-size:0.72rem; font-weight:700; color:#8a6a1f; }
@@ -731,6 +732,8 @@
   .att-chip { display:flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--border); border-radius:10px; background:var(--card); font-size:0.88rem; }
   .att-chip span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .att-chip button { border:none; background:none; color:#c0392b; font-size:1.1rem; cursor:pointer; }
+  .att-chip button.att-mv { color:var(--muted); font-size:1rem; font-weight:800; padding:2px 6px; }
+  .att-chip button.att-mv:disabled { opacity:.25; cursor:default; }
   .att-view { margin-top:10px; }
   a.photo-fail { display:block; padding:11px 14px; margin-bottom:8px; border:1px dashed #d9b95c; border-radius:12px; background:#fdf7e9; color:#8a6a1f; font-size:0.84rem; font-weight:700; text-decoration:none; line-height:1.5; }
   .att-view .tl-btn { margin-bottom:6px; padding:9px 12px; font-size:0.86rem; }
@@ -2338,7 +2341,7 @@ function attBox(kind) { return document.querySelector(`.att-ed[data-kind="${kind
 function renderAttEditor(kind) {
   const box = attBox(kind); if (!box) return;
   box.querySelector('.att-list').innerHTML = attState[kind].map((a, i) =>
-    `<div class="att-chip"><span>${a.photo ? '🖼️' : /youtu/i.test(a.url) ? '▶️' : '📎'} ${escapeHtml(a.name)}</span><input type="number" min="1" max="80" inputmode="numeric" value="${a.pages || ''}" placeholder="쪽수" title="문서 쪽수 (전체 펼쳐 보기)" style="width:62px;" onchange="setAttPages('${kind}',${i},this.value)"><button type="button" onclick="removeAtt('${kind}',${i})" aria-label="삭제">×</button></div>`).join('');
+    `<div class="att-chip"><span>${a.photo ? '🖼️' : /youtu/i.test(a.url) ? '▶️' : '📎'} ${escapeHtml(a.name)}</span><input type="number" min="1" max="80" inputmode="numeric" value="${a.pages || ''}" placeholder="쪽수" title="문서 쪽수 (전체 펼쳐 보기)" style="width:62px;" onchange="setAttPages('${kind}',${i},this.value)"><button type="button" class="att-mv" onclick="moveAtt('${kind}',${i},-1)" aria-label="위로" ${i === 0 ? 'disabled' : ''}>↑</button><button type="button" class="att-mv" onclick="moveAtt('${kind}',${i},1)" aria-label="아래로" ${i === attState[kind].length - 1 ? 'disabled' : ''}>↓</button><button type="button" onclick="removeAtt('${kind}',${i})" aria-label="삭제">×</button></div>`).join('');
 }
 function addAtt(kind) {
   const box = attBox(kind); if (!box) return;
@@ -2357,6 +2360,12 @@ function addAtt(kind) {
 }
 function pgNum(v) { const n = parseInt(v, 10); return n >= 1 && n <= 80 ? n : 0; }
 function setAttPages(kind, i, v) { const n = pgNum(v); if (n) attState[kind][i].pages = n; else delete attState[kind][i].pages; }
+function moveAtt(kind, i, d) {
+  const j = i + d, a = attState[kind];
+  if (j < 0 || j >= a.length) return;
+  const t = a[i]; a[i] = a[j]; a[j] = t;
+  renderAttEditor(kind);
+}
 function removeAtt(kind, i) { attState[kind].splice(i, 1); renderAttEditor(kind); }
 function setAtt(kind, list) {
   attState[kind] = (list || []).map(a => { const o = { name: a.name, url: a.url, photo: !!a.photo }; if (pgNum(a.pages)) o.pages = pgNum(a.pages); return o; });
@@ -2387,7 +2396,7 @@ function previewInfo(u) {
   if (/\.(jpe?g|png|gif|webp|bmp|avif)(\?.*)?$/i.test(u)) return { kind: 'img', src: u };
   return null;
 }
-function previewHtml(url, name, photo, pages) {
+function previewHtml(url, name, photo, pages, noAuto) {
   const u = safeUrl(url);
   if (!u) return '';
   const label = escapeHtml(name || '');
@@ -2398,6 +2407,11 @@ function previewHtml(url, name, photo, pages) {
     const src = driveThumb(u) || (info && info.kind === 'img' ? info.src : u);
     return `<div class="pv">${head}<a class="tl-photo" href="${escapeHtml(u)}" target="_blank" rel="noopener"><img src="${escapeHtml(src)}" data-alt="${escapeHtml(driveAlt(u))}" onerror="photoFail(this)" referrerpolicy="no-referrer" alt="${label}" loading="lazy"></a></div>`;
   }
+  // 드라이브 '파일' 링크는 먼저 사진으로 불러 봄 → 사진이면 크기에 딱 맞게(검은 여백 없이), 사진이 아니면(PDF 등) 기존 미리보기로
+  const dm = !noAuto && !pgNum(pages) && /drive\.google\.com\/(?:file\/d\/|open\?(?:.*&)?id=|uc\?(?:.*&)?id=)([\w-]{10,})/i.exec(u);
+  if (dm) {
+    return `<div class="pv pv-auto" data-u="${escapeHtml(u)}" data-name="${label}" data-pages="${pgNum(pages) || ''}">${head}<a class="tl-photo" href="${escapeHtml(u)}" target="_blank" rel="noopener"><img src="${escapeHtml(driveThumb(u))}" data-alt="${escapeHtml(driveAlt(u))}" onerror="pvAutoFail(this)" referrerpolicy="no-referrer" alt="${label}" loading="lazy"></a><button type="button" class="pv-asdoc" onclick="pvAutoFail(this, true)">문서(PDF)라면 눌러서 펼쳐 보기</button></div>`;
+  }
   if (info) {
     const frame = `<iframe src="${escapeHtml(info.src)}" loading="lazy" allowfullscreen allow="fullscreen; autoplay; encrypted-media; picture-in-picture" referrerpolicy="no-referrer" title="${label || '미리보기'}"></iframe>`;
     // 문서(PDF·구글 문서)는 넓은 화면 크기로 그려서 줄여 보여줌 → 옆으로 밀지 않고 한 화면에 다 보임
@@ -2406,6 +2420,12 @@ function previewHtml(url, name, photo, pages) {
       : `<div class="pv-fit" data-src="${escapeHtml(info.src)}">${frame}</div><div class="pv-ctl"><button type="button" class="pv-exp" onclick="togglePvFull(this)"></button><button type="button" class="pv-pg" onclick="setPvPages(this)">쪽수 변경</button></div>`) : frame}${open}</div>`;
   }
   return `<a class="tl-btn" href="${escapeHtml(u)}" target="_blank" rel="noopener">🔗 ${label || escapeHtml(u)}</a>`;
+}
+function pvAutoFail(img, force) {   // 사진이 아니었음(또는 문서로 보기 선택) → 문서 미리보기로 바꿈
+  if (!force && img.dataset.alt && !img.dataset.tried) { img.dataset.tried = '1'; img.src = img.dataset.alt; return; }
+  const pv = img.closest('.pv-auto'); if (!pv) return;
+  pv.outerHTML = previewHtml(pv.dataset.u, pv.dataset.name, false, pv.dataset.pages, true);
+  schedFitPv();
 }
 // 문서 미리보기: 넓은 화면(500px 기준)으로 그린 뒤 칸 너비에 맞게 줄임. 뷰어의 어두운 좌·우 여백(왼쪽 틈, 오른쪽 스크롤바)은 잘라냄
 const PV_LAYOUT_W = 500, PV_CROP_L = 26, PV_CROP_R = 34;
