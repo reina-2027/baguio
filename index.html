@@ -843,8 +843,8 @@
 
   .me-browse { display:block; width:100%; padding:13px 10px; border-radius:12px; border:1.5px solid var(--c-bible); background:var(--c-bible-soft); color:var(--c-bible-deep); font-weight:800; font-size:0.95rem; cursor:pointer; font-family:inherit; white-space:nowrap; }
   .me-or { text-align:center; font-size:0.76rem; color:var(--muted); font-weight:700; margin:12px 0 10px; display:flex; align-items:center; gap:8px; }
+  .p-code-btn { margin-left:6px; padding:2px 8px; font-size:0.72rem; border:1px solid var(--border); border-radius:8px; background:var(--card, #fff); color:var(--muted); cursor:pointer; }
   .me-or::before,.me-or::after { content:''; flex:1; height:1px; background:var(--border); }
-  body.browse nav.tabs button[data-tab="roster"], body.browse nav.tabs button[data-tab="academy"] { display:none; }
   body.browse .cm-box, body.browse [data-cm-btn], body.browse #team-members-card, body.browse #attend-card { display:none !important; }
 </style>
 </head>
@@ -871,7 +871,7 @@
   <button data-tab="bible">성경읽기</button>
   <button data-tab="prayer">기도제목</button>
   <button data-tab="prep-schedule">준비모임</button>
-  <button data-tab="academy">주말일정</button>
+  <button data-tab="academy">개인일정</button>
   <button data-tab="teams">사역팀</button>
   <button data-tab="roster">명단</button>
   <button data-tab="depart">출국준비</button>
@@ -889,6 +889,7 @@
   <section class="panel" id="panel-participants">
     <div class="card">
       <div class="list-head"><h2>🌱 학생 명단</h2><span class="list-count" id="participant-count"></span></div>
+      <div class="admin-only-codes" id="codes-all-row" style="display:none; margin:-4px 0 8px;"><button type="button" class="p-code-btn" onclick="copyAllCodes()">🔑 이름 코드 전체 복사</button></div>
       <input id="p-search-teacher" class="people-search" placeholder="🔍 이름, 학년, 담당, 방, 차량 검색" oninput="renderParticipants()" />
       <div class="add-form collapsed" id="participant-form" style="display:none;">
         <button type="button" class="form-toggle" onclick="openForm('participant-form')">＋ 학생 추가</button>
@@ -1293,6 +1294,8 @@
   </section>
 
   <!-- 6. 공지 탭 -->
+  <section class="panel" id="panel-browselock"><div class="card"><div class="empty">둘러보기에서는 볼 수 없는 내용이에요.</div></div></section>
+
   <section class="panel" id="panel-feed">
     <div id="next-event"></div>
     <div class="card">
@@ -2659,7 +2662,7 @@ function personRowHtml({ id, name, sub, roles, extra, onclick }) {
         </div>
         ${roles && roles.length ? `<div class="p-tags">${roles.map(r => `<span class="p-tag">${escapeHtml(r)}</span>`).join('')}</div>` : ''}
         ${extra}
-        ${canEdit && id ? `<div class="p-code">🔑 해제 코드 ${meCode(((state.participants || []).some(x => x.id === id) ? 'p_' : 't_') + id)}</div>` : ''}
+        ${canEdit && id ? `<div class="p-code">🔑 해제 코드 ${meCode(((state.participants || []).some(x => x.id === id) ? 'p_' : 't_') + id)} <button type="button" class="p-code-btn" onclick="event.stopPropagation(); copyMyCode('${id}')">안내 복사</button></div>` : ''}
       </div>
       ${canEdit ? '<span class="p-chev">›</span>' : ''}
     </div>`;
@@ -2721,6 +2724,7 @@ function renderParticipants() {
   }
   document.getElementById('participant-count').textContent = `${all.length}명`;
   document.getElementById('participant-form').style.display = canEdit ? 'flex' : 'none';
+  const car = document.getElementById('codes-all-row'); if (car) car.style.display = canEdit ? '' : 'none';
 }
 
 function submitParticipant() {
@@ -3877,6 +3881,22 @@ function downloadRsvpCommentsJson() {
   saveBlob(JSON.stringify(data, null, 2), 'application/json', `baguio_rsvp_comments_${bibleToday()}.json`);
 }
 
+function personCodeInfo(id) {
+  const isP = (state.participants || []).some(x => x.id === id);
+  const p = (isP ? state.participants : state.teachers || []).find(x => x.id === id);
+  if (!p) return null;
+  const key = (isP ? 'p_' : 't_') + id;
+  return { name: p.name, role: isP ? 'student' : 'teacher', code: meCode(key) };
+}
+function copyMyCode(id) {
+  const c = personCodeInfo(id); if (!c) return;
+  const who = c.role === 'teacher' ? teacherTitle(c.name) : c.name + '님';
+  copyText(who + ' 이름 코드는 ' + c.code + '예요.\n앱에서 내 이름을 누르면 코드를 물어봐요. 그때 입력해 주세요.');
+}
+function copyAllCodes() {
+  const rows = [...(state.participants || []).slice().sort(byName).map(p => ({ n: p.name, id: p.id })), ...(state.teachers || []).slice().sort(byName).map(t => ({ n: t.name, id: t.id }))];
+  copyText('이름 코드 명단\n' + rows.map(r => r.n + ' : ' + personCodeInfo(r.id).code).join('\n'));
+}
 function copyText(t) {
   const done = () => alert('복사했어요. 단톡방에 붙여넣기 하세요.');
   if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(done, () => fallback()); return; }
@@ -4705,7 +4725,9 @@ function meCode(key) {
 }
 function tryUnlockMe() {
   const v = (document.getElementById('me-code').value || '').trim();
-  if (v !== meCode(meKey)) { alert('코드가 맞지 않아요. 선생님께 해제코드를 물어보세요.'); return; }
+  if (meFailBlocked()) return;
+  if (v !== meCode(meKey)) { meFailAdd('코드가 맞지 않아요. 선생님께 해제코드를 물어보세요.'); return; }
+  meFailClear();
   setMeLock(false);
   mePending = '';
   renderMeChip(); syncPersonalChecklistDropdown(); renderBible(); renderPosts();
@@ -4743,7 +4765,7 @@ function renderMeChip() {
   const el = document.getElementById('me-chip');
   if (!el) return;
   const m = meFind(meKey);
-  el.textContent = m ? '👤 ' + m.name + (meLocked() ? ' 🔒' : '') : (browseMode ? '👀 둘러보기 중 · 이름 선택' : '👤 이름 선택');
+  el.textContent = m ? '👤 ' + m.name + (meLocked() ? ' 🔒' : '') : (browseMode ? '둘러보기 중 · 일부만 보여요' : '👤 이름 선택');
 }
 
 function applyMeAuthor() {
@@ -4786,7 +4808,7 @@ function openMeModal(first) {
   document.getElementById('me-modal').classList.add('show');
 }
 function startBrowse() {
-  browseMode = true; document.body.classList.add('browse');
+  browseMode = true; browseChecks = {}; document.body.classList.add('browse');
   closeMeModal(); renderMeChip(); renderAll(); showView('feed');
 }
 function endBrowse() { if (!browseMode) return; browseMode = false; document.body.classList.remove('browse'); }
@@ -4824,7 +4846,7 @@ function renderMeModal() {
   const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
   const cur = (meFind(meKey) || {}).name || '';
   box.innerHTML = `${meForced ? '<button type="button" class="me-browse" onclick="startBrowse()">둘러보기 <span style="font-weight:600;font-size:0.82rem;opacity:.85;">· 이름선택 없이 구경해요</span></button><div class="me-or">또는 내 이름 고르기</div>' : ''}<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : (browseMode ? '내 이름 고르기' : '이름 바꾸기')}</h2>
-    <div class="bb-sub" style="margin:0 0 8px;">${meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">🔑 이름을 누르면 <b>내 코드(숫자 4자리)</b>를 물어봐요.<br>코드는 선생님께 받으세요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
+    <div class="bb-sub" style="margin:0 0 8px;">${meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">이름을 누르면 <b>내 코드(숫자 4자리)</b>를 입력해야 해요.<br>코드는 김진경 선생님께 받으세요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
     <div class="me-list" id="me-list">
       ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
     </div>
@@ -4834,11 +4856,30 @@ function renderMeModal() {
 }
 function pickMe(key) { meGate(key, () => { mePending = key; renderMeModal(); }); }
 
+// 코드 오입력 제한: 5번 틀리면 3분 동안 이 기기에서 코드 입력 불가
+const ME_FAIL_KEY = 'baguio_me_fail';
+let meFailMem = { n: 0, until: 0 };
+function meFailGet() { try { const o = JSON.parse(localStorage.getItem(ME_FAIL_KEY) || 'null'); if (o) return o; } catch (e) {} return meFailMem; }
+function meFailSet(o) { meFailMem = o; try { localStorage.setItem(ME_FAIL_KEY, JSON.stringify(o)); } catch (e) {} }
+function meFailBlocked() {   // 잠겨 있으면 안내하고 true
+  const o = meFailGet(), left = o.until - Date.now();
+  if (left > 0) { const tot = Math.ceil(left / 1000), m = Math.floor(tot / 60), sec = tot % 60; alert('코드를 5번 틀렸어요. ' + (m ? m + '분 ' : '') + sec + '초 뒤에 다시 해보세요.'); return true; }
+  return false;
+}
+function meFailAdd(wrongMsg) {   // 틀렸을 때 호출: 횟수 올리고 안내
+  const o = meFailGet(); const n = (o.until > Date.now() ? 0 : (o.n || 0)) + 1;
+  if (n >= 5) { meFailSet({ n: 0, until: Date.now() + 3 * 60 * 1000 }); alert('코드를 5번 틀렸어요. 3분 뒤에 다시 해보세요.'); return; }
+  meFailSet({ n, until: 0 });
+  alert(wrongMsg + ' (' + (5 - n) + '번 더 틀리면 3분 동안 잠겨요)');
+}
+function meFailClear() { meFailSet({ n: 0, until: 0 }); }
+
 // ----- 이름 고르기 전 코드 확인: 새로 이름을 고를 때는 그 사람의 코드(4자리)를 입력해야 함 (관리모드는 생략) -----
 let meGateKey = '', meGateCb = null, meGateInModal = false;
 function meGate(key, cb) {
   if (!key) return;
   if (canEdit || key === meKey) { cb(); return; }
+  if (meFailBlocked()) return;
   const modal = document.getElementById('me-modal');
   meGateInModal = modal.classList.contains('show');
   meGateKey = key; meGateCb = cb;
@@ -4852,8 +4893,10 @@ function meGateCancel() {
   try { syncPersonalChecklistDropdown(); renderBible(); } catch (e) {}
 }
 function meGateOk() {
+  if (meFailBlocked()) return;
   const v = (document.getElementById('me-gate-code').value || '').trim();
-  if (v !== meCode(meGateKey)) { alert('코드가 맞지 않아요. 선생님께 내 코드(숫자 4자리)를 물어보세요.'); return; }
+  if (v !== meCode(meGateKey)) { meFailAdd('코드가 맞지 않아요. 선생님께 내 코드를 물어보세요.'); return; }
+  meFailClear();
   const cb = meGateCb, inModal = meGateInModal;
   meGateKey = ''; meGateCb = null;
   if (!inModal) closeMeModal();
@@ -4867,6 +4910,12 @@ function syncPersonalChecklistDropdown() {
   const progress = document.getElementById('personal-progress');
   if (!select || !picker) return;
 
+  if (browseMode) {   // 둘러보기: 이름 없이 목록만 (체험)
+    picker.innerHTML = '<div class="bb-hint" style="margin:0 0 12px;">체험 화면이에요. 체크 기록은 저장되지 않아요.</div>';
+    if (progress) progress.style.display = 'none';
+    renderPersonalChecklist();
+    return;
+  }
   const people = supplyPeople();
   const me = people.find(x => x.key === supplyPersonKey);
   select.innerHTML = '<option value=""></option>' + people.map(x => `<option value="${x.key}">${escapeHtml(x.name)}</option>`).join('');
@@ -4943,6 +4992,7 @@ function supplyMustBadge(m) {
     : '<span class="badge-check">🧳 반드시 위탁</span>';
 }
 
+let browseChecks = {};   // 둘러보기 체험용 체크 (저장 안 됨)
 function renderPersonalChecklist() {
   const select = document.getElementById('studentChecklistSelect');
   const container = document.getElementById('personalChecklistContainer');
@@ -4952,16 +5002,20 @@ function renderPersonalChecklist() {
   if (adminCard) adminCard.style.display = canEdit ? 'block' : 'none';
 
 
-  const personKey = select.value;
+  const personKey = browseMode ? '__demo' : select.value;
   if (!personKey) {
     container.innerHTML = '';
     setProgress('personal', 0, 0);
     return;
   }
 
-  if (!state.personalChecks) state.personalChecks = {};
-  if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
-  const userChecks = state.personalChecks[personKey];
+  let userChecks;
+  if (browseMode) userChecks = browseChecks;     // 화면에서만 표시, 저장 안 함
+  else {
+    if (!state.personalChecks) state.personalChecks = {};
+    if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
+    userChecks = state.personalChecks[personKey];
+  }
 
   const checklistData = state.personalChecklistData || defaultPersonalChecklistData;
 
@@ -5012,6 +5066,7 @@ function renderPersonalChecklist() {
 
 // 누를 때 그 사람·그 항목 칸만 바로 저장 (다른 사람 체크를 덮어쓰지 않음, 저장 버튼 필요 없음)
 function togglePersonalItem(personKey, itemId) {
+  if (browseMode) { if (browseChecks[itemId]) delete browseChecks[itemId]; else browseChecks[itemId] = true; renderPersonalChecklist(); return; }
   if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
   if (!state.personalChecks) state.personalChecks = {};
   if (!state.personalChecks[personKey]) state.personalChecks[personKey] = {};
@@ -6310,8 +6365,8 @@ function renderBible() {
       </div>`;
   }).join('');
 
-  html += browseMode ? '<div class="bb-hint">장 번호를 누르면 성경 본문을 열어볼 수 있어요. 이름을 고르면 읽음도 기록할 수 있어요.</div>' : '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
-  root.innerHTML = html;
+  html += browseMode ? '<div class="bb-hint">장 번호를 누르면 성경 본문을 열어볼 수 있어요.</div>' : '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
+  root.innerHTML = (browseMode ? '<div class="bb-hint" style="margin:0 0 10px;">체험 화면이에요. 체크 기록은 저장되지 않아요.</div>' : '') + html;
 }
 
 function onBibleChapter(bookKey, ch) {
@@ -6788,8 +6843,15 @@ function nextEvGo() {
 setInterval(() => { try { nextEvRender(); } catch (e) {} }, 5 * 60 * 1000);
 
 function showView(top, sub) {
-  if (!VIEWS[top] || (browseMode && (top === 'roster' || top === 'academy'))) top = 'feed';
-  const subs = browseMode ? VIEWS[top].filter(x => x.id !== 'personal-supplies') : VIEWS[top];
+  if (!VIEWS[top]) top = 'feed';
+  if (browseMode && (top === 'roster' || top === 'academy')) {   // 둘러보기: 탭은 보이지만 내용은 안내 문구만
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === top));
+    document.querySelectorAll('main section.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-browselock').classList.add('active');
+    const bar0 = document.getElementById('subtabs'); bar0.innerHTML = ''; bar0.style.display = 'none';
+    return;
+  }
+  const subs = VIEWS[top];
   const cur = subs.find(x => x.id === sub) || subs.find(x => x.id === loadSubs()[top]) || subs[0];
   saveSub(top, cur.id);
   document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === top));
