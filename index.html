@@ -4717,7 +4717,7 @@ function renderMeChip() {
   const el = document.getElementById('me-chip');
   if (!el) return;
   const m = meFind(meKey);
-  el.textContent = m ? '👤 ' + m.name + (meLocked() ? ' 🔒' : '') : (browseMode ? '👀 구경 중 · 이름 선택' : '👤 이름 선택');
+  el.textContent = m ? '👤 ' + m.name + (meLocked() ? ' 🔒' : '') : (browseMode ? '👀 둘러보기 중 · 이름 선택' : '👤 이름 선택');
 }
 
 function applyMeAuthor() {
@@ -4788,7 +4788,7 @@ function renderMeModal() {
   const st = people.filter(x => x.role === 'student'), te = people.filter(x => x.role === 'teacher');
   const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
   const cur = (meFind(meKey) || {}).name || '';
-  box.innerHTML = `${meForced ? '<button type="button" class="me-browse" onclick="startBrowse()">이름없이 구경해요</button><div class="me-or">또는 내 이름 고르기</div>' : ''}<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : (browseMode ? '내 이름 고르기' : '이름 바꾸기')}</h2>
+  box.innerHTML = `${meForced ? '<button type="button" class="me-browse" onclick="startBrowse()">둘러보기 <span style="font-weight:600;font-size:0.82rem;opacity:.85;">· 이름없이 구경해요</span></button><div class="me-or">또는 내 이름 고르기</div>' : ''}<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : (browseMode ? '내 이름 고르기' : '이름 바꾸기')}</h2>
     <div class="bb-sub" style="margin:0 0 8px;">${meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">👪 <b>학부모님은 우리 아이 이름</b>을 골라 주세요.<br>이 이름으로 주말일정을 기록할 수 있어요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
     <div class="me-list" id="me-list">
       ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
@@ -6082,7 +6082,7 @@ function bibleTodayCardHtml(sid) {
     html += `<div class="bb-now-label">지금 읽을 장</div>
       <div class="bb-today-row"><span class="bt-name">${bibleChapterLabel(now)}</span>
         <button type="button" class="bt-read" onclick="bibleOpenReader('${now.book.key}', ${now.ch})">📖 읽기</button>
-        <button class="bt-done" onclick="bibleMarkRead('${now.book.key}', ${now.ch})">읽었어요</button></div>
+        ${browseMode ? '' : `<button class="bt-done" onclick="bibleMarkRead('${now.book.key}', ${now.ch})">읽었어요</button>`}</div>
       <div class="bb-today-sub">${cheer}</div>`;
   } else {
     html += `<div class="bb-today-row done"><span class="bt-name" style="color:var(--c-bible-deep);">오늘 분량 완료! 🎉</span></div>
@@ -6141,13 +6141,13 @@ function renderBible() {
   const members = bibleMembers();
   const comm = bibleCommunity();
 
-  const me = members.find(m => m.id === bibleStudentId);
+  const me = browseMode ? { id: '__demo', name: '', role: 'student', virtual: true } : members.find(m => m.id === bibleStudentId);   // 둘러보기: 기록 없는 체험 화면
   const barsHtml = `<div class="bb-book-bars">
         ${comm.studentCount ? `<div class="bb-book-row"><span class="bb-book-name">학생 (${comm.studentCount}명)</span>${bibleBar(comm.studentPlan)}<span class="bb-book-pct">${comm.studentPlan}%</span></div>` : ''}
         ${comm.teacherCount ? `<div class="bb-book-row"><span class="bb-book-name">교사 (${comm.teacherCount}명)</span>${bibleBar(comm.teacherPlan)}<span class="bb-book-pct">${comm.teacherPlan}%</span></div>` : ''}
       </div>`;
   let html = '';
-  if (me) {
+  if (me && !me.virtual) {
     // 이름을 고른 사람: 내 달성률(오늘까지 읽을 분량 기준)을 크게, 그 아래에 학생·교사 막대
     const myCount0 = bibleStudentCount(me.id);
     const myPlanned0 = biblePlannedOn(bibleToday());
@@ -6180,10 +6180,6 @@ function renderBible() {
 
 
 
-  if (!me && browseMode) {
-    root.innerHTML = html + '<div class="bb-hint">이름을 고르면 내 성경읽기를 기록할 수 있어요.</div>';
-    return;
-  }
   if (!me) {
     const pending = members.find(m => m.id === biblePendingId);
     const loading = latestRemoteState === null;
@@ -6227,7 +6223,7 @@ function renderBible() {
   const today = bibleToday();
   const readSet = bibleReadDateSet(sid);
 
-  html += bibleTodayCardHtml(sid) + bibleTeacherCard(me);
+  html += bibleTodayCardHtml(sid) + (browseMode ? '' : bibleTeacherCard(me));
 
   html += bibleGuideHtml(myCount);
 
@@ -6253,11 +6249,12 @@ function renderBible() {
       </div>`;
   }).join('');
 
-  html += '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
+  html += browseMode ? '<div class="bb-hint">장 번호를 누르면 성경 본문을 열어볼 수 있어요. 이름을 고르면 읽음도 기록할 수 있어요.</div>' : '<div class="bb-hint">장 번호를 누르면 오늘 날짜로 읽음이 기록돼요. 읽은 장을 누르면 읽은 날짜를 볼 수 있어요.</div>';
   root.innerHTML = html;
 }
 
 function onBibleChapter(bookKey, ch) {
+  if (browseMode) { bibleOpenReader(bookKey, ch); return; }
   if (!bibleStudentId) return;
   if (bibleDates(bibleStudentId, bookKey, ch).length) openBibleDetail(bookKey, ch);
   else recordBibleRead(bookKey, ch);
@@ -6689,7 +6686,19 @@ function nextEvRender() {
 // ----- 글·일정 주소 링크: 앱주소/#post=글번호 , 앱주소/#ps=일정번호 → 열면 바로 그 글로 이동 (관리자가 '링크 복사'로 만듦) -----
 let pendingDeep = (() => { const m = /^#(post|ps)=(.+)$/.exec(location.hash || ''); if (!m) return null; try { return { t: m[1], id: decodeURIComponent(m[2]) }; } catch (e) { return null; } })();
 function copyDeepLink(kind, id) {
-  copyText(location.origin + location.pathname + '#' + kind + '=' + encodeURIComponent(id));
+  // 카톡 미리보기용 주소(/api/s)로 복사: 제목·설명이 주소에 그대로 들어가요 (주소는 길어지지만 따로 저장할 게 없어요)
+  let t = '', d = '';
+  try {
+    if (kind === 'post') {
+      const p = (state.posts || []).find(x => x.id === id);
+      if (p) { t = p.title || '공지'; d = String(p.text || '').replace(/\s+/g, ' ').trim().slice(0, 70); }
+    } else {
+      const x = allRsvpItems().find(i => i.key === id);
+      if (x) { t = '준비모임 · ' + itemLabel(x); d = [x.it.place ? '장소: ' + x.it.place : '', x.cats.join(', ')].filter(Boolean).join(' · '); }
+    }
+  } catch (e) {}
+  const q = 'k=' + kind + '&id=' + encodeURIComponent(id) + (t ? '&t=' + encodeURIComponent(t.slice(0, 50)) : '') + (d ? '&d=' + encodeURIComponent(d) : '');
+  copyText(location.origin + '/api/s?' + q);
 }
 function deepFlash(el) {
   if (!el) return;
