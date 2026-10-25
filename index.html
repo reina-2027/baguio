@@ -727,7 +727,7 @@
   .role-editor .re-lock { flex:1; padding:8px 10px; font-size:0.88rem; color:var(--muted); background:var(--bg2); border-radius:9px; }
   .role-editor .re-hint { font-size:0.76rem; color:var(--muted); line-height:1.5; }
   .att-ed { display:flex; flex-direction:column; gap:8px; }
-  .att-row { display:grid; grid-template-columns:1fr 1.4fr; gap:8px; }
+  .att-ed .att-row { display:grid; grid-template-columns:1fr 1.4fr; gap:8px; }
   .att-row2 { display:flex; align-items:center; justify-content:space-between; gap:8px; }
   .att-chip { display:flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--border); border-radius:10px; background:var(--card); font-size:0.88rem; }
   .att-chip span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -836,6 +836,11 @@
   .ac-resp-name { font-weight:800; }
   .ac-note { font-size:0.8rem; color:var(--muted); line-height:1.5; }
 
+  .me-browse { display:block; width:100%; padding:13px 10px; border-radius:12px; border:1.5px solid var(--c-bible); background:var(--c-bible-soft); color:var(--c-bible-deep); font-weight:800; font-size:0.95rem; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .me-or { text-align:center; font-size:0.76rem; color:var(--muted); font-weight:700; margin:12px 0 10px; display:flex; align-items:center; gap:8px; }
+  .me-or::before,.me-or::after { content:''; flex:1; height:1px; background:var(--border); }
+  body.browse nav.tabs button[data-tab="roster"], body.browse nav.tabs button[data-tab="academy"] { display:none; }
+  body.browse .cm-box, body.browse [data-cm-btn], body.browse #team-members-card, body.browse #attend-card { display:none !important; }
 </style>
 </head>
 <body>
@@ -1216,7 +1221,7 @@
       </div>
       <div id="team-meetings"></div>
     </div>
-    <div class="card">
+    <div class="card" id="team-members-card">
       <h2>👥 팀원</h2>
       <div id="team-members"></div>
       <div class="bb-hint" style="text-align:left; margin-top:8px;">학생·교사 등록의 "담당"에서 이 팀을 체크하면 자동으로 나와요.</div>
@@ -3476,7 +3481,7 @@ function renderItemCards(dayList, isPast = false) {
             ${attListHtml(it.attachments)}
             ${rsvpPlaceholder(s, it, isPast)}
           </div>
-          ${canEdit ? `<div class="ps-actions"><button onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button><button class="del" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
+          ${canEdit ? `<div class="ps-actions"><button onclick="copyDeepLink('ps','${escapeHtml(itemKey(s, it))}')">링크 복사</button><button onclick="startEditPrepScheduleItem('${s.id}', ${idx})">수정</button><button class="del" onclick="removePrepScheduleItem('${s.id}', ${idx})">삭제</button><button class="del" onclick="removePrepSchedule('${s.id}')">이 날짜 전체 삭제</button></div>` : ''}
         </div>
       `;
     });
@@ -4120,7 +4125,7 @@ function renderPosts() {
       const dp = dateParts(p.date);
       const diff = daysUntil(p.date);
       return `
-      <article class="notice${p.kind === 'bible' ? ' bible' : i === 0 ? ' latest' : ''}">
+      <article class="notice${p.kind === 'bible' ? ' bible' : i === 0 ? ' latest' : ''}" id="post-${escapeHtml(p.id)}">
         <div class="notice-date">${dp ? `<span class="m">${dp.m}월</span><span class="d">${dp.d}</span><span class="w">${dp.w}요일</span>` : `<span class="w">${escapeHtml(p.date || '')}</span>`}</div>
         <div class="notice-main">
           <div class="notice-top">
@@ -4132,7 +4137,7 @@ function renderPosts() {
           ${attListHtml(p.attachments)}
           <div style="margin-top:8px;"><button class="cm-btn" data-cm-btn="${escapeHtml(p.id)}" onclick="toggleComments('${escapeHtml(p.id)}')">💬 댓글</button></div>
           ${commentBoxHtml(p.id)}
-          ${canEdit ? `<div class="notice-foot"><span></span><div class="notice-actions">${p.kind === 'bible' ? '' : `<button onclick="startEditPost('${p.id}')">수정</button>`}<button class="del" onclick="removePost('${p.id}')">삭제</button></div></div>` : ''}
+          ${canEdit ? `<div class="notice-foot"><span></span><div class="notice-actions"><button onclick="copyDeepLink('post','${p.id}')">링크 복사</button>${p.kind === 'bible' ? '' : `<button onclick="startEditPost('${p.id}')">수정</button>`}<button class="del" onclick="removePost('${p.id}')">삭제</button></div></div>` : ''}
         </div>
       </article>
     `;
@@ -4650,6 +4655,7 @@ let meKey = (() => { try { const k = localStorage.getItem(ME_KEY) || ''; if (k =
 let mePending = '';
 let meSynced = false;
 let meAsked = false;      // 이번 접속에서 이미 물어봤는지
+let browseMode = false;   // 이름 없이 구경 중 (저장·개인정보 없음)
 let meForced = false;     // 처음 선택 중이면 바깥을 눌러도 안 닫힘
 
 function meList() { return supplyPeople(); } // key = p_/t_ + id
@@ -4682,6 +4688,7 @@ function tryUnlockMe() {
 
 function setMe(key) {
   meKey = key || '';
+  if (meKey) endBrowse();
   try { if (meKey) localStorage.setItem(ME_KEY, meKey); else localStorage.removeItem(ME_KEY); } catch (e) {}
   // 성경읽기·개인준비물에도 같은 이름 적용
   const pk = meKey || '';
@@ -4710,7 +4717,7 @@ function renderMeChip() {
   const el = document.getElementById('me-chip');
   if (!el) return;
   const m = meFind(meKey);
-  el.textContent = m ? '👤 ' + m.name + (meLocked() ? ' 🔒' : '') : '👤 이름 선택';
+  el.textContent = m ? '👤 ' + m.name + (meLocked() ? ' 🔒' : '') : (browseMode ? '👀 구경 중 · 이름 선택' : '👤 이름 선택');
 }
 
 function applyMeAuthor() {
@@ -4752,6 +4759,11 @@ function openMeModal(first) {
   renderMeModal();
   document.getElementById('me-modal').classList.add('show');
 }
+function startBrowse() {
+  browseMode = true; document.body.classList.add('browse');
+  closeMeModal(); renderMeChip(); renderAll(); showView('feed');
+}
+function endBrowse() { if (!browseMode) return; browseMode = false; document.body.classList.remove('browse'); }
 function closeMeModal() { meForced = false; document.getElementById('me-modal').classList.remove('show'); }
 
 function renderMeModal() {
@@ -4776,13 +4788,13 @@ function renderMeModal() {
   const st = people.filter(x => x.role === 'student'), te = people.filter(x => x.role === 'teacher');
   const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
   const cur = (meFind(meKey) || {}).name || '';
-  box.innerHTML = `<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : '이름 바꾸기'}</h2>
+  box.innerHTML = `${meForced ? '<button type="button" class="me-browse" onclick="startBrowse()">이름없이 구경해요</button><div class="me-or">또는 내 이름 고르기</div>' : ''}<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : (browseMode ? '내 이름 고르기' : '이름 바꾸기')}</h2>
     <div class="bb-sub" style="margin:0 0 8px;">${meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">👪 <b>학부모님은 우리 아이 이름</b>을 골라 주세요.<br>이 이름으로 주말일정을 기록할 수 있어요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
     <div class="me-list" id="me-list">
       ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
     </div>
     <div class="bb-sheet-actions" style="margin-top:12px;">
-      ${meForced ? '<button class="bb-close" onclick="closeMeModal()">나중에</button>' : '<button class="bb-close" onclick="closeMeModal()">닫기</button>'}
+      ${meForced ? '' : '<button class="bb-close" onclick="closeMeModal()">닫기</button>'}
     </div>`;
 }
 function pickMe(key) { mePending = key; renderMeModal(); }
@@ -5039,6 +5051,7 @@ function renderSharedChecklist() {
 }
 
 function openTeacherModalForSharedItem(itemId) {
+  if (browseMode) { alert('구경 중이라 기록할 수 없어요. 이름을 고르면 쓸 수 있어요.'); return; }
   activeSharedItemIdForCheck = itemId;
   const modal = document.getElementById('teacher-select-modal');
   if (modal) {
@@ -5196,6 +5209,7 @@ function renderAll() {
   renderAttendance();
   try { nextEvRender(); } catch (e) {}
   notifyRefresh();
+  try { deepLinkTry(); } catch (e) {}
 }
 
 // ===== 학원시간 =====
@@ -6166,6 +6180,10 @@ function renderBible() {
 
 
 
+  if (!me && browseMode) {
+    root.innerHTML = html + '<div class="bb-hint">이름을 고르면 내 성경읽기를 기록할 수 있어요.</div>';
+    return;
+  }
   if (!me) {
     const pending = members.find(m => m.id === biblePendingId);
     const loading = latestRemoteState === null;
@@ -6668,6 +6686,37 @@ function nextEvRender() {
     ${sub ? `<div class="ne-sub">${sub}</div>` : ''}
     <div class="ne-more">눌러서 자세히 보기 ›</div></div>`;
 }
+// ----- 글·일정 주소 링크: 앱주소/#post=글번호 , 앱주소/#ps=일정번호 → 열면 바로 그 글로 이동 (관리자가 '링크 복사'로 만듦) -----
+let pendingDeep = (() => { const m = /^#(post|ps)=(.+)$/.exec(location.hash || ''); if (!m) return null; try { return { t: m[1], id: decodeURIComponent(m[2]) }; } catch (e) { return null; } })();
+function copyDeepLink(kind, id) {
+  copyText(location.origin + location.pathname + '#' + kind + '=' + encodeURIComponent(id));
+}
+function deepFlash(el) {
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  el.classList.add('ne-flash'); setTimeout(() => el.classList.remove('ne-flash'), 2200);
+}
+function deepLinkTry() {
+  if (!pendingDeep) return;
+  const d = pendingDeep;
+  let found = false;
+  if (d.t === 'post') {
+    if ((state.posts || []).some(p => p.id === d.id)) { found = true; showView('feed'); setTimeout(() => deepFlash(document.getElementById('post-' + d.id)), 120); }
+  } else {
+    for (const day of (state.prepSchedule || [])) {
+      const idx = (day.items || []).findIndex(it => itemKey(day, it) === d.id);
+      if (idx >= 0) {
+        found = true; psFilter = 'all'; showView('prep-schedule'); renderPrepSchedule();
+        setTimeout(() => deepFlash(document.getElementById('psi-' + day.id + '-' + idx)), 120);
+        break;
+      }
+    }
+  }
+  if (!found && !sawMeaningfulData) return;      // 아직 서버 자료가 안 왔을 수 있음 → 다음에 다시 시도
+  pendingDeep = null;
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  if (!found) alert('삭제됐거나 찾을 수 없는 글이에요.');
+}
 function nextEvGo() {
   const t = window.__nextEvTarget; if (!t) return;
   if (!t.isPrep) { showView('schedule'); return; }
@@ -6684,8 +6733,8 @@ function nextEvGo() {
 setInterval(() => { try { nextEvRender(); } catch (e) {} }, 5 * 60 * 1000);
 
 function showView(top, sub) {
-  if (!VIEWS[top]) top = 'feed';
-  const subs = VIEWS[top];
+  if (!VIEWS[top] || (browseMode && (top === 'roster' || top === 'academy'))) top = 'feed';
+  const subs = browseMode ? VIEWS[top].filter(x => x.id !== 'personal-supplies') : VIEWS[top];
   const cur = subs.find(x => x.id === sub) || subs.find(x => x.id === loadSubs()[top]) || subs[0];
   saveSub(top, cur.id);
   document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === top));
