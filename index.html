@@ -7027,7 +7027,7 @@ setInterval(() => { try { nextEvRender(); } catch (e) {} }, 5 * 60 * 1000);
 
 function showView(top, sub) {
   if (!VIEWS[top]) top = 'feed';
-  if (browseMode && (top === 'roster' || top === 'academy')) {   // 둘러보기: 탭은 보이지만 내용은 안내 문구만
+  if (browseMode && (top === 'roster' || top === 'academy' || top === 'wish')) {   // 둘러보기: 탭은 보이지만 내용은 안내 문구만
     document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === top));
     document.querySelectorAll('main section.panel').forEach(p => p.classList.remove('active'));
     document.getElementById('panel-browselock').classList.add('active');
