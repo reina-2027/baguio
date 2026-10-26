@@ -136,6 +136,49 @@
   nav.tabs button[data-tab="prayer"].active { background: var(--c-prayer); border-color: var(--c-prayer); color: #FFFFFF; }
   #panel-prayer .card::before { background: var(--c-prayer); }
 
+  :root { --c-wish: #3E8E8A; --c-wish-soft: #EAF5F4; --c-wish-line: #CDE5E3; }
+  nav.tabs button[data-tab="wish"].active { background: var(--c-wish); border-color: var(--c-wish); color: #FFFFFF; }
+  #panel-wish .card::before { background: var(--c-wish); }
+  .w-sub { font-size:.8rem; color:var(--muted); line-height:1.55; margin:2px 0 12px; }
+  .w-box { background:#FBF7F0; border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:14px; }
+  .w-cats { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .w-cat { padding:6px 11px; border-radius:999px; border:1.5px solid var(--border); background:#fff; font-size:.8rem; font-weight:700; color:var(--muted); cursor:pointer; font-family:inherit; }
+  .w-cat.on { background:var(--c-wish); border-color:var(--c-wish); color:#fff; }
+  .w-in { display:flex; gap:8px; }
+  .w-in input { flex:1; min-width:0; border:1.5px solid var(--border); border-radius:10px; background:#fff; padding:10px 12px; font-size:.92rem; font-family:inherit; }
+  .w-in button { background:var(--accent); color:#fff; border:none; border-radius:10px; padding:10px 14px; font-size:.9rem; font-weight:800; cursor:pointer; font-family:inherit; }
+  .w-note { text-align:center; color:var(--muted); font-size:.85rem; line-height:1.6; }
+  .w-note button { margin-top:6px; padding:7px 14px; border-radius:10px; border:1.5px solid var(--c-wish); background:#fff; color:var(--c-wish); font-weight:800; cursor:pointer; font-family:inherit; }
+  .w-bar { display:flex; justify-content:space-between; align-items:center; margin:4px 0 8px; font-size:.78rem; color:var(--muted); font-weight:700; }
+  .w-bar button { border:1px solid var(--border); background:#fff; border-radius:8px; padding:3px 9px; font-size:.72rem; font-weight:700; color:var(--muted); cursor:pointer; font-family:inherit; }
+  .w-item { display:flex; gap:10px; padding:12px 0; border-top:1px solid var(--border); }
+  .w-item.no { opacity:.62; }
+  .w-rank { width:26px; text-align:center; font-weight:900; color:var(--accent); font-size:1.05rem; padding-top:1px; flex:none; }
+  .w-body { flex:1; min-width:0; }
+  .w-tag { display:inline-block; font-size:.7rem; font-weight:800; border-radius:6px; padding:1px 7px; background:#EAF3F9; color:#24506F; }
+  .w-tag.food { background:#FFF3EA; color:#8a4b1d; } .w-tag.buy { background:#F7ECF7; color:#6b3f6c; } .w-tag.etc { background:#F1ECE2; color:#5d584c; }
+  .w-st { display:inline-block; font-size:.7rem; font-weight:800; border-radius:6px; padding:1px 7px; margin-left:5px; background:#FAF3E5; color:#6b5210; }
+  .w-txt { font-weight:800; font-size:.96rem; margin-top:3px; line-height:1.4; word-break:break-all; }
+  .w-meta { font-size:.74rem; color:var(--muted); margin-top:3px; }
+  .w-ans { margin-top:7px; background:#EDF4EA; border-radius:9px; padding:7px 10px; font-size:.8rem; color:#2f5a3a; line-height:1.45; }
+  .w-like { flex:none; align-self:flex-start; text-align:center; border:1.5px solid var(--border); border-radius:12px; padding:6px 10px; background:#fff; min-width:58px; cursor:pointer; font-family:inherit; }
+  .w-like.on { border-color:var(--accent); background:#FFF3EA; }
+  .w-like span { display:block; font-size:.7rem; font-weight:800; color:var(--muted); }
+  .w-like.on span { color:var(--accent); }
+  .w-like b { font-size:1.05rem; }
+  .w-adm { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+  .w-adm button { font-size:.72rem; border:1px solid var(--border); border-radius:8px; padding:3px 9px; background:#fff; color:var(--muted); font-weight:700; cursor:pointer; font-family:inherit; }
+  .w-adm button.on { background:var(--c-bible); color:#fff; border-color:var(--c-bible); }
+  .w-adm button.del { color:#b3402a; }
+  .w-ok { background:#EDF4EA; border:1px solid #CFE0CF; border-radius:14px; padding:10px 12px; margin-bottom:12px; }
+  .w-ok h4 { margin:0 0 8px; font-size:.84rem; color:#2f5a3a; display:flex; justify-content:space-between; align-items:center; }
+  .w-ok h4 button { border:none; background:none; color:#2f5a3a; font-weight:800; font-size:.76rem; cursor:pointer; font-family:inherit; }
+  .w-chips { display:flex; gap:7px; overflow-x:auto; padding-bottom:2px; -webkit-overflow-scrolling:touch; }
+  .w-chip { flex:none; background:#fff; border:1px solid #CFE0CF; border-radius:999px; padding:6px 11px; font-size:.78rem; font-weight:800; color:#2f5a3a; white-space:nowrap; }
+  .w-chip small { font-weight:600; color:#6b7a6b; margin-left:4px; }
+  .w-donerow { display:flex; justify-content:space-between; gap:8px; padding:8px 2px; border-top:1px dashed #CFE0CF; font-size:.82rem; }
+  .w-donerow:first-of-type { margin-top:6px; }
+  .w-donerow b { font-weight:800; } .w-donerow span { color:#6b7a6b; font-size:.74rem; text-align:right; }
   main { max-width: 760px; margin: 0 auto; padding: 16px 12px 40px; }
   section.panel { display: none; }
   section.panel.active { display: block; }
@@ -869,6 +912,7 @@
 <nav class="tabs">
   <button data-tab="feed">공지</button>
   <button data-tab="bible">성경읽기</button>
+  <button data-tab="wish">버킷리스트</button>
   <button data-tab="prayer">기도제목</button>
   <button data-tab="prep-schedule">준비모임</button>
   <button data-tab="academy">개인일정</button>
@@ -1183,6 +1227,17 @@
   <!-- 성경읽기 탭 -->
   <section class="panel" id="panel-bible">
     <div id="bible-root"></div>
+  </section>
+
+  <!-- 버킷리스트 탭: 바기오에서 먹고 싶은 것·해보고 싶은 것을 적고 '나도요'로 공감 -->
+  <section class="panel" id="panel-wish">
+    <div class="card">
+      <h2>🪣 버킷리스트</h2>
+      <div class="w-sub">바기오에서 먹고 싶은 것, 해보고 싶은 것 다 적어요! 같은 마음이면 <b>나도요</b>를 눌러요.</div>
+      <div id="wish-done"></div>
+      <div id="wish-write"></div>
+      <div id="wish-list"></div>
+    </div>
   </section>
 
   <!-- 기도제목 탭 -->
@@ -2129,6 +2184,7 @@ function initFirebaseRealtimeSync() {
       latestRemoteState = cloneData(remote);
       bibleReading = cloneData(remote.bibleReading || {});
       academyTimes = cloneData(remote.academyTimes || {});
+      wishes = cloneData(remote.wishes || {});
 
       if (!dirty) {
         state = cloneData(remote);
@@ -2145,6 +2201,7 @@ function initFirebaseRealtimeSync() {
         renderSharedChecklist();
         renderBible();
         renderAcademy();
+        renderWish();
       }
     } else {
       // [중요] 서버 확인 전(캐시)에 온 "문서 없음"은 진짜가 아님. 예전에는 이때 기본값을 서버에 써서 실제 데이터를 덮어썼음.
@@ -5320,12 +5377,137 @@ function renderAll() {
   renderSharedChecklist();
   renderBible();
   renderAcademy();
+  renderWish();
   renderBackupCard();
   renderFiles();
   renderAttendance();
   try { nextEvRender(); } catch (e) {}
   notifyRefresh();
   try { deepLinkTry(); } catch (e) {}
+}
+
+// ===== 버킷리스트 (소원함) =====
+// 저장 위치: 기존 문서(shared_data)의 새 필드 wishes
+//   wishes.{글번호} = { id, cat, text, by(사람키), name, ts, likes: { 사람키: true }, status: ''|'rv'|'ok'|'no', statusTs, reply }
+// 쓰기·나도요·상태 변경은 모두 그 글(또는 그 칸)만 바로 저장하므로 다른 사람 것을 덮어쓰지 않음
+let wishes = {};
+let wishDoneOpen = false;
+const WISH_DAILY_MAX = 5, WISH_MAX_LEN = 60;
+const wishFP = (...p) => new firebase.firestore.FieldPath('wishes', ...p);
+function wishMyKey() { return meFind(meKey) ? meKey : (canEdit ? 'admin' : ''); }
+function wishMyName() { const m = meFind(meKey); return m ? m.name : (canEdit ? '선생님' : ''); }
+function wishAll() { return Object.values(wishes || {}).filter(w => w && w.id && w.text); }
+function wishLikeCount(w) { return Object.keys(w.likes || {}).length; }
+function wishDate(ts) { const d = new Date(ts || 0); return (d.getMonth() + 1) + '/' + d.getDate(); }
+
+function renderWish() {
+  const doneEl = document.getElementById('wish-done'), writeEl = document.getElementById('wish-write'), listEl = document.getElementById('wish-list');
+  if (!doneEl || !writeEl || !listEl) return;
+  const all = wishAll();
+  const done = all.filter(w => w.status === 'ok').sort((a, b) => (b.statusTs || 0) - (a.statusTs || 0));
+  const pend = all.filter(w => w.status !== 'ok').sort((a, b) => ((a.status === 'no') - (b.status === 'no')) || (wishLikeCount(b) - wishLikeCount(a)) || ((b.ts || 0) - (a.ts || 0)));
+  const mine = wishMyKey();
+
+  // 반영된 소원: 위 배너(칩) + 전체 보기
+  if (!done.length) doneEl.innerHTML = '';
+  else {
+    const chips = done.slice(0, 8).map(w => `<span class="w-chip">${escapeHtml(w.text.length > 12 ? w.text.slice(0, 12) + '…' : w.text)}${w.reply ? `<small>${escapeHtml(w.reply.length > 10 ? w.reply.slice(0, 10) + '…' : w.reply)}</small>` : ''}</span>`).join('');
+    const rows = wishDoneOpen ? done.map(w => `<div class="w-donerow"><b>${escapeHtml(w.text)}</b><span>나도요 ${wishLikeCount(w)} · ${wishDate(w.statusTs)}${w.reply ? '<br>선생님: ' + escapeHtml(w.reply) : ''}</span></div>`).join('') : '';
+    doneEl.innerHTML = `<div class="w-ok"><h4><span>✅ 반영된 소원 ${done.length}개</span><button type="button" onclick="wishToggleDone()">${wishDoneOpen ? '접기 ▴' : '전체 보기 ›'}</button></h4>${wishDoneOpen ? rows : `<div class="w-chips">${chips}</div>`}</div>`;
+  }
+
+  // 쓰기 칸
+  if (!mine) {
+    writeEl.innerHTML = `<div class="w-box"><div class="w-note">이름을 고르면 소원을 적을 수 있어요<br><button type="button" onclick="openMeModal()">내 이름 고르기</button></div></div>`;
+  } else if (!writeEl.querySelector('#wish-input')) {
+    writeEl.innerHTML = `<div class="w-box"><div class="w-in"><input id="wish-input" maxlength="${WISH_MAX_LEN}" placeholder="바기오에서 원하는 걸 적어요 (예: 졸리비 먹고 싶어요)" onkeydown="if(event.key==='Enter')wishAdd()" /><button type="button" onclick="wishAdd()">올리기</button></div></div>`;
+  }
+
+  // 목록
+  const head = `<div class="w-bar"><span>나도요 많은 순 · 진행 중 ${pend.length}개</span>${canEdit && all.length ? '<button type="button" onclick="wishCopyRank()">순위 복사</button>' : ''}</div>`;
+  if (!pend.length) { listEl.innerHTML = head + `<div class="empty">${done.length ? '아직 진행 중인 소원이 없어요. 새 소원을 적어 보세요!' : '아직 소원이 없어요. 첫 소원을 적어 보세요!'}</div>`; return; }
+  listEl.innerHTML = head + pend.map((w, i) => {
+    const n = wishLikeCount(w), on = !!(w.likes && mine && w.likes[mine]);
+    const st = w.status === 'rv' ? '<span class="w-st">🔎 검토 중</span>' : (w.status === 'no' ? '<span class="w-st">🙏 아쉽지만 어려워요</span>' : '');
+    const can = w.by === mine || canEdit;
+    const adm = canEdit ? `<div class="w-adm"><button type="button" class="${w.status === 'rv' ? 'on' : ''}" onclick="wishSetStatus('${w.id}','rv')">검토 중</button><button type="button" onclick="wishSetStatus('${w.id}','ok')">반영</button><button type="button" class="${w.status === 'no' ? 'on' : ''}" onclick="wishSetStatus('${w.id}','no')">어려워요</button><button type="button" onclick="wishReply('${w.id}')">답글 쓰기</button><button type="button" class="del" onclick="wishRemove('${w.id}')">삭제</button></div>` : (can ? `<div class="w-adm"><button type="button" class="del" onclick="wishRemove('${w.id}')">내 소원 삭제</button></div>` : '');
+    return `<div class="w-item${w.status === 'no' ? ' no' : ''}"><div class="w-rank">${w.status === 'no' ? '·' : i + 1}</div><div class="w-body">${st}<div class="w-txt" style="${st ? '' : 'margin-top:0;'}">${escapeHtml(w.text)}</div><div class="w-meta">${escapeHtml(w.name || '')} · ${wishDate(w.ts)}</div>${w.reply ? `<div class="w-ans">선생님: ${escapeHtml(w.reply)}</div>` : ''}${adm}</div><button type="button" class="w-like${on ? ' on' : ''}" onclick="wishLike('${w.id}')"><b>👍</b><span>나도요 ${n}</span></button></div>`;
+  }).join('');
+}
+function wishToggleDone() { wishDoneOpen = !wishDoneOpen; renderWish(); }
+
+function wishAdd() {
+  const key = wishMyKey(); if (!key) { openMeModal(); return; }
+  const inp = document.getElementById('wish-input'); if (!inp) return;
+  const text = (inp.value || '').trim().replace(/\s+/g, ' ');
+  if (!text) { alert('적을 내용을 입력해 주세요.'); return; }
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  const today = new Date().toDateString();
+  if (!canEdit && wishAll().filter(w => w.by === key && new Date(w.ts || 0).toDateString() === today).length >= WISH_DAILY_MAX) {
+    alert('하루에 ' + WISH_DAILY_MAX + '개까지 적을 수 있어요. 내일 또 적어 주세요!'); return;
+  }
+  const id = 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  const w = { id, text: text.slice(0, WISH_MAX_LEN), by: key, name: wishMyName(), ts: Date.now(), likes: {} };
+  wishes[id] = w; inp.value = ''; renderWish();
+  DOC_REF.update(wishFP(id), cloneData(w)).catch(e => {
+    console.error('소원 저장 실패:', e); delete wishes[id]; renderWish();
+    alert('저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+  });
+}
+function wishLike(id) {
+  const key = wishMyKey(); const w = wishes[id]; if (!w) return;
+  if (!key) { alert('이름을 고르면 나도요를 누를 수 있어요.'); return; }
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  if (!w.likes) w.likes = {};
+  const next = !w.likes[key];
+  const apply = v => { if (v) w.likes[key] = true; else delete w.likes[key]; };
+  apply(next); renderWish();
+  DOC_REF.update(wishFP(id, 'likes', key), next ? true : firebase.firestore.FieldValue.delete()).catch(e => {
+    console.error('나도요 저장 실패:', e); apply(!next); renderWish();
+    alert('저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+  });
+}
+function wishRemove(id) {
+  const w = wishes[id]; if (!w) return;
+  if (!(canEdit || w.by === wishMyKey())) return;
+  if (!confirm('이 소원을 지울까요?\n' + w.text)) return;
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  delete wishes[id]; renderWish();
+  DOC_REF.update(wishFP(id), firebase.firestore.FieldValue.delete()).catch(e => {
+    console.error('소원 삭제 실패:', e); wishes[id] = w; renderWish();
+    alert('지우지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+  });
+}
+function wishSetStatus(id, st) {
+  if (!canEdit) return; const w = wishes[id]; if (!w) return;
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  const prev = { status: w.status, statusTs: w.statusTs };
+  const next = (w.status === st && st !== 'ok') ? '' : st;       // 같은 버튼을 다시 누르면 해제
+  const fv = firebase.firestore.FieldValue;
+  w.status = next; if (next === 'ok') w.statusTs = Date.now(); else delete w.statusTs;
+  renderWish();
+  DOC_REF.update(wishFP(id, 'status'), next ? next : fv.delete(), wishFP(id, 'statusTs'), next === 'ok' ? w.statusTs : fv.delete()).catch(e => {
+    console.error('상태 저장 실패:', e); w.status = prev.status; if (prev.statusTs) w.statusTs = prev.statusTs; else delete w.statusTs; renderWish();
+    alert('저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+  });
+}
+function wishReply(id) {
+  if (!canEdit) return; const w = wishes[id]; if (!w) return;
+  const v = prompt('이 소원에 남길 한 줄 답글이에요. (비우면 답글이 지워져요)', w.reply || '');
+  if (v === null) return;
+  const t = v.trim().slice(0, 60), prev = w.reply;
+  if (!firebaseAuthReady) { alert('서버에 연결하는 중이에요. 잠시 후 다시 눌러 주세요.'); return; }
+  if (t) w.reply = t; else delete w.reply;
+  renderWish();
+  DOC_REF.update(wishFP(id, 'reply'), t ? t : firebase.firestore.FieldValue.delete()).catch(e => {
+    console.error('답글 저장 실패:', e); if (prev) w.reply = prev; else delete w.reply; renderWish();
+    alert('저장하지 못했어요. 인터넷 연결을 확인한 뒤 다시 눌러 주세요.');
+  });
+}
+function wishCopyRank() {
+  const all = wishAll().sort((a, b) => (wishLikeCount(b) - wishLikeCount(a)) || ((b.ts || 0) - (a.ts || 0)));
+  const mark = w => w.status === 'ok' ? ' [반영]' : w.status === 'rv' ? ' [검토 중]' : w.status === 'no' ? ' [어려워요]' : '';
+  copyText('버킷리스트 순위 (나도요 많은 순)\n' + all.map((w, i) => `${i + 1}. ${w.text} — 나도요 ${wishLikeCount(w)} (${w.name || ''})${mark(w)}`).join('\n'));
 }
 
 // ===== 학원시간 =====
@@ -6592,6 +6774,7 @@ const VIEWS = {
   'prep-schedule': [{ id: 'prep-schedule', panels: ['prep-schedule'] }],
   'bible':         [{ id: 'bible', panels: ['bible'] }],
   'prayer':        [{ id: 'prayer', panels: ['prayer'] }],
+  'wish':          [{ id: 'wish', panels: ['wish'] }],
   'teams':         TEAMS.map(t => ({ id: t, label: TEAM_STYLE[t].icon + ' ' + t, color: TEAM_STYLE[t].c, panels: ['teams'] })),
   'roster':        [{ id: 'participants', label: '🌱 학생', panels: ['participants'] }, { id: 'teachers', label: '🌳 교사', panels: ['teachers'] }, { id: 'assign', label: '🛏️ 배정', panels: ['assign'] }],
   'depart':        [{ id: 'personal-supplies', label: '🧳 개인준비물', panels: ['personal-supplies'] }, { id: 'shared-supplies', label: '📦 공용준비물', panels: ['shared-supplies'] }, { id: 'flights', label: '✈️ 항공권', panels: ['flights'] }, { id: 'fx', label: '💱 환율', panels: ['fx'] }],
@@ -6685,7 +6868,7 @@ function notifyPaint() {
   if (n.feed && top !== 'feed') chips.push(`<button onclick="showView('feed')">${canEdit ? '💬 새 댓글' : '📢 새 공지'} <b>${n.feed}</b></button>`);
   if (n.prep && top !== 'prep-schedule') chips.push(`<button onclick="showView('prep-schedule')">📅 새 준비모임 <b>${n.prep}</b></button>`);
   if (bible && top !== 'bible') { const nc = bibleNowChapter(meKey.slice(2)); if (nc) chips.push(`<button onclick="showView('bible')">📖 지금 읽을 장: ${escapeHtml(bibleChapterLabel(nc))}</button>`); }   // 서버 기록이 온 뒤, 오늘 아직 안 읽은 사람에게만
-  if (top !== 'academy' && notifyAcademyNudge()) chips.push(`<button onclick="showView('academy')">📅 주말일정 입력하기</button>`);
+  if (top !== 'academy' && notifyAcademyNudge()) chips.push(`<button onclick="showView('academy')">📅 개인일정 입력하기</button>`);
   bar.innerHTML = chips.join('');
   bar.classList.toggle('on', chips.length > 0);
 }
@@ -6869,6 +7052,7 @@ function showView(top, sub) {
   if (top === 'teams') { curTeam = cur.id; renderTeams(); }
   if (top === 'files') renderFiles();
   if (top === 'academy') renderAcademy();
+  if (top === 'wish') renderWish();
   if (top === 'depart' && cur.id === 'fx') fxOnOpen();
   try { sessionStorage.setItem('activeTab', top); } catch (e) {}
   notifyOpen(top);
