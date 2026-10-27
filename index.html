@@ -189,7 +189,7 @@
   #panel-participants .card::before { background: var(--c-participants); }
   #panel-teachers .card::before { background: var(--c-teachers); }
   #panel-assign .card::before { background: var(--c-assign); }
-  #panel-flights .card::before { background: var(--c-flights); }
+  #panel-flights .card::before, #panel-tz .card::before { background: var(--c-flights); }
   #panel-schedule .card::before { background: var(--c-schedule); }
   #panel-personal-supplies .card::before { background: var(--c-personal); }
   #panel-shared-supplies .card::before { background: var(--c-shared); }
@@ -553,7 +553,7 @@
   .bb-now-label { margin-top:2px; font-size:0.78rem; font-weight:800; color:#5f7a66; }
   .bb-today-label { margin-top:10px; font-size:0.78rem; font-weight:800; color:#b4572f; }
   .bb-ch.read { color:#fff; border-color:transparent; box-shadow:0 1px 2px rgba(0,0,0,0.08); }
-  .bb-multi { position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; background:#fff; opacity:0.9; }
+  .bb-multi { position:absolute; top:2px; right:3px; font-style:normal; font-size:0.62rem; font-weight:800; line-height:1; color:#fff; text-shadow:0 0 2px rgba(0,0,0,.35); }
   .bb-hint { font-size:0.74rem; color:var(--muted); text-align:center; margin:4px 8px 8px; line-height:1.5; word-break:break-all; }
   /* ===== 환율 계산기 / 다음 일정 카드 ===== */
   .fx-dir { display:flex; gap:8px; margin:6px 0 10px; }
@@ -568,6 +568,17 @@
   .fx-info { font-size:0.8rem; color:var(--muted); line-height:1.6; margin-top:6px; }
   .fx-quick { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
   .fx-quick div { background:#F6F6F0; border-radius:10px; padding:8px 8px; font-size:0.8rem; font-weight:700; display:flex; justify-content:space-between; gap:4px; white-space:nowrap; }
+  .tz-clocks { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:6px 0 10px; }
+  .tz-clock { background:#F6F6F0; border-radius:14px; padding:12px 8px; text-align:center; }
+  .tz-clock.ph { background:var(--c-flights-soft, #EAF2F4); }
+  .tz-clock small { display:block; font-weight:800; color:var(--muted); font-size:.78rem; }
+  .tz-clock b { display:block; font-size:1.45rem; font-weight:900; margin:4px 0 2px; }
+  .tz-clock span { font-size:.76rem; color:var(--muted); font-weight:700; }
+  .tz-gap { text-align:center; font-weight:800; margin:2px 0 14px; color:var(--text); }
+  .tz-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+  .tz-row input { flex:1; font-size:1.15rem; font-weight:800; padding:10px 12px; border:1.5px solid var(--border); border-radius:12px; font-family:inherit; min-width:0; }
+  .tz-table { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px; }
+  .tz-table div { background:#F6F6F0; border-radius:10px; padding:8px 4px; white-space:nowrap; font-size:.78rem; font-weight:700; text-align:center; }
   .fx-mini { font-family:inherit; font-size:0.8rem; font-weight:800; border:1.5px solid var(--border); background:#fff; border-radius:999px; padding:6px 12px; cursor:pointer; color:var(--text); }
   .next-ev { margin:0 0 12px; background:#fff; border:1.5px solid #E3D2BD; border-radius:18px; padding:13px 16px; box-shadow:0 2px 10px rgba(0,0,0,.05); }
   #prayer-list { display:flex; flex-direction:column; gap:12px; }
@@ -1139,6 +1150,14 @@
       </div>
       <div class="fx-quick" id="fx-quick"></div>
       <div class="fx-info">유럽중앙은행이 하루 한 번 발표하는 기준 환율이에요. 환전소·카드 환율과는 달라서 실제 금액은 조금 다를 수 있어요.</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-tz">
+    <div class="card">
+      <h2>🕐 시차 확인</h2>
+      <div class="tz-clocks"><div class="tz-clock"><small>🇰🇷 한국</small><b id="tz-kr-time"></b><span id="tz-kr-date"></span></div><div class="tz-clock ph"><small>🇵🇭 바기오</small><b id="tz-ph-time"></b><span id="tz-ph-date"></span></div></div>
+      <div class="tz-gap">바기오는 한국보다 <u>1시간 느려요</u></div>
     </div>
   </section>
 
@@ -5386,6 +5405,21 @@ function renderAll() {
   try { deepLinkTry(); } catch (e) {}
 }
 
+// ===== 시차 확인 (한국 = UTC+9, 바기오(필리핀) = UTC+8, 둘 다 서머타임 없음) =====
+function tzFmt(tz) {
+  const d = new Date();
+  const t = new Intl.DateTimeFormat('ko-KR', { timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true }).format(d);
+  const dt = new Intl.DateTimeFormat('ko-KR', { timeZone: tz, month: 'numeric', day: 'numeric', weekday: 'short' }).format(d);
+  return { t, dt };
+}
+function tzClocks() {
+  const k = tzFmt('Asia/Seoul'), p = tzFmt('Asia/Manila');
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('tz-kr-time', k.t); set('tz-kr-date', k.dt); set('tz-ph-time', p.t); set('tz-ph-date', p.dt);
+}
+function tzOnOpen() { tzClocks(); }
+setInterval(() => { const p = document.getElementById('panel-tz'); if (p && p.classList.contains('active')) tzClocks(); }, 15000);
+
 // ===== 버킷리스트 (소원함) =====
 // 저장 위치: 기존 문서(shared_data)의 새 필드 wishes
 //   wishes.{글번호} = { id, cat, text, by(사람키), name, ts, likes: { 사람키: true }, status: ''|'rv'|'ok'|'no', statusTs, reply }
@@ -6385,6 +6419,11 @@ function bibleTodayCardHtml(sid) {
   } else {
     html += `<div class="bb-today-row done"><span class="bt-name" style="color:var(--c-bible-deep);">오늘 분량 완료! 🎉</span></div>
       <div class="bb-today-sub">${diff > 0 ? `오늘 분량보다 <b>${diff}장 앞서 있어요</b> 👏 오늘도 수고했어요!` : '오늘도 수고했어요! 🎉'}</div>`;
+    const more = bibleChapterRange(1, BIBLE_TOTAL).find(c => bibleDates(sid, c.book.key, c.ch).length === 0);   // 더 읽고 싶은 사람을 위해 다음 안 읽은 장
+    if (more) html += `<div class="bb-now-label" style="margin-top:12px;">더 읽고 싶다면</div>
+      <div class="bb-today-row"><span class="bt-name">${bibleChapterLabel(more)}</span>
+        <button type="button" class="bt-read" onclick="bibleOpenReader('${more.book.key}', ${more.ch})">📖 읽기</button>
+        ${browseMode ? '' : `<button class="bt-done" onclick="bibleMarkRead('${more.book.key}', ${more.ch})">읽었어요</button>`}</div>`;
   }
   return html + '</div>';
 }
@@ -6533,7 +6572,7 @@ function renderBible() {
     for (let ch = 1; ch <= b.chapters; ch++) {
       const dates = bibleDates(sid, b.key, ch);
       const last = dates[dates.length - 1];
-      grid += `<button class="bb-ch${last ? ' read' : ''}${!last && planSet.has(b.key + ':' + ch) ? ' plan' : ''}" ${last ? `style="background:${bibleColor(last)}"` : ''} onclick="onBibleChapter('${b.key}', ${ch})" aria-label="${b.name} ${ch}장${last ? ' 읽음' : ''}">${ch}${dates.length > 1 ? '<i class="bb-multi"></i>' : ''}</button>`;
+      grid += `<button class="bb-ch${last ? ' read' : ''}${!last && planSet.has(b.key + ':' + ch) ? ' plan' : ''}" ${last ? `style="background:${bibleColor(last)}"` : ''} onclick="onBibleChapter('${b.key}', ${ch})" aria-label="${b.name} ${ch}장${last ? ' 읽음' + (dates.length > 1 ? ' ' + dates.length + '번' : '') : ''}">${ch}${dates.length > 1 ? `<i class="bb-multi">×${dates.length}</i>` : ''}</button>`;
     }
     return `
       <div class="card bb-book${done ? ' done' : ''}">
@@ -6640,6 +6679,7 @@ function openBibleDetail(bookKey, ch) {
       ${readToday
         ? ''
         : '<button class="primary" onclick="rereadBibleToday()">오늘 또 읽었어요</button>'}
+      <button class="bb-close" onclick="closeBibleDetail(); bibleOpenReader('${bookKey}', ${ch})">📖 성경 보기</button>
       <button class="bb-close" onclick="closeBibleDetail()">닫기</button>
     </div>`;
   document.getElementById('bible-toast').classList.remove('show');
@@ -6777,7 +6817,7 @@ const VIEWS = {
   'wish':          [{ id: 'wish', panels: ['wish'] }],
   'teams':         TEAMS.map(t => ({ id: t, label: TEAM_STYLE[t].icon + ' ' + t, color: TEAM_STYLE[t].c, panels: ['teams'] })),
   'roster':        [{ id: 'participants', label: '🌱 학생', panels: ['participants'] }, { id: 'teachers', label: '🌳 교사', panels: ['teachers'] }, { id: 'assign', label: '🛏️ 배정', panels: ['assign'] }],
-  'depart':        [{ id: 'personal-supplies', label: '🧳 개인준비물', panels: ['personal-supplies'] }, { id: 'shared-supplies', label: '📦 공용준비물', panels: ['shared-supplies'] }, { id: 'flights', label: '✈️ 항공권', panels: ['flights'] }, { id: 'fx', label: '💱 환율', panels: ['fx'] }],
+  'depart':        [{ id: 'personal-supplies', label: '🧳 개인준비물', panels: ['personal-supplies'] }, { id: 'shared-supplies', label: '📦 공용준비물', panels: ['shared-supplies'] }, { id: 'flights', label: '✈️ 항공권', panels: ['flights'] }, { id: 'fx', label: '💱 환율', panels: ['fx'] }, { id: 'tz', label: '🕐 시차', panels: ['tz'] }],
   'schedule':      [{ id: 'schedule', panels: ['schedule'] }],
   'academy':       [{ id: 'academy', panels: ['academy'] }],
   'files':         [{ id: 'files', panels: ['files'] }]
@@ -7054,6 +7094,7 @@ function showView(top, sub) {
   if (top === 'academy') renderAcademy();
   if (top === 'wish') renderWish();
   if (top === 'depart' && cur.id === 'fx') fxOnOpen();
+  if (top === 'depart' && cur.id === 'tz') tzOnOpen();
   try { sessionStorage.setItem('activeTab', top); } catch (e) {}
   notifyOpen(top);
 }
