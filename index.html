@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="light" style="color-scheme: light;">
+<html lang="ko" style="color-scheme: light;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -900,6 +900,190 @@
   .p-code-btn { margin-left:6px; padding:2px 8px; font-size:0.72rem; border:1px solid var(--border); border-radius:8px; background:var(--card, #fff); color:var(--muted); cursor:pointer; }
   .me-or::before,.me-or::after { content:''; flex:1; height:1px; background:var(--border); }
   body.browse .cm-box, body.browse [data-cm-btn], body.browse #team-members-card, body.browse #attend-card { display:none !important; }
+
+/* ===== 다크모드: 휴대폰이 다크모드일 때, 성경읽기 탭(body.dk-bible)에서만 적용 ===== */
+:root{--ik1:#FEF7E0;--ik2:#F2E3B6;--ik3:#B99248;--ik4:#1565C0;--ik5:#C62828;--ik6:rgba(0,0,0,0.5);--ik7:#fff;--ik8:#f2eee5;--ik9:#8F3030;--ik10:#c0392b;--ik11:#FFF8E6;--ik12:#F1DFAE;--ik13:#6B4E00}
+body.dk-bible{color-scheme:dark;--c-feed-deep:#e5c9b4;--c-feed-soft:#4c2c13;--c-feed-line:#5d3e29;--c-english-deep:#b3cee1;--c-english-soft:#223643;--c-bible-deep:#c3d5cb;--c-bible-soft:#2a3c31;--c-bible-line:#3d5445;--c-prep-deep:#f1e4c4;--c-prep-soft:#493b1f;--c-flights:#4b7c9e;--c-schedule-deep:#c3c1bc;--c-schedule-soft:#3c301d;--c-schedule-line:#4b4230;--c-personal-soft:#3f263f;--c-personal-line:#4d374d;--bg:#111511;--bg2:#171c17;--card:#1c221c;--text:#e6eae4;--muted:#9aa395;--border:#2f382f;--sky-soft:#1d2a20;--badge-carry-text:#8fc1f2;--badge-check-text:#f0a867;--c-prayer-deep:#b8b0d0;--c-prayer-soft:#2a203b;--c-prayer-line:#3c3351;--c-wish-soft:#293f3d;--c-wish-line:#3b5654;--c-academy-deep:#d3b5c1;--c-academy-soft:#41242f;--c-academy-line:#53323e;--accent:#d2825a;--sky:#7fa88a;--sun:#c9a455;--ok:#6fb27a;--badge-carry:#16293d;--badge-check:#3a2616;--surface:#232a23;--ik1:#524417;--ik2:#6d5f35;--ik3:#c8b185;--ik4:#82b1e7;--ik5:#db7e7e;--ik6:rgba(0,0,0,0.5);--ik7:#242825;--ik8:#4b4536;--ik9:#d89f9f;--ik10:#d98a82;--ik11:#4f3f14;--ik12:#726237;--ik13:#f9e7b5;}
+:where(body.dk-bible) .badge{color:#ffffff}
+:where(body.dk-bible) .admin-btn.active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-badge]::after{background:#e5484d;color:#ffffff}
+:where(body.dk-bible) #notify-bar{background:#4f3f14;border-bottom:1px solid #726237}
+:where(body.dk-bible) #notify-bar button{border:1px solid #988346;background:#242825;color:#f9e7b5}
+:where(body.dk-bible) #notify-bar button b{color:#da565b}
+:where(body.dk-bible) .new-tag{background:#e5484d;color:#ffffff}
+:where(body.dk-bible) nav.tabs button{color:#c3c8c4}
+:where(body.dk-bible) nav.tabs button[data-tab="feed"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="schedule"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="teams"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="roster"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="depart"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="files"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="bible"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="prayer"].active{color:#ffffff}
+:where(body.dk-bible) nav.tabs button[data-tab="wish"].active{color:#ffffff}
+:where(body.dk-bible) .w-box{background:#3f331f}
+:where(body.dk-bible) .w-cat{background:#242825}
+:where(body.dk-bible) .w-cat.on{color:#ffffff}
+:where(body.dk-bible) .w-in input{background:#242825}
+:where(body.dk-bible) .w-in button{color:#ffffff}
+:where(body.dk-bible) .w-note button{background:#242825}
+:where(body.dk-bible) .w-bar button{background:#242825}
+:where(body.dk-bible) .w-tag{background:#223643;color:#b3cee1}
+:where(body.dk-bible) .w-tag.food{background:#4c2c13;color:#e5bea3}
+:where(body.dk-bible) .w-tag.buy{background:#3f263f;color:#cfb5d0}
+:where(body.dk-bible) .w-tag.etc{background:#463e2e;color:#c8c5be}
+:where(body.dk-bible) .w-st{background:#493b1f;color:#eedfb6}
+:where(body.dk-bible) .w-ans{background:#313f2b;color:#c0dbc7}
+:where(body.dk-bible) .w-like{background:#242825}
+:where(body.dk-bible) .w-like.on{background:#4c2c13}
+:where(body.dk-bible) .w-adm button{background:#242825}
+:where(body.dk-bible) .w-adm button.on{color:#ffffff}
+:where(body.dk-bible) .w-adm button.del{color:#db978a}
+:where(body.dk-bible) .w-ok{background:#313f2b;border:1px solid #465746}
+:where(body.dk-bible) .w-ok h4{color:#c0dbc7}
+:where(body.dk-bible) .w-ok h4 button{color:#c0dbc7}
+:where(body.dk-bible) .w-chip{background:#242825;border:1px solid #465746;color:#c0dbc7}
+:where(body.dk-bible) .w-chip small{color:#abb4ab}
+:where(body.dk-bible) .w-donerow{border-top:1px dashed #465746}
+:where(body.dk-bible) .w-donerow span{color:#abb4ab}
+:where(body.dk-bible) .status-완료{color:#ffffff}
+:where(body.dk-bible) .status-대기{color:#fbebc9}
+:where(body.dk-bible) button.primary{color:#ffffff}
+:where(body.dk-bible) .item-card.past-card::before{background:#615c51}
+:where(body.dk-bible) .tag-cat{color:#bdc2be}
+:where(body.dk-bible) .tag-cat{background:color-mix(in srgb, var(--cc, #999999) 14%, #242825);color:var(--cc-deep, #caceca)}
+:where(body.dk-bible) .time-text{color:#dbc79c}
+:where(body.dk-bible) .dot{color:#cccccc}
+:where(body.dk-bible) .ps-actions button.del{color:#c78e8b}
+:where(body.dk-bible) .sch-filter-btn{color:#c3c8c4}
+:where(body.dk-bible) .sch-day-no{color:#ffffff}
+:where(body.dk-bible) .sch-day-del{color:#c78e8b}
+:where(body.dk-bible) .sch-now{color:#ffffff}
+:where(body.dk-bible) .sch-next-label b{color:#ffffff}
+:where(body.dk-bible) .sch-actions button.del{color:#c78e8b}
+:where(body.dk-bible) .progress-bar-bg{background-color:#403b31}
+:where(body.dk-bible) .custom-checkbox{border:2px solid #535a54}
+:where(body.dk-bible) .person-row.flash{background:var(--c-english-soft, #46291d)}
+:where(body.dk-bible) .p-tag{color:#bdc2be}
+:where(body.dk-bible) .danger-link{color:#c78e8b}
+:where(body.dk-bible) .role-check:has(input:checked) span{color:#ffffff}
+:where(body.dk-bible) .group-card.editing .group-edit-btn{color:#ffffff}
+:where(body.dk-bible) .group-tools .link-row button.del{color:#c78e8b}
+:where(body.dk-bible) .notice.latest .notice-date{color:#ffffff}
+:where(body.dk-bible) .notice-text{color:#cacecb}
+:where(body.dk-bible) .notice-actions button.del{color:#c78e8b}
+:where(body.dk-bible) .bb-bar{background:#473f31}
+:where(body.dk-bible) .bb-book-name{color:#bdc2be}
+:where(body.dk-bible) .tc-last.none{color:#c38aa3}
+:where(body.dk-bible) .tc-dot{background:#242825}
+:where(body.dk-bible) .bb-day.today small{color:#ffffff}
+:where(body.dk-bible) .bb-guide-desc{color:#c3c8c4}
+:where(body.dk-bible) .bb-pace.good{background:#343d2a;border-color:#4d5940}
+:where(body.dk-bible) .bb-dot{border:2px solid #5b5549}
+:where(body.dk-bible) .bb-ch{color:#9da59e}
+:where(body.dk-bible) .bb-today-row .bt-tag{color:#d7a089;background:#4b2d1d}
+:where(body.dk-bible) .bb-today-row button.bt-done{color:#ffffff}
+:where(body.dk-bible) .bb-hl{background:linear-gradient(transparent 55%, #826b20 55%)}
+:where(body.dk-bible) .bb-now-label{color:#abbbb0}
+:where(body.dk-bible) .bb-today-label{color:#d7a089}
+:where(body.dk-bible) .bb-ch.read{color:#ffffff}
+:where(body.dk-bible) .bb-multi{color:#ffffff}
+:where(body.dk-bible) .fx-dir button{background:#242825}
+:where(body.dk-bible) .fx-dir button.on{color:#ffffff}
+:where(body.dk-bible) .fx-result{background:var(--c-flights-soft, #2b3b3f)}
+:where(body.dk-bible) .fx-quick div{background:#38382a}
+:where(body.dk-bible) .tz-clock{background:#38382a}
+:where(body.dk-bible) .tz-clock.ph{background:var(--c-flights-soft, #2b3b3f)}
+:where(body.dk-bible) .tz-table div{background:#38382a}
+:where(body.dk-bible) .fx-mini{background:#242825}
+:where(body.dk-bible) .next-ev{background:#242825;border:1.5px solid #655643}
+:where(body.dk-bible) .pr-card{background:#242825;border:1px solid #554e41}
+:where(body.dk-bible) .pr-card.latest{background:linear-gradient(180deg,var(--c-prayer-soft) 0%,#242825 70%)}
+:where(body.dk-bible) .pr-text{color:#d4dbd7}
+:where(body.dk-bible) .pr-foot{border-top:1px dashed #554e41}
+:where(body.dk-bible) .pr-date{color:#9ca49d}
+:where(body.dk-bible) .pr-actions button.del{color:#c78e8b}
+:where(body.dk-bible) .next-ev .ne-title{color:#cfa586}
+:where(body.dk-bible) .next-ev .ne-dd{background:#b8703c;color:#ffffff}
+:where(body.dk-bible) .next-ev .ne-more{color:#b0a99c}
+:where(body.dk-bible) .bb-reader{background:#423411}
+:where(body.dk-bible) .br-top button{background:#242825}
+:where(body.dk-bible) .br-foot{background:#242825}
+:where(body.dk-bible) .br-actions button{background:#242825}
+:where(body.dk-bible) .br-actions button.br-done{color:#ffffff}
+:where(body.dk-bible) .bb-sheet{background:#242825}
+:where(body.dk-bible) .bb-history li{border-bottom:1px solid #4b4536}
+:where(body.dk-bible) .bb-cancel-one{color:#c78e8b}
+:where(body.dk-bible) .bb-toast{color:#ffffff}
+:where(body.dk-bible) .notice.bible{background:linear-gradient(135deg, var(--c-bible-soft) 0%, #423411 70%)}
+:where(body.dk-bible) .notice.bible .notice-date{color:#ffffff}
+:where(body.dk-bible) .en-step{border:1px solid var(--line, #524b3f)}
+:where(body.dk-bible) .en-no{color:#ffffff}
+:where(body.dk-bible) .en-tools button.del{border-color:#cc4444;color:#cf7474}
+:where(body.dk-bible) .en-modes button.on{color:#ffffff}
+:where(body.dk-bible) .en-step.k-talk{border-left-color:#3e9aa6}
+:where(body.dk-bible) .en-step.k-talk .en-no{background:#3e9aa6}
+:where(body.dk-bible) .en-step.k-talk .en-text{background:#274042;color:#b8dfe5}
+:where(body.dk-bible) .en-sec.s-talk{color:#a6d6dc}
+:where(body.dk-bible) .eg-row .x{color:#cf7474}
+:where(body.dk-bible) .subtabs button{color:#c3c8c4}
+:where(body.dk-bible) .subtabs button.on{color:#ffffff}
+:where(body.dk-bible) .ps-filter button{color:#c3c8c4}
+:where(body.dk-bible) .ps-filter button.on{color:#ffffff}
+:where(body.dk-bible) .tm-next{background:color-mix(in srgb, var(--cc) 12%, #242825);border:1px solid color-mix(in srgb, var(--cc) 35%, #313532)}
+:where(body.dk-bible) .tm-row .acts button.del{color:#c78e8b}
+:where(body.dk-bible) .rsvp-btns button.on.yes{background:#2e4335;border-color:#4e7d62;color:#c0dbcd}
+:where(body.dk-bible) .rsvp-btns button.on.no{background:#492521;border-color:#c0584f;color:#d89f9f}
+:where(body.dk-bible) .rsvp-why{background:#401d19;border:1px solid #5b3936}
+:where(body.dk-bible) .rsvp-why .q{color:#d89f9f}
+:where(body.dk-bible) .rsvp-why .q small{color:#b69a97}
+:where(body.dk-bible) .rsvp-why input{border:1px solid #5f4340;background:#242825}
+:where(body.dk-bible) .rsvp-why button{background:#c0584f;color:#ffffff}
+:where(body.dk-bible) .rsvp-why button.ok{background:#3f8a5e}
+:where(body.dk-bible) .rsvp-why.done{background:#3c3527;border-color:#544f42}
+:where(body.dk-bible) .rsvp-why .vl{color:#d89f9f}
+:where(body.dk-bible) .rsvp-why .ed{color:#dcbfa3}
+:where(body.dk-bible) .rsvp-why .sv{color:#d89f9f}
+:where(body.dk-bible) .rsvp-edit-row{border-bottom:1px dashed #424843}
+:where(body.dk-bible) .rsvp-edit-row .rb button{border:1px solid #535a54;background:#242825}
+:where(body.dk-bible) .rsvp-edit-row .rb button.on.yes{background:#275534}
+:where(body.dk-bible) .rsvp-edit-row .rb button.on.no{background:#511919}
+:where(body.dk-bible) .rsvp-edit-row .rb button.on{background:#333834;border-color:#888888}
+:where(body.dk-bible) .rsvp-copy{border:1px solid #5f6760;background:#242825}
+:where(body.dk-bible) .att-row .warn{color:#d98a82}
+:where(body.dk-bible) .cm-btn{color:var(--c-feed-deep, #e5c9b4)}
+:where(body.dk-bible) .cm-top button{color:#d98a82}
+:where(body.dk-bible) .pv-ctl button{color:var(--text, #d7dad8)}
+:where(body.dk-bible) .pv-fit{background:#242825}
+:where(body.dk-bible) .pv-asdoc{color:#9f998c}
+:where(body.dk-bible) .p-code{color:#e3d0a3}
+:where(body.dk-bible) .me-chip{border:1px solid rgba(49,53,50,0.55);background:rgba(36,40,37,0.18)}
+:where(body.dk-bible) .role-edit-btn{background:#4a3b19;color:#e3d0a3}
+:where(body.dk-bible) .role-editor{border:1.5px solid #7c6c42;background:#443811}
+:where(body.dk-bible) .role-editor .re-row button.del{color:#d98a82}
+:where(body.dk-bible) .att-chip button{color:#d98a82}
+:where(body.dk-bible) a.photo-fail{background:#4a3b19;color:#e3d0a3}
+:where(body.dk-bible) .tl-item .tl-del{color:#c78e8b}
+body:where(.dk-bible).admin .add-form:not(.collapsed){background:#4a3b19;border:1.5px solid #7c6c42 !important}
+body:where(.dk-bible).admin .add-form:not(.collapsed)::before{color:#e3d0a3;border-bottom:1px dashed #7c6c42}
+body:where(.dk-bible).admin .form-toggle{background:#4a3b19;color:#e3d0a3}
+:where(body.dk-bible) nav.tabs button[data-tab="academy"].active{color:#ffffff}
+:where(body.dk-bible) .ac-seg button.on{color:#ffffff}
+:where(body.dk-bible) .ac-day.on{color:#ffffff}
+:where(body.dk-bible) .ac-pill.on{color:#ffffff}
+:where(body.dk-bible) .ac-done{background:#2c4030}
+:where(body.dk-bible) .ac-todo{background:#4b311d}
+:where(body.dk-bible) .ac-grid td{color:#ffffff}
+:where(body.dk-bible) .ac-grid td.school{background:#534f42;color:#aba8a1}
+:where(body.dk-bible) .ac-grid td.blocked{background:repeating-linear-gradient(45deg,#4a4437 0 4px,#403a2a 4px 8px);color:#bcb9b2}
+:where(body.dk-bible) .p-code-btn{background:var(--card, #242825)}
+:where(body.dk-bible) .bb-reader{background:#151a17}
+:where(body.dk-bible) .br-body{color:#dfe5dc}
+  .dk-tg { display:inline-flex; align-items:center; gap:4px; border:1px solid rgba(0,0,0,0.18); background:rgba(255,255,255,0.4); color:inherit; border-radius:999px; padding:2px 6px 2px 7px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:inherit; vertical-align:middle; }
+  .dk-tg .sw { width:28px; height:16px; border-radius:999px; background:rgba(0,0,0,0.22); position:relative; transition:background .2s; }
+  .dk-tg .sw::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; border-radius:50%; background:#fff; transition:left .2s; }
+  .dk-tg.on .sw { background:#597F68; } .dk-tg.on .sw::after { left:14px; }
+  body.dk-bible .dk-tg { border-color:rgba(255,255,255,0.35); background:rgba(255,255,255,0.1); }
 </style>
 </head>
 <body>
@@ -911,6 +1095,7 @@
       <span class="badge" id="dday-badge">D-day 계산중</span>
       <span>출발일: <span id="trip-date-text">2027-01-10</span></span>
       <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">👤 이름 선택</button>
+      <button type="button" class="dk-tg" id="dk-tg" onclick="toggleAllDark()" aria-pressed="false" title="전체 다크모드"><i style="font-style:normal">🌙</i><span class="sw"></span></button>
       <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">👀 둘러보기 보기</button>
     </div>
   </div>
@@ -1245,6 +1430,7 @@
 
   <!-- 성경읽기 탭 -->
   <section class="panel" id="panel-bible">
+    <div style="display:flex;justify-content:flex-end;margin:0 0 8px;"><button type="button" class="dk-tg" id="dk-tg-bible" onclick="toggleBibleDark()" aria-pressed="false" title="성경읽기 화면만 다크모드"><i style="font-style:normal">🌙</i><span>성경 화면 어둡게</span><span class="sw"></span></button></div>
     <div id="bible-root"></div>
   </section>
 
@@ -1547,8 +1733,8 @@
 
       
       <!-- 🌤️ 바기오 1월 날씨 & 옷차림 안내 (독립된 알림 상자) -->
-      <div style="background:#FEF7E0; padding:12px 14px; border-radius:12px; font-size:0.82rem; margin-bottom:10px; border:1px solid #F2E3B6;">
-        <div style="font-weight:800; color:#B99248; margin-bottom:6px; font-size:0.88rem;">🌤️ 바기오 1월 날씨 & 추천 옷차림 안내</div>
+      <div style="background:var(--ik1,#FEF7E0); padding:12px 14px; border-radius:12px; font-size:0.82rem; margin-bottom:10px; border:1px solid var(--ik2,#F2E3B6);">
+        <div style="font-weight:800; color:var(--ik3,#B99248); margin-bottom:6px; font-size:0.88rem;">🌤️ 바기오 1월 날씨 & 추천 옷차림 안내</div>
         <div style="display:flex; flex-direction:column; gap:4px; color:var(--text);">
           <div>• <b>날씨 특성</b>: 해발 1,500m 고지대로 1월은 건기이며 서늘하고 쾌적합니다. (낮 20~23℃ / 아침·밤 11~14℃)</div>
           <div>• <b>옷차림 안내</b>: 낮에는 반팔·얇은 긴팔, 아침·저녁 및 밤에는 한국 가월~초겨울처럼 쌀쌀합니다.</div>
@@ -1562,8 +1748,8 @@
         <div style="display:flex; flex-direction:column; gap:4px; color:var(--text);">
           <div>• <b>기내 수하물</b>: 1인당 <b>10kg 이하 1개</b> (가로·세로·높이 합 115cm 이내) + 개인 소지품 1개</div>
           <div>• <b>위탁 수하물</b>: 1인당 <b>15kg 이하 1개</b> (무료 제공, 가로·세로·높이 합 203cm 이내)</div>
-          <div style="color:#1565C0; font-weight:700; margin-top:2px;">🧪 <b>기내 액체류 규정</b>: 용기당 <b>100ml 이하</b> (총 1L 이하 투명 지퍼백 1개에 봉입 시만 허용)</div>
-          <div style="color:#C62828; font-weight:700; margin-top:2px;">🚫 <b>기내 반입 금지 (위탁 처리)</b>: 칼, 가위, 손톱깎이, 커터칼, 뾰족한 도구, 100ml 초과 액체/스프레이류</div>
+          <div style="color:var(--ik4,#1565C0); font-weight:700; margin-top:2px;">🧪 <b>기내 액체류 규정</b>: 용기당 <b>100ml 이하</b> (총 1L 이하 투명 지퍼백 1개에 봉입 시만 허용)</div>
+          <div style="color:var(--ik5,#C62828); font-weight:700; margin-top:2px;">🚫 <b>기내 반입 금지 (위탁 처리)</b>: 칼, 가위, 손톱깎이, 커터칼, 뾰족한 도구, 100ml 초과 액체/스프레이류</div>
           <div style="color:var(--accent); font-weight:700; margin-top:2px;">⚠️ <b>위탁 수하물 금지 (기내 지참)</b>: 보조배터리, 전자담배, 라이터/성냥, 여권, 귀중품/고가품</div>
         </div>
       </div>
@@ -1647,11 +1833,11 @@
 </main>
 
 <!-- 앱 설치 방법 안내 모달 팝업 -->
-<div id="install-guide-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:16px;">
-  <div class="card" style="width:100%; max-width:400px; margin:0; background:#fff; border-radius:16px; padding:20px; max-height:85vh; overflow-y:auto;">
+<div id="install-guide-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:var(--ik6,rgba(0,0,0,0.5)); z-index:2000; align-items:center; justify-content:center; padding:16px;">
+  <div class="card" style="width:100%; max-width:400px; margin:0; background:var(--ik7,#fff); border-radius:16px; padding:20px; max-height:85vh; overflow-y:auto;">
     <h3 style="margin-top:0; margin-bottom:12px; font-size:1.1rem; font-weight:800; color:var(--sky);">📱 홈 화면에 앱 설치하기</h3>
     
-    <div style="background:#FEF7E0; padding:10px 12px; border-radius:10px; font-size:0.82rem; margin-bottom:12px; border:1px solid #F2E3B6; color:#B99248; font-weight:700;">
+    <div style="background:var(--ik1,#FEF7E0); padding:10px 12px; border-radius:10px; font-size:0.82rem; margin-bottom:12px; border:1px solid var(--ik2,#F2E3B6); color:var(--ik3,#B99248); font-weight:700;">
       ⚠️ 카카오톡·네이버 등 인앱 브라우저에서는 설치가 안 될 수 있습니다. 우측 상단/하단의 <span style="color: red;"><b>[사파리(Safari) 또는 크롬(Chrome)으로 열기]</b></span>를 먼저 눌러주세요!
     </div>
 
@@ -1699,8 +1885,8 @@
 <div id="bible-toast" class="bb-toast"></div>
 
 <!-- 교사 선택 모달 팝업 (공용준비물 체크 전용) -->
-<div id="teacher-select-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center; padding:16px;">
-  <div class="card" style="width:100%; max-width:360px; margin:0; background:#fff; border-radius:16px; padding:20px;">
+<div id="teacher-select-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:var(--ik6,rgba(0,0,0,0.5)); z-index:2000; align-items:center; justify-content:center; padding:16px;">
+  <div class="card" style="width:100%; max-width:360px; margin:0; background:var(--ik7,#fff); border-radius:16px; padding:20px;">
     <h3 style="margin-top:0; margin-bottom:12px; font-size:1.05rem; font-weight:800; color:var(--sky);">🌳 교사 선택 (체크 담당자)</h3>
     <input id="modalTeacherSearch" class="search-input" placeholder="🔍 교사 이름 검색..." oninput="renderModalTeacherList()" style="margin-bottom:12px;" />
     <div id="modalTeacherList" style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-bottom:14px;"></div>
@@ -2166,7 +2352,7 @@ async function openAutoBackupList() {
     const when = it.data._backupAt ? new Date(it.data._backupAt).toLocaleString('ko-KR') : it.id;
     const tag = it.local ? ' <small style="color:var(--muted)">(이 기기에 보관된 마지막 정상 데이터)</small>'
       : it.id.indexOf('backup_pre_') === 0 ? ' <small style="color:var(--muted)">(복원 직전 사본)</small>' : '';
-    return `<li style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f2eee5;">
+    return `<li style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--ik8,#f2eee5);">
       <div style="flex:1; min-width:0;"><div style="font-weight:800; font-size:0.9rem;">${escapeHtml(when)}${tag}</div><div style="font-size:0.78rem; color:var(--muted); margin-top:2px;">${escapeHtml(backupSummary(it.data))}</div></div>
       <button class="primary" style="padding:7px 14px; font-size:0.82rem;" onclick="restoreFromList(${i})">복원</button></li>`;
   }).join('');
@@ -3771,7 +3957,7 @@ function renderRsvpBlocks(err) {
       ? `<div class="rsvp-btns"><button class="${mine === 'yes' ? 'on yes' : ''}" onclick="setRsvp('${escapeHtml(key)}','yes')">참석</button><button class="${mine === 'no' ? 'on no' : ''}" onclick="setRsvp('${escapeHtml(key)}','no')">불참</button></div>`
       : (!past && !me ? '<div class="cm-note" style="margin:0 0 4px;">참석 표시는 위의 "👤 이름 선택" 후 할 수 있어요.</div>' : '');
     const whyOf = k => { const a = ans[k]; return a && a.s === 'no' && a.why ? String(a.why) : ''; };
-    const whyTxt = k => whyOf(k) ? ` <span style="color:#8F3030;font-weight:600;">· ${escapeHtml(whyOf(k))}</span>` : '';
+    const whyTxt = k => whyOf(k) ? ` <span style="color:var(--ik9,#8F3030);font-weight:600;">· ${escapeHtml(whyOf(k))}</span>` : '';
     const myWhy = (me && mine === 'no') ? ((ans[meKey] || {}).why || '') : '';
     const draft = rsvpDraft[key] !== undefined ? rsvpDraft[key] : myWhy;
     const myEntry = (me && mine === 'no') ? (ans[meKey] || {}) : {};
@@ -3805,7 +3991,7 @@ function renderRsvpBlocks(err) {
         <div><b>미응답 (${none.length})</b> ${none.map(x => escapeHtml(x.name)).join(', ') || '-'}</div>${copyBtn}</details>`;
     }
     el.dataset.none = none.length;
-    el.innerHTML = `${btns}${reasonBox}<div class="rsvp-sum">참석 <b>${yes.length}</b> · 불참 <b>${no.length}</b> · 미응답 <b>${none.length}</b>${err ? ' <span style="color:#c0392b;">(확인 불가: ' + escapeHtml(String(err)) + ')</span>' : ''}</div>${names}`;
+    el.innerHTML = `${btns}${reasonBox}<div class="rsvp-sum">참석 <b>${yes.length}</b> · 불참 <b>${no.length}</b> · 미응답 <b>${none.length}</b>${err ? ' <span style="color:var(--ik10,#c0392b);">(확인 불가: ' + escapeHtml(String(err)) + ')</span>' : ''}</div>${names}`;
   });
   renderAttendance();
 }
@@ -4922,7 +5108,7 @@ function renderMeModal() {
   const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
   const cur = (meFind(meKey) || {}).name || '';
   box.innerHTML = `${meForced ? '<button type="button" class="me-browse" onclick="startBrowse()">둘러보기 <span style="font-weight:600;font-size:0.82rem;opacity:.85;">· 이름선택 없이 구경해요</span></button><div class="me-or">또는 내 이름 고르기</div>' : ''}<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : (browseMode ? '내 이름 고르기' : '이름 바꾸기')}</h2>
-    <div class="bb-sub" style="margin:0 0 8px;">${meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:#FFF8E6;border:1px solid #F1DFAE;border-radius:10px;color:#6B4E00;">이름을 누르면 <b>내 코드(숫자 4자리)</b>를 입력해야 해요.<br>코드는 김진경 선생님께 받으세요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
+    <div class="bb-sub" style="margin:0 0 8px;">${meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:var(--ik11,#FFF8E6);border:1px solid var(--ik12,#F1DFAE);border-radius:10px;color:var(--ik13,#6B4E00);">이름을 누르면 <b>내 코드(숫자 4자리)</b>를 입력해야 해요.<br>코드는 김진경 선생님께 받으세요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
     <div class="me-list" id="me-list">
       ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
     </div>
@@ -5404,6 +5590,31 @@ function renderAll() {
   notifyRefresh();
   try { deepLinkTry(); } catch (e) {}
 }
+
+// ===== 성경읽기 다크모드: 처음에는 휴대폰 설정을 따르고, 홈 화면 토글로 직접 켜고 끌 수 있음 (이 기기에 저장) =====
+const DK_KEY = 'baguio_dark_bible', DK_ALL = 'baguio_dark_all';
+function dkPref(k) {
+  let p = null; try { p = localStorage.getItem(k); } catch (e) {}
+  if (p === 'on') return true; if (p === 'off') return false;
+  return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+}
+function allDarkOn() { return dkPref(DK_ALL); }
+function bibleDarkOn() { return dkPref(DK_KEY); }
+function bibleDarkApply() {
+  const b = document.querySelector('nav.tabs button.active'); const top = b ? b.getAttribute('data-tab') : '';
+  const all = allDarkOn(), bb = bibleDarkOn();
+  document.body.classList.toggle('dk-bible', all || (top === 'bible' && bb));
+  const bt = document.getElementById('dk-tg-bible'); if (bt && bt.parentElement) bt.parentElement.style.display = all ? 'none' : 'flex';
+  [['dk-tg', all], ['dk-tg-bible', bb]].forEach(([id, on]) => { const t = document.getElementById(id); if (t) { t.classList.toggle('on', on); t.setAttribute('aria-pressed', on ? 'true' : 'false'); } });
+}
+function toggleAllDark() { const next = !allDarkOn(); try { localStorage.setItem(DK_ALL, next ? 'on' : 'off'); } catch (e) {} bibleDarkApply(); }
+function toggleBibleDark() {
+  if (allDarkOn()) { try { localStorage.setItem(DK_ALL, 'off'); localStorage.setItem(DK_KEY, 'off'); } catch (e) {} }
+  else { try { localStorage.setItem(DK_KEY, bibleDarkOn() ? 'off' : 'on'); } catch (e) {} }
+  bibleDarkApply();
+}
+try { const mq = window.matchMedia('(prefers-color-scheme: dark)'); (mq.addEventListener ? mq.addEventListener('change', bibleDarkApply) : mq.addListener(bibleDarkApply)); } catch (e) {}
+bibleDarkApply();
 
 // ===== 시차 확인 (한국 = UTC+9, 바기오(필리핀) = UTC+8, 둘 다 서머타임 없음) =====
 function tzFmt(tz) {
@@ -6368,7 +6579,12 @@ function bibleReaderFont(d) {
 }
 function bibleReaderMarkRead() {
   if (!bibleReader) return;
-  recordBibleRead(bibleReader.bookKey, bibleReader.ch);
+  const { bookKey, ch } = bibleReader;
+  recordBibleRead(bookKey, ch);
+  if (bibleStudentId && bibleDates(bibleStudentId, bookKey, ch).length > 0) {   // 읽음이 기록됐으면 다음 장으로 자동 이동
+    const nx = bibleChapterAt(bibleFlatIndex(bookKey, ch) + 1);
+    if (nx) { bibleOpenReader(nx.book.key, nx.ch); return; }
+  }
   bibleReaderActions();
 }
 function bibleChapterAt(n) {   // 1~89번째 장 → { book, ch }
@@ -6863,7 +7079,7 @@ function notifyBibleNudge() {
   if (!sawMeaningfulData) return false;   // 서버 기록이 오기 전엔 '안 읽음'으로 오판하지 않음 (새로고침 때 깜빡임 방지)
   const t = bibleToday();
   if (t < BIBLE_PERIOD.start || t > BIBLE_PERIOD.end) return false;
-  return !bibleReadDateSet(meKey.slice(2)).has(t);
+  return !!bibleNowChapter(meKey.slice(2));   // 오늘 목표까지 아직 안 읽은 장이 남아 있는 동안은 계속 표시 (일부만 읽어도 유지)
 }
 function notifyMarkSeen(kind, ids) {
   const set = new Set(notifySeen[kind]); ids.forEach(i => set.add(i)); notifySeen[kind] = [...set];
@@ -7067,6 +7283,7 @@ setInterval(() => { try { nextEvRender(); } catch (e) {} }, 5 * 60 * 1000);
 
 function showView(top, sub) {
   if (!VIEWS[top]) top = 'feed';
+  bibleDarkApply();   // 전체 다크모드 + 성경읽기 개별 다크모드
   if (browseMode && (top === 'roster' || top === 'academy' || top === 'wish')) {   // 둘러보기: 탭은 보이지만 내용은 안내 문구만
     document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === top));
     document.querySelectorAll('main section.panel').forEach(p => p.classList.remove('active'));
