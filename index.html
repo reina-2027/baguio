@@ -1084,6 +1084,12 @@ body:where(.dk-bible).admin .form-toggle{background:#4a3b19;color:#e3d0a3}
   .dk-tg .sw::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; border-radius:50%; background:#fff; transition:left .2s; }
   .dk-tg.on .sw { background:#597F68; } .dk-tg.on .sw::after { left:14px; }
   body.dk-bible .dk-tg { border-color:rgba(255,255,255,0.35); background:rgba(255,255,255,0.1); }
+html:has(body.dk-bible), body.dk-bible { background: var(--bg) !important; }
+body.dk-bible header { background: var(--card) !important; }
+:where(body.dk-bible) .pr-card.latest{background:#242825}
+:where(body.dk-bible) .notice.bible{background:var(--c-bible-soft)}
+:where(body.dk-bible) .notice.latest{background:var(--c-feed-soft)}
+:where(body.dk-bible) .bb-community{background:var(--c-bible-soft)}
 </style>
 </head>
 <body>
