@@ -608,7 +608,7 @@
   .br-top { display:flex; align-items:center; gap:8px; padding:10px 12px; padding-top:calc(10px + env(safe-area-inset-top, 0px)); background:var(--c-bible-soft); border-bottom:1px solid var(--c-bible-line); }
   .br-top .br-title { flex:1; text-align:center; font-weight:800; font-size:1.05rem; color:var(--c-bible-deep); }
   .br-top button { font-family:inherit; font-weight:800; border:1.5px solid var(--c-bible-line); background:#fff; color:var(--c-bible-deep); border-radius:10px; min-width:40px; height:38px; font-size:0.95rem; cursor:pointer; }
-  .br-body { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:14px 18px 24px; max-width:640px; width:100%; margin:0 auto; line-height:1.75; word-break:keep-all; overflow-wrap:break-word; }
+  .br-body { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:14px max(18px, calc((100% - 640px) / 2)) 24px; width:100%; line-height:1.75; word-break:keep-all; overflow-wrap:break-word; }
   .br-h { font-size:0.9em; font-weight:800; color:var(--c-bible-deep); margin:18px 0 6px; line-height:1.4; }
   .br-v, .br-c { margin:0 0 6px; }
   .br-c { padding-left:1.7em; }
@@ -621,7 +621,7 @@
   .br-actions button:disabled { opacity:.35; cursor:default; }
   .br-actions button.br-done { flex:1; background:var(--c-bible); border-color:var(--c-bible); color:#fff; }
   .br-actions .br-ok { flex:1; text-align:center; font-weight:800; color:var(--c-bible-deep); }
-  .bb-today-row .bt-read { font-family:inherit; background:none; cursor:pointer; text-decoration:none; font-size:0.82rem; font-weight:800; color:var(--c-bible-deep); border:1.5px solid var(--c-bible); border-radius:999px; padding:6px 11px; white-space:nowrap; }
+  .bb-today-row .bt-read { font-family:inherit; background:none; cursor:pointer; text-decoration:none; font-size:1rem; font-weight:800; color:var(--c-bible-deep); border:2px solid var(--c-bible); border-radius:999px; padding:10px 18px; white-space:nowrap; }
   .bb-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:2000; align-items:flex-end; justify-content:center; }
   .bb-modal.show { display:flex; }
   .bb-sheet { width:100%; max-width:420px; background:#fff; border-radius:20px 20px 0 0; padding:22px 20px calc(18px + env(safe-area-inset-bottom, 0px)); }
@@ -1084,7 +1084,7 @@ body:where(.dk-bible).admin .form-toggle{background:#4a3b19;color:#e3d0a3}
   .dk-tg .sw::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; border-radius:50%; background:#fff; transition:left .2s; }
   .dk-tg.on .sw { background:#597F68; } .dk-tg.on .sw::after { left:14px; }
   body.dk-bible .dk-tg { border-color:rgba(255,255,255,0.35); background:rgba(255,255,255,0.1); }
-html:has(body.dk-bible), body.dk-bible { background: var(--bg) !important; }
+html.dk-bible, html:has(body.dk-bible), body.dk-bible { background: #111511 !important; background-image:none !important; color-scheme: dark; }
 body.dk-bible header { background: var(--card) !important; }
 :where(body.dk-bible) .pr-card.latest{background:#242825}
 :where(body.dk-bible) .notice.bible{background:var(--c-bible-soft)}
@@ -1101,7 +1101,6 @@ body.dk-bible header { background: var(--card) !important; }
       <span class="badge" id="dday-badge">D-day 계산중</span>
       <span>출발일: <span id="trip-date-text">2027-01-10</span></span>
       <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">👤 이름 선택</button>
-      <button type="button" class="dk-tg" id="dk-tg" onclick="toggleAllDark()" aria-pressed="false" title="전체 다크모드"><i style="font-style:normal">🌙</i><span class="sw"></span></button>
       <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">👀 둘러보기 보기</button>
     </div>
   </div>
@@ -1436,7 +1435,6 @@ body.dk-bible header { background: var(--card) !important; }
 
   <!-- 성경읽기 탭 -->
   <section class="panel" id="panel-bible">
-    <div style="display:flex;justify-content:flex-end;margin:0 0 8px;"><button type="button" class="dk-tg" id="dk-tg-bible" onclick="toggleBibleDark()" aria-pressed="false" title="성경읽기 화면만 다크모드"><i style="font-style:normal">🌙</i><span>성경 화면 어둡게</span><span class="sw"></span></button></div>
     <div id="bible-root"></div>
   </section>
 
@@ -1884,7 +1882,7 @@ body.dk-bible header { background: var(--card) !important; }
   <div class="bb-sheet" id="bible-detail-body"></div>
 </div>
 <div id="bible-reader" class="bb-reader" role="dialog" aria-label="성경 읽기">
-  <div class="br-top"><button type="button" onclick="bibleCloseReader()" aria-label="닫기">✕</button><div class="br-title" id="br-title"></div><button type="button" onclick="bibleReaderFont(-2)" aria-label="글자 작게">가−</button><button type="button" onclick="bibleReaderFont(2)" aria-label="글자 크게">가+</button></div>
+  <div class="br-top"><button type="button" onclick="bibleCloseReader()" aria-label="닫기">✕</button><div class="br-title" id="br-title"></div><button type="button" id="br-dk" onclick="toggleReaderDark()" aria-label="어둡게 보기">🌙</button><button type="button" onclick="bibleReaderFont(-2)" aria-label="글자 작게">가−</button><button type="button" onclick="bibleReaderFont(2)" aria-label="글자 크게">가+</button></div>
   <div class="br-body" id="br-body"></div>
   <div class="br-foot"><div class="br-credit">성경 본문: 개역개정 ⓒ 대한성서공회 (세례→침례로 변경)</div><div class="br-actions" id="br-actions"></div></div>
 </div>
@@ -5597,30 +5595,20 @@ function renderAll() {
   try { deepLinkTry(); } catch (e) {}
 }
 
-// ===== 성경읽기 다크모드: 처음에는 휴대폰 설정을 따르고, 홈 화면 토글로 직접 켜고 끌 수 있음 (이 기기에 저장) =====
-const DK_KEY = 'baguio_dark_bible', DK_ALL = 'baguio_dark_all';
-function dkPref(k) {
-  let p = null; try { p = localStorage.getItem(k); } catch (e) {}
+// ===== 성경읽기 다크모드: 성경 읽기 화면 안의 🌙 버튼으로 켜고 끔. 처음에는 휴대폰 설정을 따르고 이 기기에 저장 =====
+const DK_KEY = 'baguio_dark_bible';
+function readerDarkOn() {
+  let p = null; try { p = localStorage.getItem(DK_KEY); } catch (e) {}
   if (p === 'on') return true; if (p === 'off') return false;
   return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 }
-function allDarkOn() { return dkPref(DK_ALL); }
-function bibleDarkOn() { return dkPref(DK_KEY); }
-function bibleDarkApply() {
-  const b = document.querySelector('nav.tabs button.active'); const top = b ? b.getAttribute('data-tab') : '';
-  const all = allDarkOn(), bb = bibleDarkOn();
-  document.body.classList.toggle('dk-bible', all || (top === 'bible' && bb));
-  const bt = document.getElementById('dk-tg-bible'); if (bt && bt.parentElement) bt.parentElement.style.display = all ? 'none' : 'flex';
-  [['dk-tg', all], ['dk-tg-bible', bb]].forEach(([id, on]) => { const t = document.getElementById(id); if (t) { t.classList.toggle('on', on); t.setAttribute('aria-pressed', on ? 'true' : 'false'); } });
+function readerDarkApply() {   // 다크모드는 성경 읽기 화면이 열려 있을 때만
+  const dk = !!bibleReader && readerDarkOn();
+  document.body.classList.toggle('dk-bible', dk); document.documentElement.classList.toggle('dk-bible', dk);
+  const t = document.getElementById('br-dk'); if (t) { t.textContent = dk || readerDarkOn() ? '☀️' : '🌙'; t.setAttribute('aria-pressed', readerDarkOn() ? 'true' : 'false'); t.setAttribute('aria-label', readerDarkOn() ? '밝게 보기' : '어둡게 보기'); }
 }
-function toggleAllDark() { const next = !allDarkOn(); try { localStorage.setItem(DK_ALL, next ? 'on' : 'off'); } catch (e) {} bibleDarkApply(); }
-function toggleBibleDark() {
-  if (allDarkOn()) { try { localStorage.setItem(DK_ALL, 'off'); localStorage.setItem(DK_KEY, 'off'); } catch (e) {} }
-  else { try { localStorage.setItem(DK_KEY, bibleDarkOn() ? 'off' : 'on'); } catch (e) {} }
-  bibleDarkApply();
-}
-try { const mq = window.matchMedia('(prefers-color-scheme: dark)'); (mq.addEventListener ? mq.addEventListener('change', bibleDarkApply) : mq.addListener(bibleDarkApply)); } catch (e) {}
-bibleDarkApply();
+function toggleReaderDark() { try { localStorage.setItem(DK_KEY, readerDarkOn() ? 'off' : 'on'); } catch (e) {} readerDarkApply(); }
+try { const mq = window.matchMedia('(prefers-color-scheme: dark)'); (mq.addEventListener ? mq.addEventListener('change', readerDarkApply) : mq.addListener(readerDarkApply)); } catch (e) {}
 
 // ===== 시차 확인 (한국 = UTC+9, 바기오(필리핀) = UTC+8, 둘 다 서머타임 없음) =====
 function tzFmt(tz) {
@@ -6559,12 +6547,14 @@ function bibleOpenReader(bookKey, ch) {
   bibleReaderRender();
   document.getElementById('bible-reader').classList.add('show');
   document.body.style.overflow = 'hidden';
+  readerDarkApply();
   if (!wasOpen) { try { history.pushState({ bbReader: 1 }, ''); } catch (e) {} }
 }
 function bibleReaderHide() {
   bibleReader = null;
   const el = document.getElementById('bible-reader'); if (el) el.classList.remove('show');
   document.body.style.overflow = '';
+  readerDarkApply();
 }
 function bibleCloseReader() {
   if (!bibleReader) return;
@@ -7289,7 +7279,6 @@ setInterval(() => { try { nextEvRender(); } catch (e) {} }, 5 * 60 * 1000);
 
 function showView(top, sub) {
   if (!VIEWS[top]) top = 'feed';
-  bibleDarkApply();   // 전체 다크모드 + 성경읽기 개별 다크모드
   if (browseMode && (top === 'roster' || top === 'academy' || top === 'wish')) {   // 둘러보기: 탭은 보이지만 내용은 안내 문구만
     document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === top));
     document.querySelectorAll('main section.panel').forEach(p => p.classList.remove('active'));
