@@ -4965,6 +4965,7 @@ function supplyPeople() {
 const ME_KEY = 'baguio_me';
 let meKey = (() => { try { const k = localStorage.getItem(ME_KEY) || ''; if (k === 'guest') { localStorage.removeItem(ME_KEY); return ''; } return k; } catch (e) { return ''; } })(); // 'p_학생id' | 't_교사id'  (예전 '학부모' 선택은 지워서 처음 접속처럼 이름을 고르게 함)
 let mePending = '';
+let meListSig = '';
 let meSynced = false;
 let meAsked = false;      // 이번 접속에서 이미 물어봤는지
 let browseMode = false;   // 이름 없이 구경 중 (저장·개인정보 없음)
@@ -5054,6 +5055,16 @@ function meAdoptLegacy() {
 function meCheck() {
   if (latestRemoteState === null) return;           // 명단 로딩 전엔 묻지 않음
   meAdoptLegacy();
+  // 기억해 둔 이름이 명단에서 사라졌으면(삭제 후 다시 추가 등) 처음 상태로 돌려 이름 선택 창을 다시 띄움
+  if (meKey && !meFind(meKey) && ((state.participants || []).length + (state.teachers || []).length) > 0) {
+    setMeLock(false); setMe(''); meAsked = false; meSynced = false;
+  }
+  // 이름 선택 창이 열려 있는 동안 명단이 바뀌면(학생 추가 등) 목록을 바로 갱신
+  const mm = document.getElementById('me-modal');
+  if (mm && mm.classList.contains('show') && !meGateKey && !mePending) {
+    const sig = meList().map(x => x.key + x.name).join('|');
+    if (sig !== meListSig) { meListSig = sig; renderMeModal(); }
+  }
   // 접속 후 처음 한 번: 전체 이름과 성경읽기·개인준비물 이름이 어긋나 있으면 맞춤
   if (!meSynced && meKey && meFind(meKey)) {
     meSynced = true;
