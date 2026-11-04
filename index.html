@@ -11,24 +11,23 @@
 <meta name="description" content="눌러서 공지를 확인해주세요.">
 
 <!-- PWA 및 모바일 홈 화면 아이콘 연동 -->
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="icon" href="favicon-32.png?v=2" type="image/png" sizes="32x32">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="청소년부">
-<meta name="theme-color" content="#3F7FE0">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120.png">
-<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152.png">
-<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ffffff">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120.png?v=2">
+<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152.png?v=2">
+<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="manifest.json?v=2">
 <link rel="preload" as="image" href="splash.jpg">
 <style>
-#splash { position: fixed; inset: 0; z-index: 99999; background: #8CC4F5; overflow: hidden; opacity: 1; transition: opacity .4s ease; }
-#splash::before { content: ''; position: absolute; inset: -24px; background: url(splash.jpg) center / cover no-repeat; filter: blur(18px); }
-#splash::after { content: ''; position: absolute; inset: 0; background: url(splash.jpg) center / contain no-repeat; }
+#splash { position: fixed; inset: 0; z-index: 99999; background: linear-gradient(#8bcbfb, #b9d9f9 55%, #c0d2f1); overflow: hidden; opacity: 1; transition: opacity .4s ease; }
+#splash::after { content: ''; position: absolute; inset: 0; background: url(splash.jpg) center / contain no-repeat; -webkit-mask-image: linear-gradient(transparent 0, #000 4%, #000 96%, transparent 100%); mask-image: linear-gradient(transparent 0, #000 4%, #000 96%, transparent 100%); }
 #splash.out { opacity: 0; pointer-events: none; }
 </style>
 
@@ -1323,8 +1322,11 @@ details.bb-book .bb-bar { margin-top: 2px; }
 header { display: block; position: static; padding: 12px 16px 10px; }
 .hd-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .hd-top h1 { margin: 0; }
-.hd-bot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-.hd-links { display: flex; gap: 8px; }
+.hd-bot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: nowrap; }
+.hd-bot .sub { font-size: 0.8rem; gap: 6px; flex-wrap: nowrap; }
+.hd-bot .me-chip, .hd-bot .hd-link { height: 36px; padding: 0 11px; font-size: 0.82rem; }
+.hd-top .hd-link { height: 36px; padding: 0 12px; }
+.hd-links { display: flex; gap: 6px; flex: none; }
 .hd-link { border: 1.5px solid var(--border); background: var(--card); border-radius: 999px; height: 40px; padding: 0 14px; font-size: 0.88rem; color: var(--text); display: inline-flex; align-items: center; }
 .hd-link.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 .me-chip { height: 40px; padding: 0 14px; display: inline-flex; align-items: center; }
@@ -1360,6 +1362,21 @@ header { display: block; position: static; padding: 12px 16px 10px; }
 .set-row input[type=text], .set-row input[type=date] { max-width: 55%; }
 .set-row .ar { display: flex; gap: 6px; }
 .set-row .ar button { padding: 4px 10px; border: 1px solid var(--border); background: var(--card); border-radius: 8px; font-family: inherit; font-weight: 700; }
+
+/* 글자 체계 (제목·내용·상세설명·라벨·링크) */
+:root { --fs-title: 1.1rem; --fs-body: 0.95rem; --fs-sub: 0.85rem; --fs-label: 0.88rem; --fs-link: 0.92rem; --c-warn: #B7791F; }
+.hc-big, .hs-t, .hn-title, .mt-title, .bb-top-t, .bb-top-t.sm, .ev-card > .hc-h .hc-t, .ev-ft { font-size: var(--fs-title); font-weight: 800; line-height: 1.4; color: var(--text); }
+.ev-card > .hc-h .hc-t { flex: 1; }
+.hn .notice-text, .ev-desc, .ev-list, .ev-mine, .ev-it-t, .hs-ln, .mt-line, .hm-row, .mt-card .content-desc, .bb-top-done, .as-l { font-size: var(--fs-body); font-weight: 500; color: var(--text); }
+.hc-sub, .hc-hint, .hn-date, .ev-meta, .ev-it-m, .bb-top-sub, .mt-cat, .ev-ameta, .bb-pct-sub { font-size: var(--fs-sub); font-weight: 500; color: var(--muted); }
+.mt-line span, .hs-ln span, .hm-k, .bb-top-lb { font-size: var(--fs-label); font-weight: 700; color: var(--muted); }
+.hs-more, .hs-link, .hc-go, .ev-mine button, .ev-more, .ev-skip { font-size: var(--fs-link); font-weight: 800; }
+.hc-go { color: var(--muted); }
+.hm-v { font-weight: 700; }
+.mt-card .content-desc { color: var(--muted); font-size: var(--fs-sub); }
+.bb-late, .bb-warn { color: var(--c-warn); font-weight: 800; font-size: var(--fs-body); margin-top: 6px; }
+.hc-ln { font-size: var(--fs-body); color: var(--muted); font-weight: 600; }
+.hc-ln b { color: var(--text); font-weight: 800; }
 </style>
 </head>
 <body>
@@ -1369,12 +1386,15 @@ header { display: block; position: static; padding: 12px 16px 10px; }
 <header>
   <div class="hd-top">
     <h1>바기오 청소년부</h1>
-    <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">이름 선택</button>
-    <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">둘러보기 보기</button>
+    <button type="button" class="hd-link" onclick="openInstallModal()">앱설치법</button>
   </div>
   <div class="hd-bot">
     <div class="sub"><span class="badge" id="dday-badge">D-day 계산중</span><span>출발일 <span id="trip-date-text">2027-01-10</span></span></div>
-    <div class="hd-links"><button type="button" class="hd-link" id="admin-login-btn" onclick="toggleAdminMode()">관리모드</button><button type="button" class="hd-link" onclick="openInstallModal()">앱설치법</button></div>
+    <div class="hd-links">
+      <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">이름 선택</button>
+      <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">둘러보기 보기</button>
+      <button type="button" class="hd-link" id="admin-login-btn" onclick="toggleAdminMode()">관리모드</button>
+    </div>
   </div>
 </header>
 
@@ -4552,10 +4572,10 @@ function homeBibleHtml() {
   let body;
   if (I.t < BIBLE_PERIOD.start) body = `<div class="hc-big">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요</div>`;
   else if (I.count >= BIBLE_TOTAL) body = `<div class="hc-big">🎉 4복음서를 모두 읽었어요</div>`;
-  else if (I.now) body = `<div class="hc-row"><div class="hc-big">${bibleChapterLabel(I.now)}</div><button type="button" class="bb-read-pill" onclick="event.stopPropagation();bibleOpenReader('${I.now.book.key}', ${I.now.ch})">읽기 ›</button></div>${I.behind > 0 ? `<div class="bb-late">${I.behind}장 밀렸어요</div>` : `<div class="hc-hint" style="color:#2F7D4F;font-weight:700">잘 읽고 있어요</div>`}<div class="hc-hint">읽기를 누르면 바로 본문이 열려요</div>`;
+  else if (I.now) body = (I.plan && I.plan.length ? `<div class="hc-ln">오늘은 <b>${biblePlanLabel(I.plan)}</b></div>` : '') + `<div class="hc-row" style="margin-top:8px"><div class="hc-big"><span class="hc-ln" style="font-size:inherit">${I.behind > 0 ? '나는 ' : '오늘 읽을 곳 '}</span>${bibleChapterLabel(I.now)}</div><button type="button" class="bb-read-pill" onclick="event.stopPropagation();bibleOpenReader('${I.now.book.key}', ${I.now.ch})">읽기 ›</button></div>${I.behind > 0 ? `<div class="bb-late">${I.behind}장 밀렸어요. 천천히 따라잡아 봐요, 힘내요!</div>` : `<div class="hc-hint" style="color:#2F7D4F;font-weight:700">잘 읽고 있어요</div>`}`;
   else body = `<div class="hc-big">오늘 분량을 다 읽었어요</div>`;
   const lb = I.now ? (I.behind > 0 ? '내가 읽을 곳' : '오늘 읽을 곳') : '';
-  return `<div class="card hc hc-click" onclick="showView('bible')"><div class="hc-h">${homeSvg(SVG_BOOK)}<span class="hc-t">성경읽기${lb ? ' · ' + lb : ''}</span><span class="hc-go">›</span></div>${body}</div>`;
+  return `<div class="card hc hc-click" onclick="showView('bible')"><div class="hc-h">${homeSvg(SVG_BOOK)}<span class="hc-t">성경읽기</span><span class="hc-go">›</span></div>${body}</div>`;
 }
 
 function homeUpcoming() {
@@ -7241,6 +7261,13 @@ function bibleDoneCardHtml(sid) {
   return `<details class="card bb-done-card"${bibleDoneOpen ? ' open' : ''} ontoggle="bibleDoneOpen=this.open"><summary><span>${title}</span></summary><div class="bb-done-in">${list}${msg}</div></details>`;
 }
 let bibleDoneOpen = false;
+function biblePlanLabel(plan) {
+  if (!plan || !plan.length) return '';
+  const f = plan[0], l = plan[plan.length - 1];
+  if (plan.length === 1) return bibleChapterLabel(f);
+  if (f.book.key === l.book.key) return `${f.book.name} ${f.ch}~${l.ch}장`;
+  return plan.map(bibleChapterLabel).join(' · ');
+}
 function bibleReadBtns(c, sid) {
   return `<button type="button" class="bb-read-pill" onclick="bibleOpenReader('${c.book.key}', ${c.ch})">읽기 ›</button>`;
 }
@@ -7252,7 +7279,7 @@ function bibleTopCardHtml(me) {
   if (I.now) {
     h = `<div class="bb-top-lb">${I.behind > 0 ? '내가 읽을 곳' : (I.inPeriod ? '오늘 읽을 곳' : '읽을 곳')}</div>
       <div class="bb-top-row"><div class="bb-top-t">${bibleChapterLabel(I.now)}</div>${bibleReadBtns(I.now, sid)}</div>
-      ${I.behind > 0 ? `<div class="bb-late">${I.behind}장 밀렸어요</div>` : ''}
+      ${I.behind > 0 ? `<div class="bb-late">${I.behind}장 밀렸어요. 천천히 따라잡아 봐요, 힘내요!</div>` : ''}
       ${browseMode ? '' : `<div class="bb-top-done"><span>이미 읽었다면</span><button type="button" class="bb-done-btn" onclick="bibleMarkRead('${I.now.book.key}', ${I.now.ch})">읽었어요</button></div>`}`;
   } else {
     const diff = I.count - I.P;
@@ -7275,7 +7302,7 @@ function bibleProgressHtml(me, comm) {
   return `<div class="card bb-prog">
     <div class="bb-prog-h"><b>내 진도</b></div>
     <div class="bb-pct">${pct}%</div>
-    <div class="bb-pct-sub">${goalN <= 0 ? '아직 시작 전이에요' : I.left.length ? `오늘 목표까지 <b style="color:#B03A2E">${I.left.length}장 남았어요</b>` : '<b style="color:#2F7D4F">오늘 목표까지 다 읽었어요</b>'}</div>
+    <div class="bb-pct-sub">${goalN <= 0 ? '아직 시작 전이에요' : I.left.length ? `오늘 목표까지 <b style="color:var(--c-warn)">${I.left.length}장 남았어요</b>` : '<b style="color:#2F7D4F">오늘 목표까지 다 읽었어요</b>'}</div>
     <div class="bb-prog-sub">${end.getMonth() + 1}/${end.getDate()}까지 · 월~토 하루 1장 · 주일 2장</div>
     <details class="bb-comm2"${bibleStaffOpen2 ? ' open' : ''} ontoggle="bibleStaffOpen2=this.open"><summary><b>우리 함께 읽기</b><span>학생 ${comm.studentPlan}% · 교사 ${comm.teacherPlan}%</span></summary>
       <div class="bb-period" style="margin:8px 0 6px;">${biblePeriodText()}</div>${bars}</details>
