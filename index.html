@@ -11,14 +11,26 @@
 <meta name="description" content="눌러서 공지를 확인해주세요.">
 
 <!-- PWA 및 모바일 홈 화면 아이콘 연동 -->
-<link rel="icon" href="icon.png" type="image/png">
-  
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="청소년부">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+<meta name="theme-color" content="#3F7FE0">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120.png">
+<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
+<link rel="preload" as="image" href="splash.jpg">
+<style>
+#splash { position: fixed; inset: 0; z-index: 99999; background: #8CC4F5; overflow: hidden; opacity: 1; transition: opacity .4s ease; }
+#splash::before { content: ''; position: absolute; inset: -24px; background: url(splash.jpg) center / cover no-repeat; filter: blur(18px); }
+#splash::after { content: ''; position: absolute; inset: 0; background: url(splash.jpg) center / contain no-repeat; }
+#splash.out { opacity: 0; pointer-events: none; }
+</style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -329,10 +341,10 @@
 
   /* 준비물 체크리스트 전용 스타일 */
   .progress-section { margin-top: 8px; }
-  .progress-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .progress-info { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
   .progress-bar-bg { width: 100%; height: 10px; background-color: #EFECE6; border-radius: 5px; overflow: hidden; }
   .progress-bar-fill { height: 100%; width: 0%; background-color: var(--accent); border-radius: 5px; transition: width 0.3s ease; }
-  .category-title { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+  .category-title { font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
   .item-list { list-style: none; display: flex; flex-direction: column; gap: 12px; padding-left: 0; margin: 0; }
   .item-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px dashed var(--border); cursor: pointer; }
   .item-row:last-child { border-bottom: none; padding-bottom: 0; }
@@ -341,7 +353,7 @@
   .item-row.checked .custom-checkbox { background-color: var(--accent); border-color: var(--accent); }
   .custom-checkbox::after { content: '✓'; color: white; font-size: 13px; font-weight: bold; display: none; }
   .item-row.checked .custom-checkbox::after { display: block; }
-  .item-name { font-size: 14px; color: var(--text); transition: color 0.2s; }
+  .item-name { font-size: 15px; color: var(--text); transition: color 0.2s; }
   .item-row.checked .item-name { text-decoration: line-through; color: var(--muted); }
   .badge-carry { background-color: var(--badge-carry); color: var(--badge-carry-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
   .badge-check { background-color: var(--badge-check); color: var(--badge-check-text); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
@@ -1092,7 +1104,7 @@ body.dk-bible header { background: var(--card) !important; }
 :where(body.dk-bible) .bb-community{background:var(--c-bible-soft)}
 
 /* ===== v2: 평평한 디자인 + 하단 탭 + 큰 글씨 ===== */
-html { font-size: 17px; }
+html { font-size: 16px; }
 html, body { background: var(--bg) !important; background-image: none !important; }
 body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
 body.kb { padding-bottom: 24px; }
@@ -1107,7 +1119,7 @@ header .sub { font-size: 0.85rem; gap: 8px; }
 .p-l { min-width: 0; }
 .p-name { font-size: 1.15rem; font-weight: 800; }
 .p-sub { font-size: 0.9rem; margin-left: 8px; color: var(--muted); font-weight: 700; }
-.p-asg { font-size: 0.95rem; font-weight: 800; white-space: nowrap; flex: none; }
+.p-asg { font-size: 0.86rem; font-weight: 800; white-space: nowrap; flex: none; }
 .p-asg .none { color: #A5AAA0; font-weight: 600; }
 #participant-list .p-tag, #teacher-list .p-tag { font-size: 0.82rem; background: #F0EDE4; color: #5b5f55; padding: 3px 10px; }
 .ps-sel { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); font-family: inherit; font-size: 1rem; font-weight: 700; color: var(--text); }
@@ -1116,8 +1128,12 @@ header .sub { font-size: 0.85rem; gap: 8px; }
 .mt-date .m, .mt-date .w { display: block; font-size: 0.75rem; font-weight: 700; color: var(--muted); }
 .mt-date .d { display: block; font-size: 1.4rem; font-weight: 800; line-height: 1.15; }
 .mt-main { flex: 1; min-width: 0; }
-.mt-title { font-size: 1.15rem; font-weight: 800; line-height: 1.35; word-break: keep-all; }
-.mt-when { font-size: 0.92rem; color: var(--muted); margin: 3px 0 4px; }
+.mt-title { font-size: 1rem; font-weight: 600; line-height: 1.4; word-break: keep-all; margin-top: 4px; }
+.mt-top { display:flex; align-items:center; gap:8px; }
+.mt-when { font-size: 1.05rem; font-weight: 800; color: var(--text); }
+.mt-place { font-size: 1rem; font-weight: 700; margin-top: 3px; }
+.mt-cat { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+.mt-top .dday-pill { margin-left: 0; }
 .mt-card .ps-actions { width: 100%; }
 .dday-pill, .dday-pill.today { background: var(--bg2); color: var(--muted); }
 .time-text { color: var(--sky); }
@@ -1131,7 +1147,7 @@ body.kb .save-bar { bottom: 0; }
 .card { box-shadow: 0 1px 4px rgba(40,50,40,0.08); border: 1px solid var(--border); border-radius: 16px; }
 .card::before, .item-card::before, .pr-card::before { display: none !important; }
 .sch-next, .boarding-pass, .notice.latest, .notice.bible, .bb-community, .bb-book.done { background: var(--c-schedule-soft); }
-.boarding-pass { background: var(--bg2); }
+.boarding-pass { background: #F8F6F0; }
 .notice.bible, .bb-community, .bb-book.done { background: var(--c-bible-soft); }
 nav.tabs {
   position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 50;
@@ -1165,11 +1181,11 @@ main { padding-top: 14px; }
 .hc-h { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .hc-ic { width: 34px; height: 34px; border-radius: 50%; background: var(--sky-soft); color: var(--sky); display: inline-flex; align-items: center; justify-content: center; flex: none; }
 .hc-ic svg { width: 19px; height: 19px; }
-.hc-t { font-size: 1.02rem; font-weight: 800; flex: 1; min-width: 0; }
+.hc-t { font-size: 0.95rem; font-weight: 800; flex: 1; min-width: 0; }
 .hc-go { color: var(--muted); font-weight: 700; font-size: 0.95rem; white-space: nowrap; cursor: pointer; }
 .hc-click { cursor: pointer; }
 .hc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.hc-big { font-size: 1.35rem; font-weight: 800; line-height: 1.3; word-break: keep-all; }
+.hc-big { font-size: 1.2rem; font-weight: 800; line-height: 1.3; word-break: keep-all; }
 .hc-sub, .hc-hint { font-size: 0.9rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
 .hc-hint { font-size: 0.85rem; }
 .bb-read-pill { border: none; background: var(--sky); color: #fff; font-family: inherit; font-weight: 800; font-size: 1rem; border-radius: 999px; padding: 9px 18px; white-space: nowrap; cursor: pointer; flex: none; }
@@ -1185,13 +1201,13 @@ main { padding-top: 14px; }
 .hn .notice-text { font-size: 1rem; }
 .hs-item { padding: 4px 0; }
 .hs-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.hs-t { font-size: 1.18rem; font-weight: 800; }
+.hs-t { font-size: 1.05rem; font-weight: 800; }
 .hs-dd { font-size: 0.8rem; font-weight: 800; background: #FFE9A8; color: #7A5A00; border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
 .hs-when { font-size: 0.95rem; color: var(--muted); margin: 2px 0 10px; }
 .hs-sep { border-top: 1px solid var(--border); margin: 12px 0; }
 .hs-link { border: none; background: none; color: var(--sky); font-weight: 700; font-family: inherit; font-size: 0.95rem; padding: 0; cursor: pointer; }
 .hm { padding: 6px 16px; }
-.hm-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 1.02rem; }
+.hm-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
 .hm-row:last-child { border-bottom: none; }
 .hm-k { color: var(--muted); font-weight: 700; white-space: nowrap; }
 .hm-v { font-weight: 800; text-align: right; }
@@ -1257,8 +1273,8 @@ main { padding-top: 14px; }
 .bb-top { padding: 18px 16px; }
 .bb-top-lb { font-size: 0.88rem; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
 .bb-top-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.bb-top-t { font-size: 1.4rem; font-weight: 800; line-height: 1.3; word-break: keep-all; }
-.bb-top-t.sm { font-size: 1.15rem; }
+.bb-top-t { font-size: 1.2rem; font-weight: 800; line-height: 1.3; word-break: keep-all; }
+.bb-top-t.sm { font-size: 1.02rem; }
 .bb-top-sub { font-size: 0.92rem; color: var(--muted); margin-top: 6px; }
 .bb-top-done { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.95rem; }
 .bb-done-btn { border: 1px solid var(--border); background: var(--card); color: var(--text); font-family: inherit; font-weight: 800; font-size: 0.95rem; border-radius: 999px; padding: 8px 16px; white-space: nowrap; cursor: pointer; }
@@ -1297,30 +1313,67 @@ details.bb-book .bb-bar { margin-top: 2px; }
 .as-card { padding: 16px; }
 .as-h { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
 .as-k { font-size: 0.95rem; font-weight: 700; color: var(--muted); }
-.as-v { font-size: 1.5rem; font-weight: 800; }
-.as-l { font-size: 1rem; line-height: 1.7; }
+.as-v { font-size: 1.25rem; font-weight: 800; }
+.as-l { font-size: 0.92rem; line-height: 1.7; }
 .as-l b { margin-right: 6px; }
 
-.boarding-pass .bp-flightno { font-size: 0.94rem; }
-.boarding-pass .bp-point .bp-time { font-size: 1.41rem; }
-.boarding-pass .bp-point .bp-date, .boarding-pass .bp-detail-label { font-size: 0.68rem; }
-.boarding-pass .bp-point .bp-airport { font-size: 0.79rem; word-break: keep-all; }
-.boarding-pass .bp-point .bp-terminal { font-size: 0.73rem; }
-.boarding-pass .bp-mid .bp-plane { font-size: 1.22rem; }
-.boarding-pass .bp-mid .bp-line { width: 36px; }
-.boarding-pass .bp-detail-value { font-size: 0.85rem; }
+.boarding-pass .bp-point .bp-airport { word-break: keep-all; }
+
+/* round3 */
+header { display: block; position: static; padding: 12px 16px 10px; }
+.hd-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.hd-top h1 { margin: 0; }
+.hd-bot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.hd-links { display: flex; gap: 8px; }
+.hd-link { border: 1.5px solid var(--border); background: var(--card); border-radius: 999px; height: 40px; padding: 0 14px; font-size: 0.88rem; color: var(--text); display: inline-flex; align-items: center; }
+.hd-link.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.me-chip { height: 40px; padding: 0 14px; display: inline-flex; align-items: center; }
+/* 모임 카드 */
+.mt-top2 { display: flex; align-items: center; gap: 12px; }
+.mt-date { flex: none; width: 58px; padding: 6px 0; border-radius: 12px; }
+.mt-date .d { font-size: 1.2rem; line-height: 1.15; }
+.mt-date .m, .mt-date .w { font-size: 0.75rem; }
+.mt-title { font-size: 1.1rem; font-weight: 800; margin-top: 0; }
+.mt-top2 .dday-pill { margin-left: 6px; background: #FFE9A8; color: #7A5A00; }
+.mt-line { font-size: 0.95rem; font-weight: 500; margin-top: 8px; }
+.mt-line + .mt-line { margin-top: 3px; }
+.mt-line span { display: inline-block; width: 42px; color: var(--muted); font-weight: 700; font-size: 0.88rem; }
+.item-card.mt-card { display: block; }
+.mt-card .content-desc { margin-top: 14px; }
+/* 홈 일정 */
+.hs-ln { font-size: 0.95rem; margin-top: 8px; }
+.hs-ln + .hs-ln { margin-top: 3px; }
+.hs-ln span { display: inline-block; width: 42px; color: var(--muted); font-weight: 700; font-size: 0.88rem; }
+.hs-more { display: block; margin-top: 12px; color: var(--sky); font-weight: 800; font-size: 0.95rem; background: none; border: none; padding: 0; font-family: inherit; cursor: pointer; }
+.mt-flash { animation: mtflash 1.6s ease; }
+@keyframes mtflash { 0%,60% { box-shadow: 0 0 0 3px var(--sky); } 100% { box-shadow: 0 0 0 0 transparent; } }
+/* 성경 완독 */
+.bb-done-card { padding: 0; }
+.bb-done-card summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; font-weight: 800; cursor: pointer; }
+.bb-done-card summary::-webkit-details-marker { display: none; }
+.bb-done-card summary::after { content: '▾'; color: var(--muted); font-weight: 400; }
+.bb-done-card[open] summary::after { content: '▴'; }
+.bb-done-card .bb-done-in { padding: 0 16px 14px; font-size: 0.92rem; color: var(--muted); line-height: 1.7; }
+.bb-pct { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+.bb-pct-sub { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }
+.set-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); font-weight: 700; }
+.set-row input[type=text], .set-row input[type=date] { max-width: 55%; }
+.set-row .ar { display: flex; gap: 6px; }
+.set-row .ar button { padding: 4px 10px; border: 1px solid var(--border); background: var(--card); border-radius: 8px; font-family: inherit; font-weight: 700; }
 </style>
 </head>
 <body>
+<div id="splash"></div>
+<script>(function(){var d=document.getElementById("splash");try{if(sessionStorage.getItem("splash_done")){d.remove();return;}sessionStorage.setItem("splash_done","1");}catch(e){}setTimeout(function(){d.classList.add("out");setTimeout(function(){d.remove();},450);},2800);})();</script>
 
 <header>
-  <div class="hd-l">
+  <div class="hd-top">
     <h1>바기오 청소년부</h1>
-    <div class="sub"><span class="badge" id="dday-badge">D-day 계산중</span><span>출발일 <span id="trip-date-text">2027-01-10</span></span></div>
-  </div>
-  <div class="hd-r">
     <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">이름 선택</button>
     <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">둘러보기 보기</button>
+  </div>
+  <div class="hd-bot">
+    <div class="sub"><span class="badge" id="dday-badge">D-day 계산중</span><span>출발일 <span id="trip-date-text">2027-01-10</span></span></div>
     <div class="hd-links"><button type="button" class="hd-link" id="admin-login-btn" onclick="toggleAdminMode()">관리모드</button><button type="button" class="hd-link" onclick="openInstallModal()">앱설치법</button></div>
   </div>
 </header>
@@ -1392,6 +1445,7 @@ details.bb-book .bb-bar { margin-top: 2px; }
   </section>
 
   <section class="panel" id="panel-admin">
+    <div class="card"><h2>앱 설정</h2><div id="set-admin"></div></div>
     <div class="card">
       <h2>설문·이벤트 카드</h2>
       <div class="bb-hint" style="text-align:left;margin:-2px 2px 10px;">홈 화면에 올라가는 카드예요. 학생·교사가 응답하면 아래로 내려가요.</div>
@@ -1633,9 +1687,7 @@ details.bb-book .bb-bar { margin-top: 2px; }
       <div class="fx-info" id="fx-info"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
         <button type="button" class="fx-mini" onclick="fxRefresh(true)">환율 새로 불러오기</button>
-        <button type="button" class="fx-mini" onclick="fxManualPrompt()">환율 직접 입력</button>
       </div>
-      <div class="fx-quick" id="fx-quick"></div>
       <div class="fx-info">유럽중앙은행이 하루 한 번 발표하는 기준 환율이에요. 환전소·카드 환율과는 달라서 실제 금액은 조금 다를 수 있어요.</div>
     </div>
   </section>
@@ -2449,6 +2501,7 @@ function initFirebaseRealtimeSync() {
       academyTimes = cloneData(remote.academyTimes || {});
       wishes = cloneData(remote.wishes || {});
       if (!browseMode) eventsData = cloneData(remote.events || {});
+      settingsData = cloneData(remote.settings || {}); try { applySettings(); } catch (e) {}
 
       if (!dirty) {
         state = cloneData(remote);
@@ -2642,7 +2695,7 @@ async function saveToCloud() {
 function renderDday() {
   const badge = document.getElementById('dday-badge');
   if (!badge) return;
-  const targetDateStr = state.tripDate || "2027-01-10";
+  const targetDateStr = SET('tripDate', state.tripDate || "2027-01-10");
   document.getElementById('trip-date-text').textContent = targetDateStr;
   const diff = daysUntil(targetDateStr);
   badge.textContent = diff === null ? 'D-day 미설정' : ddayText(diff);
@@ -3822,10 +3875,12 @@ function renderItemCards(dayList, isPast = false) {
       const catTxt = cats.filter(c => c && c !== '전체 모임').join(' · ');
       html += `
         <div class="item-card mt-card ${pastClass}" id="psi-${s.id}-${idx}">
-          <div class="mt-date">${dp ? `<span class="m">${dp.m}월</span><span class="d">${dp.d}</span><span class="w">${dp.w}</span>` : `<span class="w">${escapeHtml(s.date || '')}</span>`}</div>
+          <div class="mt-top2"><div class="mt-date">${dp ? `<span class="d">${dp.m}/${dp.d}</span><span class="w">${dp.w}요일</span>` : `<span class="w">${escapeHtml(s.date || '')}</span>`}</div>
+            <div class="mt-title">${escapeHtml(it.activity)}${notifyFresh.q.has(itemKey(s, it)) ? '<span class="hn-tag">NEW</span>' : ''}${ddayBadge}</div></div>
           <div class="mt-main">
-            <div class="mt-title">${escapeHtml(it.activity)}${notifyFresh.q.has(itemKey(s, it)) ? '<span class="hn-tag">NEW</span>' : ''}${ddayBadge}</div>
-            <div class="mt-when">${escapeHtml(formatTimeKo(it.time))}${it.place ? ' · ' + escapeHtml(it.place) : ''}${catTxt ? ' · ' + escapeHtml(catTxt) : ''}${it.postId ? ' · 공지에서 등록' : ''}</div>
+            ${it.time ? `<div class="mt-line"><span>시간</span>${escapeHtml(formatTimeKo(it.time))}</div>` : ''}
+            ${it.place ? `<div class="mt-line"><span>장소</span>${escapeHtml(it.place)}</div>` : ''}
+            ${catTxt || it.postId ? `<div class="mt-cat">${escapeHtml(catTxt)}${it.postId ? (catTxt ? ' · ' : '') + '공지에서 등록' : ''}</div>` : ''}
             ${it.description ? `<div class="content-desc">${escapeHtml(it.description)}</div>` : ''}
             ${attListHtml(it.attachments)}
             ${rsvpPlaceholder(s, it, isPast)}
@@ -3841,7 +3896,7 @@ function renderItemCards(dayList, isPast = false) {
 function renderPsFilter() {
   const box = document.getElementById('ps-filter');
   if (!box) return;
-  const keys = ['all', '전체 모임', '교사', ...TEAMS];
+  const keys = ['all', ...catOrder()];
   const sel = `<select class="ps-sel" onchange="psFilter=this.value;renderPrepSchedule()" aria-label="분류">${keys.map(k => `<option value="${k}"${psFilter === k ? ' selected' : ''}>${k === 'all' ? '분류: 전체' : '분류: ' + k}</option>`).join('')}</select>`;
   if (box.dataset.v !== psFilter) { box.dataset.v = psFilter; box.innerHTML = sel; }
 }
@@ -4496,8 +4551,8 @@ function homeBibleHtml() {
   const I = bibleInfo(sid);
   let body;
   if (I.t < BIBLE_PERIOD.start) body = `<div class="hc-big">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요</div>`;
-  else if (I.count >= BIBLE_TOTAL) body = `<div class="hc-big">4복음서를 모두 읽었어요</div>`;
-  else if (I.now) body = `<div class="hc-row"><div class="hc-big">${bibleChapterLabel(I.now)}</div><button type="button" class="bb-read-pill" onclick="event.stopPropagation();bibleOpenReader('${I.now.book.key}', ${I.now.ch})">읽기 ›</button></div>${I.behind > 0 ? `<div class="bb-late">${I.behind}장 밀렸어요</div>` : ''}<div class="hc-hint">읽기를 누르면 바로 본문이 열려요</div>`;
+  else if (I.count >= BIBLE_TOTAL) body = `<div class="hc-big">🎉 4복음서를 모두 읽었어요</div>`;
+  else if (I.now) body = `<div class="hc-row"><div class="hc-big">${bibleChapterLabel(I.now)}</div><button type="button" class="bb-read-pill" onclick="event.stopPropagation();bibleOpenReader('${I.now.book.key}', ${I.now.ch})">읽기 ›</button></div>${I.behind > 0 ? `<div class="bb-late">${I.behind}장 밀렸어요</div>` : `<div class="hc-hint" style="color:#2F7D4F;font-weight:700">잘 읽고 있어요</div>`}<div class="hc-hint">읽기를 누르면 바로 본문이 열려요</div>`;
   else body = `<div class="hc-big">오늘 분량을 다 읽었어요</div>`;
   const lb = I.now ? (I.behind > 0 ? '내가 읽을 곳' : '오늘 읽을 곳') : '';
   return `<div class="card hc hc-click" onclick="showView('bible')"><div class="hc-h">${homeSvg(SVG_BOOK)}<span class="hc-t">성경읽기${lb ? ' · ' + lb : ''}</span><span class="hc-go">›</span></div>${body}</div>`;
@@ -4518,19 +4573,24 @@ function homeUpcoming() {
   }));
   scan(dsrc().prepSchedule, true); scan(browseMode ? [] : state.schedule, false);
   out.sort((a, b) => a.key.localeCompare(b.key));
-  return out.slice(0, canEdit ? 1 : 2);
+  return out.filter((x, i) => i === 0 || bibleDayDiff(today, x.day.date) <= SET('schedDays', 10));
 }
 function homeSchedHtml() {
   const list = homeUpcoming();
   if (!list.length) return '';
   const rows = list.map(x => {
     const o = bibleDateObj(x.day.date);
-    const when = `${o.getMonth() + 1}/${o.getDate()}(${BIBLE_WEEK[o.getDay()]})${x.t ? ' ' + formatTimeKo(x.t) : ''}${x.it.place ? ' · ' + escapeHtml(x.it.place) : ''}`;
+    const dateTxt = `${o.getMonth() + 1}/${o.getDate()}(${BIBLE_WEEK[o.getDay()]})${x.t ? ' ' + formatTimeKo(x.t) : ''}`;
     const diff = bibleDayDiff(bibleToday(), x.day.date);
-    const dd = diff <= 0 ? '오늘' : diff === 1 ? '내일' : `${diff}일 후`;
-    return `<div class="hs-item"><div class="hs-top"><div class="hs-t">${escapeHtml(x.it.activity || '일정')}</div><span class="hs-dd">${dd}</span></div><div class="hs-when">${when}</div>${x.isPrep ? (browseMode ? demoRsvpHtml(x.day.id) : rsvpPlaceholder(x.day, x.it, false)) : `<button type="button" class="hs-link" onclick="showView('baguio','schedule')">선교일정에서 보기 ›</button>`}</div>`;
+    const dd = diff <= 0 ? '오늘' : ddayText(diff);
+    const go = x.isPrep ? `homeGoMeet('${x.day.id}', ${x.idx})` : `showView('baguio','schedule')`;
+    return `<div class="hs-item"><div class="hs-top"><div class="hs-t">${escapeHtml(x.it.activity || '일정')}</div><span class="hs-dd">${dd}</span></div><div class="hs-ln"><span>시간</span>${dateTxt}</div>${x.it.place ? `<div class="hs-ln"><span>장소</span>${escapeHtml(x.it.place)}</div>` : ''}<button type="button" class="hs-more" onclick="${go}">${x.isPrep ? '모임' : '선교일정'}에서 자세히 보기 ›</button></div>`;
   }).join('<div class="hs-sep"></div>');
   return `<div class="card hc"><div class="hc-h">${homeSvg(SVG_CAL)}<span class="hc-t">다가오는 ${canEdit ? '' : '내 '}일정</span><span class="hc-go" onclick="showView('meet')">모임 ›</span></div>${rows}</div>`;
+}
+function homeGoMeet(dayId, idx) {
+  psFilter = 'all'; showView('meet'); renderPrepSchedule();
+  setTimeout(() => { const el = document.getElementById('psi-' + dayId + '-' + idx); if (!el) return; el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('mt-flash'); setTimeout(() => el.classList.remove('mt-flash'), 1800); }, 80);
 }
 function homeMineHtml() {
   const m = browseMode ? demoMe() : meFind(meKey); if (!m) return '';
@@ -4547,12 +4607,13 @@ function homeMineHtml() {
 }
 function renderHome() {
   const bi = document.getElementById('home-bible'); if (!bi) return;
-  bi.innerHTML = (browseMode ? DEMO_NOTE : '') + homeBibleHtml();
+  const HH = SET('hideHome', {}) || {};
+  bi.innerHTML = (browseMode ? DEMO_NOTE : '') + (HH.bible ? '' : homeBibleHtml());
   const { pend, done } = evHomeLists();
   document.getElementById('home-events').innerHTML = pend.map(e => evCardHtml(e, false)).join('');
   document.getElementById('home-done-events').innerHTML = done.length ? `<div class="hd-lb">응답한 카드</div>` + done.map(e => evCardHtml(e, true)).join('') : '';
-  document.getElementById('home-sched').innerHTML = homeSchedHtml();
-  document.getElementById('home-mine').innerHTML = homeMineHtml();
+  document.getElementById('home-sched').innerHTML = HH.sched ? '' : homeSchedHtml();
+  document.getElementById('home-mine').innerHTML = HH.mine ? '' : homeMineHtml();
   const fa = document.getElementById('home-feed-admin'); if (fa) fa.style.display = canEdit ? 'block' : 'none';
   updateDoneSum(done.length);
   try { renderRsvpBlocks(); } catch (e) {}
@@ -4587,7 +4648,7 @@ function renderPosts() {
   const today = bibleToday();
   const posts = [...(dsrc().posts || [])].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   const okList = browseMode ? DEMO.ok : noticeOk;
-  const recent = p => !okList.includes(p.id) && (!p.date || bibleDayDiff(p.date, today) <= 14);
+  const recent = p => !okList.includes(p.id) && (!p.date || bibleDayDiff(p.date, today) <= SET('noticeDays', 14));
   const cards = posts.filter(recent).slice(0, 3);
   const ids = new Set(cards.map(p => p.id));
   const rest = posts.filter(p => !ids.has(p.id));
@@ -5290,7 +5351,7 @@ function renderMeModal() {
   const st = people.filter(x => x.role === 'student'), te = people.filter(x => x.role === 'teacher');
   const btn = x => `<button class="bb-pick${x.role === 'teacher' ? ' teacher' : ''}" data-n="${escapeHtml(x.name)}" onclick="pickMe('${x.key}')"><span>${escapeHtml(x.name)}</span>${x.sub ? `<small>${escapeHtml(x.sub)}</small>` : ''}</button>`;
   const cur = (meFind(meKey) || {}).name || '';
-  box.innerHTML = `${meForced ? '<button type="button" class="me-browse" onclick="startBrowse()">둘러보기 <span style="font-weight:600;font-size:0.82rem;opacity:.85;">· 이름선택 없이 구경해요</span></button><div class="me-or">또는 내 이름 고르기</div>' : ''}<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : (browseMode ? '내 이름 고르기' : '이름 바꾸기')}</h2>
+  box.innerHTML = `${meForced && !SET('noBrowse', false) ? '<button type="button" class="me-browse" onclick="startBrowse()">둘러보기 <span style="font-weight:600;font-size:0.82rem;opacity:.85;">· 이름선택 없이 구경해요</span></button><div class="me-or">또는 내 이름 고르기</div>' : ''}<h2 style="margin:0 0 4px;">${meForced ? '👋 누구신가요?' : (browseMode ? '내 이름 고르기' : '이름 바꾸기')}</h2>
     <div class="bb-sub" style="margin:0 0 8px;">${meForced ? ( '학생·선생님은 <b>내 이름</b>을 골라 주세요.<div style="margin-top:6px;padding:8px 10px;background:var(--ik11,#FFF8E6);border:1px solid var(--ik12,#F1DFAE);border-radius:10px;color:var(--ik13,#6B4E00);">이름을 누르면 <b>내 코드(숫자 4자리)</b>를 입력해야 해요.<br>코드는 김진경 선생님께 받으세요.</div><div style="margin-top:4px;">한 번 고르면 바꿀 수 없으니 꼭 확인해 주세요.</div>') : `지금: ${escapeHtml(cur || '선택 안 함')} · 다른 사람 이름을 고르면 바뀌어요`}</div>
     <div class="me-list" id="me-list">
       ${people.length ? `${st.length ? `<div class="bb-group-label">🌱 학생</div><div class="bb-picker">${st.map(btn).join('')}</div>` : ''}${te.length ? `<div class="bb-group-label">🌳 선생님</div><div class="bb-picker">${te.map(btn).join('')}</div>` : ''}` : '<div class="empty">아직 등록된 사람이 없어요.</div>'}
@@ -5753,6 +5814,7 @@ function markDirty(field) {
 
 function renderAll() {
   document.body.classList.toggle('admin', !!canEdit);
+  try { applySettings(); renderSettingsAdmin(); } catch (e) {}
   renderDday();
   renderRoleBoxesAll();
   meCheck();
@@ -6114,6 +6176,52 @@ function evFormHtml() {
     <label>마감일 (선택)</label><input id="evf-dl" type="date" />
     <label class="role-check" style="margin-top:8px;"><input type="checkbox" id="evf-show" checked /><span>응답한 사람에게 결과 보여주기</span></label>
     <div class="form-actions"><button class="primary" onclick="evCreate()">카드 올리기</button></div></div>`;
+}
+// ===== 앱 설정 (관리 탭) : Firestore 문서의 settings 필드에 저장 =====
+let settingsData = {};
+const BIBLE_DEFAULT_PERIOD = { start: '2026-10-11', end: '2026-12-27' };
+const SET = (k, d) => { const v = settingsData[k]; return (v === undefined || v === null || v === '') ? d : v; };
+const CAT_DEFAULT = () => [...TEAMS, '교사'];
+function catOrder() {
+  const base = CAT_DEFAULT(), o = (SET('catOrder', []) || []).filter(x => base.includes(x));
+  return [...o, ...base.filter(x => !o.includes(x))];
+}
+const SET_TABS = [['meet', '모임'], ['pack', '짐싸기'], ['baguio', '바기오'], ['bible', '성경'], ['roster', '명단']];
+const SET_HOME = [['bible', '성경읽기'], ['sched', '다가오는 일정'], ['mine', '내 담당·방·차량']];
+function applySettings() {
+  const h = document.querySelector('header h1'); if (h) h.textContent = SET('title', '바기오 청소년부');
+  BIBLE_PERIOD.start = SET('bibleStart', BIBLE_DEFAULT_PERIOD.start); BIBLE_PERIOD.end = SET('bibleEnd', BIBLE_DEFAULT_PERIOD.end);
+  const ht = SET('hideTabs', {}) || {};
+  document.querySelectorAll('nav.tabs button').forEach(b => { const t = b.getAttribute('data-tab'); if (SET_TABS.some(x => x[0] === t)) b.style.display = ht[t] ? 'none' : ''; });
+}
+function setSet(k, v) {
+  if (browseMode) return;
+  settingsData = Object.assign({}, settingsData, { [k]: v });
+  try { DOC_REF.update(new firebase.firestore.FieldPath('settings', k), v); } catch (e) { alert('저장하지 못했어요. 네트워크를 확인해 주세요.'); }
+  applySettings(); try { renderAll(); } catch (e) {}
+}
+function setSetMap(k, sub, on) { const m = Object.assign({}, SET(k, {}) || {}); if (on) m[sub] = true; else delete m[sub]; setSet(k, m); }
+function setCatMove(i, d) { const o = catOrder(), j = i + d; if (j < 0 || j >= o.length) return; [o[i], o[j]] = [o[j], o[i]]; setSet('catOrder', o); }
+function renderSettingsAdmin() {
+  const box = document.getElementById('set-admin'); if (!box) return;
+  if (box.contains(document.activeElement) && /INPUT/.test(document.activeElement.tagName)) return;
+  const ht = SET('hideTabs', {}) || {}, hh = SET('hideHome', {}) || {};
+  const chk = (label, on, fn) => `<label class="set-row"><span>${label}</span><input type="checkbox" ${on ? 'checked' : ''} onchange="${fn}"></label>`;
+  box.innerHTML = `
+    <div class="set-row"><span>앱 제목</span><input type="text" value="${escapeHtml(SET('title', '바기오 청소년부'))}" onchange="setSet('title', this.value.trim())"></div>
+    <div class="set-row"><span>출발일 (D-day)</span><input type="date" value="${escapeHtml(SET('tripDate', state.tripDate || '2027-01-10'))}" onchange="if(this.value)setSet('tripDate', this.value)"></div>
+    <div class="set-row"><span>성경읽기 시작일</span><input type="date" value="${escapeHtml(BIBLE_PERIOD.start)}" onchange="if(this.value)setSet('bibleStart', this.value)"></div>
+    <div class="set-row"><span>성경읽기 종료일</span><input type="date" value="${escapeHtml(BIBLE_PERIOD.end)}" onchange="if(this.value)setSet('bibleEnd', this.value)"></div>
+    <div class="set-row"><span>공지 새 글 표시 (일)</span><input type="number" min="1" max="90" value="${SET('noticeDays', 14)}" onchange="setSet('noticeDays', Math.max(1, +this.value || 14))" style="width:80px"></div>
+    <div class="set-row"><span>홈 일정 묶음 기간 (일)</span><input type="number" min="1" max="90" value="${SET('schedDays', 10)}" onchange="setSet('schedDays', Math.max(1, +this.value || 10))" style="width:80px"></div>
+    <div class="hd-lb">모임 분류 순서</div>
+    ${catOrder().map((c, i) => `<div class="set-row"><span>${escapeHtml(c)}</span><span class="ar"><button type="button" onclick="setCatMove(${i},-1)">▲</button><button type="button" onclick="setCatMove(${i},1)">▼</button></span></div>`).join('')}
+    <div class="hd-lb">홈 카드 보이기</div>
+    ${SET_HOME.map(([k, n]) => chk(n, !hh[k], `setSetMap('hideHome','${k}',!this.checked)`)).join('')}
+    <div class="hd-lb">하단 탭 보이기</div>
+    ${SET_TABS.map(([k, n]) => chk(n, !ht[k], `setSetMap('hideTabs','${k}',!this.checked)`)).join('')}
+    <div class="hd-lb">기타</div>
+    ${chk('둘러보기 허용', !SET('noBrowse', false), `setSet('noBrowse', !this.checked)`)}`;
 }
 function renderEventAdmin() {
   const box = document.getElementById('ev-admin'); if (!box) return;
@@ -7098,7 +7206,7 @@ function bibleTeacherCard(me) {
     ${groupLabel('선생님', teachers.length)}${teachers.length ? teacherRows : '<div class="empty">등록된 선생님이 아직 없어요.</div>'}</details></div>`;
 }
 
-function bibleShortName(b) { return b.name.replace('복음', ''); }
+function bibleShortName(b) { return b.name; }
 function bibleInfo(sid) {
   const t = bibleToday();
   const inPeriod = t >= BIBLE_PERIOD.start && t <= BIBLE_PERIOD.end;
@@ -7112,13 +7220,34 @@ function bibleInfo(sid) {
   const more = bibleChapterRange(1, BIBLE_TOTAL).find(c => bibleDates(sid, c.book.key, c.ch).length === 0) || null;
   return { t, inPeriod, P, plan, planSet, left, now: left[0] || null, behind, goal, more, count: bibleStudentCount(sid) };
 }
+function bibleRounds(sid) {   // 책별·전체 완독 횟수 (모든 장을 읽은 횟수 중 가장 적은 값)
+  const per = BIBLE_BOOKS.map(b => {
+    let m = Infinity;
+    for (let ch = 1; ch <= b.chapters; ch++) m = Math.min(m, bibleDates(sid, b.key, ch).length);
+    return { book: b, n: m === Infinity ? 0 : m };
+  });
+  return { per, all: Math.min(...per.map(x => x.n)) };
+}
+function bibleDoneCardHtml(sid) {
+  const R = bibleRounds(sid);
+  const done = R.per.filter(x => x.n >= 1);
+  if (!done.length) return '';
+  const x = n => n >= 2 ? ' ×' + n : '';
+  let title, msg;
+  if (R.all >= 1) { title = '🎉 4복음서 완독!' + x(R.all); msg = '끝까지 함께해 줘서 고마워요.'; }
+  else if (done.length === 1) { title = '🎉 ' + done[0].book.name + ' 완독!' + x(done[0].n); msg = done[0].book.chapters + '장을 모두 읽었어요. 수고했어요!'; }
+  else { title = '🎉 ' + done.length + '권 완독!'; msg = '수고했어요! 남은 책도 힘내요.'; }
+  const list = done.length > 1 && R.all < 1 ? done.map(d => d.book.name + x(d.n)).join(' · ') + '<br>' : '';
+  return `<details class="card bb-done-card"${bibleDoneOpen ? ' open' : ''} ontoggle="bibleDoneOpen=this.open"><summary><span>${title}</span></summary><div class="bb-done-in">${list}${msg}</div></details>`;
+}
+let bibleDoneOpen = false;
 function bibleReadBtns(c, sid) {
   return `<button type="button" class="bb-read-pill" onclick="bibleOpenReader('${c.book.key}', ${c.ch})">읽기 ›</button>`;
 }
 function bibleTopCardHtml(me) {
   const sid = me.id, I = bibleInfo(sid);
   if (I.t < BIBLE_PERIOD.start) return `<div class="card bb-top"><div class="bb-top-lb">성경읽기</div><div class="bb-top-t">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요</div><div class="bb-top-sub">첫날은 주일이라 2장이에요.</div></div>`;
-  if (I.count >= BIBLE_TOTAL) return `<div class="card bb-top"><div class="bb-top-lb">성경읽기</div><div class="bb-top-t">4복음서를 모두 읽었어요</div><div class="bb-top-sub">끝까지 함께해 줘서 고마워요.</div></div>`;
+  if (I.count >= BIBLE_TOTAL) return '';
   let h = '';
   if (I.now) {
     h = `<div class="bb-top-lb">${I.behind > 0 ? '내가 읽을 곳' : (I.inPeriod ? '오늘 읽을 곳' : '읽을 곳')}</div>
@@ -7137,17 +7266,16 @@ function bibleTopCardHtml(me) {
 let bibleBookOpen = {};
 function bibleProgressHtml(me, comm) {
   const I = bibleInfo(me.id);
-  const pct = Math.round(I.count / BIBLE_TOTAL * 100);
-  const fp = I.P > 0 ? Math.min(100, I.P / BIBLE_TOTAL * 100) : 0;
-  const side = fp < 24 ? 'l' : fp > 76 ? 'r' : 'c';
-  const flag = I.goal ? `<div class="bb-flag ${side}" style="left:${fp}%"><span>오늘 목표 · ${bibleShortName(I.goal.book)} ${I.goal.ch}장</span></div>` : '';
+  const goalN = I.P, readN = goalN - I.left.length;
+  const pct = goalN > 0 ? Math.round(readN / goalN * 100) : 0;
   const end = bibleDateObj(BIBLE_PERIOD.end);
   const bars = `<div class="bb-book-bars">
     ${comm.studentCount ? `<div class="bb-book-row"><span class="bb-book-name">학생 (${comm.studentCount}명)</span>${bibleBar(comm.studentPlan)}<span class="bb-book-pct">${comm.studentPlan}%</span></div>` : ''}
     ${comm.teacherCount ? `<div class="bb-book-row"><span class="bb-book-name">교사 (${comm.teacherCount}명)</span>${bibleBar(comm.teacherPlan)}<span class="bb-book-pct">${comm.teacherPlan}%</span></div>` : ''}</div>`;
   return `<div class="card bb-prog">
-    <div class="bb-prog-h"><b>내 진도</b><span class="bb-prog-n"><em>${I.count}</em> / ${BIBLE_TOTAL}장</span></div>
-    <div class="bb-track${flag ? ' hasflag' : ''}"><div class="bb-fill" style="width:${pct}%"></div>${flag}</div>
+    <div class="bb-prog-h"><b>내 진도</b></div>
+    <div class="bb-pct">${pct}%</div>
+    <div class="bb-pct-sub">${goalN <= 0 ? '아직 시작 전이에요' : I.left.length ? `오늘 목표까지 <b style="color:#B03A2E">${I.left.length}장 남았어요</b>` : '<b style="color:#2F7D4F">오늘 목표까지 다 읽었어요</b>'}</div>
     <div class="bb-prog-sub">${end.getMonth() + 1}/${end.getDate()}까지 · 월~토 하루 1장 · 주일 2장</div>
     <details class="bb-comm2"${bibleStaffOpen2 ? ' open' : ''} ontoggle="bibleStaffOpen2=this.open"><summary><b>우리 함께 읽기</b><span>학생 ${comm.studentPlan}% · 교사 ${comm.teacherPlan}%</span></summary>
       <div class="bb-period" style="margin:8px 0 6px;">${biblePeriodText()}</div>${bars}</details>
@@ -7202,7 +7330,7 @@ function renderBible() {
   }
 
   const sid = me.id;
-  html += bibleTopCardHtml(me) + bibleProgressHtml(me, comm);
+  html += bibleTopCardHtml(me) + bibleProgressHtml(me, comm) + (me.virtual ? '' : bibleDoneCardHtml(me.id));
   const I = bibleInfo(sid);
   const curBook = (I.now ? I.now.book : (I.more ? I.more.book : null));
   html += BIBLE_BOOKS.map(b => {
@@ -7599,7 +7727,7 @@ function fxCalc() {
   const amtEl = document.getElementById('fx-amount'), out = document.getElementById('fx-result');
   if (!amtEl || !out) return;
   const rate = fxRate();
-  if (!rate) { out.innerHTML = '<small>환율을 불러오는 중이거나, 불러오지 못했어요.<br>아래 "환율 직접 입력"을 눌러 입력할 수 있어요.</small>'; return; }
+  if (!rate) { out.innerHTML = '<small>환율을 불러오는 중이거나, 불러오지 못했어요.</small>'; return; }
   const amt = fxNum(amtEl.value), eff = rate;
   if (f.dir === 'krw2php') out.innerHTML = amt ? `<b>${fxFmt(amt / eff)} 페소</b><small>${fxFmt(amt, 0)}원 ≈ 약 ${fxFmt(amt / eff)}페소</small>` : '<small>금액을 입력해 주세요</small>';
   else out.innerHTML = amt ? `<b>${fxFmt(amt * eff, 0)} 원</b><small>${fxFmt(amt)}페소 ≈ 약 ${fxFmt(amt * eff, 0)}원</small>` : '<small>금액을 입력해 주세요</small>';
@@ -7615,10 +7743,10 @@ function fxRender() {
   if (f.loading) t = '환율을 불러오는 중이에요…';
   else if (f.manual > 0) t = `직접 입력한 환율: 1페소 = ${fxFmt(f.manual)}원`;
   else if (f.cache) t = `1페소 ≈ ${fxFmt(f.cache.rate)}원 · ${f.cache.date} 기준 (${f.cache.src})${f.error ? '<br>새 환율을 불러오지 못해 마지막으로 저장한 값이에요' : ''}`;
-  else t = f.error ? '환율을 불러오지 못했어요. "환율 직접 입력"을 써 주세요.' : '';
+  else t = f.error ? '환율을 불러오지 못했어요.' : '';
   info.innerHTML = t;
   const q = document.getElementById('fx-quick');
-  if (q) q.innerHTML = rate ? [100, 500].map(n => `<div><span>${fxFmt(n, 0)}페소</span><span>약 ${fxFmt(n * rate, 0)}원</span></div>`).join('') : '';
+  if (q) q.innerHTML = rate && false ? [100, 500].map(n => `<div><span>${fxFmt(n, 0)}페소</span><span>약 ${fxFmt(n * rate, 0)}원</span></div>`).join('') : '';
   fxCalc();
 }
 function fxOnOpen() { fxRender(); fxRefresh(false); }
@@ -7720,7 +7848,28 @@ function showView(top, sub) {
   try { sessionStorage.setItem('activeTab', top); } catch (e) {}
   notifyOpen(top);
   window.scrollTo(0, 0);
+  try {
+    const key = top + '/' + cur.id;
+    if (!window.__noPush && key !== window.__navKey) history.pushState({ v: [top, cur.id] }, '');
+    window.__navKey = key;
+  } catch (e) {}
 }
+function navToast(msg) {
+  let t = document.getElementById('nav-toast');
+  if (!t) { t = document.createElement('div'); t.id = 'nav-toast'; t.style.cssText = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:rgba(30,30,30,.9);color:#fff;padding:10px 16px;border-radius:999px;font-size:.9rem;font-weight:700;z-index:5000;transition:opacity .3s;'; document.body.appendChild(t); }
+  t.textContent = msg; t.style.opacity = '1'; clearTimeout(t._h); t._h = setTimeout(() => { t.style.opacity = '0'; }, 1800);
+}
+let lastRootPress = 0;
+window.addEventListener('popstate', e => {
+  if (bibleReader) return;
+  const st = e.state || {};
+  if (st.v) { window.__noPush = true; try { showView(st.v[0], st.v[1]); } finally { window.__noPush = false; } return; }
+  // 가장 처음 칸(홈 뒤)까지 오면: 한 번 더 누르면 종료
+  if (Date.now() - lastRootPress < 2000) { history.back(); return; }
+  lastRootPress = Date.now();
+  navToast('한 번 더 누르면 종료돼요');
+  try { window.__noPush = true; history.pushState({ v: ['home', ''] }, ''); showView('home'); } catch (err) {} finally { window.__noPush = false; }
+});
 
 // 날짜·시간 입력칸(년/월/일, 오전·오후/시/분)을 자리표시자에 채움
 function injectDateTimeFields() {
@@ -7750,7 +7899,7 @@ window.onload = function() {
 
   // 키보드가 열려 있는 동안에는 아래 탭 바를 숨김
   document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=button]),textarea,select')) document.body.classList.add('kb'); });
-  document.addEventListener('focusout', () => setTimeout(() => { const a = document.activeElement; if (!(a && a.matches && a.matches('input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=button]),textarea,select'))) document.body.classList.remove('kb'); }, 120));
+  document.addEventListener('focusout', () => setTimeout(() => { const a = document.activeElement; if (!(a && a.matches && a.matches('input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=button]),textarea'))) document.body.classList.remove('kb'); }, 120));
 
   const tabs = document.querySelectorAll('nav.tabs button');
 
@@ -7776,6 +7925,7 @@ window.onload = function() {
   try { rs = JSON.parse(sessionStorage.getItem('baguio_restore') || 'null'); sessionStorage.removeItem('baguio_restore'); } catch (e) {}
   if (rs && rs.tab && rs.tab !== 'admin') { showView(rs.tab, rs.sub || null); setTimeout(() => window.scrollTo(0, +rs.y || 0), 60); }
   else showView('home');
+  try { history.replaceState({ root: 1 }, ''); window.__navKey = null; history.pushState({ v: ['home', ''] }, ''); window.__navKey = 'home/' + ((VIEWS.home && VIEWS.home[0]) ? VIEWS.home[0].id : ''); } catch (e) {}
 
   // 화면을 좌우로 쓸면 탭 이동 (왼쪽으로 쓸면 오른쪽 탭, 오른쪽으로 쓸면 왼쪽 탭)
   let sx = 0, sy = 0, swipeOk = false;
