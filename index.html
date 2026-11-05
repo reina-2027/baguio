@@ -1188,6 +1188,7 @@ main { padding-top: 14px; }
 .hc-h { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .hc-ic { width: 34px; height: 34px; border-radius: 50%; background: var(--sky-soft); color: var(--sky); display: inline-flex; align-items: center; justify-content: center; flex: none; }
 .hc-ic svg { width: 19px; height: 19px; }
+.hc-ic { font-size: 1.05rem; line-height: 1; }
 .hc-t { font-size: 0.95rem; font-weight: 800; flex: 1; min-width: 0; }
 .hc-go { color: var(--muted); font-weight: 700; font-size: 0.95rem; white-space: nowrap; cursor: pointer; }
 .hc-click { cursor: pointer; }
@@ -4628,7 +4629,7 @@ function noticeConfirm(id) {
   try { localStorage.setItem(NOTICE_OK_KEY, JSON.stringify(noticeOk.slice(-200))); } catch (e) {}
   renderPosts(); renderHome();
 }
-function homeSvg(p) { return `<span class="hc-ic${p === SVG_CAL ? ' ic-y' : p === SVG_BELL ? ' ic-g' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${p}</svg></span>`; }
+function homeSvg(p) { const em = p === SVG_CAL ? '📅' : p === SVG_BELL ? '🔔' : '📖'; return `<span class="hc-ic${p === SVG_CAL ? ' ic-y' : p === SVG_BELL ? ' ic-g' : ''}">${em}</span>`; }
 const SVG_BOOK = '<path d="M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z"/><path d="M12 6v14"/>';
 const SVG_CAL = '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>';
 const SVG_BELL = '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>';
@@ -6157,7 +6158,7 @@ function evPollResultsHtml(e, my) {
 function evCardHtml(e, done) {
   const key = evMyKey(), closed = evClosed(e);
   const dl = e.deadline ? `<span class="ev-dl">${evDateTxt(e.deadline)}까지</span>` : '';
-  const head = `<div class="hc-h"><span class="hc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></span><span class="hc-t">${escapeHtml(e.title)}</span><span class="ev-kind">${closed ? '마감' : EV_KINDS[e.kind]}</span></div>${e.desc ? `<div class="ev-desc">${escapeHtml(e.desc)}</div>` : ''}${dl ? `<div class="ev-meta">${dl}</div>` : ''}`;
+  const head = `<div class="hc-h"><span class="hc-ic ic-g">💬</span><span class="hc-t">${escapeHtml(e.title)}</span><span class="ev-kind">${closed ? '마감' : EV_KINDS[e.kind]}</span></div>${e.desc ? `<div class="ev-desc">${escapeHtml(e.desc)}</div>` : ''}${dl ? `<div class="ev-meta">${dl}</div>` : ''}`;
   let body = '';
   if (e.kind === 'poll') {
     const my = key && e.ans ? e.ans[key] : '';
