@@ -1413,6 +1413,7 @@ header { padding: 12px 16px 12px; }
 .hd-sp { flex: 1; }
 .dpill { background: var(--sky); color: #fff; border-radius: 999px; padding: 3px 10px; font-size: 0.8rem; font-weight: 800; white-space: nowrap; }
 .hd-top h1 { font-size: 1.2rem; white-space: nowrap; }
+body[data-view="home"] #admin-chip{display:none}
 .hd-top .me-chip { height: 36px; padding: 0 12px; font-size: 0.85rem; }
 .hd-strip { display: none; margin-top: 10px; padding: 14px 14px 14px 16px; border-radius: 18px; background: linear-gradient(135deg, #DCEEFF, #FFF4CC); align-items: center; justify-content: space-between; gap: 8px; }
 body[data-view="home"] .hd-strip { display: flex; }
@@ -1446,6 +1447,7 @@ body[data-view="home"] .hd-sp { display: block; }
     <span class="dpill" id="dday-mini">D-day</span>
     <span class="hd-sp"></span>
     <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">이름 선택</button>
+    <button type="button" class="me-chip" id="admin-chip" onclick="toggleAdminMode()">관리</button>
     <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">둘러보기 보기</button>
   </div>
   <div class="hd-strip" id="hd-strip">
@@ -2671,7 +2673,14 @@ function closeInstallModal() {
 
 // 관리모드에서 '둘러보기 보기': 내 이름·관리 권한을 잠시 내려놓고 둘러보기 화면을 확인 (저장된 이름은 그대로, 관리모드 버튼으로 돌아옴)
 let browseStash = null;
+function syncAdminChip() {
+  const c = document.getElementById('admin-chip'); if (!c) return;
+  c.textContent = browseStash ? '← 관리' : '관리';
+  c.style.background = canEdit ? 'var(--accent, #6FBCFD)' : '';
+  c.style.color = canEdit ? '#fff' : '';
+}
 function updateBrowseUi() {
+  syncAdminChip();
   const pb = document.getElementById('browse-preview-btn'); if (pb) pb.style.display = (canEdit && !browseMode) ? '' : 'none';
   const ab = document.getElementById('admin-login-btn'); if (ab) ab.textContent = browseStash ? '← 관리모드' : '관리모드';
 }
