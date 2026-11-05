@@ -17,19 +17,19 @@
 <meta name="description" content="눌러서 공지를 확인해주세요.">
 
 <!-- PWA 및 모바일 홈 화면 아이콘 연동 -->
-<link rel="icon" href="favicon.ico?v=5" sizes="any">
-<link rel="icon" href="favicon-32.png?v=5" type="image/png" sizes="32x32">
+<link rel="icon" href="favicon.ico?v=6" sizes="any">
+<link rel="icon" href="favicon-32.png?v=6" type="image/png" sizes="32x32">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="청소년부">
 <meta name="theme-color" content="#ffffff">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=5">
-<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120.png?v=5">
-<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152.png?v=5">
-<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167.png?v=5">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=5">
-<link rel="manifest" href="manifest.json?v=5">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=6">
+<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120.png?v=6">
+<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152.png?v=6">
+<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167.png?v=6">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=6">
+<link rel="manifest" href="manifest.json?v=6">
 <link rel="preload" as="image" href="splash.jpg">
 <link rel="preload" as="image" href="splash-tall.jpg">
 <style>
@@ -1336,7 +1336,7 @@ header { display: block; position: static; padding: 12px 16px 10px; }
 .hd-top .hd-link { height: 36px; padding: 0 12px; }
 .hd-links { display: flex; gap: 6px; flex: none; }
 .hd-link { border: 1.5px solid var(--border); background: var(--card); border-radius: 999px; height: 40px; padding: 0 14px; font-size: 0.88rem; color: var(--text); display: inline-flex; align-items: center; }
-.hd-link.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.hd-link.active { background: var(--sky); color: #fff; border-color: var(--sky); }
 .me-chip { height: 40px; padding: 0 14px; display: inline-flex; align-items: center; }
 /* 모임 카드 */
 .mt-top2 { display: flex; align-items: center; gap: 12px; }
@@ -1406,6 +1406,34 @@ header { display: block; position: static; padding: 12px 16px 10px; }
 .save-bar { gap: 8px; padding: 10px 12px; flex-wrap: nowrap; }
 .save-bar span { font-size: 0.82rem; margin-right: 0; flex: 1; min-width: 0; }
 .save-bar button { flex: none; padding: 11px 16px; font-size: 0.95rem; min-width: 128px; }
+
+/* round4: 홈 컬러 띠 + 한 줄 상단 + 글자 탭 */
+header { padding: 12px 16px 12px; }
+.hd-top { display: flex; align-items: center; gap: 8px; }
+.hd-sp { flex: 1; }
+.dpill { background: var(--sky); color: #fff; border-radius: 999px; padding: 3px 10px; font-size: 0.8rem; font-weight: 800; white-space: nowrap; }
+.hd-top h1 { font-size: 1.2rem; white-space: nowrap; }
+.hd-top .me-chip { height: 36px; padding: 0 12px; font-size: 0.85rem; }
+.hd-strip { display: none; margin-top: 10px; padding: 14px 14px 14px 16px; border-radius: 18px; background: linear-gradient(135deg, #DCEEFF, #FFF4CC); align-items: center; justify-content: space-between; gap: 8px; }
+body[data-view="home"] .hd-strip { display: flex; }
+body[data-view="home"] #dday-mini { display: none; }
+body[data-view="home"] .hd-sp { display: block; }
+.hs-l { font-size: 0.8rem; color: #4a6a8a; }
+.hs-n { font-size: 1.75rem; font-weight: 800; color: #2a5fb0; line-height: 1.1; }
+.hs-d { font-size: 0.78rem; color: #6a5a20; margin-top: 2px; }
+.hd-strip .hd-links { display: flex; gap: 6px; flex: none; }
+.hd-strip .hd-link { height: 36px; padding: 0 12px; font-size: 0.84rem; font-weight: 600; background: #fff; }
+.hc-ic.ic-y { background: #FFF0BF; color: #a67a00; }
+.hc-ic.ic-g { background: #E3F1E6; color: #2F6B3E; }
+.ps-ut { display: flex; gap: 18px; border-bottom: 1px solid var(--border); margin: 0 4px 12px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+.ps-ut::-webkit-scrollbar { display: none; }
+.ps-ut button { flex: none; border: none; background: none; font-family: inherit; font-size: 0.95rem; font-weight: 600; color: var(--muted); padding: 8px 0 9px; border-bottom: 3px solid transparent; cursor: pointer; }
+.ps-ut button.on { color: var(--text); font-weight: 700; border-bottom-color: var(--sky); }
+
+.ps-filter { display: block; overflow: visible; padding: 0; }
+.ps-filter .ps-ut { min-width: 0; max-width: 100%; }
+.ps-filter .ps-ut button, .ps-filter .ps-ut button.on { background: none; border-radius: 0; border-style: solid; border-color: transparent; border-width: 0 0 3px 0; padding: 8px 0 9px; box-shadow: none; }
+.ps-filter .ps-ut button.on { border-bottom-color: var(--sky); color: var(--text); }
 </style>
 </head>
 <body>
@@ -1415,14 +1443,16 @@ header { display: block; position: static; padding: 12px 16px 10px; }
 <header>
   <div class="hd-top">
     <h1>바기오 청소년부</h1>
-    <button type="button" class="hd-link" onclick="openInstallModal()">앱설치법</button>
+    <span class="dpill" id="dday-mini">D-day</span>
+    <span class="hd-sp"></span>
+    <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">이름 선택</button>
+    <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">둘러보기 보기</button>
   </div>
-  <div class="hd-bot">
-    <div class="sub"><span class="badge" id="dday-badge">D-day 계산중</span><span>출발일 <span id="trip-date-text">2027-01-10</span></span></div>
+  <div class="hd-strip" id="hd-strip">
+    <div><div class="hs-l">바기오 선교까지</div><div class="hs-n" id="dday-badge">D-day</div><div class="hs-d">출발일 <span id="trip-date-text">2027-01-10</span></div></div>
     <div class="hd-links">
-      <button type="button" class="me-chip" id="me-chip" onclick="openMeModal()">이름 선택</button>
-      <button type="button" class="me-chip" id="browse-preview-btn" style="display:none;" onclick="previewBrowse()">둘러보기 보기</button>
       <button type="button" class="hd-link" id="admin-login-btn" onclick="toggleAdminMode()">관리모드</button>
+      <button type="button" class="hd-link" onclick="openInstallModal()">앱설치법</button>
     </div>
   </div>
 </header>
@@ -2748,6 +2778,7 @@ function renderDday() {
   document.getElementById('trip-date-text').textContent = targetDateStr;
   const diff = daysUntil(targetDateStr);
   badge.textContent = diff === null ? 'D-day 미설정' : ddayText(diff);
+  const mini = document.getElementById('dday-mini'); if (mini) mini.textContent = badge.textContent;
 }
 
 // ===== 공통 도우미 =====
@@ -3946,7 +3977,7 @@ function renderPsFilter() {
   const box = document.getElementById('ps-filter');
   if (!box) return;
   const keys = ['all', ...catOrder()];
-  const sel = `<select class="ps-sel" onchange="psFilter=this.value;renderPrepSchedule()" aria-label="분류">${keys.map(k => `<option value="${k}"${psFilter === k ? ' selected' : ''}>${k === 'all' ? '분류: 전체' : '분류: ' + k}</option>`).join('')}</select>`;
+  const sel = `<div class="ps-ut">${keys.map(k => `<button type="button" data-k="${k}" class="${psFilter === k ? 'on' : ''}">${k === 'all' ? '전체' : k}</button>`).join('')}</div>`;
   if (box.dataset.v !== psFilter) { box.dataset.v = psFilter; box.innerHTML = sel; }
 }
 
@@ -4588,7 +4619,7 @@ function noticeConfirm(id) {
   try { localStorage.setItem(NOTICE_OK_KEY, JSON.stringify(noticeOk.slice(-200))); } catch (e) {}
   renderPosts(); renderHome();
 }
-function homeSvg(p) { return `<span class="hc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${p}</svg></span>`; }
+function homeSvg(p) { return `<span class="hc-ic${p === SVG_CAL ? ' ic-y' : p === SVG_BELL ? ' ic-g' : ''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${p}</svg></span>`; }
 const SVG_BOOK = '<path d="M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z"/><path d="M12 6v14"/>';
 const SVG_CAL = '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/>';
 const SVG_BELL = '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/>';
@@ -7899,6 +7930,7 @@ function showView(top, sub) {
   if (top === 'baguio' && cur.id === 'assign') { try { renderMyAssign(); } catch (e) {} }
   if (top === 'home') { try { renderHome(); } catch (e) {} }
   try { sessionStorage.setItem('activeTab', top); } catch (e) {}
+  document.body.setAttribute('data-view', top);
   notifyOpen(top);
   window.scrollTo(0, 0);
   try {
