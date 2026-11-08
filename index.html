@@ -1180,6 +1180,8 @@ main { padding-top: 14px; }
 .fold { margin: 6px 0 14px; }
 .fold > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 12px 6px; font-size: 1rem; font-weight: 700; color: var(--muted); }
 .fold > summary::-webkit-details-marker { display: none; }
+#fold-rooms > summary::after, #fold-vehicles > summary::after { content: none !important; }
+#fold-rooms > summary, #fold-vehicles > summary { cursor: default; }
 .fold > summary::after { content: '⌄'; font-size: 1.1rem; }
 .fold[open] > summary::after { content: '⌃'; }
 
@@ -1387,6 +1389,9 @@ header { display: block; position: static; padding: 12px 16px 10px; }
 .hc-ln { font-size: var(--fs-body); color: var(--muted); font-weight: 600; }
 .hc-ln b { color: var(--text); font-weight: 800; }
 
+.bb-seg { display:flex; background:var(--sky-soft,#eef0ec); border-radius:999px; padding:3px; margin-bottom:12px; }
+.bb-seg button { flex:1; border:none; background:none; padding:8px 0; border-radius:999px; font-family:inherit; font-size:0.88rem; font-weight:600; color:var(--muted); cursor:pointer; }
+.bb-seg button.on { background:var(--card); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.15); }
 .bb-prog-line { display: flex; align-items: baseline; gap: 10px; white-space: nowrap; }
 .bb-prog-line b:first-child { font-size: 1.05rem; }
 .bb-pct2 { font-size: 1.6rem; font-weight: 800; line-height: 1.2; }
@@ -1725,7 +1730,7 @@ body[data-view="home"] .hd-sp { display: block; }
   <!-- 4. 방배정 탭 -->
   <section class="panel" id="panel-assign">
     <div id="my-assign"></div>
-    <details class="fold" id="fold-rooms"><summary id="fold-rooms-sum">전체 방 배정</summary>
+    <details class="fold" id="fold-rooms" open><summary id="fold-rooms-sum" onclick="return false">전체 방 배정</summary>
     <div class="card">
       <div class="list-head"><h2>방 배정</h2><span class="list-count" id="rooms-count"></span></div>
       <div class="group-list" id="rooms-list"></div>
@@ -1742,7 +1747,7 @@ body[data-view="home"] .hd-sp { display: block; }
 
     </details>
 
-    <details class="fold" id="fold-vehicles"><summary id="fold-vehicles-sum">전체 차량 배정</summary>
+    <details class="fold" id="fold-vehicles" open><summary id="fold-vehicles-sum" onclick="return false">전체 차량 배정</summary>
     <div class="card">
       <div class="list-head"><h2>차량 배정</h2><span class="list-count" id="vehicles-count"></span></div>
       <div class="group-list" id="vehicles-list"></div>
@@ -4674,7 +4679,7 @@ function homeSchedHtml() {
     const diff = bibleDayDiff(bibleToday(), x.day.date);
     const dd = diff <= 0 ? '오늘' : ddayText(diff);
     const go = x.isPrep ? `homeGoMeet('${x.day.id}', ${x.idx})` : `showView('baguio','schedule')`;
-    return `<div class="hs-item"><div class="hs-top"><div class="hs-t">${escapeHtml(x.it.activity || '일정')}</div><span class="hs-dd">${dd}</span></div><div class="hs-ln"><span>시간</span>${dateTxt}</div>${x.it.place ? `<div class="hs-ln"><span>장소</span>${escapeHtml(x.it.place)}</div>` : ''}<button type="button" class="hs-more" onclick="${go}">${x.isPrep ? '모임' : '선교일정'}에서 자세히 보기 ›</button></div>`;
+    return `<div class="hs-item hc-click" onclick="${go}"><div class="hs-top"><div class="hs-t">${escapeHtml(x.it.activity || '일정')}</div><span class="hs-dd">${dd}</span></div><div class="hs-ln"><span>시간</span>${dateTxt}</div>${x.it.place ? `<div class="hs-ln"><span>장소</span>${escapeHtml(x.it.place)}</div>` : ''}<button type="button" class="hs-more" onclick="event.stopPropagation();${go}">${x.isPrep ? '모임' : '선교일정'}에서 자세히 보기 ›</button></div>`;
   }).join('<div class="hs-sep"></div>');
   return `<div class="card hc"><div class="hc-h">${homeSvg(SVG_CAL)}<span class="hc-t">다가오는 ${canEdit ? '' : '내 '}일정</span><span class="hc-go" onclick="showView('meet')">모임 ›</span></div>${rows}</div>`;
 }
@@ -4721,7 +4726,8 @@ let homeRestPosts = 0;
 function postHtml(p, card) {
   const id = escapeHtml(p.id), dp = dateParts(p.date);
   const diff = daysUntil(p.date);
-  return `<article class="notice hn${card ? ' hn-card' : ''}" id="post-${id}">
+  const lk = card ? findPrepByPost(p.id) : null;
+  return `<article class="notice hn${card ? ' hn-card' : ''}${lk ? ' hc-click' : ''}" id="post-${id}"${lk ? ` onclick="if(!event.target.closest('button,a,input,textarea,.cm-box,[data-cm-box]'))homeGoMeet('${lk.day.id}', ${lk.idx})"` : ''}>
     <div class="hn-top"><div class="hn-title">${escapeHtml(p.title || '공지')}${card ? '<span class="hn-tag">NEW</span>' : ''}</div>${card ? `<button type="button" class="hn-ok" onclick="noticeConfirm('${id}')">확인했어요</button>` : ''}</div>
     ${card ? '' : `<div class="hn-date">${dp ? `${dp.m}/${dp.d}(${dp.w})` : escapeHtml(p.date || '')}</div>`}
     <div class="notice-text">${escapeHtml(p.text || '')}</div>
@@ -7341,6 +7347,7 @@ function biblePlanLabel(plan) {
 function bibleReadBtns(c, sid) {
   return `<button type="button" class="bb-read-pill" onclick="bibleOpenReader('${c.book.key}', ${c.ch})">읽기 ›</button>`;
 }
+let bibleAheadTab = 'mine';
 function bibleTopCardHtml(me) {
   const sid = me.id, I = bibleInfo(sid);
   if (I.t < BIBLE_PERIOD.start) return `<div class="card bb-top"><div class="bb-top-lb">성경읽기</div><div class="bb-top-t">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요</div><div class="bb-top-sub">첫날은 주일이라 2장이에요.</div></div>`;
@@ -7353,7 +7360,13 @@ function bibleTopCardHtml(me) {
       ${browseMode ? '' : `<div class="bb-top-done"><span>이미 읽었다면</span><button type="button" class="bb-done-btn" onclick="bibleMarkRead('${I.now.book.key}', ${I.now.ch})">읽었어요</button></div>`}`;
   } else {
     const diff = I.count - I.P;
-    h = `<div class="bb-top-lb">오늘 분량 완료</div><div class="bb-top-t">오늘도 수고했어요</div>
+    const hasToday = I.inPeriod && I.plan && I.plan.length;
+    if (hasToday && I.more) h = `<div class="bb-seg"><button type="button" class="${bibleAheadTab === 'mine' ? 'on' : ''}" onclick="bibleAheadTab='mine';renderBible()">나의 진도</button><button type="button" class="${bibleAheadTab === 'today' ? 'on' : ''}" onclick="bibleAheadTab='today';renderBible()">오늘 진도</button></div>`;
+    if (hasToday && bibleAheadTab === 'today') {
+      const c0 = I.plan[0];
+      return `<div class="card bb-top">${h}<div class="bb-top-lb">오늘 진도</div><div class="bb-top-row"><div class="bb-top-t">${biblePlanText(I.plan)}</div>${bibleReadBtns(c0, sid)}</div><div class="bb-top-sub">이미 읽은 곳이에요. 다시 볼 수 있어요.</div></div>`;
+    }
+    h += `<div class="bb-top-lb">오늘 분량 완료</div><div class="bb-top-t">오늘도 수고했어요</div>
       <div class="bb-top-sub">${diff > 0 ? `오늘 분량보다 ${diff}장 앞서 있어요.` : '계획대로 잘 읽고 있어요.'}</div>`;
     if (I.more) h += `<div class="bb-more"><div class="bb-top-lb" style="margin:0 0 6px;">더 읽고 싶다면</div><div class="bb-top-row"><div class="bb-top-t sm">${bibleChapterLabel(I.more)}</div>${bibleReadBtns(I.more, sid)}</div>
       ${browseMode ? '' : `<div class="bb-top-done"><span>이미 읽었다면</span><button type="button" class="bb-done-btn" onclick="bibleMarkRead('${I.more.book.key}', ${I.more.ch})">읽었어요</button></div>`}</div>`;
@@ -7371,8 +7384,8 @@ function bibleProgressHtml(me, comm) {
     ${comm.teacherCount ? `<div class="bb-book-row"><span class="bb-book-name">교사 (${comm.teacherCount}명)</span>${bibleBar(comm.teacherPlan)}<span class="bb-book-pct">${comm.teacherPlan}%</span></div>` : ''}</div>`;
   return `<div class="card bb-prog">
     <div class="bb-prog-line"><b>내 진도</b><span class="bb-pct2">${pct}%</span><span class="bb-pct-sub2">${goalN <= 0 ? '아직 시작 전이에요' : I.left.length ? `오늘 목표까지 <b style="color:var(--c-warn)">${I.left.length}장 남았어요</b>` : '<b style="color:#2F7D4F">오늘 목표까지 다 읽었어요</b>'}</span></div>
-    <div class="bb-comm2 open"><div class="bb-comm-h"><b>함께 읽기</b><span>학생 ${comm.studentPlan}% · 교사 ${comm.teacherPlan}%</span></div>
-      <div class="bb-period" style="margin:8px 0 6px;">${biblePeriodText()}</div>${bars}</div>
+    <div class="bb-comm2 open"><div class="bb-comm-h"><b>함께 읽기</b><span style="font-size:0.82rem;">${biblePeriodText()}</span></div>
+      ${bars}</div>
   </div>`;
 }
 let bibleStaffOpen2 = false;
