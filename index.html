@@ -1398,6 +1398,8 @@ header { display: block; position: static; padding: 12px 16px 10px; }
 .bb-pct-sub2 { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
 .bb-comm-h { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 2px; font-size: 0.95rem; }
 .bb-comm-h span { color: var(--muted); font-weight: 700; }
+.bb-comm-h { gap: 8px; flex-wrap: nowrap; white-space: nowrap; }
+.bb-comm-h .bb-comm-p { font-size: 0.74rem; font-weight: 600; letter-spacing: -0.02em; min-width: 0; }
 .sch-activity-desc, .content-desc, .mt-card .content-desc { font-size: 0.93rem; }
 
 /* 볼드 줄이기 + 저장바 */
@@ -4646,9 +4648,9 @@ function homeBibleHtml() {
   const I = bibleInfo(sid);
   let body;
   if (I.t < BIBLE_PERIOD.start) body = `<div class="hc-big">${bibleShortDate(BIBLE_PERIOD.start)}부터 시작해요</div>`;
-  else if (I.count >= BIBLE_TOTAL) body = `<div class="hc-big">🎉 4복음서를 모두 읽었어요</div>`;
+  else if (I.count >= BIBLE_TOTAL) body = `<div class="hc-big">🏆 4복음서를 모두 읽었어요</div>`;
   else if (I.now) body = (I.plan && I.plan.length ? `<div class="hc-ln">오늘은 <b>${biblePlanLabel(I.plan)}</b></div>` : '') + `<div class="hc-row" style="margin-top:8px"><div class="hc-big"><span class="hc-ln" style="font-size:inherit">${I.behind > 0 ? '나는 ' : '오늘 읽을 곳 '}</span>${bibleChapterLabel(I.now)}</div><button type="button" class="bb-read-pill" onclick="event.stopPropagation();bibleOpenReader('${I.now.book.key}', ${I.now.ch})">읽기 ›</button></div>${I.behind > 0 ? `<div class="bb-late">${I.behind}장 밀렸어요, 힘내요!</div>` : `<div class="hc-hint" style="color:#2F7D4F;font-weight:700">잘 읽고 있어요</div>`}`;
-  else body = `<div class="hc-big">오늘 분량을 다 읽었어요</div>`;
+  else { const dfx = I.count - I.P; body = `<div class="hc-big">🌟 오늘 목표 달성!</div><div class="hc-sub">${dfx > 0 ? `오늘 분량보다 ${dfx}장 앞서 있어요.` : '계획대로 잘 읽고 있어요.'}</div>`; }
   const lb = I.now ? (I.behind > 0 ? '내가 읽을 곳' : '오늘 읽을 곳') : '';
   return `<div class="card hc hc-click" onclick="showView('bible')"><div class="hc-h">${homeSvg(SVG_BOOK)}<span class="hc-t">성경읽기</span><span class="hc-go">›</span></div>${body}</div>`;
 }
@@ -7330,9 +7332,9 @@ function bibleDoneCardHtml(sid) {
   if (!done.length) return '';
   const x = n => n >= 2 ? ' ×' + n : '';
   let title, msg;
-  if (R.all >= 1) { title = '🎉 4복음서 완독!' + x(R.all); msg = '끝까지 함께해 줘서 고마워요.'; }
-  else if (done.length === 1) { title = '🎉 ' + done[0].book.name + ' 완독!' + x(done[0].n); msg = done[0].book.chapters + '장을 모두 읽었어요. 수고했어요!'; }
-  else { title = '🎉 ' + done.length + '권 완독!'; msg = '수고했어요! 남은 책도 힘내요.'; }
+  if (R.all >= 1) { title = '4복음서 완독!' + x(R.all); msg = '끝까지 함께해 줘서 고마워요.'; }
+  else if (done.length === 1) { title = done[0].book.name + ' 완독!' + x(done[0].n); msg = done[0].book.chapters + '장을 모두 읽었어요. 수고했어요!'; }
+  else { title = done.length + '권 완독!'; msg = '수고했어요! 남은 책도 힘내요.'; }
   const list = done.length > 1 && R.all < 1 ? done.map(d => d.book.name + x(d.n)).join(' · ') + '<br>' : '';
   return `<details class="card bb-done-card"${bibleDoneOpen ? ' open' : ''} ontoggle="bibleDoneOpen=this.open"><summary><span>${title}</span></summary><div class="bb-done-in">${list}${msg}</div></details>`;
 }
@@ -7383,8 +7385,8 @@ function bibleProgressHtml(me, comm) {
     ${comm.studentCount ? `<div class="bb-book-row"><span class="bb-book-name">학생 (${comm.studentCount}명)</span>${bibleBar(comm.studentPlan)}<span class="bb-book-pct">${comm.studentPlan}%</span></div>` : ''}
     ${comm.teacherCount ? `<div class="bb-book-row"><span class="bb-book-name">교사 (${comm.teacherCount}명)</span>${bibleBar(comm.teacherPlan)}<span class="bb-book-pct">${comm.teacherPlan}%</span></div>` : ''}</div>`;
   return `<div class="card bb-prog">
-    <div class="bb-prog-line"><b>내 진도</b><span class="bb-pct2">${pct}%</span><span class="bb-pct-sub2">${goalN <= 0 ? '아직 시작 전이에요' : I.left.length ? `오늘 목표까지 <b style="color:var(--c-warn)">${I.left.length}장 남았어요</b>` : '<b style="color:#2F7D4F">오늘 목표까지 다 읽었어요</b>'}</span></div>
-    <div class="bb-comm2 open"><div class="bb-comm-h"><b>함께 읽기</b><span style="font-size:0.82rem;">${biblePeriodText()}</span></div>
+    <div class="bb-prog-line"><b>내 진도</b><span class="bb-pct2">${pct}%</span><span class="bb-pct-sub2">${goalN <= 0 ? '아직 시작 전이에요' : I.left.length ? `오늘 목표까지 <b style="color:var(--c-warn)">${I.left.length}장 남았어요</b>` : '<b style="color:#2F7D4F">🎉 오늘 목표 달성</b>'}</span></div>
+    <div class="bb-comm2 open"><div class="bb-comm-h"><b>함께 읽기</b><span class="bb-comm-p">${biblePeriodText()}</span></div>
       ${bars}</div>
   </div>`;
 }
