@@ -4744,7 +4744,7 @@ function renderPosts() {
   if (!list || !box) return;
   renderTeacherAuthorOptions();
   const today = bibleToday();
-  const posts = [...(dsrc().posts || [])].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const posts = [...(dsrc().posts || [])].filter(p => !(p && p.kind === 'bible' && p.studentId && bibleStudentCount(p.studentId) < BIBLE_TOTAL)).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
   const okList = browseMode ? DEMO.ok : noticeOk;
   const recent = p => !okList.includes(p.id) && (!p.date || bibleDayDiff(p.date, today) <= SET('noticeDays', 14));
   const cards = posts.filter(recent).slice(0, 3);
